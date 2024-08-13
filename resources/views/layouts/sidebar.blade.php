@@ -54,7 +54,7 @@
                     <span>Setting</span>
                 </a>
             </li> --}}
-            <li class="sidebar-item">
+            {{-- <li class="sidebar-item">
                 <a href="" class="sidebar-link">
                     <i class="bi bi-person-rolodex"></i>
                     <span>Data Users</span>
@@ -65,34 +65,37 @@
                     <i class="bi bi-clipboard-data-fill"></i>
                     <span>Data Rooms</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="sidebar-item">
                 <a href="" class="sidebar-link">
                     <i class="bi bi-people-fill"></i>
-                    <span>Data Members</span>
+                    <span>Data Mahasiswa</span>
                 </a>
             </li>
 
-            {{-- <li class="sidebar-item has-sub active">
+            <li class="sidebar-item has-sub active">
                 <a href="#" class="sidebar-link">
                     <i class="bi bi-collection-fill"></i>
-                    <span>Table Data</span>
+                    <span>Data Master</span>
                 </a>
                 <ul class="submenu">
                     <li class="submenu-item active">
-                        <a href="{{ route('room.index') }}">Room</a>
+                        <a href="{{ route('prodi.index') }}">Program Studi</a>
                     </li>
                     <li class="submenu-item">
-                        <a href="{{ route('dormitory.index') }}">Member</a>
+                        <a href="">Ruang Kelas</a>
                     </li>
                     <li class="submenu-item">
-                        <a href="{{ route('transactions.index') }}">Trasaction</a>
+                        <a href="">Mata Kuliah</a>
                     </li>
                     <li class="submenu-item">
-                        <a href="{{ route('users.index') }}">User</a>
+                        <a href="">Mahasiswa</a>
+                    </li>
+                    <li class="submenu-item">
+                        <a href="">Dosen</a>
                     </li>
                 </ul>
-            </li> --}}
+            </li>
 
 
         </ul>
