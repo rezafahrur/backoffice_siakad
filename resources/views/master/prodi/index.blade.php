@@ -42,9 +42,9 @@
                                     "Welcome to our web page showcasing the user data of our boarding house, where comfort
                                     and convenience come together in one place."
                                 </p>
-                                <a href="{{ route('users.create') }}" class="btn icon icon-left btn-primary"><i
+                                <a href="{{ url('master/prodi/create') }}" class="btn icon icon-left btn-primary"><i
                                         data-feather="user-plus"></i>
-                                    Add Data</a>
+                                    Add Data Prodi</a>
                             </div>
 
                             <!-- table head dark -->
@@ -53,61 +53,43 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>No.</th>
-                                            <th>Username</th>
-                                            <th>Email</th>
-                                            <th>Role</th>
-                                            <th>Status</th>
+                                            <th>Kode Program Studi</th>
+                                            <th>Nama Program Studi</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @forelse ($users as $index => $user) --}}
+                                        @forelse ($program_studi as $index => $prodi)
                                         <tr>
                                             <td class="text-bold-500">
-                                                {{-- {{ $index + $users->firstItem() }} --}}
+                                                {{ $index + 1 }}
                                             </td>
                                             <td class="text-bold-500">
-                                                {{-- {{ $user->name }} --}}
+                                                {{ $prodi->kode_program_studi }}
                                             </td>
                                             <td class="text-bold-500">
-                                                {{-- {{ $user->email }} --}}
-                                            </td>
-                                            <td class="text-bold-500">
-                                                {{-- superadmin, admin, user --}}
-                                                {{-- @if ($user->role == 'superadmin')
-                                                        Superadmin
-                                                    @elseif($user->role == 'admin')
-                                                        Admin
-                                                    @else
-                                                        User
-                                                    @endif --}}
+                                                {{ $prodi->nama_program_studi }}
                                             </td>
                                             <td>
-                                                {{-- @if ($user->email_verified_at != null)
-                                                        <div class="badge bg-success">Verified</div>
-                                                    @else
-                                                        <div class="badge bg-warning">Unverified</div>
-                                                    @endif --}}
-                                            </td>
-                                            <td>
-                                                <a href="" class="btn icon btn-primary" title="Detail"><i
+                                                <a href="{{ url('master/prodi/show/'.$prodi->id) }}" class="btn icon btn-primary" title="Detail"><i
                                                         class="bi bi-eye"></i></a>
-                                                <a href="" class="btn icon btn-warning" title="Edit"><i
+                                                <a href="{{ url('master/prodi/edit/'.$prodi->id) }}" class="btn icon btn-warning" title="Edit"><i
                                                         class="bi bi-pencil-square"></i></a>
-                                                <form action="" method="post" class="d-inline">
-                                                    @csrf
-                                                    {{-- @method('delete') --}}
-                                                    <button onclick="return confirm('Konfirmasi hapus data ?')"
-                                                        class="btn icon btn-danger" title="Delete"><i
-                                                            class="bi bi-trash"></i></button>
-                                                </form>
+                                                        <form action="{{ url('/master/prodi/delete/'.$prodi->id) }}" method="post" class="d-inline">
+                                                            @csrf
+                                                            @method('delete')
+                                                            <button onclick="return confirm('Konfirmasi hapus data ?')"
+                                                                class="btn icon btn-danger" title="Delete"><i
+                                                                    class="bi bi-trash"></i></button>
+                                                        </form>
+
                                             </td>
                                         </tr>
-                                        {{-- @empty
+                                        @empty
                                             <tr>
                                                 <td colspan="6" class="text-center">No Data Found</td>
                                             </tr>
-                                        @endforelse --}}
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -121,4 +103,17 @@
         </section>
         <!-- Table head options end -->
     </div>
+    <script>
+        @if(session('success'))
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        @endif
+    </script>
 @endsection
+
+
+
