@@ -80,10 +80,11 @@
                 </a>
                 <ul class="submenu">
                     <li class="submenu-item active">
+                        <a href="{{ url('master/prodi/index') }}">Program Studi</a>
                         <a href="">Program Studi</a>
                     </li>
                     <li class="submenu-item">
-                        <a href="{{ route('kelas.index') }}">Ruang Kelas</a>
+                        <a href="">Ruang Kelas</a>
                     </li>
                     <li class="submenu-item">
                         <a href="">Mata Kuliah</a>
@@ -94,10 +95,14 @@
                     <li class="submenu-item">
                         <a href="">Dosen</a>
                     </li>
+                    <li class="submenu-item">
+                        <a href="{{ route('ktp.index') }}">KTP</a>
+                    </li>
                 </ul>
             </li>
 
 
         </ul>
+        
     </div>
 </div>
