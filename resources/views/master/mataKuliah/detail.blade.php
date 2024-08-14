@@ -19,6 +19,27 @@
     </div>
 
     <div class="card-body">
+        <dl class="row">
+            {{-- Nama Program Studi --}}
+            <dt class="col-sm-3">Nama Program Studi</dt>
+            <dd class="col-sm-9">{{ $matkul->nama_program_studi }}</dd>
+
+            {{-- Nama Lengkap --}}
+            <dt class="col-sm-3">Kode Mata Kuliah</dt>
+            <dd class="col-sm-9">{{ $matkul->kode_matakuliah }}</dd>
+
+            {{-- Alamat Jalan --}}
+            <dt class="col-sm-3">Nama Mata Kuliah</dt>
+            <dd class="col-sm-9">{{ $matkul->nama_matakuliah }}</dd>
+
+            {{-- RT/RW --}}
+            <dt class="col-sm-3">SKS</dt>
+            <dd class="col-sm-9">{{ $matkul->sks }}</dd>
+
+        </dl>
+    </div>
+
+    {{-- <div class="card-body">
         <div class="mb-3">
             <label class="form-label">Nama Program Studi</label>
             <span class="form-control border-1 border-primary">{{ $matkul->nama_program_studi }}</span>
@@ -36,5 +57,5 @@
             <span class="form-control border-1 border-primary">{{ $matkul->sks }}</span>
         </div>
         
-    </div>
+    </div> --}}
 @endsection
