@@ -127,14 +127,14 @@ class MahasiswaController extends Controller
         $ktp->update($request->validated());
 
         // Redirect to the appropriate route with a success message
-        return redirect()->route('ktp.index')->with('success', 'KTP berhasil diubah');
+        return redirect()->route('mahasiswa.index')->with('success', 'KTP berhasil diubah');
     }
 
     public function destroy(Ktp $ktp)
     {
         $ktp->delete();
 
-        return redirect()->route('ktp.index')->with('success', 'KTP berhasil dihapus');
+        return redirect()->route('mahasiswa.index')->with('success', 'KTP berhasil dihapus');
     }
 
     // AJAX handlers for fetching cities, districts, and villages dynamically

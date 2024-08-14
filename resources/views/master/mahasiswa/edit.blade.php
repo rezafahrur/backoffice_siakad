@@ -6,7 +6,7 @@
     {{-- start logo and back --}}
     <nav class="navbar navbar-light">
         <div class="container d-block">
-            <a href="{{ route('ktp.index') }}"><i class="bi bi-chevron-left"></i></a>
+            <a href=""><i class="bi bi-chevron-left"></i></a>
             <a class="navbar-brand ms-4" href="">
                 <img src="{{ asset('assets/img/logo-kos.svg') }}">
             </a>

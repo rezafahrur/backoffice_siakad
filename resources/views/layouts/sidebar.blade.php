@@ -90,14 +90,11 @@
                     <li class="submenu-item {{ Route::is('mataKuliah.index') ? 'active' : '' }}">
                         <a href="{{ route('mataKuliah.index') }}">Mata Kuliah</a>
                     </li>
-                    <li class="submenu-item">
+                    <li class="submenu-item {{ Route::is('mahasiswa.index') ? 'active' : '' }}">
                         <a href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
                     </li>
                     <li class="submenu-item">
                         <a href="">Dosen</a>
-                    </li>
-                    <li class="submenu-item">
-                        <a href="{{ route('ktp.index') }}">KTP</a>
                     </li>
                 </ul>
             </li>
