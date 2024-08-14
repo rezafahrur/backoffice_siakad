@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Data Ruang Kelas')
+@section('title', 'Data Tahun Ajaran')
 
 @section('content')
     <div class="page-heading">
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Data Ruang Kelas</h3>
+                    <h3>Data Tahun Ajaran</h3>
                     <p class="text-subtitle text-muted">
                         Who does not love The Kost
                     </p>
@@ -33,7 +33,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">
-                                Table Data Ruang Kelas
+                                Table Data Tahun Ajaran
                             </h4>
                         </div>
                         <div class="card-content">
@@ -42,7 +42,7 @@
                                     "Welcome to our web page showcasing the user data of our boarding house, where comfort
                                     and convenience come together in one place."
                                 </p>
-                                <a href="{{ route('kelas.create') }}" class="btn icon icon-left btn-primary"><i
+                                <a href="{{ route('tahun-ajaran.create') }}" class="btn icon icon-left btn-primary"><i
                                         data-feather="user-plus"></i>
                                     Add Data</a>
                             </div>
@@ -53,35 +53,27 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>No.</th>
-                                            <th>Kode</th>
-                                            <th>Nama</th>
-                                            <th>Kapasitas</th>
+                                            <th>Tahun Ajaran</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($kelas as $index => $kls)
+                                        @forelse ($tahunAjaran as $index => $ta)
                                             <tr>
                                                 <td class="text-bold-500">
-                                                    {{ $index + $kelas->firstItem() }}
+                                                    {{ $index + $tahunAjaran->firstItem() }}
                                                 </td>
                                                 <td class="text-bold-500">
-                                                    {{ $kls->kode_ruang_kelas }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    {{ $kls->nama_ruang_kelas }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    {{ $kls->kapasitas }}
+                                                    {{ $ta->tahun_ajaran }}
                                                 </td>
                                                 <td>
                                                     {{-- <a href="{{ route('kelas.edit', $kelas) }}" class="btn icon btn-primary"
                                                         title="Detail"><i class="bi bi-eye"></i></a> --}}
-                                                    <a href="{{ route('kelas.edit', $kls->id) }}"
+                                                    <a href="{{ route('tahun-ajaran.edit', $ta->id) }}"
                                                         class="btn icon btn-warning" title="Edit"><i
                                                             class="bi bi-pencil-square"></i></a>
-                                                    <form action="{{ route('kelas.destroy', $kls->id) }}" method="post"
-                                                        class="d-inline">
+                                                    <form action="{{ route('tahun-ajaran.destroy', $ta->id) }}"
+                                                        method="post" class="d-inline">
                                                         @csrf
                                                         @method('delete')
                                                         <button onclick="return confirm('Konfirmasi hapus data ?')"
@@ -99,7 +91,7 @@
                                 </table>
                             </div>
                             <div class="m-3 pagination pagination-primary">
-                                {{ $kelas->links() }}
+                                {{ $tahunAjaran->links() }}
                             </div>
                         </div>
                     </div>
