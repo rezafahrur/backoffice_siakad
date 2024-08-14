@@ -2,7 +2,8 @@
     <div class="sidebar-header position-relative">
         <div class="d-flex justify-content-between align-items-center">
             <div class="logo">
-                <a href="#"><img src="{{ asset('assets/img/logo-kos.svg') }}" alt="Logo" srcset="" /></a>
+                <a href="#"><img style="height: 50px" src="{{ asset('assets/img/logo/logo.png') }}" alt="Logo"
+                        srcset="" /></a>
             </div>
             <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
@@ -43,18 +44,19 @@
             <li class="sidebar-title">Menu</li>
 
             <li class="sidebar-item">
-                <a href="" class="sidebar-link">
+                <a href="{{ url('/') }}" class="sidebar-link">
                     <i class="bi bi-grid-fill"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
+
             {{-- <li class="sidebar-item">
-                <a href="{{ route('home.index') }}" class="sidebar-link">
+                <a href="" class="sidebar-link">
                     <i class="bi bi-gear"></i>
                     <span>Setting</span>
                 </a>
-            </li> --}}
-            {{-- <li class="sidebar-item">
+            </li>
+            <li class="sidebar-item">
                 <a href="" class="sidebar-link">
                     <i class="bi bi-person-rolodex"></i>
                     <span>Data Users</span>
@@ -65,13 +67,13 @@
                     <i class="bi bi-clipboard-data-fill"></i>
                     <span>Data Rooms</span>
                 </a>
-            </li> --}}
+            </li>
             <li class="sidebar-item">
                 <a href="" class="sidebar-link">
                     <i class="bi bi-people-fill"></i>
                     <span>Data Mahasiswa</span>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="sidebar-item has-sub active">
                 <a href="#" class="sidebar-link">
@@ -79,14 +81,14 @@
                     <span>Data Master</span>
                 </a>
                 <ul class="submenu">
-                    <li class="submenu-item active">
-                        <a href="{{ url('master/prodi/index') }}">Program Studi</a>
+                    <li class="submenu-item {{ Route::is('prodi.index') ? 'active' : '' }}">
+                        <a href="{{ route('prodi.index') }}">Program Studi</a>
                     </li>
-                    <li class="submenu-item">
+                    <li class="submenu-item {{ Route::is('kelas.index') ? 'active' : '' }}">
                         <a href="{{ route('kelas.index') }}">Ruang Kelas</a>
                     </li>
-                    <li class="submenu-item">
-                        <a href="">Mata Kuliah</a>
+                    <li class="submenu-item {{ Route::is('mataKuliah.index') ? 'active' : '' }}">
+                        <a href="{{ route('mataKuliah.index') }}">Mata Kuliah</a>
                     </li>
                     <li class="submenu-item">
                         <a href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
@@ -94,11 +96,11 @@
                     <li class="submenu-item">
                         <a href="">Dosen</a>
                     </li>
+                    <li class="submenu-item">
+                        <a href="{{ route('ktp.index') }}">KTP</a>
+                    </li>
                 </ul>
             </li>
-
-
         </ul>
-
     </div>
 </div>

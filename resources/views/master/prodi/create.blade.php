@@ -8,7 +8,7 @@
         <div class="container d-block">
             <a href="{{ route('prodi.index') }}"><i class="bi bi-chevron-left"></i></a>
             <a class="navbar-brand ms-4" href="{{ route('prodi.index') }}">
-                <img src="{{ asset('assets/img/logo-kos.svg') }}">
+                <img style="height: 50px" src="{{ asset('assets/img/logo/logo.png') }}">
             </a>
         </div>
     </nav>
@@ -25,7 +25,7 @@
                 <input type="text" class="form-control" id="kode_program_studi" name="kode_program_studi"
                     placeholder="Kode Program Studi" required>
             </div>
-            
+
             <div class="mb-3">
                 <label for="name" class="form-label">Nama Program Studi</label>
                 <input type="text" class="form-control" id="nama_program_studi" name="nama_program_studi"
