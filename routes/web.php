@@ -3,6 +3,7 @@
 use App\Http\Controllers\KtpController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProgramStudiController;
+use App\Http\Controllers\RuangKelasController;
 
 Route::get('/', function () {
     return view('home');
@@ -32,6 +33,8 @@ Route::get('/master/prodi/edit/{id}', [ProgramStudiController::class, 'edit'])->
 Route::put('/master/prodi/update/{id}', [ProgramStudiController::class, 'update'])->name('prodi.update');
 Route::delete('master/prodi/delete/{id}', [ProgramStudiController::class, 'destroy'])->name('prodi.destroy');
 Route::get('/master/prodi/show/{id}', [ProgramStudiController::class, 'show'])->name('prodi.show');
+
+// ktp
 Route::get('/ktp', [KtpController::class, 'index'])->name('ktp.index');
 Route::get('/ktp/create', [KtpController::class, 'create'])->name('ktp.create');
 Route::post('/ktp', [KtpController::class, 'store'])->name('ktp.store');
@@ -43,3 +46,12 @@ Route::delete('/ktp/{ktp}', [KtpController::class, 'destroy'])->name('ktp.destro
 Route::get('/ktp/cities/{provinceCode}', [KTPController::class, 'getCities']);
 Route::get('/ktp/districts/{cityCode}', [KTPController::class, 'getDistricts']);
 Route::get('/ktp/villages/{districtCode}', [KTPController::class, 'getVillages']);
+
+// ruang kelas
+Route::get('/ruang-kelas', [RuangKelasController::class, 'index'])->name('kelas.index');
+Route::get('/ruang-kelas/create', [RuangKelasController::class, 'create'])->name('kelas.create');
+Route::post('/ruang-kelas', [RuangKelasController::class, 'store'])->name('kelas.store');
+Route::get('/ruang-kelas/{kelas}/edit', [RuangKelasController::class, 'edit'])->name('kelas.edit');
+Route::put('/ruang-kelas/{kelas}', [RuangKelasController::class, 'update'])->name('kelas.update');
+Route::delete('/ruang-kelas/{kelas}', [RuangKelasController::class, 'destroy'])->name('kelas.destroy');
+// Route::get('/ruang-kelas/show/{id}', [RuangKelasController::class, 'show'])->name('kelas.show');
