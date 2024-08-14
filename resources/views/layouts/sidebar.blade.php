@@ -87,7 +87,7 @@
                         <a href="">Ruang Kelas</a>
                     </li>
                     <li class="submenu-item">
-                        <a href="">Mata Kuliah</a>
+                        <a href="{{ route('mataKuliah.index') }}">Mata Kuliah</a>
                     </li>
                     <li class="submenu-item">
                         <a href="">Mahasiswa</a>
