@@ -6,8 +6,8 @@
     {{-- start logo and back --}}
     <nav class="navbar navbar-light">
         <div class="container d-block">
-            <a href="{{ route($users_route['index']) }}"><i class="bi bi-chevron-left"></i></a>
-            <a class="navbar-brand ms-4" href="{{ route($users_route['index']) }}">
+            <a href="{{ route('prodi.index') }}"><i class="bi bi-chevron-left"></i></a>
+            <a class="navbar-brand ms-4" href="{{ route('prodi.index') }}">
                 <img src="{{ asset('assets/img/logo-kos.svg') }}">
             </a>
         </div>
@@ -18,58 +18,19 @@
         <h4 class="card-title">Form Members</h4>
     </div>
     <div class="card-body">
-        <form action="{{ route($users_route['store']) }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('prodi.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-
             <div class="mb-3">
-                <label for="name" class="form-label">Member Name</label>
-                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
-                    placeholder="Member Name" value="{{ old('name') }}">
-                @error('name')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+                <label for="name" class="form-label">Kode Program Studi</label>
+                <input type="text" class="form-control" id="kode_program_studi" name="kode_program_studi"
+                    placeholder="Kode Program Studi" required>
             </div>
-
-            {{-- email --}}
+            
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="text" name="email" class="form-control @error('email') is-invalid @enderror"
-                    id="email" value="{{ old('email') }}">
-                @error('email')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+                <label for="name" class="form-label">Nama Program Studi</label>
+                <input type="text" class="form-control" id="nama_program_studi" name="nama_program_studi"
+                    placeholder="Nama Program Studi" required>
             </div>
-
-            {{-- password --}}
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="text" name="password" class="form-control @error('password') is-invalid @enderror"
-                    id="password" value="{{ old('password') }}">
-                @error('password')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
-
-            {{-- role --}}
-            <div class="mb-3">
-                <label for="role" class="form-label">Role</label>
-                <select class="form-select @error('role') is-invalid @enderror" name="role" id="role">
-                    <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
-                </select>
-                @error('role')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
-            {{-- <a href="{{ route($dormitory_route["index"]) }}" class="btn btn-secondary">Back</a> --}}
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

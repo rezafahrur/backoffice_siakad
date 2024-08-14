@@ -80,6 +80,7 @@
                 </a>
                 <ul class="submenu">
                     <li class="submenu-item active">
+                        <a href="{{ url('master/prodi/index') }}">Program Studi</a>
                         <a href="">Program Studi</a>
                     </li>
                     <li class="submenu-item">
