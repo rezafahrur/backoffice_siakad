@@ -43,4 +43,3 @@ Route::delete('/ktp/{ktp}', [KtpController::class, 'destroy'])->name('ktp.destro
 Route::get('/ktp/cities/{provinceCode}', [KTPController::class, 'getCities']);
 Route::get('/ktp/districts/{cityCode}', [KTPController::class, 'getDistricts']);
 Route::get('/ktp/villages/{districtCode}', [KTPController::class, 'getVillages']);
-

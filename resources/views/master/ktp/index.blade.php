@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Program Studi')
+@section('title', 'KTP')
 
 @section('content')
     <div class="page-heading">
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Data Program Studi</h3>
+                    <h3>Data KTP</h3>
                     <p class="text-subtitle text-muted">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, accusamus.
+                        Who does not love The Kost
                     </p>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
@@ -33,7 +33,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">
-                                Table Data Program Studi
+                                Table Data KTP
                             </h4>
                         </div>
                         <div class="card-content">
@@ -42,9 +42,9 @@
                                     "Welcome to our web page showcasing the user data of our boarding house, where comfort
                                     and convenience come together in one place."
                                 </p>
-                                <a href="{{ url('master/prodi/create') }}" class="btn icon icon-left btn-primary"><i
+                                <a href="{{ route('ktp.create') }}" class="btn icon icon-left btn-primary"><i
                                         data-feather="user-plus"></i>
-                                    Add Data Prodi</a>
+                                    Add Data</a>
                             </div>
 
                             <!-- table head dark -->
@@ -53,38 +53,40 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>No.</th>
-                                            <th>Kode Program Studi</th>
-                                            <th>Nama Program Studi</th>
+                                            <th>Nik</th>
+                                            <th>Nama Lengkap</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($program_studi as $index => $prodi)
-                                        <tr>
-                                            <td class="text-bold-500">
-                                                {{ $index + 1 }}
-                                            </td>
-                                            <td class="text-bold-500">
-                                                {{ $prodi->kode_program_studi }}
-                                            </td>
-                                            <td class="text-bold-500">
-                                                {{ $prodi->nama_program_studi }}
-                                            </td>
-                                            <td>
-                                                <a href="{{ url('master/prodi/show/'.$prodi->id) }}" class="btn icon btn-primary" title="Detail"><i
-                                                        class="bi bi-eye"></i></a>
-                                                <a href="{{ url('master/prodi/edit/'.$prodi->id) }}" class="btn icon btn-warning" title="Edit"><i
-                                                        class="bi bi-pencil-square"></i></a>
-                                                        <form action="{{ url('/master/prodi/delete/'.$prodi->id) }}" method="post" class="d-inline">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button onclick="return confirm('Konfirmasi hapus data ?')"
-                                                                class="btn icon btn-danger" title="Delete"><i
-                                                                    class="bi bi-trash"></i></button>
-                                                        </form>
-
-                                            </td>
-                                        </tr>
+                                        @forelse ($ktp as $index => $kartu)
+                                            <tr>
+                                                <td class="text-bold-500">
+                                                    {{ $index + $ktp->firstItem() }}
+                                                </td>
+                                                <td class="text-bold-500">
+                                                    {{ $kartu->nik }}
+                                                </td>
+                                                <td class="text-bold-500">
+                                                    {{ $kartu->nama_lengkap }}
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('ktp.show', $kartu->id) }}"
+                                                        class="btn icon btn-primary" title="Detail"><i
+                                                            class="bi bi-eye"></i></a>
+                                                    <a href="{{ route('ktp.edit', $kartu->id) }}"
+                                                        class="btn icon btn-warning" title="Edit"><i
+                                                            class="bi bi-pencil-square"></i></a>
+                                                    <form action="{{ route('ktp.destroy', $kartu->id) }}" method="post"
+                                                        class="d-inline">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button onclick="return confirm('Konfirmasi hapus data ?')"
+                                                            class="btn icon btn-danger" title="Delete"><i
+                                                                class="bi bi-trash"></i></button>
+                                                    </form>
+                                                </td>
+                                            </tr>
                                         @empty
                                             <tr>
                                                 <td colspan="6" class="text-center">No Data Found</td>
@@ -94,7 +96,7 @@
                                 </table>
                             </div>
                             <div class="m-3 pagination pagination-primary">
-                                {{-- {{ $users->links() }} --}}
+                                {{ $ktp->links() }}
                             </div>
                         </div>
                     </div>
@@ -104,7 +106,7 @@
         <!-- Table head options end -->
     </div>
     <script>
-        @if(session('success'))
+        @if (session('success'))
             Swal.fire({
                 title: 'Berhasil!',
                 text: '{{ session('success') }}',
@@ -114,6 +116,3 @@
         @endif
     </script>
 @endsection
-
-
-
