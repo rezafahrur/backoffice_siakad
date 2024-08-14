@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\KtpController;
+use App\Http\Controllers\mataKuliahController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProgramStudiController;
 use App\Http\Controllers\RuangKelasController;
@@ -26,6 +27,11 @@ Route::get('/master/prodi/show/{id}', function () {
     return view('/master/prodi/show/{id}');
 });
 
+//matkul
+// Route::get('master/mataKuliah/create', function () {
+//     return view('master/mataKuliah/create');
+// });
+
 //crud program studi
 Route::get('/master/prodi/index', [ProgramStudiController::class, 'index'])->name('prodi.index');
 Route::post('/master/prodi/store', [ProgramStudiController::class, 'store'])->name('prodi.store');
@@ -35,6 +41,7 @@ Route::delete('master/prodi/delete/{id}', [ProgramStudiController::class, 'destr
 Route::get('/master/prodi/show/{id}', [ProgramStudiController::class, 'show'])->name('prodi.show');
 
 // ktp
+
 Route::get('/ktp', [KtpController::class, 'index'])->name('ktp.index');
 Route::get('/ktp/create', [KtpController::class, 'create'])->name('ktp.create');
 Route::post('/ktp', [KtpController::class, 'store'])->name('ktp.store');
@@ -55,3 +62,12 @@ Route::get('/ruang-kelas/{kelas}/edit', [RuangKelasController::class, 'edit'])->
 Route::put('/ruang-kelas/{kelas}', [RuangKelasController::class, 'update'])->name('kelas.update');
 Route::delete('/ruang-kelas/{kelas}', [RuangKelasController::class, 'destroy'])->name('kelas.destroy');
 // Route::get('/ruang-kelas/show/{id}', [RuangKelasController::class, 'show'])->name('kelas.show');
+
+//CRUD Mata Kuliah
+Route::get('/mataKuliah', [mataKuliahController::class, "index"])->name('mataKuliah.index');
+Route::delete('/mataKuliah/delete/{id}', [mataKuliahController::class, 'destroy'])->name('mataKuliah.destroy');
+Route::post('/mataKuliah/store', [mataKuliahController::class, 'store'])->name('mataKuliah.store');
+Route::get('/mataKuliah/create', [mataKuliahController::class, 'create'])->name('mataKuliah.create');
+Route::get('/mataKuliah/edit/{id}', [mataKuliahController::class, 'edit'])->name('mataKuliah.edit');
+Route::put('/mataKuliah/update/{id}', [mataKuliahController::class, 'update'])->name('mataKuliah.update');
+Route::get('/mataKuliah/show/{id}', [mataKuliahController::class, 'show'])->name('mataKuliah.show');
