@@ -89,13 +89,10 @@
                         <a href="">Mata Kuliah</a>
                     </li>
                     <li class="submenu-item">
-                        <a href="">Mahasiswa</a>
+                        <a href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
                     </li>
                     <li class="submenu-item">
                         <a href="">Dosen</a>
-                    </li>
-                    <li class="submenu-item">
-                        <a href="{{ route('ktp.index') }}">KTP</a>
                     </li>
                 </ul>
             </li>

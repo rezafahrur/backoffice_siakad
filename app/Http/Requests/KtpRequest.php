@@ -26,7 +26,7 @@ class KtpRequest extends FormRequest
     {
         return [
             'nik' => 'required|string|max:16|unique:t_ktp,nik',
-            'nama_lengkap' => 'required|string|max:50',
+            'nama' => 'required|string|max:50',
             'alamat_jalan' => 'required|string|max:128',
             'alamat_rt' => 'required|string|max:3',
             'alamat_rw' => 'required|string|max:3',
@@ -47,7 +47,7 @@ class KtpRequest extends FormRequest
     {
         return [
             'nik' => 'required|string|max:16|unique:t_ktp,nik,' . $this->ktp->id,
-            'nama_lengkap' => 'required|string|max:50',
+            'nama' => 'required|string|max:50',
             'alamat_jalan' => 'required|string|max:128',
             'alamat_rt' => 'required|string|max:3',
             'alamat_rw' => 'required|string|max:3',

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\KtpController;
+use App\Http\Controllers\MahasiswaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProgramStudiController;
 use App\Http\Controllers\RuangKelasController;
@@ -33,17 +33,20 @@ Route::get('/master/prodi/edit/{id}', [ProgramStudiController::class, 'edit'])->
 Route::put('/master/prodi/update/{id}', [ProgramStudiController::class, 'update'])->name('prodi.update');
 Route::delete('master/prodi/delete/{id}', [ProgramStudiController::class, 'destroy'])->name('prodi.destroy');
 Route::get('/master/prodi/show/{id}', [ProgramStudiController::class, 'show'])->name('prodi.show');
-Route::get('/ktp', [KtpController::class, 'index'])->name('ktp.index');
-Route::get('/ktp/create', [KtpController::class, 'create'])->name('ktp.create');
-Route::post('/ktp', [KtpController::class, 'store'])->name('ktp.store');
-Route::get('/ktp/{ktp}', [KtpController::class, 'show'])->name('ktp.show');
-Route::get('/ktp/{ktp}/edit', [KtpController::class, 'edit'])->name('ktp.edit');
-Route::put('/ktp/{ktp}', [KtpController::class, 'update'])->name('ktp.update');
-Route::delete('/ktp/{ktp}', [KtpController::class, 'destroy'])->name('ktp.destroy');
 
-Route::get('/ktp/cities/{provinceCode}', [KTPController::class, 'getCities']);
-Route::get('/ktp/districts/{cityCode}', [KTPController::class, 'getDistricts']);
-Route::get('/ktp/villages/{districtCode}', [KTPController::class, 'getVillages']);
+//crud mahasiswa
+Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
+Route::get('/mahasiswa/create', [MahasiswaController::class, 'create'])->name('mahasiswa.create');
+Route::post('/mahasiswa', [MahasiswaController::class, 'store'])->name('mahasiswa.store');
+Route::get('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'show'])->name('mahasiswa.show');
+Route::get('/mahasiswa/{mahasiswa}/edit', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
+Route::put('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
+Route::delete('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
+
+// ajax
+Route::get('/mahasiswa/cities/{provinceCode}', [MahasiswaController::class, 'getCities']);
+Route::get('/mahasiswa/districts/{cityCode}', [MahasiswaController::class, 'getDistricts']);
+Route::get('/mahasiswa/villages/{districtCode}', [MahasiswaController::class, 'getVillages']);
 
 // ruang kelas
 Route::get('/ruang-kelas', [RuangKelasController::class, 'index'])->name('kelas.index');

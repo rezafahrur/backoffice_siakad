@@ -21,4 +21,14 @@ class Mahasiswa extends Model
         'registrasi_tanggal',
         'status',
     ];
+
+    public function programStudi()
+    {
+        return $this->belongsTo(ProgramStudi::class, 'program_studi_id', 'id');
+    }
+
+    public function ktp()
+    {
+        return $this->belongsTo(Ktp::class, 'ktp_id', 'id');
+    }
 }
