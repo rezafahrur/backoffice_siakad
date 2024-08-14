@@ -3,8 +3,10 @@
 use App\Http\Controllers\KtpController;
 use App\Http\Controllers\mataKuliahController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProgramStudiController;
+use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\RuangKelasController;
+use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\ProgramStudiController;
 
 Route::get('/', function () {
     return view('home');
@@ -62,6 +64,23 @@ Route::get('/ruang-kelas/{kelas}/edit', [RuangKelasController::class, 'edit'])->
 Route::put('/ruang-kelas/{kelas}', [RuangKelasController::class, 'update'])->name('kelas.update');
 Route::delete('/ruang-kelas/{kelas}', [RuangKelasController::class, 'destroy'])->name('kelas.destroy');
 // Route::get('/ruang-kelas/show/{id}', [RuangKelasController::class, 'show'])->name('kelas.show');
+
+// tahun ajaran
+Route::get('/tahun-ajaran', [TahunAjaranController::class, 'index'])->name('tahun-ajaran.index');
+Route::get('/tahun-ajaran/create', [TahunAjaranController::class, 'create'])->name('tahun-ajaran.create');
+Route::post('/tahun-ajaran', [TahunAjaranController::class, 'store'])->name('tahun-ajaran.store');
+Route::get('/tahun-ajaran/{tahunAjaran}/edit', [TahunAjaranController::class, 'edit'])->name('tahun-ajaran.edit');
+Route::put('/tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'update'])->name('tahun-ajaran.update');
+Route::delete('/tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'destroy'])->name('tahun-ajaran.destroy');
+
+// semester
+Route::get('/semester', [SemesterController::class, 'index'])->name('semester.index');
+Route::get('/semester/create', [SemesterController::class, 'create'])->name('semester.create');
+Route::post('/semester', [SemesterController::class, 'store'])->name('semester.store');
+Route::get('/semester/{semester}/edit', [SemesterController::class, 'edit'])->name('semester.edit');
+Route::put('/semester/{semester}', [SemesterController::class, 'update'])->name('semester.update');
+Route::delete('/semester/{semester}', [SemesterController::class, 'destroy'])->name('semester.destroy');
+// Route::get('/semester/show/{id}', [SemesterController::class, 'show'])->name('semester.show');
 
 //CRUD Mata Kuliah
 Route::get('/mataKuliah', [mataKuliahController::class, "index"])->name('mataKuliah.index');
