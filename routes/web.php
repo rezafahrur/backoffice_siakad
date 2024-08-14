@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KtpController;
+use App\Http\Controllers\mataKuliahController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\TahunAjaranController;
@@ -28,6 +29,11 @@ Route::get('/master/prodi/show/{id}', function () {
     return view('/master/prodi/show/{id}');
 });
 
+//matkul
+// Route::get('master/mataKuliah/create', function () {
+//     return view('master/mataKuliah/create');
+// });
+
 //crud program studi
 Route::get('/master/prodi/index', [ProgramStudiController::class, 'index'])->name('prodi.index');
 Route::post('/master/prodi/store', [ProgramStudiController::class, 'store'])->name('prodi.store');
@@ -37,6 +43,7 @@ Route::delete('master/prodi/delete/{id}', [ProgramStudiController::class, 'destr
 Route::get('/master/prodi/show/{id}', [ProgramStudiController::class, 'show'])->name('prodi.show');
 
 // ktp
+
 Route::get('/ktp', [KtpController::class, 'index'])->name('ktp.index');
 Route::get('/ktp/create', [KtpController::class, 'create'])->name('ktp.create');
 Route::post('/ktp', [KtpController::class, 'store'])->name('ktp.store');
@@ -74,3 +81,12 @@ Route::get('/semester/{semester}/edit', [SemesterController::class, 'edit'])->na
 Route::put('/semester/{semester}', [SemesterController::class, 'update'])->name('semester.update');
 Route::delete('/semester/{semester}', [SemesterController::class, 'destroy'])->name('semester.destroy');
 // Route::get('/semester/show/{id}', [SemesterController::class, 'show'])->name('semester.show');
+
+//CRUD Mata Kuliah
+Route::get('/mataKuliah', [mataKuliahController::class, "index"])->name('mataKuliah.index');
+Route::delete('/mataKuliah/delete/{id}', [mataKuliahController::class, 'destroy'])->name('mataKuliah.destroy');
+Route::post('/mataKuliah/store', [mataKuliahController::class, 'store'])->name('mataKuliah.store');
+Route::get('/mataKuliah/create', [mataKuliahController::class, 'create'])->name('mataKuliah.create');
+Route::get('/mataKuliah/edit/{id}', [mataKuliahController::class, 'edit'])->name('mataKuliah.edit');
+Route::put('/mataKuliah/update/{id}', [mataKuliahController::class, 'update'])->name('mataKuliah.update');
+Route::get('/mataKuliah/show/{id}', [mataKuliahController::class, 'show'])->name('mataKuliah.show');

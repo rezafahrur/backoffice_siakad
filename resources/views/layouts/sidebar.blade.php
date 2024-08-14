@@ -85,8 +85,8 @@
                     <li class="submenu-item {{ Route::is('kelas.index') ? 'active' : '' }}">
                         <a href="{{ route('kelas.index') }}">Ruang Kelas</a>
                     </li>
-                    <li class="submenu-item">
-                        <a href="">Mata Kuliah</a>
+                    <li class="submenu-item {{ Route::is('mataKuliah.index') ? 'active' : '' }}">
+                        <a href="{{ route('mataKuliah.index') }}">Mata Kuliah</a>
                     </li>
                     <li class="submenu-item">
                         <a href="">Mahasiswa</a>
