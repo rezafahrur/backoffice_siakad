@@ -32,6 +32,7 @@ Route::get('/master/prodi/edit/{id}', [ProgramStudiController::class, 'edit'])->
 Route::put('/master/prodi/update/{id}', [ProgramStudiController::class, 'update'])->name('prodi.update');
 Route::delete('master/prodi/delete/{id}', [ProgramStudiController::class, 'destroy'])->name('prodi.destroy');
 Route::get('/master/prodi/show/{id}', [ProgramStudiController::class, 'show'])->name('prodi.show');
+
 Route::get('/ktp', [KtpController::class, 'index'])->name('ktp.index');
 Route::get('/ktp/create', [KtpController::class, 'create'])->name('ktp.create');
 Route::post('/ktp', [KtpController::class, 'store'])->name('ktp.store');
