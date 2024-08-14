@@ -43,7 +43,7 @@
             <li class="sidebar-title">Menu</li>
 
             <li class="sidebar-item">
-                <a href="" class="sidebar-link">
+                <a href="{{ url('/') }}" class="sidebar-link">
                     <i class="bi bi-grid-fill"></i>
                     <span>Dashboard</span>
                 </a>
@@ -79,13 +79,13 @@
                     <span>Data Master</span>
                 </a>
                 <ul class="submenu">
-                    <li class="submenu-item active">
-                        <a href="{{ url('master/prodi/index') }}">Program Studi</a>
+                    <li class="submenu-item {{ Route::is('prodi.index') ? 'active' : '' }}">
+                        <a href="{{ route('prodi.index') }}">Program Studi</a>
                     </li>
-                    <li class="submenu-item">
+                    <li class="submenu-item {{ Route::is('kelas.index') ? 'active' : '' }}">
                         <a href="{{ route('kelas.index') }}">Ruang Kelas</a>
                     </li>
-                    <li class="submenu-item">
+                    <li class="submenu-item {{ Route::is('mataKuliah.index') ? 'active' : '' }}">
                         <a href="{{ route('mataKuliah.index') }}">Mata Kuliah</a>
                     </li>
                     <li class="submenu-item">
@@ -94,14 +94,17 @@
                     <li class="submenu-item">
                         <a href="">Dosen</a>
                     </li>
-                    <li class="submenu-item">
+                    <li class="submenu-item {{ Route::is('ktp.index') ? 'active' : '' }}">
                         <a href="{{ route('ktp.index') }}">KTP</a>
+                    </li>
+                    <li class="submenu-item {{ Route::is('tahun-ajaran.index') ? 'active' : '' }}">
+                        <a href="{{ route('tahun-ajaran.index') }}">Tahun Ajaran</a>
+                    </li>
+                    <li class="submenu-item {{ Route::is('semester.index') ? 'active' : '' }}">
+                        <a href="{{ route('semester.index') }}">Data Semester</a>
                     </li>
                 </ul>
             </li>
-
-
         </ul>
-
     </div>
 </div>
