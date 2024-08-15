@@ -13,6 +13,10 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/wizard', function () {
+    return view('wizard');
+});
+
 Route::get('master/prodi/index', function () {
     return view('master/prodi/index');
 });
