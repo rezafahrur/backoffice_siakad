@@ -1,6 +1,6 @@
 @extends('layouts.custom')
 
-@section('title', 'Edit KTP')
+@section('title', 'Edit Mahasiswa')
 
 @section('content')
     {{-- start logo and back --}}
@@ -15,10 +15,10 @@
     {{-- end logo and back --}}
 
     <div class="card-header">
-        <h4 class="card-title">Edit KTP</h4>
+        <h4 class="card-title">Edit Mahasiswa</h4>
     </div>
     <div class="card-body">
-        <form action="{{ route('ktp.update', $ktp->id) }}" method="POST">
+        <form action="{{ route('mahasiswa.update', $mahasiswa->id) }}" method="POST">
             @csrf
             @method('PUT')
 
