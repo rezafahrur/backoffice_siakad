@@ -11,21 +11,13 @@ class RuangKelasController extends Controller
 
     public function index(Request $request)
     {
-        // $kelas = DB::table('m_ruang_kelas')->when(request('search'), function ($query, $search) {
-        //     $query->where('kode_ruang_kelas', 'like', '%' . $search . '%')
-        //         ->orWhere('nama_ruang_kelas', 'like', '%' . $search . '%');
-        // })
-        // ->whereNull('deleted_at')
-        // ->paginate(10);
-        // return view('master.ruang-kelas.index', compact('kelas'));
-
         $search = $request->input('search');
 
         $kelas = RuangKelas::when($search, function ($query, $search) {
             $query->where('kode_ruang_kelas', 'like', '%' . $search . '%')
                 ->orWhere('nama_ruang_kelas', 'like', '%' . $search . '%');
         })
-        ->paginate(10);
+        ->paginate(3);
 
         return view('master.ruang-kelas.index', compact('kelas'));
     }

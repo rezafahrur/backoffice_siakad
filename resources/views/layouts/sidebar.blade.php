@@ -96,6 +96,12 @@
                     <li class="submenu-item">
                         <a href="">Dosen</a>
                     </li>
+                    <li class="submenu-item {{ Route::is('semester.index') }}">
+                        <a href="{{ route('semester.index') }}">Semester</a>
+                    </li>
+                    <li class="submenu-item {{ Route::is('tahun-ajaran.index') }}">
+                        <a href="{{ route('tahun-ajaran.index') }}">Tahun Ajaran</a>
+                    </li>
                 </ul>
             </li>
         </ul>

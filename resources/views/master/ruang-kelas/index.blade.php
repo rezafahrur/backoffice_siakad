@@ -98,15 +98,30 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="m-3 pagination pagination-primary">
-                                {{ $kelas->links() }}
-                            </div>
+                            <ul class="pagination pagination-primary m-3">
+                                {{-- Link ke halaman sebelumnya --}}
+                                <li class="page-item {{ $kelas->onFirstPage() ? 'disabled' : '' }}">
+                                    <a class="page-link" href="{{ $kelas->previousPageUrl() }}">Prev</a>
+                                </li>
+
+                                {{-- Link ke halaman-halaman tertentu --}}
+                                @for ($i = 1; $i <= $kelas->lastPage(); $i++)
+                                    <li class="page-item {{ $kelas->currentPage() == $i ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $kelas->url($i) }}">{{ $i }}</a>
+                                    </li>
+                                @endfor
+
+                                {{-- Link ke halaman berikutnya --}}
+                                <li class="page-item {{ $kelas->hasMorePages() ? '' : 'disabled' }}">
+                                    <a class="page-link" href="{{ $kelas->nextPageUrl() }}">Next</a>
+                                </li>
+                            </ul>
+
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- Table head options end -->
     </div>
     <script>
         @if (session('success'))
