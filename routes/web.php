@@ -7,6 +7,7 @@ use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\HrController;
+use App\Http\Controllers\KtpController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProgramStudiController;
 
