@@ -160,11 +160,18 @@ class MahasiswaController extends Controller
         // Mengambil data KTP dari relasi mahasiswa
         $ktp = $mahasiswa->ktp;
 
+        $wali = $mahasiswa->mahasiswaWali;
+
         // Mendapatkan data provinsi, kota/kabupaten, kecamatan, dan kelurahan/desa dari relasi KTP
         $province = $ktp->province;
         $city = $ktp->city;
         $district = $ktp->district;
         $village = $ktp->village;
+
+        $waliprovince = $wali->ktp->province;
+        $walicity = $wali->ktp->city;
+        $walidistrict = $wali->ktp->district;
+        $walivillage = $wali->ktp->village;
 
         // Mengirim data ke view
         return view('master.mahasiswa.detail', [
@@ -174,6 +181,11 @@ class MahasiswaController extends Controller
             'city' => $city,
             'district' => $district,
             'village' => $village,
+            'wali' => $wali,
+            'waliprovince' => $waliprovince,
+            'walicity' => $walicity,
+            'walidistrict' => $walidistrict,
+            'walivillage' => $walivillage,
         ]);
     }
 

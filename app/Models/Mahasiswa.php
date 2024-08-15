@@ -31,4 +31,9 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(Ktp::class, 'ktp_id', 'id');
     }
+
+    public function mahasiswaWali()
+    {
+        return $this->hasOne(MahasiswaWali::class, 'mahasiswa_id', 'id');
+    }
 }
