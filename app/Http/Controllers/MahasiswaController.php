@@ -6,6 +6,8 @@ use App\Http\Requests\KtpRequest;
 use App\Models\Ktp;
 use App\Models\Mahasiswa;
 use App\Models\MahasiswaDetail;
+use App\Models\MahasiswaWali;
+use App\Models\MahasiswaWaliDetail;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Laravolt\Indonesia\Models\Province;
@@ -36,51 +38,122 @@ class MahasiswaController extends Controller
         return view('master.mahasiswa.create', compact('provinces', 'prodi'));
     }
 
-    public function store(Request $mahasiswaRequest)
+    public function edit(Mahasiswa $mahasiswa)
     {
+        // Fetch data for the dropdowns
+        $provinces = Province::all();
+        $prodi = ProgramStudi::all();
 
-        // Create a new KTP record with insertGetId
-        $ktp = Ktp::updateOrCreate([
-            'nik' => $mahasiswaRequest['nik']
-        ], [
-            'nama' => $mahasiswaRequest['nama'],
-            'alamat_jalan' => $mahasiswaRequest['alamat_jalan'],
-            'alamat_rt' => $mahasiswaRequest['alamat_rt'],
-            'alamat_rw' => $mahasiswaRequest['alamat_rw'],
-            'alamat_prov_code' => $mahasiswaRequest['alamat_prov_code'],
-            'alamat_kotakab_code' => $mahasiswaRequest['alamat_kotakab_code'],
-            'alamat_kec_code' => $mahasiswaRequest['alamat_kec_code'],
-            'alamat_kel_code' => $mahasiswaRequest['alamat_kel_code'],
-            'lahir_tempat' => $mahasiswaRequest['lahir_tempat'],
-            'lahir_tgl' => $mahasiswaRequest['lahir_tgl'],
-            'jenis_kelamin' => $mahasiswaRequest['jenis_kelamin'],
-            'agama' => $mahasiswaRequest['agama'],
-            'golongan_darah' => $mahasiswaRequest['golongan_darah'],
-            'kewarganegaraan' => $mahasiswaRequest['kewarganegaraan'],
-        ]);
-
-        // Create a new Mahasiswa record with the KTP ID
-        $mahasiswa = Mahasiswa::updateOrCreate([
-            'nim' => $mahasiswaRequest['nim'],
-        ], [
-            'nama' => $mahasiswaRequest['nama'],
-            'program_studi_id' => $mahasiswaRequest['program_studi'],
-            'registrasi_tanggal' => $mahasiswaRequest['registrasi_tanggal'],
-            'status' => $mahasiswaRequest['status'],
-            'semester_berjalan' => $mahasiswaRequest['semester_berjalan'],
-            'ktp_id' => $ktp->id,
-        ]);
-
-        // Create a new MahasiswaDetail record with the Mahasiswa ID
-        MahasiswaDetail::create([
-            'mahasiswa_id' => $mahasiswa->id,
-            'hp' => $mahasiswaRequest['no_hp'],
-            'alamat_domisili' => $mahasiswaRequest['alamat_domisili'],
-        ]);
-
-        // Redirect to the appropriate route with a success message
-        return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa berhasil ditambahkan');
+        return view('master.mahasiswa.edit', compact('mahasiswa', 'provinces', 'prodi'));
     }
+
+    public function storeOrUpdate(Request $request)
+    {
+        $data = $request->all();
+
+        // Handle KTP Mahasiswa
+        $ktpMahasiswa = Ktp::updateOrCreate(
+            ['nik' => $data['nik']],
+            [
+                'nama' => $data['nama'],
+                'alamat_jalan' => $data['alamat_jalan'],
+                'alamat_rt' => $data['alamat_rt'],
+                'alamat_rw' => $data['alamat_rw'],
+                'alamat_prov_code' => $data['alamat_prov_code'],
+                'alamat_kotakab_code' => $data['alamat_kotakab_code'],
+                'alamat_kec_code' => $data['alamat_kec_code'],
+                'alamat_kel_code' => $data['alamat_kel_code'],
+                'lahir_tempat' => $data['lahir_tempat'],
+                'lahir_tgl' => $data['lahir_tgl'],
+                'jenis_kelamin' => $data['jenis_kelamin'],
+                'agama' => $data['agama'],
+                'golongan_darah' => $data['golongan_darah'],
+                'kewarganegaraan' => $data['kewarganegaraan'],
+            ]
+        );
+
+        // Handle Mahasiswa
+        $mahasiswa = Mahasiswa::updateOrCreate(
+            ['nim' => $data['nim']],
+            [
+                'nama' => $data['nama'],
+                'program_studi_id' => $data['program_studi'],
+                'registrasi_tanggal' => $data['registrasi_tanggal'],
+                'status' => $data['status'],
+                'semester_berjalan' => $data['semester_berjalan'],
+                'ktp_id' => $ktpMahasiswa->id,
+            ]
+        );
+
+        // Handle MahasiswaDetail
+        $existingMahasiswaDetail = MahasiswaDetail::where('mahasiswa_id', $mahasiswa->id)->first();
+        $newMahasiswaDetail = [
+            'hp' => $data['no_hp'],
+            'alamat_domisili' => $data['alamat_domisili'],
+        ];
+
+        if (!$existingMahasiswaDetail || $existingMahasiswaDetail->hp != $newMahasiswaDetail['hp'] || $existingMahasiswaDetail->alamat_domisili != $newMahasiswaDetail['alamat_domisili']) {
+            MahasiswaDetail::updateOrCreate(
+                ['mahasiswa_id' => $mahasiswa->id],
+                $newMahasiswaDetail
+            );
+        }
+
+        // Handle KTP Wali
+        $ktpWali = Ktp::updateOrCreate(
+            ['nik' => $data['wali_nik']],
+            [
+                'nama' => $data['wali_nama'],
+                'alamat_jalan' => $data['wali_alamat_jalan'],
+                'alamat_rt' => $data['wali_alamat_rt'],
+                'alamat_rw' => $data['wali_alamat_rw'],
+                'alamat_prov_code' => $data['wali_alamat_prov_code'],
+                'alamat_kotakab_code' => $data['wali_alamat_kotakab_code'],
+                'alamat_kec_code' => $data['wali_alamat_kec_code'],
+                'alamat_kel_code' => $data['wali_alamat_kel_code'],
+                'lahir_tempat' => $data['wali_lahir_tempat'],
+                'lahir_tgl' => $data['wali_lahir_tgl'],
+                'jenis_kelamin' => $data['wali_jenis_kelamin'],
+                'agama' => $data['wali_agama'],
+                'golongan_darah' => $data['wali_golongan_darah'],
+                'kewarganegaraan' => $data['wali_kewarganegaraan'],
+            ]
+        );
+
+        // Handle MahasiswaWali
+        $mahasiswaWali = MahasiswaWali::updateOrCreate(
+            ['mahasiswa_id' => $mahasiswa->id],
+            [
+                'ktp_id' => $ktpWali->id,
+                'nama' => $data['wali_nama'],
+                'status_kewalian' => $data['status_kewalian'],
+            ]
+        );
+
+        // Handle MahasiswaWaliDetail
+        $existingMahasiswaWaliDetail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali->id)->first();
+        $newMahasiswaWaliDetail = [
+            'hp' => $data['wali_no_hp'],
+            'alamat_domisili' => $data['wali_alamat_domisili'],
+            'pekerjaan' => $data['wali_pekerjaan'],
+            'penghasilan' => $data['wali_penghasilan'],
+            'pendidikan' => $data['pendidikan_terakhir'],
+        ];
+
+        if (!$existingMahasiswaWaliDetail || $existingMahasiswaWaliDetail->hp != $newMahasiswaWaliDetail['hp'] || $existingMahasiswaWaliDetail->alamat_domisili != $newMahasiswaWaliDetail['alamat_domisili']) {
+            MahasiswaWaliDetail::updateOrCreate(
+                ['mahasiswa_wali_id' => $mahasiswaWali->id],
+                $newMahasiswaWaliDetail
+            );
+        }
+
+        // Set success message based on the request type
+        $message = $request->has('id') ? 'Data berhasil diperbarui' : 'Data berhasil ditambahkan';
+
+        // Redirect with success message
+        return redirect()->route('mahasiswa.index')->with('success', $message);
+    }
+
 
     public function show(Mahasiswa $mahasiswa)
     {
@@ -102,32 +175,6 @@ class MahasiswaController extends Controller
             'district' => $district,
             'village' => $village,
         ]);
-    }
-
-    // public function show($id)
-    // {
-    //     $provinces = Province::all();
-    //     $mahasiswa = Mahasiswa::join('m_program_studi', 'm_program_studi.id', '=', 'm_mahasiswa.program_studi_id')->select('m_mahasiswa.*', 'm_program_studi.nama_program_studi')->find($id);
-    //     dd($mahasiswa);
-    //     return view('master.mahasiswa.detail', compact('mahasiswa', 'provinces'));
-    // }
-
-    public function edit(Mahasiswa $mahasiswa)
-    {
-        // Fetch data for the dropdowns
-        $provinces = Province::all();
-        $prodi = ProgramStudi::all();
-
-        return view('master.mahasiswa.edit', compact('mahasiswa', 'provinces', 'prodi'));
-    }
-
-    public function update(KtpRequest $request, Ktp $ktp)
-    {
-        // Menggunakan validated data dari KtpRequest
-        $ktp->update($request->validated());
-
-        // Redirect to the appropriate route with a success message
-        return redirect()->route('mahasiswa.index')->with('success', 'KTP berhasil diubah');
     }
 
     public function destroy(Ktp $ktp)
