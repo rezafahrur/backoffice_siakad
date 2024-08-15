@@ -14,7 +14,7 @@ class Ktp extends Model
     protected $table = 't_ktp';
     protected $fillable = [
         'nik',
-        'nama_lengkap',
+        'nama',
         'alamat_jalan',
         'alamat_rt',
         'alamat_rw',
