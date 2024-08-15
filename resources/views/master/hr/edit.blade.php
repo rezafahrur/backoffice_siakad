@@ -15,15 +15,12 @@
     {{-- end logo and back --}}
 
     <div class="card-header">
-        <h4 class="card-title">Form Edit KTP HR</h4>
+        <h4 class="card-title">Form Edit Biodata SDM</h4>
     </div>
     <div class="card-body">
         <form action="{{ route('hr.update', $hr->id) }}" method="POST">
             @csrf
             @method('PUT')
-        
-            <!-- KTP Fields -->
-            <h3>KTP Information</h3>
             
            {{-- NIK --}}
            <div class="mb-3">
