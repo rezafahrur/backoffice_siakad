@@ -34,7 +34,7 @@
                             </h4>
                         </div>
                         <div class="card-content">
-                            <div class="card-body">
+                            <div class="card-body" style="margin-top: -2%">
                                 <a href="{{ route('mataKuliah.create') }}" class="btn icon icon-left btn-primary"><i
                                         data-feather="user-plus"></i>
                                     Add Data</a>
