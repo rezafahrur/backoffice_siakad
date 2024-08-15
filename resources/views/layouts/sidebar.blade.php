@@ -81,7 +81,7 @@
                 <ul class="submenu">
                     <li class="submenu-item active">
                         <a href="{{ url('master/prodi/index') }}">Program Studi</a>
-                        <a href="">Program Studi</a>
+                        
                     </li>
                     <li class="submenu-item">
                         <a href="">Ruang Kelas</a>
@@ -95,8 +95,15 @@
                     <li class="submenu-item">
                         <a href="">Dosen</a>
                     </li>
+                    
+                    <li class="submenu-item">
+                        <a href="{{ route('position.index') }}">Posisi</a>
+                    </li>
                     <li class="submenu-item">
                         <a href="{{ route('ktp.index') }}">KTP</a>
+                    </li>
+                    <li class="submenu-item">
+                        <a href="{{ route('hr.index') }}">HR</a>
                     </li>
                 </ul>
             </li>
