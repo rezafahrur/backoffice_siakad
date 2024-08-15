@@ -83,10 +83,6 @@
                 <ul class="submenu">
                     <li class="submenu-item {{ Route::is('prodi.index') ? 'active' : '' }}">
                         <a href="{{ route('prodi.index') }}">Program Studi</a>
-                    <li class="submenu-item active">
-                        <a href="{{ url('master/prodi/index') }}">Program Studi</a>
-                        
-                    </li>
                     <li class="submenu-item {{ Route::is('kelas.index') ? 'active' : '' }}">
                         <a href="{{ route('kelas.index') }}">Ruang Kelas</a>
                     </li>
@@ -95,9 +91,6 @@
                     </li>
                     <li class="submenu-item {{ Route::is('mahasiswa.index') ? 'active' : '' }}">
                         <a href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
-                    </li>
-                    <li class="submenu-item">
-                        <a href="">Dosen</a>
                     </li>
                     <li class="submenu-item {{ Route::is('semester.index') }}">
                         <a href="{{ route('semester.index') }}">Semester</a>
@@ -109,7 +102,7 @@
                         <a href="{{ route('position.index') }}">Posisi</a>
                     </li>
                     <li class="submenu-item">
-                        <a href="{{ route('hr.index') }}">HR</a>
+                        <a href="{{ route('hr.index') }}">SDM</a>
                     </li>
                 </ul>
             </li>
