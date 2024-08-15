@@ -109,9 +109,6 @@
                         <a href="{{ route('position.index') }}">Posisi</a>
                     </li>
                     <li class="submenu-item">
-                        <a href="{{ route('ktp.index') }}">KTP</a>
-                    </li>
-                    <li class="submenu-item">
                         <a href="{{ route('hr.index') }}">HR</a>
                     </li>
                 </ul>
