@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\KtpController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HrController;
+use App\Http\Controllers\KtpController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProgramStudiController;
 
 Route::get('/', function () {
@@ -43,3 +45,22 @@ Route::delete('/ktp/{ktp}', [KtpController::class, 'destroy'])->name('ktp.destro
 Route::get('/ktp/cities/{provinceCode}', [KTPController::class, 'getCities']);
 Route::get('/ktp/districts/{cityCode}', [KTPController::class, 'getDistricts']);
 Route::get('/ktp/villages/{districtCode}', [KTPController::class, 'getVillages']);
+
+//crud position
+Route::get('/master/position/index', [PositionController::class, 'index'])->name('position.index');
+Route::post('/master/position/store', [PositionController::class, 'store'])->name('position.store');
+Route::get('/master/position/edit/{id}', [PositionController::class, 'edit'])->name('position.edit');
+Route::put('/master/position/update/{id}', [PositionController::class, 'update'])->name('position.update');
+Route::delete('master/position/delete/{id}', [PositionController::class, 'destroy'])->name('position.destroy');
+Route::get('/master/position/show/{id}', [PositionController::class, 'show'])->name('position.show');
+Route::get('/master/position/create', [PositionController::class, 'create'])->name('position.create');
+
+//crud hr
+Route::get('/master/hr/index', [HrController::class, 'index'])->name('hr.index');
+Route::post('/master/hr/store', [HrController::class, 'store'])->name('hr.store');
+Route::get('/master/hr/edit/{id}', [HrController::class, 'edit'])->name('hr.edit');
+Route::put('/master/hr/update/{id}', [HrController::class, 'update'])->name('hr.update');
+Route::delete('master/hr/delete/{id}', [HrController::class, 'destroy'])->name('hr.destroy');
+Route::get('/master/hr/show/{id}', [HrController::class, 'show'])->name('hr.show');
+Route::get('/master/hr/create', [HrController::class, 'create'])->name('hr.create');
+
