@@ -90,7 +90,7 @@ class HrController extends Controller
 
         Hr::create($hrData);
 
-        return redirect()->route('hr.index')->with('success', 'Biodata HR berhasil ditambahkan');
+        return redirect()->route('hr.index')->with('success', 'Biodata SDM berhasil ditambahkan');
     }
 
     public function edit($id)
@@ -163,14 +163,14 @@ class HrController extends Controller
 
         $hr->update($hrData);
 
-        return redirect()->route('hr.index')->with('success', 'Biodata HR berhasil diperbarui');
+        return redirect()->route('hr.index')->with('success', 'Biodata SDM berhasil diperbarui');
     }
 
 
     public function destroy($id)
     {
         Hr::find($id)->delete();
-        return redirect()->route('hr.index')->with('success', 'HR berhasil dihapus');
+        return redirect()->route('hr.index')->with('success', 'SDM berhasil dihapus');
     }
 
     public function show($id)

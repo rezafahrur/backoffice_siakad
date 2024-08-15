@@ -10,7 +10,7 @@ class PositionController extends Controller
     //crud position
     public function index(Request $request)
     {
-        $position = Position::paginate(5);
+        $position = Position::paginate(100);
         return view('master.position.index', compact('position'));
     }
     
