@@ -41,7 +41,7 @@
                             </div>
 
                             <!-- table head dark -->
-                            <div class="table-responsive">
+                            <div class="card-header table-responsive">
                                 <table class="table mb-0">
                                     <thead class="thead-dark">
                                         <tr>
@@ -55,6 +55,9 @@
                                     </thead>
                                     <tbody>
                                         {{-- @forelse ($users as $index => $user) --}}
+                                        @php
+                                            $nums = 1 + ($datas->currentPage() - 1) * $datas->perPage();
+                                        @endphp
                                         @foreach ($datas as $matkul)
                                             <tr>
                                                 <td class="text-bold-500">{{ $nums }}</td>
@@ -87,7 +90,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <nav aria-label="Page navigation example" style="margin-right: 2%">
+                            <nav aria-label="Page navigation example" style="margin-right: 2.5%">
                                 <ul class="pagination pagination-primary justify-content-end">
                                     @if ($datas->onFirstPage())
                                         <li class="page-item disabled">
