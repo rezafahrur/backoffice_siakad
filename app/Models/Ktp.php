@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravolt\Indonesia\Models\City;
+use Laravolt\Indonesia\Models\District;
+use Laravolt\Indonesia\Models\Province;
+use Laravolt\Indonesia\Models\Village;
 
 class Ktp extends Model
 {
@@ -14,7 +18,7 @@ class Ktp extends Model
     protected $table = 't_ktp';
     protected $fillable = [
         'nik',
-        'nama_lengkap',
+        'nama',
         'alamat_jalan',
         'alamat_rt',
         'alamat_rw',
@@ -30,4 +34,23 @@ class Ktp extends Model
         'kewarganegaraan'
     ];
 
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'alamat_prov_code', 'code');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'alamat_kotakab_code', 'code');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'alamat_kec_code', 'code');
+    }
+
+    public function village()
+    {
+        return $this->belongsTo(Village::class, 'alamat_kel_code', 'code');
+    }
 }

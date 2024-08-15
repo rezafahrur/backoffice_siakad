@@ -90,20 +90,11 @@
                     <li class="submenu-item {{ Route::is('mataKuliah.index') ? 'active' : '' }}">
                         <a href="{{ route('mataKuliah.index') }}">Mata Kuliah</a>
                     </li>
-                    <li class="submenu-item">
-                        <a href="">Mahasiswa</a>
+                    <li class="submenu-item {{ Route::is('mahasiswa.index') ? 'active' : '' }}">
+                        <a href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
                     </li>
                     <li class="submenu-item">
                         <a href="">Dosen</a>
-                    </li>
-                    <li class="submenu-item {{ Route::is('ktp.index') ? 'active' : '' }}">
-                        <a href="{{ route('ktp.index') }}">KTP</a>
-                    </li>
-                    <li class="submenu-item {{ Route::is('tahun-ajaran.index') ? 'active' : '' }}">
-                        <a href="{{ route('tahun-ajaran.index') }}">Tahun Ajaran</a>
-                    </li>
-                    <li class="submenu-item {{ Route::is('semester.index') ? 'active' : '' }}">
-                        <a href="{{ route('semester.index') }}">Data Semester</a>
                     </li>
                 </ul>
             </li>
