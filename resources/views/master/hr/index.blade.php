@@ -7,7 +7,7 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Data HR</h3>
+                    <h3>Data SDM</h3>
                     <p class="text-subtitle text-muted">
                         Who does not love The Kost
                     </p>
@@ -33,7 +33,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">
-                                Table Data HR
+                                Table Data SDM
                             </h4>
                         </div>
                         <div class="card-content">
@@ -44,7 +44,7 @@
                                 </p>
                                 <a href="{{ url('master/hr/create') }}" class="btn icon icon-left btn-primary"><i
                                         data-feather="user-plus"></i>
-                                    Add Data HR</a>
+                                    Add Data SDM</a>
                             </div>
 
                             <!-- table head dark -->
@@ -54,7 +54,7 @@
                                         <tr>
                                             <th>No.</th>
                                             <th>NIP</th>
-                                            <th>Nama HR</th>
+                                            <th>Nama SDM</th>
                                             <th>Posisi</th>
                                             <th>Action</th>
                                         </tr>
