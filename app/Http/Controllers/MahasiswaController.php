@@ -41,10 +41,15 @@ class MahasiswaController extends Controller
     public function edit(Mahasiswa $mahasiswa)
     {
         // Fetch data for the dropdowns
-        $provinces = Province::all();
         $prodi = ProgramStudi::all();
 
-        return view('master.mahasiswa.edit', compact('mahasiswa', 'provinces', 'prodi'));
+        // Fetch data for the dropdowns and populate with existing data
+        $provinces = Province::all();
+        $cities = City::where('province_code', $mahasiswa->ktp->alamat_prov_code)->get();
+        $districts = District::where('city_code', $mahasiswa->ktp->alamat_kotakab_code)->get();
+        $villages = Village::where('district_code', $mahasiswa->ktp->alamat_kec_code)->get();
+
+        return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'cities', 'districts', 'villages'));
     }
 
     public function storeOrUpdate(Request $request)

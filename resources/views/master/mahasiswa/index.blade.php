@@ -74,7 +74,7 @@
                                                     <a href="{{ route('mahasiswa.show', $mhs->id) }}"
                                                         class="btn icon btn-primary" title="Detail"><i
                                                             class="bi bi-eye"></i></a>
-                                                    {{-- <a href="{{ route('mahasiswa.edit', $mhs->id) }}"
+                                                    <a href="{{ route('mahasiswa.edit', $mhs->id) }}"
                                                         class="btn icon btn-warning" title="Edit"><i
                                                             class="bi bi-pencil-square"></i></a>
                                                     <form action="{{ route('mahasiswa.destroy', $mhs->id) }}" method="post"
@@ -84,7 +84,7 @@
                                                         <button onclick="return confirm('Konfirmasi hapus data ?')"
                                                             class="btn icon btn-danger" title="Delete"><i
                                                                 class="bi bi-trash"></i></button>
-                                                    </form> --}}
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @empty
