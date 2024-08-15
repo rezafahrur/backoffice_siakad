@@ -16,7 +16,7 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="index.html">Dashboard</a>
+                                <a href="index.html">Master</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
                                 <a href="#">Table</a>
@@ -60,31 +60,34 @@
                                     </thead>
                                     <tbody>
                                         @forelse ($program_studi as $index => $prodi)
-                                        <tr>
-                                            <td class="text-bold-500">
-                                                {{ $index + 1 }}
-                                            </td>
-                                            <td class="text-bold-500">
-                                                {{ $prodi->kode_program_studi }}
-                                            </td>
-                                            <td class="text-bold-500">
-                                                {{ $prodi->nama_program_studi }}
-                                            </td>
-                                            <td>
-                                                <a href="{{ url('master/prodi/show/'.$prodi->id) }}" class="btn icon btn-primary" title="Detail"><i
-                                                        class="bi bi-eye"></i></a>
-                                                <a href="{{ url('master/prodi/edit/'.$prodi->id) }}" class="btn icon btn-warning" title="Edit"><i
-                                                        class="bi bi-pencil-square"></i></a>
-                                                        <form action="{{ url('/master/prodi/delete/'.$prodi->id) }}" method="post" class="d-inline">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button onclick="return confirm('Konfirmasi hapus data ?')"
-                                                                class="btn icon btn-danger" title="Delete"><i
-                                                                    class="bi bi-trash"></i></button>
-                                                        </form>
+                                            <tr>
+                                                <td class="text-bold-500">
+                                                    {{ $index + 1 }}
+                                                </td>
+                                                <td class="text-bold-500">
+                                                    {{ $prodi->kode_program_studi }}
+                                                </td>
+                                                <td class="text-bold-500">
+                                                    {{ $prodi->nama_program_studi }}
+                                                </td>
+                                                <td>
+                                                    <a href="{{ url('master/prodi/show/' . $prodi->id) }}"
+                                                        class="btn icon btn-primary" title="Detail"><i
+                                                            class="bi bi-eye"></i></a>
+                                                    <a href="{{ url('master/prodi/edit/' . $prodi->id) }}"
+                                                        class="btn icon btn-warning" title="Edit"><i
+                                                            class="bi bi-pencil-square"></i></a>
+                                                    <form action="{{ url('/master/prodi/delete/' . $prodi->id) }}"
+                                                        method="post" class="d-inline">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button onclick="return confirm('Konfirmasi hapus data ?')"
+                                                            class="btn icon btn-danger" title="Delete"><i
+                                                                class="bi bi-trash"></i></button>
+                                                    </form>
 
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
                                         @empty
                                             <tr>
                                                 <td colspan="6" class="text-center">No Data Found</td>
@@ -93,9 +96,11 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="m-3 pagination pagination-primary">
-                                {{-- {{ $users->links() }} --}}
-                            </div>
+                            <nav aria-label="Page navigation example">
+                                <div class="m-3 pagination pagination-primary">
+                                    {{-- {{ $users->links() }} --}}
+                                </div>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -104,7 +109,7 @@
         <!-- Table head options end -->
     </div>
     <script>
-        @if(session('success'))
+        @if (session('success'))
             Swal.fire({
                 title: 'Berhasil!',
                 text: '{{ session('success') }}',
@@ -114,6 +119,3 @@
         @endif
     </script>
 @endsection
-
-
-
