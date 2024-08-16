@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.svg') }}" type="image/x-icon" />
     <link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.png') }}" type="image/png" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    @stack('styles')
 </head>
 
 <body id="custom-body">
@@ -17,11 +18,13 @@
         <div class="card mt-5">
             @yield('content')
         </div>
-
     </div>
+
     <script src="{{ asset('assets/js/custom.js') }}"></script>
-    <scipt src="{{ asset('assets/js/bootstrap.js') }}"></scipt>
-    <scipt src="{{ asset('assets/js/app.js') }}"></scipt>
+    <script src="{{ asset('assets/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/js/app.js') }}"></script>
+    
+    @stack('scripts')
 </body>
 
 </html>

@@ -38,18 +38,31 @@ class MahasiswaController extends Controller
         return view('master.mahasiswa.create', compact('provinces', 'prodi'));
     }
 
-    public function edit(Mahasiswa $mahasiswa)
+    public function edit($id)
     {
         // Fetch data for the dropdowns
-        $provinces = Province::all();
         $prodi = ProgramStudi::all();
 
-        return view('master.mahasiswa.edit', compact('mahasiswa', 'provinces', 'prodi'));
+        // Fetch data mahasiswa by ID
+        $mahasiswa = Mahasiswa::findOrFail($id);
+
+        // Fetch data wali by mahasiswa ID
+        $wali = MahasiswaWali::where('mahasiswa_id', $id)->first();
+
+        // Fetch data for the dropdowns and populate with existing data
+        $provinces = Province::all();
+        $cities = City::where('province_code', $mahasiswa->ktp->alamat_prov_code)->get();
+        $districts = District::where('city_code', $mahasiswa->ktp->alamat_kotakab_code)->get();
+        $villages = Village::where('district_code', $mahasiswa->ktp->alamat_kec_code)->get();
+
+        return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'cities', 'districts', 'villages', 'wali'));
     }
 
     public function storeOrUpdate(Request $request)
     {
         $data = $request->all();
+
+        dd($data);
 
         // Handle KTP Mahasiswa
         $ktpMahasiswa = Ktp::updateOrCreate(
@@ -93,9 +106,8 @@ class MahasiswaController extends Controller
         ];
 
         if (!$existingMahasiswaDetail || $existingMahasiswaDetail->hp != $newMahasiswaDetail['hp'] || $existingMahasiswaDetail->alamat_domisili != $newMahasiswaDetail['alamat_domisili']) {
-            MahasiswaDetail::updateOrCreate(
-                ['mahasiswa_id' => $mahasiswa->id],
-                $newMahasiswaDetail
+            MahasiswaDetail::create(
+                ['mahasiswa_wali_id' => $mahasiswa->id] + $newMahasiswaDetail
             );
         }
 
@@ -141,9 +153,8 @@ class MahasiswaController extends Controller
         ];
 
         if (!$existingMahasiswaWaliDetail || $existingMahasiswaWaliDetail->hp != $newMahasiswaWaliDetail['hp'] || $existingMahasiswaWaliDetail->alamat_domisili != $newMahasiswaWaliDetail['alamat_domisili']) {
-            MahasiswaWaliDetail::updateOrCreate(
-                ['mahasiswa_wali_id' => $mahasiswaWali->id],
-                $newMahasiswaWaliDetail
+            MahasiswaWaliDetail::create(
+                ['mahasiswa_wali_id' => $mahasiswaWali->id] + $newMahasiswaWaliDetail
             );
         }
 
@@ -160,11 +171,18 @@ class MahasiswaController extends Controller
         // Mengambil data KTP dari relasi mahasiswa
         $ktp = $mahasiswa->ktp;
 
+        $wali = $mahasiswa->mahasiswaWali;
+
         // Mendapatkan data provinsi, kota/kabupaten, kecamatan, dan kelurahan/desa dari relasi KTP
         $province = $ktp->province;
         $city = $ktp->city;
         $district = $ktp->district;
         $village = $ktp->village;
+
+        $waliprovince = $wali->ktp->province;
+        $walicity = $wali->ktp->city;
+        $walidistrict = $wali->ktp->district;
+        $walivillage = $wali->ktp->village;
 
         // Mengirim data ke view
         return view('master.mahasiswa.detail', [
@@ -174,14 +192,49 @@ class MahasiswaController extends Controller
             'city' => $city,
             'district' => $district,
             'village' => $village,
+            'wali' => $wali,
+            'waliprovince' => $waliprovince,
+            'walicity' => $walicity,
+            'walidistrict' => $walidistrict,
+            'walivillage' => $walivillage,
         ]);
     }
 
-    public function destroy(Ktp $ktp)
+    public function destroy(Mahasiswa $mahasiswa)
     {
-        $ktp->delete();
+        
+        // Simpan referensi ke KTP wali sebelum menghapus MahasiswaWali
+        $ktpWali = $mahasiswa->mahasiswaWali ? $mahasiswa->mahasiswaWali->ktp : null;
 
-        return redirect()->route('mahasiswa.index')->with('success', 'KTP berhasil dihapus');
+        // Hapus MahasiswaWaliDetail jika ada
+        if ($mahasiswa->mahasiswaWali && $mahasiswa->mahasiswaWali->mahasiswaWaliDetail) {
+            $mahasiswa->mahasiswaWali->mahasiswaWaliDetail->delete();
+        }
+
+        // Hapus MahasiswaWali jika ada
+        if ($mahasiswa->mahasiswaWali) {
+            $mahasiswa->mahasiswaWali->delete();
+        }
+
+        // Hapus KTP wali jika ada
+        if ($ktpWali) {
+            $ktpWali->delete();
+        }
+
+        // Hapus MahasiswaDetail jika ada
+        if ($mahasiswa->mahasiswaDetail) {
+            $mahasiswa->mahasiswaDetail->delete();
+        }
+
+        // Hapus KTP mahasiswa jika ada
+        if ($mahasiswa->ktp) {
+            $mahasiswa->ktp->delete();
+        }
+
+        // Hapus Mahasiswa
+        $mahasiswa->delete();
+
+        return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa dan data terkait berhasil dihapus');
     }
 
     // AJAX handlers for fetching cities, districts, and villages dynamically
