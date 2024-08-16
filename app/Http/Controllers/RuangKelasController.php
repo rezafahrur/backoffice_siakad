@@ -4,22 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Models\RuangKelas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class RuangKelasController extends Controller
 {
 
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        if ($request->ajax()) {
+            $kelas = RuangKelas::query();
 
-        $kelas = RuangKelas::when($search, function ($query, $search) {
-            $query->where('kode_ruang_kelas', 'like', '%' . $search . '%')
-                ->orWhere('nama_ruang_kelas', 'like', '%' . $search . '%');
-        })
-        ->paginate(3);
+            return DataTables::of($kelas)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                    $editBtn = '<a href="' . route('kelas.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $deleteBtn = '<form action="' . route('kelas.destroy', $row->id) . '" method="post" class="d-inline">
+                                      ' . csrf_field() . method_field('DELETE') . '
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger" title="Delete">
+                                          <i class="bi bi-trash"></i>
+                                      </button>
+                                  </form>';
+                    return $editBtn . ' ' . $deleteBtn;
+                })
+                ->rawColumns(['action']) // Ensures that HTML code for the action buttons is rendered correctly
+                ->make(true);
+        }
 
-        return view('master.ruang-kelas.index', compact('kelas'));
+        return view('master.ruang-kelas.index');
+
+        // $search = $request->input('search');
+
+        // $kelas = RuangKelas::when($search, function ($query, $search) {
+        //     $query->where('kode_ruang_kelas', 'like', '%' . $search . '%')
+        //         ->orWhere('nama_ruang_kelas', 'like', '%' . $search . '%');
+        // })
+        // ->paginate(3);
+
+        // return view('master.ruang-kelas.index', compact('kelas'));
     }
 
     public function create()
@@ -82,7 +103,7 @@ class RuangKelasController extends Controller
 
     public function destroy(RuangKelas $kelas)
     {
-        $kelas->delete();
+        // $kelas->delete();
         return redirect()->route('kelas.index')->with('success', 'Data berhasil dihapus');
     }
 }
