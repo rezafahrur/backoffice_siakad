@@ -15,15 +15,11 @@
     {{-- end logo and back --}}
 
     <div class="card-header">
-        <h4 class="card-title">Form KTP HR</h4>
+        <h3 class="card-title">Form Biodata SDM</h3>
     </div>
     <div class="card-body">
         <form action="{{ route('hr.store') }}" method="POST">
             @csrf
-        
-            <!-- KTP Fields -->
-            <h3>KTP Information</h3>
-            
             <div class="mb-3">
                 <label for="nik" class="form-label">NIK</label>
                 <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik" name="nik"
@@ -314,7 +310,7 @@
                 var provinceCode = $(this).val();
                 if (provinceCode) {
                     $.ajax({
-                        url: '/ktp/cities/' + provinceCode,
+                        url: '/mahasiswa/cities/' + provinceCode,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
@@ -336,7 +332,7 @@
                 var cityCode = $(this).val();
                 if (cityCode) {
                     $.ajax({
-                        url: '/ktp/districts/' + cityCode,
+                        url: '/mahasiswa/districts/' + cityCode,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {
@@ -357,7 +353,7 @@
                 var districtCode = $(this).val();
                 if (districtCode) {
                     $.ajax({
-                        url: '/ktp/villages/' + districtCode,
+                        url: '/mahasiswa/villages/' + districtCode,
                         type: "GET",
                         dataType: "json",
                         success: function(data) {

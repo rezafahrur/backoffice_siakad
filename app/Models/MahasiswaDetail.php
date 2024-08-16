@@ -17,4 +17,9 @@ class MahasiswaDetail extends Model
         'hp',
         'alamat_domisili'
     ];
+
+    public function mahasiswa()
+    {
+        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id', 'id');
+    }
 }

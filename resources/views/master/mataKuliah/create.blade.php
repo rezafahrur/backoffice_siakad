@@ -55,7 +55,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="sks" class="form-label">Sks</label>
+                <label for="sks" class="form-label">SKS</label>
                 <input type="text" class="form-control @error('sks') is-invalid @enderror" id="sks" name="sks"
                     placeholder="Masukan jumlah sks" value="{{ old('sks') }}">
                 @error('sks')

@@ -22,4 +22,8 @@ class MahasiswaWaliDetail extends Model
         'pendidikan'
     ];
 
+    public function mahasiswaWali()
+    {
+        return $this->belongsTo(MahasiswaWali::class, 'mahasiswa_wali_id', 'id');
+    }
 }

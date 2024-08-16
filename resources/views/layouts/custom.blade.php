@@ -21,7 +21,6 @@
         <div class="card mt-5">
             @yield('content')
         </div>
-
     </div>
     <script src="{{ asset('assets/static/js/initTheme.js') }}"></script>
 </body>

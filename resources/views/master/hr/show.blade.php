@@ -15,7 +15,7 @@
     {{-- end logo and back --}}
 
     <div class="card-header">
-        <h4 class="card-title">Detail HR</h4>
+        <h4 class="card-title">Detail Biodata SDM</h4>
     </div>
     <div class="card-body">
         <dl class="row">
