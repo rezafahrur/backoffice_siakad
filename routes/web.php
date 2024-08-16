@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\KtpController;
 use App\Http\Controllers\MahasiswaController;
-use App\Http\Controllers\mataKuliahController;
+use App\Http\Controllers\MataKuliahController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\HrController;
+use App\Http\Controllers\KtpController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProgramStudiController;
 
 Route::get('/', function () {
@@ -17,28 +19,6 @@ Route::get('/wizard', function () {
     return view('wizard');
 });
 
-Route::get('master/prodi/index', function () {
-    return view('master/prodi/index');
-});
-
-Route::get('/master/prodi/create', function () {
-    return view('master/prodi/create');
-});
-
-Route::get('/master/prodi/edit/{id}', function () {
-    return view('/master/prodi/edit/{id}');
-});
-
-//show
-Route::get('/master/prodi/show/{id}', function () {
-    return view('/master/prodi/show/{id}');
-});
-
-//matkul
-// Route::get('master/mataKuliah/create', function () {
-//     return view('master/mataKuliah/create');
-// });
-
 //crud program studi
 Route::get('/master/prodi/index', [ProgramStudiController::class, 'index'])->name('prodi.index');
 Route::post('/master/prodi/store', [ProgramStudiController::class, 'store'])->name('prodi.store');
@@ -46,6 +26,16 @@ Route::get('/master/prodi/edit/{id}', [ProgramStudiController::class, 'edit'])->
 Route::put('/master/prodi/update/{id}', [ProgramStudiController::class, 'update'])->name('prodi.update');
 Route::delete('master/prodi/delete/{id}', [ProgramStudiController::class, 'destroy'])->name('prodi.destroy');
 Route::get('/master/prodi/show/{id}', [ProgramStudiController::class, 'show'])->name('prodi.show');
+
+// prodi
+Route::get('/prodi', [ProgramStudiController::class, 'index'])->name('prodi.index');
+Route::get('/prodi/create', [ProgramStudiController::class, 'create'])->name('prodi.create');
+Route::post('/prodi', [ProgramStudiController::class, 'store'])->name('prodi.store');
+Route::get('/prodi/{prodi}/edit', [ProgramStudiController::class, 'edit'])->name('prodi.edit');
+Route::put('/prodi/{prodi}', [ProgramStudiController::class, 'update'])->name('prodi.update');
+Route::delete('/prodi/{prodi}', [ProgramStudiController::class, 'destroy'])->name('prodi.destroy');
+Route::get('/prodi/show/{id}', [ProgramStudiController::class, 'show'])->name('prodi.show');
+
 
 // CRUD Mahasiswa
 Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
@@ -87,11 +77,30 @@ Route::put('/semester/{semester}', [SemesterController::class, 'update'])->name(
 Route::delete('/semester/{semester}', [SemesterController::class, 'destroy'])->name('semester.destroy');
 // Route::get('/semester/show/{id}', [SemesterController::class, 'show'])->name('semester.show');
 
-//CRUD Mata Kuliah
-Route::get('/mataKuliah', [mataKuliahController::class, "index"])->name('mataKuliah.index');
-Route::delete('/mataKuliah/delete/{id}', [mataKuliahController::class, 'destroy'])->name('mataKuliah.destroy');
-Route::post('/mataKuliah/store', [mataKuliahController::class, 'store'])->name('mataKuliah.store');
-Route::get('/mataKuliah/create', [mataKuliahController::class, 'create'])->name('mataKuliah.create');
-Route::get('/mataKuliah/edit/{id}', [mataKuliahController::class, 'edit'])->name('mataKuliah.edit');
-Route::put('/mataKuliah/update/{id}', [mataKuliahController::class, 'update'])->name('mataKuliah.update');
-Route::get('/mataKuliah/show/{id}', [mataKuliahController::class, 'show'])->name('mataKuliah.show');
+// Mata Kuliah
+Route::get('/mata-kuliah', [MataKuliahController::class, 'index'])->name('mata-kuliah.index');
+Route::get('/mata-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
+Route::post('/mata-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
+Route::get('/mata-kuliah/edit/{id}', [MataKuliahController::class, 'edit'])->name('mata-kuliah.edit');
+Route::put('/mata-kuliah/update/{id}', [MataKuliahController::class, 'update'])->name('mata-kuliah.update');
+Route::delete('/mata-kuliah/{mataKuliah}', [MataKuliahController::class, 'destroy'])->name('mata-kuliah.destroy');
+Route::get('/mata-kuliah/show/{id}', [MataKuliahController::class, 'show'])->name('mata-kuliah.show');
+
+//crud position
+Route::get('/master/position/index', [PositionController::class, 'index'])->name('position.index');
+Route::post('/master/position/store', [PositionController::class, 'store'])->name('position.store');
+Route::get('/master/position/edit/{id}', [PositionController::class, 'edit'])->name('position.edit');
+Route::put('/master/position/update/{id}', [PositionController::class, 'update'])->name('position.update');
+Route::delete('master/position/delete/{id}', [PositionController::class, 'destroy'])->name('position.destroy');
+Route::get('/master/position/show/{id}', [PositionController::class, 'show'])->name('position.show');
+Route::get('/master/position/create', [PositionController::class, 'create'])->name('position.create');
+
+//crud hr
+Route::get('/master/hr/index', [HrController::class, 'index'])->name('hr.index');
+Route::post('/master/hr/store', [HrController::class, 'store'])->name('hr.store');
+Route::get('/master/hr/edit/{id}', [HrController::class, 'edit'])->name('hr.edit');
+Route::put('/master/hr/update/{id}', [HrController::class, 'update'])->name('hr.update');
+Route::delete('master/hr/delete/{id}', [HrController::class, 'destroy'])->name('hr.destroy');
+Route::get('/master/hr/show/{id}', [HrController::class, 'show'])->name('hr.show');
+Route::get('/master/hr/create', [HrController::class, 'create'])->name('hr.create');
+

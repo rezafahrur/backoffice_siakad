@@ -5,90 +5,102 @@ namespace App\Http\Controllers;
 use App\Models\mataKuliah;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class mataKuliahController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        $data = mataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->get();
-        $num = 1;
-        return view('master.mataKuliah.index', ['datas' => $data, 'nums' => $num]);
+        // $data = mataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->paginate(4)->withQueryString();
+        // $num = 1;
+        // return view('master.mataKuliah.index', ['datas' => $data, 'nums' => $num]);
+        if ($request->ajax()) {
+            $matkul = mataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->get();
+
+            return DataTables::of($matkul)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $editBtn = '<a href="' . route('mata-kuliah.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $deleteBtn = '<form action="' . route('mata-kuliah.destroy', $row->id) . '" method="post" class="d-inline">
+                                      ' . csrf_field() . method_field('DELETE') . '
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger" title="Delete">
+                                          <i class="bi bi-trash"></i>
+                                      </button>
+                                  </form>';
+                    // $showBtn = '<a href="' . route('mata-kuliah.show', $row->id) . '" class="btn icon btn-info" title="Show"><i class="bi bi-eye"></i></a>';
+                    return $editBtn . ' ' . $deleteBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('master.mata-kuliah.index');
     }
 
     //create
     public function create()
     {
         $matkul = ProgramStudi::get();
-        return view('master.mataKuliah.create', ['matkuls' => $matkul]);
+        return view('master.mata-kuliah.create', ['matkuls' => $matkul]);
     }
 
     //store
     public function store(Request $request)
-    
+
     {
-        $request->validate([
+        $rulesData = [
             'program_studi_id' => 'required',
             'kode_matakuliah' => 'required',
             'nama_matakuliah' => 'required',
             'sks' => 'required',
-        ]);
+        ];
 
-        mataKuliah::create($request->all());
-        return redirect()->route('mataKuliah.index')->with('success', 'Mata Kuliah berhasil ditambahkan');
+        $validateData = $request->validate($rulesData);
+        mataKuliah::create($validateData);
+
+        return redirect()->route('mata-kuliah.index')->with('success', 'Mata Kuliah berhasil ditambahkan');
+    }
+
+    public function show($id)
+    {
+        $matkul = mataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->find($id);
+
+        return view('master.mata-kuliah.detail', compact('matkul'));
     }
 
     //edit
     public function edit($id)
     {
         $matkul = mataKuliah::findOrFail($id);
-                $programStudis = ProgramStudi::all();
-        
-                return view('master.mataKuliah.edit', [
-                    'matkul' => $matkul,
-                    'programStudis' => $programStudis
-                ]);
+        $programStudis = ProgramStudi::all();
+
+        return view('master.mata-kuliah.edit', [
+            'matkul' => $matkul,
+            'programStudis' => $programStudis
+        ]);
     }
 
     //update
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $rulesData = [
             'program_studi_id' => 'required',
             'kode_matakuliah' => 'required',
             'nama_matakuliah' => 'required',
             'sks' => 'required',
-        ]);
+        ];
 
-        mataKuliah::find($id)->update($request->all());
-        return redirect()->route('mataKuliah.index')->with('success', 'Mata Kuliah berhasil diperbarui');
+        $validateData = $request->validate($rulesData);
+        mataKuliah::find($id)->update($validateData);
+
+        return redirect()->route('mata-kuliah.index')->with('success', 'Mata Kuliah berhasil diperbarui');
     }
 
 
-    public function destroy($id)
+    public function destroy(mataKuliah $matkul)
     {
-        $data = mataKuliah::find($id);
-
-        if ($data) {
-            $data->delete();
-
-            return redirect()->route('mataKuliah.index')->with(
-                'success',
-                'Data MataKuliah Berhasil Dihapus'
-            );
-        } else {
-            return redirect()->route('mataKuliah.index')->with(
-                'error',
-                'Data MataKuliah Tidak Ditemukan'
-            );
-        }
+        $matkul->delete();
+        return redirect()->route('mata-kuliah.index')->with('success', 'Mata Kuliah berhasil dihapus');
     }
-
-        //show
-        public function show($id)
-        {
-            $matkul = mataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->find($id);
-
-            return view('master.mataKuliah.detail', compact('matkul'));
-        }
 }
