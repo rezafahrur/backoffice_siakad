@@ -15,6 +15,8 @@ class Mahasiswa extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'ktp_id',
+        'nisn',
+        'jurusan_id',
         'program_studi_id',
         'nim',
         'nama',

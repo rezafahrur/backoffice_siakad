@@ -25,8 +25,8 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        {{-- NIM --}}
-                        <div class="col-md-6 mb-3">
+                        {{-- NIM Disabled Karena Auto Generate --}}
+                        {{-- <div class="col-md-6 mb-3">
                             <label for="nim" class="form-label">NIM</label>
                             <input type="text" class="form-control @error('nim') is-invalid @enderror" id="nim"
                                 name="nim" placeholder="NIM" value="{{ old('nim') }}" maxlength="16"
@@ -36,7 +36,7 @@
                                     {{ $message }}
                                 </div>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         {{-- Nama --}}
                         <div class="col-md-6 mb-3">
@@ -45,6 +45,41 @@
                                 name="nama" placeholder="NAMA" value="{{ old('nama') ? strtoupper(old('nama')) : '' }}"
                                 oninput="this.value = this.value.toUpperCase()">
                             @error('nama')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        {{-- NISN --}}
+                        <div class="col-md-6 mb-3">
+                            <label for="nisn" class="form-label">NISN</label>
+                            <input type="text" class="form-control @error('nisn') is-invalid @enderror" id="nisn"
+                                name="nisn" placeholder="NISN" value="{{ old('nisn') }}" maxlength="10"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)">
+                            @error('nisn')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        {{-- Jurusan --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="jurusan" class="form-label">Jurusan</label>
+                            <select class="form-select @error('jurusan') is-invalid @enderror" id="jurusan" name="jurusan">
+                                <option value="" disabled selected>Pilih Jurusan</option>
+                                {{-- @foreach ($prodi as $ps)
+                                    <option value="{{ $ps->id }}"
+                                        {{ old('jurusan') == $ps->id ? 'selected' : '' }}>
+                                        {{ $ps->nama_program_studi }}
+                                    </option>
+                                @endforeach --}}
+
+                                <option value="1" {{ old('jurusan') == '1' ? 'selected' : '' }}>DEFAULT
+                                </option>
+                            </select>
+                            @error('program_studi')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
@@ -105,7 +140,7 @@
                         <input type="hidden" name="semester_berjalan" id="semester_berjalan" value="1">
 
                         {{-- No Hp --}}
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="no_hp" class="form-label">No HP</label>
                             <input type="text" class="form-control @error('no_hp') is-invalid @enderror" id="no_hp"
                                 name="no_hp" placeholder="No HP" value="{{ old('no_hp') }}" maxlength="13"
@@ -118,7 +153,7 @@
                         </div>
 
                         {{-- Alamat Domisili --}}
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="alamat_domisili" class="form-label">Alamat Domisili</label>
                             <textarea class="form-control @error('alamat_domisili') is-invalid @enderror" id="alamat_domisili"
                                 name="alamat_domisili" placeholder="Alamat Domisili" oninput="this.value = this.value.toUpperCase()">{{ old('alamat_domisili') }}</textarea>
@@ -708,21 +743,33 @@
                         {{-- Golongan Darah --}}
                         <div class="col-md-4 mb-3">
                             <label for="wali_golongan_darah" class="form-label">Golongan Darah</label>
-                            <select class="form-select @error('wali_golongan_darah') is-invalid @enderror" id="wali_golongan_darah"
-                                name="wali_golongan_darah">
+                            <select class="form-select @error('wali_golongan_darah') is-invalid @enderror"
+                                id="wali_golongan_darah" name="wali_golongan_darah">
                                 <option value="" disabled selected>Pilih Golongan Darah</option>
-                                <option value="A" {{ old('wali_golongan_darah') == 'A' ? 'selected' : '' }}>A</option>
-                                <option value="A+" {{ old('wali_golongan_darah') == 'A+' ? 'selected' : '' }}>A+</option>
-                                <option value="A-" {{ old('wali_golongan_darah') == 'A-' ? 'selected' : '' }}>A-</option>
-                                <option value="B" {{ old('wali_golongan_darah') == 'B' ? 'selected' : '' }}>B</option>
-                                <option value="B+" {{ old('wali_golongan_darah') == 'B+' ? 'selected' : '' }}>B+</option>
-                                <option value="B-" {{ old('wali_golongan_darah') == 'B-' ? 'selected' : '' }}>B-</option>
-                                <option value="AB" {{ old('wali_golongan_darah') == 'AB' ? 'selected' : '' }}>AB</option>
-                                <option value="AB+" {{ old('wali_golongan_darah') == 'AB+' ? 'selected' : '' }}>AB+</option>
-                                <option value="AB-" {{ old('wali_golongan_darah') == 'AB-' ? 'selected' : '' }}>AB-</option>
-                                <option value="O" {{ old('wali_golongan_darah') == 'O' ? 'selected' : '' }}>O</option>
-                                <option value="O+" {{ old('wali_golongan_darah') == 'O+' ? 'selected' : '' }}>O+</option>
-                                <option value="O-" {{ old('wali_golongan_darah') == 'O-' ? 'selected' : '' }}>O-</option>
+                                <option value="A" {{ old('wali_golongan_darah') == 'A' ? 'selected' : '' }}>A
+                                </option>
+                                <option value="A+" {{ old('wali_golongan_darah') == 'A+' ? 'selected' : '' }}>A+
+                                </option>
+                                <option value="A-" {{ old('wali_golongan_darah') == 'A-' ? 'selected' : '' }}>A-
+                                </option>
+                                <option value="B" {{ old('wali_golongan_darah') == 'B' ? 'selected' : '' }}>B
+                                </option>
+                                <option value="B+" {{ old('wali_golongan_darah') == 'B+' ? 'selected' : '' }}>B+
+                                </option>
+                                <option value="B-" {{ old('wali_golongan_darah') == 'B-' ? 'selected' : '' }}>B-
+                                </option>
+                                <option value="AB" {{ old('wali_golongan_darah') == 'AB' ? 'selected' : '' }}>AB
+                                </option>
+                                <option value="AB+" {{ old('wali_golongan_darah') == 'AB+' ? 'selected' : '' }}>AB+
+                                </option>
+                                <option value="AB-" {{ old('wali_golongan_darah') == 'AB-' ? 'selected' : '' }}>AB-
+                                </option>
+                                <option value="O" {{ old('wali_golongan_darah') == 'O' ? 'selected' : '' }}>O
+                                </option>
+                                <option value="O+" {{ old('wali_golongan_darah') == 'O+' ? 'selected' : '' }}>O+
+                                </option>
+                                <option value="O-" {{ old('wali_golongan_darah') == 'O-' ? 'selected' : '' }}>O-
+                                </option>
                             </select>
                             @error('wali_golongan_darah')
                                 <div class="invalid-feedback">
@@ -734,7 +781,8 @@
                         {{-- Kewarganegaraan --}}
                         <div class="col-md-4 mb-3">
                             <label for="wali_kewarganegaraan" class="form-label">Kewarganegaraan</label>
-                            <input type="text" class="form-control @error('wali_kewarganegaraan') is-invalid @enderror"
+                            <input type="text"
+                                class="form-control @error('wali_kewarganegaraan') is-invalid @enderror"
                                 id="wali_kewarganegaraan" name="wali_kewarganegaraan" placeholder="Kewarganegaraan"
                                 value="{{ old('wali_kewarganegaraan') ? strtoupper(old('wali_kewarganegaraan')) : '' }}"
                                 oninput="this.value = this.value.toUpperCase()">
@@ -892,5 +940,15 @@
                 }
             });
         });
+    </script>
+    <script>
+        @if (session('error'))
+            Swal.fire({
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        @endif
     </script>
 @endsection

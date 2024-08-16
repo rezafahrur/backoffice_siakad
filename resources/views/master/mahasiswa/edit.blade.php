@@ -6,7 +6,7 @@
     {{-- start logo and back --}}
     <nav class="navbar navbar-light">
         <div class="container d-block">
-            <a href=""><i class="bi bi-chevron-left"></i></a>
+            <a href="{{ route('mahasiswa.index')}}"><i class="bi bi-chevron-left"></i></a>
             <a class="navbar-brand ms-4" href="">
                 <img src="{{ asset('assets/img/logo-kos.svg') }}">
             </a>
@@ -31,11 +31,11 @@
                 <div class="card-body">
                     <div class="row">
                         {{-- NIM --}}
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="nim" class="form-label">NIM</label>
                             <input type="text" class="form-control @error('nim') is-invalid @enderror" id="nim"
                                 name="nim" placeholder="NIM" value="{{ old('nim') ?? $mahasiswa->nim }}" maxlength="16"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 16)">
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 16)" disabled>
                             @error('nim')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -44,12 +44,41 @@
                         </div>
 
                         {{-- Nama --}}
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
                             <label for="nama" class="form-label">Nama</label>
                             <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama"
                                 name="nama" placeholder="NAMA" value="{{ old('nama') ?? $mahasiswa->nama }}"
                                 oninput="this.value = this.value.toUpperCase()">
                             @error('nama')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        {{-- NISN --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="nisn" class="form-label">NISN</label>
+                            <input type="text" class="form-control @error('nisn') is-invalid @enderror" id="nisn"
+                                name="nisn" placeholder="NISN" value="{{ old('nisn') ?? $mahasiswa->nisn }}" maxlength="10"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)">
+                            @error('nisn')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        {{-- Jurusan --}}
+                        <div class="col-md-4 mb-3">
+                            <label for="jurusan" class="form-label">Jurusan</label>
+                            <select class="form-select @error('jurusan') is-invalid @enderror" id="jurusan" name="jurusan"
+                                disabled>
+                                <option value="">Pilih Jurusan</option>
+                                <option value="1" {{ old('jurusan') == '1' ? 'selected' : '' }} selected>DEFAULT
+                                </option>
+                            </select>
+                            @error('program_studi')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>

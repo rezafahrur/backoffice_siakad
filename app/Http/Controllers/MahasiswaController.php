@@ -10,6 +10,7 @@ use App\Models\MahasiswaWali;
 use App\Models\MahasiswaWaliDetail;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Laravolt\Indonesia\Models\Province;
 use Laravolt\Indonesia\Models\City;
 use Laravolt\Indonesia\Models\District;
@@ -64,107 +65,139 @@ class MahasiswaController extends Controller
 
         dd($data);
 
-        // Handle KTP Mahasiswa
-        $ktpMahasiswa = Ktp::updateOrCreate(
-            ['nik' => $data['nik']],
-            [
-                'nama' => $data['nama'],
-                'alamat_jalan' => $data['alamat_jalan'],
-                'alamat_rt' => $data['alamat_rt'],
-                'alamat_rw' => $data['alamat_rw'],
-                'alamat_prov_code' => $data['alamat_prov_code'],
-                'alamat_kotakab_code' => $data['alamat_kotakab_code'],
-                'alamat_kec_code' => $data['alamat_kec_code'],
-                'alamat_kel_code' => $data['alamat_kel_code'],
-                'lahir_tempat' => $data['lahir_tempat'],
-                'lahir_tgl' => $data['lahir_tgl'],
-                'jenis_kelamin' => $data['jenis_kelamin'],
-                'agama' => $data['agama'],
-                'golongan_darah' => $data['golongan_darah'],
-                'kewarganegaraan' => $data['kewarganegaraan'],
-            ]
-        );
+        // Validate nim apakah create atau update ( jika ada id berarti update )
+        if (!$request->has('id')) {
+            // Extract values and prepare NIM
+            $year = substr($data['registrasi_tanggal'], 2, 2);
+            $jenjang = '04';
+            $jurusan = '00';
 
-        // Handle Mahasiswa
-        $mahasiswa = Mahasiswa::updateOrCreate(
-            ['nim' => $data['nim']],
-            [
-                'nama' => $data['nama'],
-                'program_studi_id' => $data['program_studi'],
-                'registrasi_tanggal' => $data['registrasi_tanggal'],
-                'status' => $data['status'],
-                'semester_berjalan' => $data['semester_berjalan'],
-                'ktp_id' => $ktpMahasiswa->id,
-            ]
-        );
+            $programStudi = ProgramStudi::find($data['program_studi']);
+            $program = str_pad($programStudi->kode_program_studi, 2, '0', STR_PAD_LEFT);
 
-        // Handle MahasiswaDetail
-        $existingMahasiswaDetail = MahasiswaDetail::where('mahasiswa_id', $mahasiswa->id)->first();
-        $newMahasiswaDetail = [
-            'hp' => $data['no_hp'],
-            'alamat_domisili' => $data['alamat_domisili'],
-        ];
+            $lastStudent = Mahasiswa::where('nim', 'like', $year . $jenjang . $jurusan . $program . '%')
+                ->orderBy('nim', 'desc')
+                ->first();
 
-        if (!$existingMahasiswaDetail || $existingMahasiswaDetail->hp != $newMahasiswaDetail['hp'] || $existingMahasiswaDetail->alamat_domisili != $newMahasiswaDetail['alamat_domisili']) {
-            MahasiswaDetail::create(
-                ['mahasiswa_wali_id' => $mahasiswa->id] + $newMahasiswaDetail
-            );
+            if ($lastStudent) {
+                $lastSequence = (int) substr($lastStudent->nim, -4);
+                $newSequence = str_pad($lastSequence + 1, 4, '0', STR_PAD_LEFT);
+            } else {
+                $newSequence = '0001';
+            }
+
+            $data['nim'] = $year . $jenjang . $jurusan . $program . $newSequence;
         }
 
-        // Handle KTP Wali
-        $ktpWali = Ktp::updateOrCreate(
-            ['nik' => $data['wali_nik']],
-            [
-                'nama' => $data['wali_nama'],
-                'alamat_jalan' => $data['wali_alamat_jalan'],
-                'alamat_rt' => $data['wali_alamat_rt'],
-                'alamat_rw' => $data['wali_alamat_rw'],
-                'alamat_prov_code' => $data['wali_alamat_prov_code'],
-                'alamat_kotakab_code' => $data['wali_alamat_kotakab_code'],
-                'alamat_kec_code' => $data['wali_alamat_kec_code'],
-                'alamat_kel_code' => $data['wali_alamat_kel_code'],
-                'lahir_tempat' => $data['wali_lahir_tempat'],
-                'lahir_tgl' => $data['wali_lahir_tgl'],
-                'jenis_kelamin' => $data['wali_jenis_kelamin'],
-                'agama' => $data['wali_agama'],
-                'golongan_darah' => $data['wali_golongan_darah'],
-                'kewarganegaraan' => $data['wali_kewarganegaraan'],
-            ]
-        );
+        try {
+            DB::transaction(function () use ($data) {
+                // Handle KTP Mahasiswa
+                $ktpMahasiswa = Ktp::updateOrCreate(
+                    ['nik' => $data['nik']],
+                    [
+                        'nama' => $data['nama'],
+                        'alamat_jalan' => $data['alamat_jalan'],
+                        'alamat_rt' => $data['alamat_rt'],
+                        'alamat_rw' => $data['alamat_rw'],
+                        'alamat_prov_code' => $data['alamat_prov_code'],
+                        'alamat_kotakab_code' => $data['alamat_kotakab_code'],
+                        'alamat_kec_code' => $data['alamat_kec_code'],
+                        'alamat_kel_code' => $data['alamat_kel_code'],
+                        'lahir_tempat' => $data['lahir_tempat'],
+                        'lahir_tgl' => $data['lahir_tgl'],
+                        'jenis_kelamin' => $data['jenis_kelamin'],
+                        'agama' => $data['agama'],
+                        'golongan_darah' => $data['golongan_darah'],
+                        'kewarganegaraan' => $data['kewarganegaraan'],
+                    ]
+                );
 
-        // Handle MahasiswaWali
-        $mahasiswaWali = MahasiswaWali::updateOrCreate(
-            ['mahasiswa_id' => $mahasiswa->id],
-            [
-                'ktp_id' => $ktpWali->id,
-                'nama' => $data['wali_nama'],
-                'status_kewalian' => $data['status_kewalian'],
-            ]
-        );
+                // Handle Mahasiswa
+                $mahasiswa = Mahasiswa::updateOrCreate(
+                    ['nim' => $data['nim']],
+                    [
+                        'nama' => $data['nama'],
+                        'nisn' => $data['nisn'],
+                        'jurusan_id' => $data['jurusan'],
+                        'program_studi_id' => $data['program_studi'],
+                        'registrasi_tanggal' => $data['registrasi_tanggal'],
+                        'status' => $data['status'],
+                        'semester_berjalan' => $data['semester_berjalan'],
+                        'ktp_id' => $ktpMahasiswa->id,
+                    ]
+                );
 
-        // Handle MahasiswaWaliDetail
-        $existingMahasiswaWaliDetail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali->id)->first();
-        $newMahasiswaWaliDetail = [
-            'hp' => $data['wali_no_hp'],
-            'alamat_domisili' => $data['wali_alamat_domisili'],
-            'pekerjaan' => $data['wali_pekerjaan'],
-            'penghasilan' => $data['wali_penghasilan'],
-            'pendidikan' => $data['pendidikan_terakhir'],
-        ];
+                // Handle MahasiswaDetail
+                $existingMahasiswaDetail = MahasiswaDetail::where('mahasiswa_id', $mahasiswa->id)->first();
+                $newMahasiswaDetail = [
+                    'hp' => $data['no_hp'],
+                    'alamat_domisili' => $data['alamat_domisili'],
+                ];
 
-        if (!$existingMahasiswaWaliDetail || $existingMahasiswaWaliDetail->hp != $newMahasiswaWaliDetail['hp'] || $existingMahasiswaWaliDetail->alamat_domisili != $newMahasiswaWaliDetail['alamat_domisili']) {
-            MahasiswaWaliDetail::create(
-                ['mahasiswa_wali_id' => $mahasiswaWali->id] + $newMahasiswaWaliDetail
-            );
+                if (!$existingMahasiswaDetail || $existingMahasiswaDetail->hp != $newMahasiswaDetail['hp'] || $existingMahasiswaDetail->alamat_domisili != $newMahasiswaDetail['alamat_domisili']) {
+                    MahasiswaDetail::create(
+                        ['mahasiswa_id' => $mahasiswa->id] + $newMahasiswaDetail
+                    );
+                }
+
+                // Handle KTP Wali
+                $ktpWali = Ktp::updateOrCreate(
+                    ['nik' => $data['wali_nik']],
+                    [
+                        'nama' => $data['wali_nama'],
+                        'alamat_jalan' => $data['wali_alamat_jalan'],
+                        'alamat_rt' => $data['wali_alamat_rt'],
+                        'alamat_rw' => $data['wali_alamat_rw'],
+                        'alamat_prov_code' => $data['wali_alamat_prov_code'],
+                        'alamat_kotakab_code' => $data['wali_alamat_kotakab_code'],
+                        'alamat_kec_code' => $data['wali_alamat_kec_code'],
+                        'alamat_kel_code' => $data['wali_alamat_kel_code'],
+                        'lahir_tempat' => $data['wali_lahir_tempat'],
+                        'lahir_tgl' => $data['wali_lahir_tgl'],
+                        'jenis_kelamin' => $data['wali_jenis_kelamin'],
+                        'agama' => $data['wali_agama'],
+                        'golongan_darah' => $data['wali_golongan_darah'],
+                        'kewarganegaraan' => $data['wali_kewarganegaraan'],
+                    ]
+                );
+
+                // Handle MahasiswaWali
+                $mahasiswaWali = MahasiswaWali::updateOrCreate(
+                    ['mahasiswa_id' => $mahasiswa->id],
+                    [
+                        'ktp_id' => $ktpWali->id,
+                        'nama' => $data['wali_nama'],
+                        'status_kewalian' => $data['status_kewalian'],
+                    ]
+                );
+
+                // Handle MahasiswaWaliDetail
+                $existingMahasiswaWaliDetail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali->id)->first();
+                $newMahasiswaWaliDetail = [
+                    'hp' => $data['wali_no_hp'],
+                    'alamat_domisili' => $data['wali_alamat_domisili'],
+                    'pekerjaan' => $data['wali_pekerjaan'],
+                    'penghasilan' => $data['wali_penghasilan'],
+                    'pendidikan' => $data['pendidikan_terakhir'],
+                ];
+
+                if (!$existingMahasiswaWaliDetail || $existingMahasiswaWaliDetail->hp != $newMahasiswaWaliDetail['hp'] || $existingMahasiswaWaliDetail->alamat_domisili != $newMahasiswaWaliDetail['alamat_domisili']) {
+                    MahasiswaWaliDetail::create(
+                        ['mahasiswa_wali_id' => $mahasiswaWali->id] + $newMahasiswaWaliDetail
+                    );
+                }
+            });
+
+            // Redirect with success message
+            $message = $request->has('id') ? 'Data berhasil diperbarui' : 'Data berhasil ditambahkan';
+            return redirect()->route('mahasiswa.index')->with('success', $message);
+        } catch (\Exception $e) {
+            // Handle the exception and redirect back with the error message
+            $message = isset($request) && $request->has('id') ? 'Data gagal diperbarui' : 'Data gagal ditambahkan';
+            dd($message . $e->getMessage());
+            return redirect()->back()->with('error', $message . $e->getMessage());
         }
-
-        // Set success message based on the request type
-        $message = $request->has('id') ? 'Data berhasil diperbarui' : 'Data berhasil ditambahkan';
-
-        // Redirect with success message
-        return redirect()->route('mahasiswa.index')->with('success', $message);
     }
-
 
     public function show(Mahasiswa $mahasiswa)
     {
@@ -202,7 +235,7 @@ class MahasiswaController extends Controller
 
     public function destroy(Mahasiswa $mahasiswa)
     {
-        
+
         // Simpan referensi ke KTP wali sebelum menghapus MahasiswaWali
         $ktpWali = $mahasiswa->mahasiswaWali ? $mahasiswa->mahasiswaWali->ktp : null;
 

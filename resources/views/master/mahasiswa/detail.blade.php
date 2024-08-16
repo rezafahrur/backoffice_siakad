@@ -29,17 +29,25 @@
                     <dt class="col-sm-4">Nama</dt>
                     <dd class="col-sm-8">{{ $mahasiswa->nama }}</dd>
 
-                    {{-- Program Studi --}}
-                    <dt class="col-sm-4">Program Studi</dt>
-                    <dd class="col-sm-8">{{ $mahasiswa->programStudi->nama_program_studi }}</dd>
+                    {{-- NISN --}}
+                    <dt class="col-sm-4">NISN</dt>
+                    <dd class="col-sm-8">{{ $mahasiswa->nisn }}</dd>
+
+                    {{-- Registrasi Tanggal --}}
+                    <dt class="col-sm-4">Registrasi Tanggal</dt>
+                    <dd class="col-sm-8">{{ \Carbon\Carbon::parse($mahasiswa->registrasi_tgl)->format('d-m-Y') }}</dd>
                 </dl>
             </div>
             <div class="col-md-6">
 
                 <dl class="row">
-                    {{-- Registrasi Tanggal --}}
-                    <dt class="col-sm-4">Registrasi Tanggal</dt>
-                    <dd class="col-sm-8">{{ \Carbon\Carbon::parse($mahasiswa->registrasi_tgl)->format('d-m-Y') }}</dd>
+                    {{-- Jurusan --}}
+                    <dt class="col-sm-4">Jurusan</dt>
+                    <dd class="col-sm-8">{{ $mahasiswa->jurusan_id }}</dd>
+
+                    {{-- Program Studi --}}
+                    <dt class="col-sm-4">Program Studi</dt>
+                    <dd class="col-sm-8">{{ $mahasiswa->programStudi->nama_program_studi }}</dd>
 
                     {{-- Semester Berjalan --}}
                     <dt class="col-sm-4">Semester Berjalan</dt>
