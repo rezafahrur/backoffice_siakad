@@ -5,22 +5,35 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SemesterRequest;
 use App\Models\Semester;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class SemesterController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $search = request()->input('search');
+        if ($request->ajax()) {
+            $semester = Semester::query();
 
-        $semester = Semester::when($search, function ($query, $search) {
-            $query->where('nama_semester', 'like', '%' . $search . '%');
-        })
-        ->paginate(10);
+            return DataTables::of($semester)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                    $editBtn = '<a href="' . route('semester.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $deleteBtn = '<form action="' . route('semester.destroy', $row->id) . '" method="post" class="d-inline">
+                                      ' . csrf_field() . method_field('DELETE') . '
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger" title="Delete">
+                                          <i class="bi bi-trash"></i>
+                                      </button>
+                                  </form>';
+                    return $editBtn . ' ' . $deleteBtn;
+                })
+                ->rawColumns(['action']) // Ensures that HTML code for the action buttons is rendered correctly
+                ->make(true);
+        }
 
-        return view('master.semester.index', compact('semester'));
+        return view('master.semester.index');
     }
 
     /**

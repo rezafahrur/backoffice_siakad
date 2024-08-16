@@ -36,21 +36,19 @@
                                 Table Data Semester
                             </h4>
                         </div>
-                        <div class="card-content">
-                            <div class="card-body">
-                                <p>
-                                    "Welcome to our web page showcasing the user data of our boarding house, where comfort
-                                    and convenience come together in one place."
-                                </p>
-                                <a href="{{ route('semester.create') }}" class="btn icon icon-left btn-primary"><i
-                                        data-feather="user-plus"></i>
-                                    Add Data</a>
-                            </div>
+                        <div class="card-body">
+                            <p>
+                                "Welcome to our web page showcasing the user data of our boarding house, where comfort
+                                and convenience come together in one place."
+                            </p>
+                            <a href="{{ route('semester.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
+                                    data-feather="user-plus"></i>
+                                Add Data</a>
 
                             <!-- table head dark -->
                             <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <thead class="thead-dark">
+                                <table class="table" id="semesterTable">
+                                    <thead>
                                         <tr>
                                             <th>No.</th>
                                             <th>Nama Semester</th>
@@ -58,48 +56,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($semester as $index => $s)
-                                            <tr>
-                                                <td class="text-bold-500">
-                                                    {{ $index + $semester->firstItem() }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    {{ $s->nama_semester }}
-                                                </td>
-                                                <td>
-                                                    {{-- <a href="{{ route('kelas.edit', $kelas) }}" class="btn icon btn-primary"
-                                                        title="Detail"><i class="bi bi-eye"></i></a> --}}
-                                                    <a href="{{ route('semester.edit', $s->id) }}"
-                                                        class="btn icon btn-warning" title="Edit"><i
-                                                            class="bi bi-pencil-square"></i></a>
-                                                    <form action="{{ route('semester.destroy', $s->id) }}" method="post"
-                                                        class="d-inline">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button onclick="return confirm('Konfirmasi hapus data ?')"
-                                                            class="btn icon btn-danger" title="Delete"><i
-                                                                class="bi bi-trash"></i></button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="6" class="text-center">No Data Found</td>
-                                            </tr>
-                                        @endforelse
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="m-3 pagination pagination-primary">
-                                {{ $semester->links() }}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </section>
         <!-- Table head options end -->
     </div>
+@endsection
+
+@section('script')
     <script>
         @if (session('success'))
             Swal.fire({
@@ -110,4 +78,43 @@
             });
         @endif
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#semesterTable').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                ajax: '{{ route('semester.index') }}',
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'nama_semester',
+                        name: 'nama_semester',
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false,
+                    },
+                ],
+                paginate: {
+                    searchPlaceholder: 'Search...',
+                    sSearch: '',
+                    paginate: {
+                        previous: '<i class="fas fa-angle-left">',
+                        next: '<i class="fas fa-angle-right">'
+                    }
+                }
+
+            });
+        });
+    </script>
+
+
 @endsection
