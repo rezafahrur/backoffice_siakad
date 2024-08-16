@@ -56,6 +56,7 @@
                                             <th>NIP</th>
                                             <th>Nama SDM</th>
                                             <th>Posisi</th>
+                                            <th>Photo Profile</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -72,7 +73,13 @@
                                                     {{ $hr_dosen->ktp->nama }}
                                                 </td>
                                                 <td class="text-bold-500">
-                                                    {{ $hr_dosen->position->posisi }}
+                                                    {{ $hr_dosen->position->posisi ?? 'No Position Assigned' }}
+                                                </td>
+                                        
+                                                <td class="text-bold-500">
+                                                    <img src="{{ asset('storage/' . $hr_dosen->photo_profile) }}" alt="Photo Profile" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+
+
                                                 </td>
                                                 <td>
                                                     <a href="{{ route('hr.show', $hr_dosen->id) }}"

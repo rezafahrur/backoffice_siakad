@@ -14,86 +14,108 @@
     </nav>
     {{-- end logo and back --}}
 
-    <div class="card-header">
-        <h4 class="card-title">Detail Biodata SDM</h4>
-    </div>
-    <div class="card-body">
-        <dl class="row">
-            {{-- NIK --}}
-            <dt class="col-sm-3">NIK</dt>
-            <dd class="col-sm-9">{{ $hr->ktp->nik }}</dd>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0 text-center">Detail Biodata SDM</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {{-- Photo Profile --}}
+                    <div class="col-md-4 d-flex justify-content-center">
+                        <img src="{{ asset('storage/' . $hr->photo_profile) }}" alt="Photo Profile" class="img-thumbnail mt-2" width="250px" style="height: auto;">
 
-            {{-- Nama Lengkap --}}
-            <dt class="col-sm-3">Nama Lengkap</dt>
-            <dd class="col-sm-9">{{ $hr->ktp->nama }}</dd>
+                    </div>
 
-            {{-- Alamat Jalan --}}
-            <dt class="col-sm-3">Alamat Jalan</dt>
-            <dd class="col-sm-9">{{ $hr->ktp->alamat_jalan }}</dd>
+                    {{-- Biodata --}}
+                    <div class="col-md-8">
+                        <div class="row">
+                            {{-- Right Column --}}
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    {{-- NIK --}}
+                                    <dt class="col-sm-6"><strong>NIK</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->nik }}</dd>
 
-            {{-- alamat_rt --}}
-            <dt class="col-sm-3">RT</dt>
-            <dd class="col-sm-9">{{ $hr->ktp->alamat_rt }}</dd>
+                                    {{-- nip --}}
+                                    <dt class="col-sm-6"><strong>NIP</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->nip }}</dd>
 
-            {{-- alamat_rw --}}
-            <dt class="col-sm-3">RW</dt>
-            <dd class="col-sm-9">{{ $hr->ktp->alamat_rw }}</dd>
+                                    {{-- Posisi --}}
+                                    <dt class="col-sm-6"><strong>Posisi</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->position->posisi }}</dd>   
 
-            {{-- Provinsi --}}
-            <dt class="col-sm-3">Provinsi</dt>
-            <dd class="col-sm-9">{{ $province->name }}</dd>
-            
-            {{-- Kota/Kabupaten --}}
-            <dt class="col-sm-3">Kota/Kabupaten</dt>
-            <dd class="col-sm-9">{{ $city->name }}</dd>
+                                    {{-- hp --}}
+                                    <dt class="col-sm-6"><strong>No. HP</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->hrDetail->hp }}</dd>
 
-            {{-- Kecamatan --}}
-            <dt class="col-sm-3">Kecamatan</dt>
-            <dd class="col-sm-9">{{ $district->name }}</dd>
+                                    {{-- Email --}}
 
-            {{-- Kelurahan/Desa --}}
-            <dt class="col-sm-3">Kelurahan/Desa</dt>
-            <dd class="col-sm-9">{{ $village->name }}</dd>
+                                    {{-- Nama Lengkap --}}
+                                    <dt class="col-sm-6"><strong>Nama Lengkap</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->gelar_depan }}  {{ ucwords(strtolower($hr->ktp->nama)) }} {{ $hr->gelar_belakang }} </dd>
 
-            {{-- Tempat Lahir --}}
-            <dt class="col-sm-3">Tempat Lahir</dt>
-            <dd class="col-sm-9">{{ $hr->ktp->lahir_tempat }}</dd>
+                                    {{-- Alamat Jalan --}}
+                                    <dt class="col-sm-6"><strong>Alamat Jalan</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->alamat_jalan }}</dd>
 
-            
+                                    {{-- alamat_rt --}}
+                                    <dt class="col-sm-6"><strong>RT</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->alamat_rt }}</dd>
 
-            {{-- Jenis Kelamin --}}
-            <dt class="col-sm-3">Jenis Kelamin</dt>
-            <dd class="col-sm-9">{{ $hr->ktp->jenis_kelamin }}</dd>
+                                    {{-- alamat_rw --}}
+                                    <dt class="col-sm-6"><strong>RW</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->alamat_rw }}</dd>
 
-            {{-- Agama --}}     
-            <dt class="col-sm-3">Agama</dt>
-            <dd class="col-sm-9">{{ $hr->ktp->agama }}</dd>
+                                    
 
-            {{-- Golongan Darah --}}
-            <dt class="col-sm-3">Golongan Darah</dt>
-            <dd class="col-sm-9">{{ $hr->ktp->golongan_darah }}</dd>
+                                    
+                                </dl>
+                            </div>
 
-            {{-- Kewarganegaraan --}}
-            <dt class="col-sm-3">Kewarganegaraan</dt>
-            <dd class="col-sm-9">{{ $hr->ktp->kewarganegaraan }}</dd>
+                            {{-- Left Column --}}
+                            <div class="col-md-6">
+                                <dl class="row">
 
-            {{-- nip --}}
-            <dt class="col-sm-3">NIP</dt>
-            <dd class="col-sm-9">{{ $hr->nip }}</dd>
+                                    {{-- Provinsi --}}
+                                    <dt class="col-sm-6"><strong>Provinsi</strong></dt>
+                                    <dd class="col-sm-6">{{ $province->name }}</dd>
+                                    
+                                    {{-- Kota/Kabupaten --}}
+                                    <dt class="col-sm-6"><strong>Kota/Kabupaten</strong></dt>
+                                    <dd class="col-sm-6">{{ $city->name }}</dd>
 
-            {{-- gelar depan --}}
-            <dt class="col-sm-3">Gelar Depan</dt>
-            <dd class="col-sm-9">{{ $hr->gelar_depan }}</dd>
+                                    {{-- Kecamatan --}}
+                                    <dt class="col-sm-6"><strong>Kecamatan</strong></dt>
+                                    <dd class="col-sm-6">{{ $district->name }}</dd>
+                                    
+                                    {{-- Tempat Lahir --}}
+                                    <dt class="col-sm-6"><strong>Tempat Lahir</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->lahir_tempat }}</dd>
 
-            {{-- gelar belakang --}}
-            <dt class="col-sm-3">Gelar Belakang</dt>
-            <dd class="col-sm-9">{{ $hr->gelar_belakang }}</dd>
+                                    {{-- Jenis Kelamin --}}
+                                    <dt class="col-sm-6"><strong>Jenis Kelamin</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->jenis_kelamin }}</dd>
 
-            {{-- jabatan --}}
-        
+                                    {{-- Agama --}}
+                                    <dt class="col-sm-6"><strong>Agama</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->agama }}</dd>
 
+                                    {{-- Golongan Darah --}}
+                                    <dt class="col-sm-6"><strong>Golongan Darah</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->golongan_darah }}</dd>
 
+                                    {{-- Kewarganegaraan --}}
+                                    <dt class="col-sm-6"><strong>Kewarganegaraan</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->kewarganegaraan }}</dd>
 
-        </dl>
+                                
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

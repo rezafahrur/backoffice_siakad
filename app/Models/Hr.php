@@ -21,6 +21,7 @@ class Hr extends Model
         'gelar_depan',
         'nama',
         'gelar_belakang',
+        'photo_profile'
     ];
 
     /**
@@ -41,5 +42,10 @@ class Hr extends Model
     public function position()
     {
         return $this->belongsTo(Position::class, 'position_id');
+    }
+
+    public function hrDetail()
+    {
+        return $this->hasOne(HrDetail::class, 'master_hr_id');
     }
 }
