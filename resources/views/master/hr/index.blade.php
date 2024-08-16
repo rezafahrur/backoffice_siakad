@@ -75,29 +75,20 @@
                                                 <td class="text-bold-500">
                                                     {{ $hr_dosen->position->posisi ?? 'No Position Assigned' }}
                                                 </td>
-                                        
-                                                <td class="text-bold-500">
-                                                    <img src="{{ asset('storage/' . $hr_dosen->photo_profile) }}" alt="Photo Profile" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-
-
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('hr.show', $hr_dosen->id) }}"
-                                                        class="btn icon btn-primary" title="Detail"><i
-                                                            class="bi bi-eye"></i></a>
-                                                    <a href="{{ url('master/hr/edit/'.$hr_dosen->id) }}"
-                                                        class="btn icon btn-warning" title="Edit"><i
-                                                            class="bi bi-pencil-square"></i></a>
-                                                    <form action="{{ route('hr.destroy', $hr_dosen->id) }}" method="post"
-                                                        class="d-inline">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button onclick="return confirm('Konfirmasi hapus data ?')"
-                                                            class="btn icon btn-danger" title="Delete"><i
-                                                                class="bi bi-trash"></i></button>
-                                                    </form>
-                                                </td>
-                                            </tr>
+                                            <td class="text-bold-500">
+                                                <img src="{{ asset('storage/' . $hr_dosen->photo_profile) }}" alt="Photo Profile" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('hr.show', $hr_dosen->id) }}"
+                                                    class="btn icon btn-primary" title="Detail"><i
+                                                        class="bi bi-eye"></i></a>
+                                                <a href="{{ url('master/hr/edit/'.$hr_dosen->id) }}"
+                                                    class="btn icon btn-warning" title="Edit"><i
+                                                        class="bi bi-pencil-square"></i></a>
+                                                <button class="btn icon btn-danger delete-btn" data-id="{{ $hr_dosen->id }}" title="Delete"><i
+                                                        class="bi bi-trash"></i></button>
+                                            </td>
+                                        </tr>
                                         @empty
                                             <tr>
                                                 <td colspan="6" class="text-center">No Data Found</td>
@@ -116,7 +107,48 @@
         </section>
         <!-- Table head options end -->
     </div>
+
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const id = this.getAttribute('data-id');
+
+                    Swal.fire({
+                        title: 'Konfirmasi',
+                        text: "Apakah Anda yakin ingin menghapus data ini?",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Create a form dynamically
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = `{{ url('master/hr/delete') }}/${id}`;
+                            const csrfToken = document.createElement('input');
+                            csrfToken.type = 'hidden';
+                            csrfToken.name = '_token';
+                            csrfToken.value = '{{ csrf_token() }}';
+                            form.appendChild(csrfToken);
+                            const methodField = document.createElement('input');
+                            methodField.type = 'hidden';
+                            methodField.name = '_method';
+                            methodField.value = 'DELETE';
+                            form.appendChild(methodField);
+                            document.body.appendChild(form);
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+
         @if (session('success'))
             Swal.fire({
                 title: 'Berhasil!',
