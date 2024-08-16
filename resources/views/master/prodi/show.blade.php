@@ -20,11 +20,11 @@
     <div class="card-body">
         <div class="mb-3">
             <label class="form-label">Kode Program Studi</label>
-            <span class="form-control border-1 border-primary">{{ $program_studi->kode_program_studi }}</span>
+            <span class="form-control border-1 border-primary">{{ $prodi->kode_program_studi }}</span>
         </div>
         <div class="mb-3">
             <label class="form-label">Nama Program Studi</label>
-            <span class="form-control border-1 border-primary">{{ $program_studi->nama_program_studi }}</span>
+            <span class="form-control border-1 border-primary">{{ $prodi->nama_program_studi }}</span>
         </div>
 
     </div>

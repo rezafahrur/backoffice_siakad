@@ -4,65 +4,92 @@ namespace App\Http\Controllers;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProgramStudiController extends Controller
 {
     //index
     public function index(Request $request)
-{
-    $program_studi = ProgramStudi::paginate(5); 
-    return view('master.prodi.index', compact('program_studi'));
-}
+    {
+        // $program_studi = ProgramStudi::paginate(5);
+        // return view('master.prodi.index', compact('program_studi'));
+        if($request->ajax()) {
+            $program_studi = ProgramStudi::query();
+
+            return DataTables::of($program_studi)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                    $editBtn = '<a href="' . route('prodi.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $deleteBtn = '<form action="' . route('prodi.destroy', $row->id) . '" method="post" class="d-inline">
+                                      ' . csrf_field() . method_field('DELETE') . '
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger" title="Delete">
+                                          <i class="bi bi-trash"></i>
+                                      </button>
+                                  </form>';
+                    $showBtn = '<a href="' . route('prodi.show', $row->id) . '" class="btn icon btn-info" title="Show"><i class="bi bi-eye"></i></a>';
+                    return $editBtn . ' ' . $deleteBtn . ' ' . $showBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('master.prodi.index');
+    }
 
 
     //create
     public function create()
     {
-        return redirect()->route('prodi.index')->with('success', 'Program Studi berhasil ditambahkan');
+        return view('master.prodi.create');
     }
 
     //store
     public function store(Request $request)
     {
-        $request->validate([
+        $rulesData = [
             'kode_program_studi' => 'required',
             'nama_program_studi' => 'required'
-        ]);
+        ];
 
-        ProgramStudi::create($request->all());
+        $validateData = $request->validate($rulesData);
+
+        ProgramStudi::create($validateData);
+
         return redirect()->route('prodi.index')->with('success', 'Program Studi berhasil ditambahkan');
     }
 
-    //edit
-    public function edit($id)
+        //show
+    public function show($id)
     {
-        $program_studi = ProgramStudi::find($id);
-        return view('master.prodi.edit', compact('program_studi'));
+        $prodi = ProgramStudi::find($id);
+        return view('master.prodi.show', compact('prodi'));
+    }
+
+    //edit
+    public function edit(ProgramStudi $prodi)
+    {
+        return view('master.prodi.edit', compact('prodi'));
     }
 
     //update
-    public function update(Request $request, $id)
+    public function update(Request $request, ProgramStudi $prodi)
     {
-        $request->validate([
+        $rulesData = [
             'kode_program_studi' => 'required',
             'nama_program_studi' => 'required'
-        ]);
+        ];
 
-        ProgramStudi::find($id)->update($request->all());
+        $validateData = $request->validate($rulesData);
+
+        $prodi->update($validateData);
+
         return redirect()->route('prodi.index')->with('success', 'Program Studi berhasil diupdate');
     }
 
     //destroy
-    public function destroy($id)
+    public function destroy(ProgramStudi $prodi)
     {
-        ProgramStudi::find($id)->delete();
+        $prodi->delete();
         return redirect()->route('prodi.index')->with('success', 'Program Studi berhasil dihapus');
-    }
-
-    //show
-    public function show($id)
-    {
-        $program_studi = ProgramStudi::find($id);
-        return view('master.prodi.show', compact('program_studi'));
     }
 }

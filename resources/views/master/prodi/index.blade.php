@@ -36,21 +36,17 @@
                                 Table Data Program Studi
                             </h4>
                         </div>
-                        <div class="card-content">
-                            <div class="card-body">
-                                <p>
-                                    "Welcome to our web page showcasing the user data of our boarding house, where comfort
-                                    and convenience come together in one place."
-                                </p>
-                                <a href="{{ url('master/prodi/create') }}" class="btn icon icon-left btn-primary"><i
-                                        data-feather="user-plus"></i>
-                                    Add Data Prodi</a>
-                            </div>
-
-                            <!-- table head dark -->
+                        <div class="card-body">
+                            <p>
+                                "Welcome to our web page showcasing the user data of our boarding house, where comfort
+                                and convenience come together in one place."
+                            </p>
+                            <a href="{{ route('prodi.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
+                                    data-feather="user-plus"></i>
+                                Add Data</a>
                             <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <thead class="thead-dark">
+                                <table class="table" id="prodiTable">
+                                    <thead>
                                         <tr>
                                             <th>No.</th>
                                             <th>Kode Program Studi</th>
@@ -59,55 +55,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($program_studi as $index => $prodi)
-                                            <tr>
-                                                <td class="text-bold-500">
-                                                    {{ $index + 1 }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    {{ $prodi->kode_program_studi }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    {{ $prodi->nama_program_studi }}
-                                                </td>
-                                                <td>
-                                                    <a href="{{ url('master/prodi/show/' . $prodi->id) }}"
-                                                        class="btn icon btn-primary" title="Detail"><i
-                                                            class="bi bi-eye"></i></a>
-                                                    <a href="{{ url('master/prodi/edit/' . $prodi->id) }}"
-                                                        class="btn icon btn-warning" title="Edit"><i
-                                                            class="bi bi-pencil-square"></i></a>
-                                                    <form action="{{ url('/master/prodi/delete/' . $prodi->id) }}"
-                                                        method="post" class="d-inline">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button onclick="return confirm('Konfirmasi hapus data ?')"
-                                                            class="btn icon btn-danger" title="Delete"><i
-                                                                class="bi bi-trash"></i></button>
-                                                    </form>
-
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="6" class="text-center">No Data Found</td>
-                                            </tr>
-                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
-                            <nav aria-label="Page navigation example">
-                                <div class="m-3 pagination pagination-primary">
-                                    {{-- {{ $users->links() }} --}}
-                                </div>
-                            </nav>
                         </div>
                     </div>
                 </div>
-            </div>
         </section>
-        <!-- Table head options end -->
     </div>
+@endsection
+@section('script')
     <script>
         @if (session('success'))
             Swal.fire({
@@ -117,5 +74,44 @@
                 confirmButtonText: 'OK'
             });
         @endif
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#prodiTable').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                ajax: '{{ route('prodi.index') }}',
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'kode_program_studi',
+                        name: 'kode_program_studi'
+                    },
+                    {
+                        data: 'nama_program_studi',
+                        name: 'nama_program_studi'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                language: {
+                    searchPlaceholder: 'Search...',
+                    sSearch: '',
+                    paginate: {
+                        previous: "Prev",
+                        next: "Next"
+                    }
+                }
+            });
+        });
     </script>
 @endsection
