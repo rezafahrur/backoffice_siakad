@@ -8,8 +8,7 @@
         <div class="container d-block">
             <a href="{{ route('position.index') }}"><i class="bi bi-chevron-left"></i></a>
             <a class="navbar-brand ms-4" href="{{ route('position.index') }}">
-                <img src="{{ asset('assets/img/logo-kos.svg') }}">
-            </a>
+                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}"> </a>
         </div>
     </nav>
     {{-- endt logo and back --}}
@@ -22,6 +21,6 @@
             <label class="form-label">Posisi</label>
             <span class="form-control border-1 border-primary">{{ $position->posisi }}</span>
         </div>
-        
+
     </div>
 @endsection

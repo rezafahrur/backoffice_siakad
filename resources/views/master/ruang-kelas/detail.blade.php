@@ -8,7 +8,7 @@
         <div class="container d-block">
             <a href="{{ route($kelas_route['index']) }}"><i class="bi bi-chevron-left"></i></a>
             <a class="navbar-brand ms-4" href="{{ route($kelas_route['index']) }}">
-                <img style="height: 50px" src="{{ asset('assets/img/logo/logo.png') }}">
+                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
             </a>
         </div>
     </nav>
