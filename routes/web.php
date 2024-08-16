@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\MahasiswaController;
-use App\Http\Controllers\mataKuliahController;
+use App\Http\Controllers\MataKuliahController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\RuangKelasController;
@@ -77,14 +77,14 @@ Route::put('/semester/{semester}', [SemesterController::class, 'update'])->name(
 Route::delete('/semester/{semester}', [SemesterController::class, 'destroy'])->name('semester.destroy');
 // Route::get('/semester/show/{id}', [SemesterController::class, 'show'])->name('semester.show');
 
-//CRUD Mata Kuliah
-Route::get('/mataKuliah', [mataKuliahController::class, "index"])->name('mataKuliah.index');
-Route::delete('/mataKuliah/delete/{id}', [mataKuliahController::class, 'destroy'])->name('mataKuliah.destroy');
-Route::post('/mataKuliah/store', [mataKuliahController::class, 'store'])->name('mataKuliah.store');
-Route::get('/mataKuliah/create', [mataKuliahController::class, 'create'])->name('mataKuliah.create');
-Route::get('/mataKuliah/edit/{id}', [mataKuliahController::class, 'edit'])->name('mataKuliah.edit');
-Route::put('/mataKuliah/update/{id}', [mataKuliahController::class, 'update'])->name('mataKuliah.update');
-Route::get('/mataKuliah/show/{id}', [mataKuliahController::class, 'show'])->name('mataKuliah.show');
+// Mata Kuliah
+Route::get('/mata-kuliah', [MataKuliahController::class, 'index'])->name('mata-kuliah.index');
+Route::get('/mata-kuliah/create', [MataKuliahController::class, 'create'])->name('mata-kuliah.create');
+Route::post('/mata-kuliah', [MataKuliahController::class, 'store'])->name('mata-kuliah.store');
+Route::get('/mata-kuliah/edit/{id}', [MataKuliahController::class, 'edit'])->name('mata-kuliah.edit');
+Route::put('/mata-kuliah/update/{id}', [MataKuliahController::class, 'update'])->name('mata-kuliah.update');
+Route::delete('/mata-kuliah/{mataKuliah}', [MataKuliahController::class, 'destroy'])->name('mata-kuliah.destroy');
+Route::get('/mata-kuliah/show/{id}', [MataKuliahController::class, 'show'])->name('mata-kuliah.show');
 
 //crud position
 Route::get('/master/position/index', [PositionController::class, 'index'])->name('position.index');

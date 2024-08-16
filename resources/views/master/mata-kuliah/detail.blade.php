@@ -6,9 +6,9 @@
     {{-- start logo and back --}}
     <nav class="navbar navbar-light">
         <div class="container d-block">
-            <a href="{{ route('mataKuliah.index') }}"><i class="bi bi-chevron-left"></i></a>
-            <a class="navbar-brand ms-4" href="{{ route('mataKuliah.index') }}">
-                <img style="height: 50px" src="{{ asset('assets/img/logo/logo.png') }}">
+            <a href="{{ route('mata-kuliah.index') }}"><i class="bi bi-chevron-left"></i></a>
+            <a class="navbar-brand ms-4" href="{{ route('mata-kuliah.index') }}">
+                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
             </a>
         </div>
     </nav>

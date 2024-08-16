@@ -8,7 +8,7 @@
         <div class="container d-block">
             <a href="{{ route('mahasiswa.index') }}"><i class="bi bi-chevron-left"></i></a>
             <a class="navbar-brand ms-4" href="">
-                <img src="{{ asset('assets/img/logo-kos.svg') }}">
+                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
             </a>
         </div>
     </nav>
@@ -708,21 +708,33 @@
                         {{-- Golongan Darah --}}
                         <div class="col-md-4 mb-3">
                             <label for="wali_golongan_darah" class="form-label">Golongan Darah</label>
-                            <select class="form-select @error('wali_golongan_darah') is-invalid @enderror" id="wali_golongan_darah"
-                                name="wali_golongan_darah">
+                            <select class="form-select @error('wali_golongan_darah') is-invalid @enderror"
+                                id="wali_golongan_darah" name="wali_golongan_darah">
                                 <option value="" disabled selected>Pilih Golongan Darah</option>
-                                <option value="A" {{ old('wali_golongan_darah') == 'A' ? 'selected' : '' }}>A</option>
-                                <option value="A+" {{ old('wali_golongan_darah') == 'A+' ? 'selected' : '' }}>A+</option>
-                                <option value="A-" {{ old('wali_golongan_darah') == 'A-' ? 'selected' : '' }}>A-</option>
-                                <option value="B" {{ old('wali_golongan_darah') == 'B' ? 'selected' : '' }}>B</option>
-                                <option value="B+" {{ old('wali_golongan_darah') == 'B+' ? 'selected' : '' }}>B+</option>
-                                <option value="B-" {{ old('wali_golongan_darah') == 'B-' ? 'selected' : '' }}>B-</option>
-                                <option value="AB" {{ old('wali_golongan_darah') == 'AB' ? 'selected' : '' }}>AB</option>
-                                <option value="AB+" {{ old('wali_golongan_darah') == 'AB+' ? 'selected' : '' }}>AB+</option>
-                                <option value="AB-" {{ old('wali_golongan_darah') == 'AB-' ? 'selected' : '' }}>AB-</option>
-                                <option value="O" {{ old('wali_golongan_darah') == 'O' ? 'selected' : '' }}>O</option>
-                                <option value="O+" {{ old('wali_golongan_darah') == 'O+' ? 'selected' : '' }}>O+</option>
-                                <option value="O-" {{ old('wali_golongan_darah') == 'O-' ? 'selected' : '' }}>O-</option>
+                                <option value="A" {{ old('wali_golongan_darah') == 'A' ? 'selected' : '' }}>A
+                                </option>
+                                <option value="A+" {{ old('wali_golongan_darah') == 'A+' ? 'selected' : '' }}>A+
+                                </option>
+                                <option value="A-" {{ old('wali_golongan_darah') == 'A-' ? 'selected' : '' }}>A-
+                                </option>
+                                <option value="B" {{ old('wali_golongan_darah') == 'B' ? 'selected' : '' }}>B
+                                </option>
+                                <option value="B+" {{ old('wali_golongan_darah') == 'B+' ? 'selected' : '' }}>B+
+                                </option>
+                                <option value="B-" {{ old('wali_golongan_darah') == 'B-' ? 'selected' : '' }}>B-
+                                </option>
+                                <option value="AB" {{ old('wali_golongan_darah') == 'AB' ? 'selected' : '' }}>AB
+                                </option>
+                                <option value="AB+" {{ old('wali_golongan_darah') == 'AB+' ? 'selected' : '' }}>AB+
+                                </option>
+                                <option value="AB-" {{ old('wali_golongan_darah') == 'AB-' ? 'selected' : '' }}>AB-
+                                </option>
+                                <option value="O" {{ old('wali_golongan_darah') == 'O' ? 'selected' : '' }}>O
+                                </option>
+                                <option value="O+" {{ old('wali_golongan_darah') == 'O+' ? 'selected' : '' }}>O+
+                                </option>
+                                <option value="O-" {{ old('wali_golongan_darah') == 'O-' ? 'selected' : '' }}>O-
+                                </option>
                             </select>
                             @error('wali_golongan_darah')
                                 <div class="invalid-feedback">
@@ -734,7 +746,8 @@
                         {{-- Kewarganegaraan --}}
                         <div class="col-md-4 mb-3">
                             <label for="wali_kewarganegaraan" class="form-label">Kewarganegaraan</label>
-                            <input type="text" class="form-control @error('wali_kewarganegaraan') is-invalid @enderror"
+                            <input type="text"
+                                class="form-control @error('wali_kewarganegaraan') is-invalid @enderror"
                                 id="wali_kewarganegaraan" name="wali_kewarganegaraan" placeholder="Kewarganegaraan"
                                 value="{{ old('wali_kewarganegaraan') ? strtoupper(old('wali_kewarganegaraan')) : '' }}"
                                 oninput="this.value = this.value.toUpperCase()">

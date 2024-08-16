@@ -8,7 +8,7 @@
         <div class="container d-block">
             <a href="{{ route('mahasiswa.index') }}"><i class="bi bi-chevron-left"></i></a>
             <a class="navbar-brand ms-4" href="">
-                <img src="{{ asset('assets/img/logo-kos.svg') }}">
+                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
             </a>
         </div>
     </nav>
@@ -53,7 +53,7 @@
         </div>
 
         <hr>
-        
+
         <!-- Kolom Data KTP Mahasiswa (2 baris) -->
         <div class="row mt-4">
             <h4 class="card-title">KTP Mahasiswa</h4>
@@ -140,7 +140,7 @@
         </div>
 
         <hr>
-        
+
         <!-- Kolom Data KTP Wali Mahasiswa (2 baris) -->
         <div class="row mt-4">
             <h4 class="card-title">KTP Wali Mahasiswa</h4>
