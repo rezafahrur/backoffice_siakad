@@ -31,16 +31,6 @@ class RuangKelasController extends Controller
         }
 
         return view('master.ruang-kelas.index');
-
-        // $search = $request->input('search');
-
-        // $kelas = RuangKelas::when($search, function ($query, $search) {
-        //     $query->where('kode_ruang_kelas', 'like', '%' . $search . '%')
-        //         ->orWhere('nama_ruang_kelas', 'like', '%' . $search . '%');
-        // })
-        // ->paginate(3);
-
-        // return view('master.ruang-kelas.index', compact('kelas'));
     }
 
     public function create()
@@ -67,23 +57,11 @@ class RuangKelasController extends Controller
     {
         $ruangKelas = RuangKelas::find($id);
         return view('master.ruang-kelas.detail', compact('ruangKelas'));
-    //     return view(RuangKelasController::KELAS_VIEW['detail'], [
-    //         'title' => 'Detail Ruang Kelas',
-    //         'kelas' => $ruangKelas,
-    //         'kelas_route' => RuangKelasController::KELAS_ROUTE,
-    //     ]);
     }
 
     public function edit(RuangKelas $kelas)
     {
         return view('master.ruang-kelas.edit', compact('kelas'));
-        // $kelas = RuangKelas::find($id);
-        // return view('master.ruang-kelas.edit', compact('kelas'));
-        // return view(RuangKelasController::KELAS_VIEW['edit'], [
-        //     'title' => 'Edit Ruang Kelas',
-        //     'kelas' => $kelas,
-        //     'kelas_route' => RuangKelasController::KELAS_ROUTE,
-        // ]);
     }
 
     public function update(Request $request, RuangKelas $kelas)
@@ -103,7 +81,7 @@ class RuangKelasController extends Controller
 
     public function destroy(RuangKelas $kelas)
     {
-        // $kelas->delete();
+        $kelas->delete();
         return redirect()->route('kelas.index')->with('success', 'Data berhasil dihapus');
     }
 }

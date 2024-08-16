@@ -113,7 +113,8 @@
                     }
                 ],
                 language: {
-                    search: "Search Data:",
+                    searchPlaceholder: 'Search...',
+                    sSearch: '',
                     paginate: {
                         previous: "Prev",
                         next: "Next"

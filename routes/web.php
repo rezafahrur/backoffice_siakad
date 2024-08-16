@@ -19,28 +19,6 @@ Route::get('/wizard', function () {
     return view('wizard');
 });
 
-Route::get('master/prodi/index', function () {
-    return view('master/prodi/index');
-});
-
-Route::get('/master/prodi/create', function () {
-    return view('master/prodi/create');
-});
-
-Route::get('/master/prodi/edit/{id}', function () {
-    return view('/master/prodi/edit/{id}');
-});
-
-//show
-Route::get('/master/prodi/show/{id}', function () {
-    return view('/master/prodi/show/{id}');
-});
-
-//matkul
-// Route::get('master/mataKuliah/create', function () {
-//     return view('master/mataKuliah/create');
-// });
-
 //crud program studi
 Route::get('/master/prodi/index', [ProgramStudiController::class, 'index'])->name('prodi.index');
 Route::post('/master/prodi/store', [ProgramStudiController::class, 'store'])->name('prodi.store');
@@ -48,6 +26,16 @@ Route::get('/master/prodi/edit/{id}', [ProgramStudiController::class, 'edit'])->
 Route::put('/master/prodi/update/{id}', [ProgramStudiController::class, 'update'])->name('prodi.update');
 Route::delete('master/prodi/delete/{id}', [ProgramStudiController::class, 'destroy'])->name('prodi.destroy');
 Route::get('/master/prodi/show/{id}', [ProgramStudiController::class, 'show'])->name('prodi.show');
+
+// prodi
+Route::get('/prodi', [ProgramStudiController::class, 'index'])->name('prodi.index');
+Route::get('/prodi/create', [ProgramStudiController::class, 'create'])->name('prodi.create');
+Route::post('/prodi', [ProgramStudiController::class, 'store'])->name('prodi.store');
+Route::get('/prodi/{prodi}/edit', [ProgramStudiController::class, 'edit'])->name('prodi.edit');
+Route::put('/prodi/{prodi}', [ProgramStudiController::class, 'update'])->name('prodi.update');
+Route::delete('/prodi/{prodi}', [ProgramStudiController::class, 'destroy'])->name('prodi.destroy');
+Route::get('/prodi/show/{id}', [ProgramStudiController::class, 'show'])->name('prodi.show');
+
 
 // CRUD Mahasiswa
 Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
