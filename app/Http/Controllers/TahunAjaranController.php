@@ -5,19 +5,32 @@ namespace App\Http\Controllers;
 use App\Models\TahunAjaran;
 use Illuminate\Http\Request;
 use App\Http\Requests\TahunAjaranRequest;
+use Yajra\DataTables\Facades\DataTables;
 
 class TahunAjaranController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        if ($request->ajax()) {
+            $tahunAjaran = TahunAjaran::query();
 
-        $tahunAjaran = TahunAjaran::when($search, function ($query, $search) {
-            $query->where('tahun_ajaran', 'like', '%' . $search . '%');
-        })
-        ->paginate(10);
+            return DataTables::of($tahunAjaran)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                    $editBtn = '<a href="' . route('tahun-ajaran.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $deleteBtn = '<form action="' . route('tahun-ajaran.destroy', $row->id) . '" method="post" class="d-inline">
+                                      ' . csrf_field() . method_field('DELETE') . '
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger" title="Delete">
+                                          <i class="bi bi-trash"></i>
+                                      </button>
+                                  </form>';
+                    return $editBtn . ' ' . $deleteBtn;
+                })
+                ->rawColumns(['action']) // Ensures that HTML code for the action buttons is rendered correctly
+                ->make(true);
+        }
 
-        return view('master.tahun-ajaran.index', compact('tahunAjaran'));
+        return view('master.tahun-ajaran.index');
     }
 
     public function create()

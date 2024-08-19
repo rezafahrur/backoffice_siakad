@@ -48,7 +48,7 @@
                             </div>
 
                             <!-- table head dark -->
-                            <div class="table-responsive">
+                            <div class="card-header table-responsive">
                                 <table class="table mb-0">
                                     <thead class="thead-dark">
                                         <tr>
@@ -75,20 +75,23 @@
                                                 <td class="text-bold-500">
                                                     {{ $hr_dosen->position->posisi ?? 'No Position Assigned' }}
                                                 </td>
-                                            <td class="text-bold-500">
-                                                <img src="{{ asset('storage/' . $hr_dosen->photo_profile) }}" alt="Photo Profile" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('hr.show', $hr_dosen->id) }}"
-                                                    class="btn icon btn-primary" title="Detail"><i
-                                                        class="bi bi-eye"></i></a>
-                                                <a href="{{ url('master/hr/edit/'.$hr_dosen->id) }}"
-                                                    class="btn icon btn-warning" title="Edit"><i
-                                                        class="bi bi-pencil-square"></i></a>
-                                                <button class="btn icon btn-danger delete-btn" data-id="{{ $hr_dosen->id }}" title="Delete"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </td>
-                                        </tr>
+                                                <td class="text-bold-500">
+                                                    <img src="{{ asset('storage/' . $hr_dosen->photo_profile) }}"
+                                                        alt="Photo Profile" class="img-fluid rounded-circle"
+                                                        style="width: 50px; height: 50px; object-fit: cover;">
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('hr.show', $hr_dosen->id) }}"
+                                                        class="btn icon btn-primary" title="Detail"><i
+                                                            class="bi bi-eye"></i></a>
+                                                    <a href="{{ url('master/hr/edit/' . $hr_dosen->id) }}"
+                                                        class="btn icon btn-warning" title="Edit"><i
+                                                            class="bi bi-pencil-square"></i></a>
+                                                    <button class="btn icon btn-danger delete-btn"
+                                                        data-id="{{ $hr_dosen->id }}" title="Delete"><i
+                                                            class="bi bi-trash"></i></button>
+                                                </td>
+                                            </tr>
                                         @empty
                                             <tr>
                                                 <td colspan="6" class="text-center">No Data Found</td>
@@ -109,11 +112,11 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const deleteButtons = document.querySelectorAll('.delete-btn');
 
             deleteButtons.forEach(button => {
-                button.addEventListener('click', function () {
+                button.addEventListener('click', function() {
                     const id = this.getAttribute('data-id');
 
                     Swal.fire({

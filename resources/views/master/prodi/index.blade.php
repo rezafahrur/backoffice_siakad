@@ -37,14 +37,10 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <p>
-                                "Welcome to our web page showcasing the user data of our boarding house, where comfort
-                                and convenience come together in one place."
-                            </p>
                             <a href="{{ route('prodi.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
                                     data-feather="user-plus"></i>
                                 Add Data</a>
-                            <div class="table-responsive">
+                            <div class="card-header table-responsive">
                                 <table class="table" id="prodiTable">
                                     <thead>
                                         <tr>
