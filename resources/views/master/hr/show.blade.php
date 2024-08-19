@@ -40,20 +40,25 @@
                                     <dd class="col-sm-6">{{ $hr->position->posisi }}</dd>
                                     <dt class="col-sm-6"><strong>No. HP</strong></dt>
                                     <dd class="col-sm-6">{{ $hr->hrDetail->hp }}</dd>
+                                    <dt class="col-sm-6"><strong>Email</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->email }}</dd>
                                     <dt class="col-sm-6"><strong>Nama Lengkap</strong></dt>
                                     <dd class="col-sm-6">{{ $hr->gelar_depan }}  {{ ucwords(strtolower($hr->ktp->nama)) }} {{ $hr->gelar_belakang }}</dd>
                                     <dt class="col-sm-6"><strong>Alamat Jalan</strong></dt>
                                     <dd class="col-sm-6">{{ $hr->ktp->alamat_jalan }}</dd>
-                                    <dt class="col-sm-6"><strong>RT</strong></dt>
-                                    <dd class="col-sm-6">{{ $hr->ktp->alamat_rt }}</dd>
-                                    <dt class="col-sm-6"><strong>RW</strong></dt>
-                                    <dd class="col-sm-6">{{ $hr->ktp->alamat_rw }}</dd>
+                                    <dt class="col-sm-6"><strong>Agama</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->agama }}</dd>
+
                                 </dl>
                             </div>
 
                             {{-- Left Column --}}
                             <div class="col-md-6">
                                 <dl class="row">
+                                    <dt class="col-sm-6"><strong>RT</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->alamat_rt }}</dd>
+                                    <dt class="col-sm-6"><strong>RW</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->alamat_rw }}</dd>
                                     <dt class="col-sm-6"><strong>Provinsi</strong></dt>
                                     <dd class="col-sm-6">{{ $province->name }}</dd>
                                     <dt class="col-sm-6"><strong>Kota/Kabupaten</strong></dt>
@@ -64,12 +69,12 @@
                                     <dd class="col-sm-6">{{ $hr->ktp->lahir_tempat }}</dd>
                                     <dt class="col-sm-6"><strong>Jenis Kelamin</strong></dt>
                                     <dd class="col-sm-6">{{ $hr->ktp->jenis_kelamin }}</dd>
-                                    <dt class="col-sm-6"><strong>Agama</strong></dt>
-                                    <dd class="col-sm-6">{{ $hr->ktp->agama }}</dd>
+                                    
                                     <dt class="col-sm-6"><strong>Golongan Darah</strong></dt>
                                     <dd class="col-sm-6">{{ $hr->ktp->golongan_darah }}</dd>
                                     <dt class="col-sm-6"><strong>Kewarganegaraan</strong></dt>
                                     <dd class="col-sm-6">{{ $hr->ktp->kewarganegaraan }}</dd>
+                                    
                                 </dl>
                             </div>
                         </div>
@@ -78,7 +83,7 @@
             </div>
 
             {{-- Kartu Pengenal Dosen Politeknik Batu --}}
-            <div class="card-footer text-center">
+            {{-- <div class="card-footer text-center">
                 <div class="card bg-light mb-3" style="max-width: 18rem;">
                     <div class="card-header">Politeknik Batu</div>
                     <div class="card-body">
@@ -90,7 +95,7 @@
                         <p class="card-text"><strong>No. HP:</strong> {{ $hr->hrDetail->hp }}</p>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection

@@ -56,6 +56,7 @@ class HrController extends Controller
         'gelar_belakang' => 'nullable',
         'photo_profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'hp' => 'required',
+        'email' => 'required|email',
     ]);
 
     // Step 1: Create KTP Data
@@ -85,7 +86,8 @@ class HrController extends Controller
         'nip',
         'gelar_depan',
         'nama',
-        'gelar_belakang'
+        'gelar_belakang',
+        'email',
     ]);
     $hrData['ktp_id'] = $ktp->id;
 
@@ -144,6 +146,7 @@ class HrController extends Controller
             'gelar_belakang',
             'photo_profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'hp',
+            'email',
         ]);
 
         // Step 1: Update KTP Data
@@ -174,7 +177,8 @@ class HrController extends Controller
             'nip',
             'gelar_depan',
             'nama',
-            'gelar_belakang'
+            'gelar_belakang',
+            'email',
         ]);
 
         if ($request->hasFile('photo_profile')) {
