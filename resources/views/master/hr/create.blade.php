@@ -269,7 +269,7 @@
                     </div>
 
                     {{-- golongan_darah --}}
-                    <div class="col-md-4 mb-3">
+                    <div class="mb-3">
                         <label for="golongan_darah" class="form-label">Golongan Darah</label>
                         <select class="form-select @error('golongan_darah') is-invalid @enderror" id="golongan_darah"
                             name="golongan_darah">
