@@ -12,9 +12,6 @@ class mataKuliahController extends Controller
     //
     public function index(Request $request)
     {
-        // $data = mataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->paginate(4)->withQueryString();
-        // $num = 1;
-        // return view('master.mataKuliah.index', ['datas' => $data, 'nums' => $num]);
         if ($request->ajax()) {
             $matkul = mataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->get();
 

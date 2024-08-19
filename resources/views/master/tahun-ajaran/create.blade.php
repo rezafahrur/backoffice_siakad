@@ -22,7 +22,7 @@
             @csrf
 
             <div class="mb-3">
-                <label for="tahun_ajaran" class="form-label">Kode Ruang Kelas</label>
+                <label for="tahun_ajaran" class="form-label">Tahun Ajaran</label>
                 <input type="text" class="form-control @error('tahun_ajaran') is-invalid @enderror" id="tahun_ajaran"
                     name="tahun_ajaran" placeholder="e.g. 2021/2022" value="{{ old('tahun_ajaran') }}">
                 @error('tahun_ajaran')
