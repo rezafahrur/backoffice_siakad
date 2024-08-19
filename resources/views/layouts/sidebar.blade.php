@@ -2,7 +2,7 @@
     <div class="sidebar-header position-relative">
         <div class="d-flex justify-content-between align-items-center">
             <div class="logo">
-                <a href="#"><img style="height: 50px" src="{{ asset('assets/img/logo/logo.png') }}" alt="Logo"
+                <a href="#"><img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}" alt="Logo"
                         srcset="" /></a>
             </div>
             <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
@@ -83,26 +83,27 @@
                 <ul class="submenu">
                     <li class="submenu-item {{ Route::is('prodi.index') ? 'active' : '' }}">
                         <a href="{{ route('prodi.index') }}">Program Studi</a>
+                    </li>
                     <li class="submenu-item {{ Route::is('kelas.index') ? 'active' : '' }}">
                         <a href="{{ route('kelas.index') }}">Ruang Kelas</a>
                     </li>
-                    <li class="submenu-item {{ Route::is('mataKuliah.index') ? 'active' : '' }}">
-                        <a href="{{ route('mataKuliah.index') }}">Mata Kuliah</a>
+                    <li class="submenu-item {{ Route::is('mata-kuliah.index') ? 'active' : '' }}">
+                        <a href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
                     </li>
                     <li class="submenu-item {{ Route::is('mahasiswa.index') ? 'active' : '' }}">
                         <a href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
                     </li>
-                    <li class="submenu-item {{ Route::is('semester.index') }}">
+                    <li class="submenu-item {{ Route::is('semester.index') ? 'active' : '' }}">
                         <a href="{{ route('semester.index') }}">Semester</a>
                     </li>
-                    <li class="submenu-item {{ Route::is('tahun-ajaran.index') }}">
+                    <li class="submenu-item {{ Route::is('tahun-ajaran.index') ? 'active' : '' }}">
                         <a href="{{ route('tahun-ajaran.index') }}">Tahun Ajaran</a>
-                    
-                    <li class="submenu-item">
+
+                    <li class="submenu-item {{ Route::is('position.index') ? 'active' : '' }}">
                         <a href="{{ route('position.index') }}">Posisi</a>
                     </li>
-                    <li class="submenu-item">
-                        <a href="{{ route('hr.index') }}">SDM</a>
+                    <li class="submenu-item {{ Route::is('hr.index') ? 'active' : '' }}">
+                        <a href="{{ route('hr.index') }}">HR</a>
                     </li>
                 </ul>
             </li>

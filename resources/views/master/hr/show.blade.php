@@ -8,7 +8,7 @@
         <div class="container d-block">
             <a href="{{ route('hr.index') }}"><i class="bi bi-chevron-left"></i></a>
             <a class="navbar-brand ms-4" href="">
-                <img src="{{ asset('assets/img/logo-kos.svg') }}">
+                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
             </a>
         </div>
     </nav>
@@ -38,6 +38,11 @@
                                 <small>{{ $hr->ktp->nik }}</small>
                             </div>
                         </div>
+                    {{-- Photo Profile --}}
+                    <div class="col-md-4 d-flex justify-content-center">
+                        <img src="{{ asset('storage/' . $hr->photo_profile) }}" alt="Photo Profile"
+                            class="img-thumbnail mt-2" width="250px" style="height: auto;">
+
                     </div>
 
                     {{-- Right Column --}}
@@ -57,6 +62,8 @@
                                     {{-- Posisi --}}
                                     <dt class="col-sm-4"><strong>Posisi</strong></dt>
                                     <dd class="col-sm-8">{{ $hr->position->posisi }}</dd>   
+                                    <dt class="col-sm-6"><strong>Posisi</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->position->posisi }}</dd>
 
                                     {{-- hp --}}
                                     <dt class="col-sm-4"><strong>No. HP</strong></dt>
@@ -65,6 +72,9 @@
                                     {{-- Nama Lengkap --}}
                                     <dt class="col-sm-4"><strong>Nama Lengkap</strong></dt>
                                     <dd class="col-sm-8">{{ $hr->gelar_depan }}  {{ ucwords(strtolower($hr->ktp->nama)) }} {{ $hr->gelar_belakang }} </dd>
+                                    <dt class="col-sm-6"><strong>Nama Lengkap</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->gelar_depan }} {{ ucwords(strtolower($hr->ktp->nama)) }}
+                                        {{ $hr->gelar_belakang }} </dd>
 
                                     {{-- Alamat Jalan --}}
                                     <dt class="col-sm-4"><strong>Alamat Jalan</strong></dt>
@@ -77,6 +87,12 @@
                                     {{-- alamat_rw --}}
                                     <dt class="col-sm-4"><strong>RW</strong></dt>
                                     <dd class="col-sm-8">{{ $hr->ktp->alamat_rw }}</dd>
+                                    <dt class="col-sm-6"><strong>RW</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->alamat_rw }}</dd>
+
+
+
+
                                 </dl>
                             </div>
                         </div>
@@ -89,6 +105,9 @@
                                     <dt class="col-sm-4"><strong>Provinsi</strong></dt>
                                     <dd class="col-sm-8">{{ $province->name }}</dd>
                                     
+                                    <dt class="col-sm-6"><strong>Provinsi</strong></dt>
+                                    <dd class="col-sm-6">{{ $province->name }}</dd>
+
                                     {{-- Kota/Kabupaten --}}
                                     <dt class="col-sm-4"><strong>Kota/Kabupaten</strong></dt>
                                     <dd class="col-sm-8">{{ $city->name }}</dd>
@@ -97,6 +116,9 @@
                                     <dt class="col-sm-4"><strong>Kecamatan</strong></dt>
                                     <dd class="col-sm-8">{{ $district->name }}</dd>
                                     
+                                    <dt class="col-sm-6"><strong>Kecamatan</strong></dt>
+                                    <dd class="col-sm-6">{{ $district->name }}</dd>
+
                                     {{-- Tempat Lahir --}}
                                     <dt class="col-sm-4"><strong>Tempat Lahir</strong></dt>
                                     <dd class="col-sm-8">{{ $hr->ktp->lahir_tempat }}</dd>
@@ -116,6 +138,10 @@
                                     {{-- Kewarganegaraan --}}
                                     <dt class="col-sm-4"><strong>Kewarganegaraan</strong></dt>
                                     <dd class="col-sm-8">{{ $hr->ktp->kewarganegaraan }}</dd>
+                                    <dt class="col-sm-6"><strong>Kewarganegaraan</strong></dt>
+                                    <dd class="col-sm-6">{{ $hr->ktp->kewarganegaraan }}</dd>
+
+
                                 </dl>
                             </div>
                         </div>

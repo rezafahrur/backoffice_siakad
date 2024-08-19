@@ -8,7 +8,7 @@
         <div class="container d-block">
             <a href="{{ route('hr.index') }}"><i class="bi bi-chevron-left"></i></a>
             <a class="navbar-brand ms-4" href="">
-                <img src="{{ asset('assets/img/logo-kos.svg') }}">
+                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
             </a>
         </div>
     </nav>
@@ -25,8 +25,8 @@
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label for="nik" class="form-label">NIK</label>
-                        <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik" name="nik"
-                            placeholder="NIK" value="{{ old('nik') }}" maxlength="16"
+                        <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik"
+                            name="nik" placeholder="NIK" value="{{ old('nik') }}" maxlength="16"
                             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 16)">
                         @error('nik')
                             <div class="invalid-feedback">
@@ -37,8 +37,8 @@
                     {{-- nip --}}
                     <div class="mb-3">
                         <label for="nip" class="form-label">NIP</label>
-                        <input type="text" class="form-control @error('nip') is-invalid @enderror" id="nip" name="nip"
-                            placeholder="NIP" value="{{ old('nip') }}" maxlength="18"
+                        <input type="text" class="form-control @error('nip') is-invalid @enderror" id="nip"
+                            name="nip" placeholder="NIP" value="{{ old('nip') }}" maxlength="18"
                             oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 18)">
                         @error('nip')
                             <div class="invalid-feedback">
@@ -46,7 +46,7 @@
                             </div>
                         @enderror
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="nama" class="form-label">Nama Lengkap</label>
                         <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama"
@@ -63,9 +63,8 @@
                     {{-- gelar_depan --}}
                     <div class="mb-3">
                         <label for="gelar_depan" class="form-label">Gelar Depan</label>
-                        <input type="text" class="form-control @error('gelar_depan') is-invalid @enderror" id="gelar_depan"
-                            name="gelar_depan" placeholder="Gelar Depan"
-                            value="{{ old('gelar_depan') }}">
+                        <input type="text" class="form-control @error('gelar_depan') is-invalid @enderror"
+                            id="gelar_depan" name="gelar_depan" placeholder="Gelar Depan" value="{{ old('gelar_depan') }}">
                         @error('gelar_depan')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -77,8 +76,8 @@
                     {{-- gelar_belakang --}}
                     <div class="mb-3">
                         <label for="gelar_belakang" class="form-label">Gelar Belakang</label>
-                        <input type="text" class="form-control @error('gelar_belakang') is-invalid @enderror" id="gelar_belakang"
-                            name="gelar_belakang" placeholder="Gelar Belakang"
+                        <input type="text" class="form-control @error('gelar_belakang') is-invalid @enderror"
+                            id="gelar_belakang" name="gelar_belakang" placeholder="Gelar Belakang"
                             value="{{ old('gelar_belakang') }}">
                         @error('gelar_belakang')
                             <div class="invalid-feedback">
@@ -99,7 +98,7 @@
                             </div>
                         @enderror
                     </div>
-                
+
 
                     {{-- posisi --}}
                     <div class="mb-3">
@@ -119,7 +118,7 @@
                             </div>
                         @enderror
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="alamat_jalan" class="form-label">Alamat Jalan</label>
                         <textarea class="form-control @error('alamat_jalan') is-invalid @enderror" id="alamat_jalan" name="alamat_jalan"
@@ -130,13 +129,13 @@
                             </div>
                         @enderror
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="alamat_rt" class="form-label">RT</label>
-                            <input type="text" class="form-control @error('alamat_rt') is-invalid @enderror" id="alamat_rt"
-                                name="alamat_rt" placeholder="000" value="{{ old('alamat_rt') }}" maxlength="3"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
+                            <input type="text" class="form-control @error('alamat_rt') is-invalid @enderror"
+                                id="alamat_rt" name="alamat_rt" placeholder="000" value="{{ old('alamat_rt') }}"
+                                maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
                             @error('alamat_rt')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -145,9 +144,9 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="alamat_rw" class="form-label">RW</label>
-                            <input type="text" class="form-control @error('alamat_rw') is-invalid @enderror" id="alamat_rw"
-                                name="alamat_rw" placeholder="000" value="{{ old('alamat_rw') }}" maxlength="3"
-                                oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
+                            <input type="text" class="form-control @error('alamat_rw') is-invalid @enderror"
+                                id="alamat_rw" name="alamat_rw" placeholder="000" value="{{ old('alamat_rw') }}"
+                                maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
                             @error('alamat_rw')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -175,9 +174,9 @@
                         @enderror
                     </div>
 
-                    
 
-                  
+
+
                 </div>
 
                 {{-- Kolom Kanan --}}
@@ -186,8 +185,8 @@
                     {{-- Alamat Kota/Kabupaten --}}
                     <div class="mb-3">
                         <label for="alamat_kotakab_code" class="form-label">Kota/Kabupaten</label>
-                        <select class="form-select @error('alamat_kotakab_code') is-invalid @enderror" id="alamat_kotakab_code"
-                            name="alamat_kotakab_code">
+                        <select class="form-select @error('alamat_kotakab_code') is-invalid @enderror"
+                            id="alamat_kotakab_code" name="alamat_kotakab_code">
                             <option value="" disabled selected>Pilih Kota/Kabupaten</option>
                             {{-- Populated dynamically based on selected province --}}
                         </select>
@@ -198,8 +197,8 @@
                         @enderror
                     </div>
 
-                      {{-- Alamat Kecamatan --}}
-                      <div class="mb-3">
+                    {{-- Alamat Kecamatan --}}
+                    <div class="mb-3">
                         <label for="alamat_kec_code" class="form-label">Kecamatan</label>
                         <select class="form-select @error('alamat_kec_code') is-invalid @enderror" id="alamat_kec_code"
                             name="alamat_kec_code">
@@ -231,8 +230,8 @@
                     {{-- Tempat Lahir --}}
                     <div class="mb-3">
                         <label for="lahir_tempat" class="form-label">Tempat Lahir</label>
-                        <input type="text" class="form-control @error('lahir_tempat') is-invalid @enderror" id="lahir_tempat"
-                            name="lahir_tempat" placeholder="Tempat Lahir"
+                        <input type="text" class="form-control @error('lahir_tempat') is-invalid @enderror"
+                            id="lahir_tempat" name="lahir_tempat" placeholder="Tempat Lahir"
                             value="{{ old('lahir_tempat') ? strtoupper(old('lahir_tempat')) : '' }}"
                             oninput="this.value = this.value.toUpperCase()">
                         @error('lahir_tempat')
@@ -245,8 +244,8 @@
                     {{-- Tanggal Lahir --}}
                     <div class="mb-3">
                         <label for="lahir_tgl" class="form-label">Tanggal Lahir</label>
-                        <input type="date" class="form-control @error('lahir_tgl') is-invalid @enderror" id="lahir_tgl"
-                            name="lahir_tgl" value="{{ old('lahir_tgl') }}">
+                        <input type="date" class="form-control @error('lahir_tgl') is-invalid @enderror"
+                            id="lahir_tgl" name="lahir_tgl" value="{{ old('lahir_tgl') }}">
                         @error('lahir_tgl')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -299,7 +298,8 @@
                     <div class="mb-3">
                         <label for="agama" class="form-label">Agama</label>
                         <input type="text" class="form-control @error('agama') is-invalid @enderror" id="agama"
-                            name="agama" placeholder="Agama" value="{{ old('agama') ? strtoupper(old('agama')) : '' }}"
+                            name="agama" placeholder="Agama"
+                            value="{{ old('agama') ? strtoupper(old('agama')) : '' }}"
                             oninput="this.value = this.value.toUpperCase()">
                         @error('agama')
                             <div class="invalid-feedback">
@@ -308,7 +308,7 @@
                         @enderror
                     </div>
 
-                    
+
 
                     {{-- Kewarganegaraan --}}
                     <div class="mb-3">
@@ -327,8 +327,8 @@
                     {{-- Foto Profil --}}
                     <div class="mb-3">
                         <label for="photo_profile" class="form-label">Foto Profil</label>
-                        <input type="file" class="form-control @error('photo_profile') is-invalid @enderror" id="photo_profile"
-                            name="photo_profile">
+                        <input type="file" class="form-control @error('photo_profile') is-invalid @enderror"
+                            id="photo_profile" name="photo_profile">
                         @error('photo_profile')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -337,10 +337,10 @@
                     </div>
 
                     {{-- Submit --}}
-                    
+
                 </div>
             </div>
-            
+
             <div class="mb-3 text-end">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
@@ -361,7 +361,8 @@
                             $('#alamat_kotakab_code').empty().append(
                                 '<option value="">Pilih Kota/Kabupaten</option>');
                             $.each(data, function(key, value) {
-                                $('#alamat_kotakab_code').append('<option value="' + value
+                                $('#alamat_kotakab_code').append('<option value="' +
+                                    value
                                     .code + '">' + value.name + '</option>');
                             });
                         }
