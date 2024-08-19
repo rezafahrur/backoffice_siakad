@@ -99,6 +99,17 @@
                         @enderror
                     </div>
 
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
+                            name="email" placeholder="Email" value="{{ old('email') }}">
+                        @error('email')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
 
                     {{-- posisi --}}
                     <div class="mb-3">
@@ -269,7 +280,7 @@
                     </div>
 
                     {{-- golongan_darah --}}
-                    <div class="col-md-4 mb-3">
+                    <div class="mb-3">
                         <label for="golongan_darah" class="form-label">Golongan Darah</label>
                         <select class="form-select @error('golongan_darah') is-invalid @enderror" id="golongan_darah"
                             name="golongan_darah">

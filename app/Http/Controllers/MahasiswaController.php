@@ -15,20 +15,32 @@ use Laravolt\Indonesia\Models\Province;
 use Laravolt\Indonesia\Models\City;
 use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Village;
+use Yajra\DataTables\Facades\DataTables;
 
 class MahasiswaController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        if($request->ajax()) {
+            $mhs = Mahasiswa::query();
 
-        $mahasiswa = Mahasiswa::when($search, function ($query, $search) {
-            $query->where('nim', 'like', "%$search%")
-                ->orWhere('nama', 'like', "%$search%");
-        })
-            ->paginate(10);
-
-        return view('master.mahasiswa.index', compact('mahasiswa'));
+            return DataTables::of($mhs)
+                ->addIndexColumn()
+                ->addColumn('action', function($row) {
+                    $showBtn = '<a href="' . route('mahasiswa.show', $row->id) . '" class="btn icon btn-info" title="Detail"><i class="bi bi-eye"></i></a>';
+                    $editBtn = '<a href="' . route('mahasiswa.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $deleteBtn = '<form action="' . route('mahasiswa.destroy', $row->id) . '" method="post" class="d-inline">
+                                      ' . csrf_field() . method_field('DELETE') . '
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger" title="Delete">
+                                          <i class="bi bi-trash"></i>
+                                      </button>
+                                  </form>';
+                    return $showBtn. ' ' .$editBtn . ' ' . $deleteBtn;
+                })
+                ->rawColumns(['action']) // Ensures that HTML code for the action buttons is rendered correctly
+                ->make(true);
+        }
+        return view('master.mahasiswa.index');
     }
 
     public function create()
