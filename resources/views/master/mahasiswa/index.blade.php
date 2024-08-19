@@ -38,18 +38,14 @@
                         </div>
                         <div class="card-content">
                             <div class="card-body">
-                                <p>
-                                    "Welcome to our web page showcasing the user data of our boarding house, where comfort
-                                    and convenience come together in one place."
-                                </p>
                                 <a href="{{ route('mahasiswa.create') }}" class="btn icon icon-left btn-primary"><i
                                         data-feather="user-plus"></i>
                                     Add Data</a>
                             </div>
 
                             <!-- table head dark -->
-                            <div class="table-responsive">
-                                <table class="table mb-0">
+                            <div class="card-header table-responsive">
+                                <table class="table" id="mhsTable">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>No.</th>
@@ -59,44 +55,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($mahasiswa as $index => $mhs)
-                                            <tr>
-                                                <td class="text-bold-500">
-                                                    {{ $index + $mahasiswa->firstItem() }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    {{ $mhs->nim }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    {{ $mhs->nama }}
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('mahasiswa.show', $mhs->id) }}"
-                                                        class="btn icon btn-primary" title="Detail"><i
-                                                            class="bi bi-eye"></i></a>
-                                                    <a href="{{ route('mahasiswa.edit', $mhs->id) }}"
-                                                        class="btn icon btn-warning" title="Edit"><i
-                                                            class="bi bi-pencil-square"></i></a>
-                                                    <form action="{{ route('mahasiswa.destroy', $mhs->id) }}" method="post"
-                                                        class="d-inline">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button onclick="return confirm('Konfirmasi hapus data ?')"
-                                                            class="btn icon btn-danger" title="Delete"><i
-                                                                class="bi bi-trash"></i></button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="6" class="text-center">No Data Found</td>
-                                            </tr>
-                                        @endforelse
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="m-3 pagination pagination-primary">
-                                {{ $mahasiswa->links() }}
                             </div>
                         </div>
                     </div>
@@ -105,7 +65,47 @@
         </section>
         <!-- Table head options end -->
     </div>
+@endsection
+@section('script')
     <script>
+        $(document).ready(function() {
+            $('#mhsTable').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                ajax: '{{ route('mahasiswa.index') }}',
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'nim',
+                        name: 'nim'
+                    },
+                    {
+                        data: 'nama',
+                        name: 'nama'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                language: {
+                    searchPlaceholder: 'Search...',
+                    sSearch: '',
+                    paginate: {
+                        previous: 'Prev',
+                        next: 'Next'
+                    }
+                }
+            });
+        })
+
         @if (session('success'))
             Swal.fire({
                 title: 'Berhasil!',

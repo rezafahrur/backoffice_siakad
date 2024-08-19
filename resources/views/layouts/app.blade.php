@@ -26,7 +26,7 @@
         </div> --}}
 
         <div id="main" class="layout-horizontal">
-            <header class="mb-2">
+            <header class="mb-3">
                 @include('layouts.navbar2')
                 @include('layouts.sidebar-horizontal')
             </header>

@@ -13,14 +13,47 @@ use Laravolt\Indonesia\Models\Village;
 use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Province;
 use Intervention\Image\Laravel\Facades\Image;
-
+use Yajra\DataTables\Facades\DataTables;
 class HrController extends Controller
 {
     public function index(Request $request)
     {
-        // Menggunakan eager loading untuk relasi Ktp, Position, dan HrDetail
-        $hr = Hr::with(['ktp', 'position', 'hrDetail'])->paginate(100);
-        return view('master.hr.index', compact('hr'));
+        if ($request->ajax()) {
+            $hr = Hr::with(['ktp', 'position', 'hrDetail']);
+            return DataTables::of($hr)
+                ->addIndexColumn()
+                ->addColumn('nama', function ($row) {
+                    return $row->ktp->nama;
+                })
+                ->addColumn('posisi', function ($row) {
+                    return $row->position->posisi ?? 'No Position Assigned';
+                })
+                ->addColumn('photo_profile', function ($row) {
+                    // Mendapatkan path yang tepat
+                    $photoPath = public_path('storage/' . $row->photo_profile);
+
+                    // Menggunakan file_exists untuk memeriksa keberadaan file
+                    if ($row->photo_profile && file_exists($photoPath)) {
+                        return '<img src="'.asset('storage/' . $row->photo_profile).'" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">';
+                    }
+
+                    // Default image jika foto tidak ditemukan
+                    return '<img src="'.asset('storage/2.jpg').'" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">';
+                })
+                ->addColumn('action', function($row) {
+                    $editBtn = '<a href="' . route('hr.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $deleteBtn = '<form action="' . route('hr.destroy', $row->id) . '" method="post" class="d-inline">
+                                      ' . csrf_field() . method_field('DELETE') . '
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger" title="Delete">
+                                          <i class="bi bi-trash"></i>
+                                      </button>
+                                  </form>';
+                    return $editBtn . ' ' . $deleteBtn;
+                })
+                ->rawColumns(['photo_profile', 'action']) // Ensures that HTML code for the action buttons is rendered correctly
+                ->make(true);
+        }
+        return view('master.hr.index');
     }
 
     public function create()
