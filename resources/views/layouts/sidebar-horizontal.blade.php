@@ -13,7 +13,7 @@
             </li>
             <li class="menu-item active has-sub">
                 <a href="#" class='menu-link'>
-                    <span><i class="bi bi-grid-1x2-fill"></i> Layouts</span>
+                    <span><i class="bi bi-grid-1x2-fill"></i>Master</span>
                 </a>
                 <div class="submenu ">
                     <div class="submenu-group-wrapper">

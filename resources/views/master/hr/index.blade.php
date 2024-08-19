@@ -38,10 +38,6 @@
                         </div>
                         <div class="card-content">
                             <div class="card-body">
-                                <p>
-                                    "Welcome to our web page showcasing the user data of our boarding house, where comfort
-                                    and convenience come together in one place."
-                                </p>
                                 <a href="{{ url('master/hr/create') }}" class="btn icon icon-left btn-primary"><i
                                         data-feather="user-plus"></i>
                                     Add Data SDM</a>
@@ -49,8 +45,8 @@
 
                             <!-- table head dark -->
                             <div class="card-header table-responsive">
-                                <table class="table mb-0">
-                                    <thead class="thead-dark">
+                                <table class="table" id="hrTable">
+                                    <thead>
                                         <tr>
                                             <th>No.</th>
                                             <th>NIP</th>
@@ -61,7 +57,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($hr as $index => $hr_dosen)
+                                        {{-- @forelse ($hr as $index => $hr_dosen)
                                             <tr>
                                                 <td class="text-bold-500">
                                                     {{ $index + $hr->firstItem() }}
@@ -96,12 +92,9 @@
                                             <tr>
                                                 <td colspan="6" class="text-center">No Data Found</td>
                                             </tr>
-                                        @endforelse
+                                        @endforelse --}}
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="m-3 pagination pagination-primary">
-                                {{-- {{ $hr->links() }} --}}
                             </div>
                         </div>
                     </div>
@@ -110,8 +103,56 @@
         </section>
         <!-- Table head options end -->
     </div>
-
+@endsection
+@section('script')
     <script>
+        $(document).ready(function() {
+            $('#hrTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('hr.index') }}',
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'nip',
+                        name: 'nip'
+                    },
+                    {
+                        data: 'nama',
+                        name: 'nama'
+                    },
+                    {
+                        data: 'posisi',
+                        name: 'posisi'
+                    },
+                    {
+                        data: 'photo_profile',
+                        name: 'photo_profile',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                language: {
+                    searchPlaceholder: 'Search..',
+                    sSearch: '',
+                    paginate: {
+                        previous: "Prev",
+                        next: "Next"
+                    }
+                }
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const deleteButtons = document.querySelectorAll('.delete-btn');
 
