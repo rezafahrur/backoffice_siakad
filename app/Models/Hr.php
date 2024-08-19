@@ -21,7 +21,8 @@ class Hr extends Model
         'gelar_depan',
         'nama',
         'gelar_belakang',
-        'photo_profile'
+        'photo_profile',
+        'email',
     ];
 
     /**
