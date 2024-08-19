@@ -10,6 +10,7 @@ use App\Http\Controllers\HrController;
 use App\Http\Controllers\KtpController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProgramStudiController;
+use App\Http\Controllers\JurusanController;
 
 Route::get('/', function () {
     return view('home');
@@ -18,6 +19,15 @@ Route::get('/', function () {
 Route::get('/wizard', function () {
     return view('wizard');
 });
+
+// jurusan
+Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
+Route::get('/jurusan/create', [JurusanController::class, 'create'])->name('jurusan.create');
+Route::post('/jurusan', [JurusanController::class, 'store'])->name('jurusan.store');
+Route::get('/jurusan/{jurusan}/edit', [JurusanController::class, 'edit'])->name('jurusan.edit');
+Route::put('/jurusan/{jurusan}', [JurusanController::class, 'update'])->name('jurusan.update');
+Route::delete('/jurusan/{jurusan}', [JurusanController::class, 'destroy'])->name('jurusan.destroy');
+// Route::get('/jurusan/show/{id}', [JurusanController::class, 'show'])->name('jurusan.show');
 
 // prodi
 Route::get('/prodi', [ProgramStudiController::class, 'index'])->name('prodi.index');
