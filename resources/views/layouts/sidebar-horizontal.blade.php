@@ -18,6 +18,9 @@
                 <div class="submenu ">
                     <div class="submenu-group-wrapper">
                         <ul class="submenu-group">
+                            <li class="submenu-item {{ Route::is('jurusan.index') ? 'active' : '' }} ">
+                                <a href="{{ route('jurusan.index') }}" class='submenu-link'>Jurusan</a>
+                            </li>
                             <li class="submenu-item {{ Route::is('prodi.index') ? 'active' : '' }} ">
                                 <a href="{{ route('prodi.index') }}" class='submenu-link'>Program Studi</a>
                             </li>

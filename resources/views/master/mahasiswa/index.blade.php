@@ -16,10 +16,10 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="index.html">Dashboard</a>
+                                <a href="">Master</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                <a href="#">Table</a>
+                                <a href="">Table</a>
                             </li>
                         </ol>
                     </nav>
@@ -36,28 +36,26 @@
                                 Table Data Mahasiswa
                             </h4>
                         </div>
-                        <div class="card-content">
-                            <div class="card-body">
-                                <a href="{{ route('mahasiswa.create') }}" class="btn icon icon-left btn-primary"><i
-                                        data-feather="user-plus"></i>
-                                    Add Data</a>
-                            </div>
+                        <div class="card-body">
+                            <a href="{{ route('mahasiswa.create') }}" class="btn icon icon-left btn-primary"><i
+                                    data-feather="user-plus"></i>
+                                Add Data</a>
+                        </div>
 
-                            <!-- table head dark -->
-                            <div class="card-header table-responsive">
-                                <table class="table" id="mhsTable">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Nim</th>
-                                            <th>Nama Lengkap</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <!-- table head dark -->
+                        <div class="card-header table-responsive">
+                            <table class="table" id="mhsTable">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Nim</th>
+                                        <th>Nama Lengkap</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
