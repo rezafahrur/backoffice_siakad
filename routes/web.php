@@ -1,15 +1,20 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HrController;
+use App\Http\Controllers\KtpController;
+use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\PositionController;
+use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\HrController;
+use App\Http\Controllers\KtpController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProgramStudiController;
-use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\PaketMataKuliahController;
 
 Route::get('/', function () {
     return view('home');
@@ -105,3 +110,14 @@ Route::delete('master/hr/delete/{id}', [HrController::class, 'destroy'])->name('
 Route::get('/master/hr/show/{id}', [HrController::class, 'show'])->name('hr.show');
 Route::get('/master/hr/create', [HrController::class, 'create'])->name('hr.create');
 
+
+Route::get('/paket-matakuliah', [PaketMataKuliahController::class, 'index'])->name('paket-matakuliah.index');
+Route::get('/paket-matakuliah/create', [PaketMataKuliahController::class, 'create'])->name('paket-matakuliah.create');
+Route::post('/paket-matakuliah/store', [PaketMataKuliahController::class, 'store'])->name('paket-matakuliah.store');
+Route::get('/paket-matakuliah/show/{id}', [PaketMataKuliahController::class, 'show'])->name('paket-matakuliah.show');
+Route::get('/paket-matakuliah/edit/{id}', [PaketMataKuliahController::class, 'edit'])->name('paket-matakuliah.edit');
+Route::put('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'update'])->name('paket-matakuliah.update');
+Route::delete('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'destroy'])->name('paket-matakuliah.destroy');
+
+// Route untuk mengambil mata kuliah berdasarkan program studi dan semester
+Route::get('/paket-matakuliah/get-matakuliah', [PaketMataKuliahController::class, 'getMataKuliah'])->name('get-matakuliah');

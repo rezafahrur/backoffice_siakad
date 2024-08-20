@@ -105,6 +105,9 @@
                     <li class="submenu-item {{ Route::is('hr.index') ? 'active' : '' }}">
                         <a href="{{ route('hr.index') }}">HR</a>
                     </li>
+                    <li class="submenu-item {{ Route::is('paket-matakuliah.index') ? 'active' : '' }}">
+                        <a href="{{ route('paket-matakuliah.index') }}">Paket Matakuliah</a>
+                    </li>
                 </ul>
             </li>
         </ul>
