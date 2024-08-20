@@ -13,10 +13,10 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{ url('/') }}">Dashboard</a>
+                                <a href="">Master</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                <a href="#">Table</a>
+                                <a href="">Matkul</a>
                             </li>
                         </ol>
                     </nav>
@@ -34,7 +34,7 @@
                             </h4>
                         </div>
 
-                        <div class="card-body" style="margin-top: -2%">
+                        <div class="card-body">
                             <a href="{{ route('mata-kuliah.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
                                     data-feather="user-plus"></i>
                                 Add Data</a>

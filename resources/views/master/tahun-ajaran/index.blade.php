@@ -16,10 +16,10 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="index.html">Dashboard</a>
+                                <a href="">Master</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                <a href="#">Table</a>
+                                <a href="">Tahun Ajaran</a>
                             </li>
                         </ol>
                     </nav>
@@ -36,21 +36,14 @@
                                 Table Data Tahun Ajaran
                             </h4>
                         </div>
-                        <div class="card-content">
-                            <div class="card-body">
-                                <p>
-                                    "Welcome to our web page showcasing the user data of our boarding house, where comfort
-                                    and convenience come together in one place."
-                                </p>
-                                <a href="{{ route('tahun-ajaran.create') }}" class="btn icon icon-left btn-primary"><i
-                                        data-feather="user-plus"></i>
-                                    Add Data</a>
-                            </div>
-
+                        <div class="card-body">
+                            <a href="{{ route('tahun-ajaran.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
+                                    data-feather="user-plus"></i>
+                                Add Data</a>
                             <!-- table head dark -->
-                            <div class="table-responsive">
-                                <table class="table mb-0">
-                                    <thead class="thead-dark">
+                            <div class="card-header table-responsive">
+                                <table class="table" id="tahunTable">
+                                    <thead>
                                         <tr>
                                             <th>No.</th>
                                             <th>Tahun Ajaran</th>
@@ -58,48 +51,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($tahunAjaran as $index => $ta)
-                                            <tr>
-                                                <td class="text-bold-500">
-                                                    {{ $index + $tahunAjaran->firstItem() }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    {{ $ta->tahun_ajaran }}
-                                                </td>
-                                                <td>
-                                                    {{-- <a href="{{ route('kelas.edit', $kelas) }}" class="btn icon btn-primary"
-                                                        title="Detail"><i class="bi bi-eye"></i></a> --}}
-                                                    <a href="{{ route('tahun-ajaran.edit', $ta->id) }}"
-                                                        class="btn icon btn-warning" title="Edit"><i
-                                                            class="bi bi-pencil-square"></i></a>
-                                                    <form action="{{ route('tahun-ajaran.destroy', $ta->id) }}"
-                                                        method="post" class="d-inline">
-                                                        @csrf
-                                                        @method('delete')
-                                                        <button onclick="return confirm('Konfirmasi hapus data ?')"
-                                                            class="btn icon btn-danger" title="Delete"><i
-                                                                class="bi bi-trash"></i></button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="6" class="text-center">No Data Found</td>
-                                            </tr>
-                                        @endforelse
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="m-3 pagination pagination-primary">
-                                {{ $tahunAjaran->links() }}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </section>
         <!-- Table head options end -->
     </div>
+@endsection
+
+@section('script')
     <script>
         @if (session('success'))
             Swal.fire({
@@ -109,5 +72,41 @@
                 confirmButtonText: 'OK'
             });
         @endif
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#tahunTable').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                ajax: '{{ route('tahun-ajaran.index') }}',
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'tahun_ajaran',
+                        name: 'tahun_ajaran'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+                language: {
+                    searchPlaceholder: 'Search...',
+                    sSearch: '',
+                    paginate: {
+                        previous: "Prev",
+                        next: "Next"
+                    }
+                },
+            });
+        });
     </script>
 @endsection
