@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\KtpRequest;
 use App\Http\Requests\MahasiswaRequest;
+use App\Models\Jurusan;
 use App\Models\Ktp;
 use App\Models\Mahasiswa;
 use App\Models\MahasiswaDetail;
@@ -22,12 +23,12 @@ class MahasiswaController extends Controller
 {
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             $mhs = Mahasiswa::query();
 
             return DataTables::of($mhs)
                 ->addIndexColumn()
-                ->addColumn('action', function($row) {
+                ->addColumn('action', function ($row) {
                     $showBtn = '<a href="' . route('mahasiswa.show', $row->id) . '" class="btn icon btn-info" title="Detail"><i class="bi bi-eye"></i></a>';
                     $editBtn = '<a href="' . route('mahasiswa.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
                     $deleteBtn = '<form action="' . route('mahasiswa.destroy', $row->id) . '" method="post" class="d-inline">
@@ -36,7 +37,7 @@ class MahasiswaController extends Controller
                                           <i class="bi bi-trash"></i>
                                       </button>
                                   </form>';
-                    return $showBtn. ' ' .$editBtn . ' ' . $deleteBtn;
+                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
                 })
                 ->rawColumns(['action']) // Ensures that HTML code for the action buttons is rendered correctly
                 ->make(true);
@@ -49,7 +50,7 @@ class MahasiswaController extends Controller
         // Fetch data for the dropdowns
         $provinces = Province::all();
         $prodi = ProgramStudi::all();
-        $jurusan = DB::table('m_jurusan')->get();
+        $jurusan = Jurusan::all();
 
         return view('master.mahasiswa.create', compact('provinces', 'prodi', 'jurusan'));
     }
@@ -58,29 +59,29 @@ class MahasiswaController extends Controller
     {
         // Fetch data for the dropdowns
         $prodi = ProgramStudi::all();
+        $jurusan = Jurusan::all();
 
         // Fetch data mahasiswa by ID
         $mahasiswa = Mahasiswa::findOrFail($id);
 
         // Fetch data wali by mahasiswa ID
-        $wali = MahasiswaWali::where('mahasiswa_id', $id)->first();
+        $wali1 = MahasiswaWali::where('mahasiswa_id', $id)
+            ->where('status_kewalian', 'AYAH')
+            ->first();
+
+        $wali2 = MahasiswaWali::where('mahasiswa_id', $id)
+            ->where('status_kewalian', 'IBU')
+            ->first();
 
         // Fetch data for the dropdowns and populate with existing data
         $provinces = Province::all();
-        $cities = City::where('province_code', $mahasiswa->ktp->alamat_prov_code)->get();
-        $districts = District::where('city_code', $mahasiswa->ktp->alamat_kotakab_code)->get();
-        $villages = Village::where('district_code', $mahasiswa->ktp->alamat_kec_code)->get();
 
-        return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'cities', 'districts', 'villages', 'wali'));
+        return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'wali1', 'wali2', 'jurusan'));
     }
 
     public function storeOrUpdate(MahasiswaRequest $request)
     {
-        // dd($request->all());
-
         $data = $request->validated();
-
-        dd($data);
 
         // Validate nim apakah create atau update ( jika ada id berarti update )
         if (!$request->has('id')) {
@@ -88,8 +89,8 @@ class MahasiswaController extends Controller
             $year = substr($data['registrasi_tanggal'], 2, 2);
             $jenjang = '04';
 
-            $jurusan = DB::table('m_jurusan')->where('id', $data['jurusan'])->first();
-            $jrs = str_pad($jurusan->kode_jurusan, 2, '0', STR_PAD_LEFT); 
+            $jurusan = Jurusan::find($data['program_studi']);
+            $jrs = str_pad($jurusan->kode_jurusan, 2, '0', STR_PAD_LEFT);
 
             $programStudi = ProgramStudi::find($data['program_studi']);
             $program = str_pad($programStudi->kode_program_studi, 2, '0', STR_PAD_LEFT);
@@ -106,6 +107,8 @@ class MahasiswaController extends Controller
             }
 
             $data['nim'] = $year . $jenjang . $jrs . $program . $newSequence;
+        } else {
+            $data['nim'] = Mahasiswa::find($request['id'])->nim;
         }
 
         try {
@@ -279,7 +282,7 @@ class MahasiswaController extends Controller
         $ktp = $mahasiswa->ktp;
         $wali = $mahasiswa->mahasiswaWali;
 
-        $jurusan = DB::table('m_jurusan')->where('id', $mahasiswa->jurusan_id)->first();
+        $jurusan = Jurusan::find($mahasiswa->jurusan_id);
 
         // dd($wali->ktp->nama);
 
@@ -313,37 +316,43 @@ class MahasiswaController extends Controller
 
     public function destroy(Mahasiswa $mahasiswa)
     {
+        // Loop through each guardian (Wali)
+        foreach ($mahasiswa->mahasiswaWali as $wali) {
+            // Simpan referensi ke KTP wali sebelum menghapus MahasiswaWali
+            $ktpWali = $wali->ktp;
 
-        // Simpan referensi ke KTP wali sebelum menghapus MahasiswaWali
-        $ktpWali = $mahasiswa->mahasiswaWali ? $mahasiswa->mahasiswaWali->ktp : null;
+            // Hapus MahasiswaWaliDetail jika ada
+            if ($wali->mahasiswaWaliDetail) {
+                // $wali->mahasiswaWaliDetail->delete();
+                // dd($wali->mahasiswaWaliDetail);
+                dump($wali->mahasiswaWaliDetail);
+            }
 
-        // Hapus MahasiswaWaliDetail jika ada
-        if ($mahasiswa->mahasiswaWali && $mahasiswa->mahasiswaWali->mahasiswaWaliDetail) {
-            $mahasiswa->mahasiswaWali->mahasiswaWaliDetail->delete();
+            // Hapus KTP wali jika ada
+            if ($ktpWali) {
+                // $ktpWali->delete();
+                dump($ktpWali);
+            }
+
+            // Hapus MahasiswaWali
+            // $wali->delete();
+            dump($wali);
         }
 
-        // Hapus MahasiswaWali jika ada
-        if ($mahasiswa->mahasiswaWali) {
-            $mahasiswa->mahasiswaWali->delete();
-        }
-
-        // Hapus KTP wali jika ada
-        if ($ktpWali) {
-            $ktpWali->delete();
-        }
+        exit;
 
         // Hapus MahasiswaDetail jika ada
         if ($mahasiswa->mahasiswaDetail) {
-            $mahasiswa->mahasiswaDetail->delete();
+            // $mahasiswa->mahasiswaDetail->delete();
         }
 
         // Hapus KTP mahasiswa jika ada
         if ($mahasiswa->ktp) {
-            $mahasiswa->ktp->delete();
+            // $mahasiswa->ktp->delete();
         }
 
         // Hapus Mahasiswa
-        $mahasiswa->delete();
+        // $mahasiswa->delete();
 
         return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa dan data terkait berhasil dihapus');
     }

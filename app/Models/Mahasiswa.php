@@ -40,11 +40,11 @@ class Mahasiswa extends Model
 
     public function mahasiswaWali()
     {
-        return $this->hasOne(MahasiswaWali::class, 'mahasiswa_id', 'id');
+        return $this->hasMany(MahasiswaWali::class, 'mahasiswa_id', 'id');
     }
 
     public function mahasiswaDetail()
     {
-        return $this->hasOne(MahasiswaDetail::class, 'mahasiswa_id', 'id');
+        return $this->hasMany(MahasiswaDetail::class, 'mahasiswa_id', 'id');
     }
 }

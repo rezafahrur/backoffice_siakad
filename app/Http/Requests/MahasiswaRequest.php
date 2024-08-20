@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Mahasiswa;
+use App\Models\MahasiswaWali;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -19,7 +21,7 @@ class MahasiswaRequest extends FormRequest
         if ($this->isMethod('post')) {
             return $this->createRules();
         }
-
+        
         return $this->updateRules();
     }
 
@@ -105,19 +107,22 @@ class MahasiswaRequest extends FormRequest
 
     private function updateRules(): array
     {
+        $mahasiswa = Mahasiswa::find($this->route('mahasiswa'));
+        $wali1 = MahasiswaWali::where('mahasiswa_id', $mahasiswa->id)->where('status_kewalian', 'AYAH')->first();
+        $wali2 = MahasiswaWali::where('mahasiswa_id', $mahasiswa->id)->where('status_kewalian', 'IBU')->first();
         return [
             // Validasi Mahasiswa
             'nama' => 'required|string|max:50',
-            'email' => 'required|string|email|max:50|unique:m_mahasiswa,email,' . $this->route('mahasiswa'),
-            'nisn' => 'required|string|max:10|unique:m_mahasiswa,nisn,' . $this->route('mahasiswa'),
-            'jurusan' => 'required|integer|exists:jurusan,id',
-            'program_studi' => 'required|integer|exists:program_studi,id',
+            'email' => 'required|string|email|max:50|unique:m_mahasiswa,email,' . $mahasiswa->id,
+            'nisn' => 'required|string|max:10|unique:m_mahasiswa,nisn,' . $mahasiswa->id,
+            'jurusan' => 'required|integer|exists:m_jurusan,id',
+            'program_studi' => 'required|integer|exists:m_program_studi,id',
             'registrasi_tanggal' => 'required|date',
             'status' => 'required|string|max:50',
             'semester_berjalan' => 'required|integer|min:1|max:14',
             'no_hp' => 'required|string|max:15',
             'alamat_domisili' => 'required|string|max:128',
-            'nik' => 'required|string|max:16|unique:t_ktp,nik,' . $this->route('mahasiswa'),
+            'nik' => 'required|string|max:16|unique:t_ktp,nik,' . $mahasiswa->ktp_id,
             'alamat_jalan' => 'required|string|max:128',
             'alamat_rt' => 'required|string|max:3',
             'alamat_rw' => 'required|string|max:3',
@@ -139,7 +144,7 @@ class MahasiswaRequest extends FormRequest
             'wali_pekerjaan_1' => 'required|string|max:50',
             'wali_penghasilan_1' => 'required|string|max:50',
             'pendidikan_terakhir_1' => 'required|string|max:3|in:D1,D2,D3,D4,S1,S2,S3',
-            'wali_nik_1' => 'required|string|max:16|unique:t_ktp,nik,' . $this->route('mahasiswa'),
+            'wali_nik_1' => 'required|string|max:16|unique:t_ktp,nik,' . $wali1->ktp_id,
             'wali_alamat_jalan_1' => 'required|string|max:128',
             'wali_alamat_rt_1' => 'required|string|max:3',
             'wali_alamat_rw_1' => 'required|string|max:3',
@@ -161,7 +166,7 @@ class MahasiswaRequest extends FormRequest
             'wali_pekerjaan_2' => 'required|string|max:50',
             'wali_penghasilan_2' => 'required|string|max:50',
             'pendidikan_terakhir_2' => 'required|string|max:3|in:D1,D2,D3,D4,S1,S2,S3',
-            'wali_nik_2' => 'required|string|max:16|unique:t_ktp,nik,' . $this->route('mahasiswa'),
+            'wali_nik_2' => 'required|string|max:16|unique:t_ktp,nik,' . $wali2->ktp_id,
             'wali_alamat_jalan_2' => 'required|string|max:128',
             'wali_alamat_rt_2' => 'required|string|max:3',
             'wali_alamat_rw_2' => 'required|string|max:3',
