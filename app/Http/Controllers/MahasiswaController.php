@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\KtpRequest;
+use App\Http\Requests\MahasiswaRequest;
 use App\Models\Ktp;
 use App\Models\Mahasiswa;
 use App\Models\MahasiswaDetail;
@@ -73,11 +74,13 @@ class MahasiswaController extends Controller
         return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'cities', 'districts', 'villages', 'wali'));
     }
 
-    public function storeOrUpdate(Request $request)
+    public function storeOrUpdate(MahasiswaRequest $request)
     {
-        $data = $request->all();
+        // dd($request->all());
 
-        // dd($data);
+        $data = $request->validated();
+
+        dd($data);
 
         // Validate nim apakah create atau update ( jika ada id berarti update )
         if (!$request->has('id')) {
