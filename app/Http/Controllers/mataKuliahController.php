@@ -18,10 +18,10 @@ class mataKuliahController extends Controller
             return DataTables::of($matkul)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $editBtn = '<a href="' . route('mata-kuliah.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $editBtn = '<a href="' . route('mata-kuliah.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
                     $deleteBtn = '<form action="' . route('mata-kuliah.destroy', $row->id) . '" method="post" class="d-inline">
                                       ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger" title="Delete">
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
                                           <i class="bi bi-trash"></i>
                                       </button>
                                   </form>';

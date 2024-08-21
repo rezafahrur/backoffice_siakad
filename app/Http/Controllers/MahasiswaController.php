@@ -26,11 +26,11 @@ class MahasiswaController extends Controller
             return DataTables::of($mhs)
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
-                    $showBtn = '<a href="' . route('mahasiswa.show', $row->id) . '" class="btn icon btn-info" title="Detail"><i class="bi bi-eye"></i></a>';
-                    $editBtn = '<a href="' . route('mahasiswa.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $showBtn = '<a href="' . route('mahasiswa.show', $row->id) . '" class="btn icon btn-sm btn-info" title="Detail"><i class="bi bi-eye"></i></a>';
+                    $editBtn = '<a href="' . route('mahasiswa.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
                     $deleteBtn = '<form action="' . route('mahasiswa.destroy', $row->id) . '" method="post" class="d-inline">
                                       ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger" title="Delete">
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
                                           <i class="bi bi-trash"></i>
                                       </button>
                                   </form>';

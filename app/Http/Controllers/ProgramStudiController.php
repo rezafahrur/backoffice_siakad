@@ -19,14 +19,14 @@ class ProgramStudiController extends Controller
             return DataTables::of($program_studi)
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
-                    $editBtn = '<a href="' . route('prodi.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $editBtn = '<a href="' . route('prodi.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
                     $deleteBtn = '<form action="' . route('prodi.destroy', $row->id) . '" method="post" class="d-inline">
                                       ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger" title="Delete">
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
                                           <i class="bi bi-trash"></i>
                                       </button>
                                   </form>';
-                    $showBtn = '<a href="' . route('prodi.show', $row->id) . '" class="btn icon btn-info" title="Show"><i class="bi bi-eye"></i></a>';
+                    $showBtn = '<a href="' . route('prodi.show', $row->id) . '" class="btn icon btn-sm btn-info" title="Show"><i class="bi bi-eye"></i></a>';
                     return $editBtn . ' ' . $deleteBtn . ' ' . $showBtn;
                 })
                 ->rawColumns(['action'])

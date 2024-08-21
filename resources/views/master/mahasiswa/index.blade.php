@@ -40,22 +40,21 @@
                             <a href="{{ route('mahasiswa.create') }}" class="btn icon icon-left btn-primary"><i
                                     data-feather="user-plus"></i>
                                 Add Data</a>
-                        </div>
-
-                        <!-- table head dark -->
-                        <div class="card-header table-responsive">
-                            <table class="table" id="mhsTable">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Nim</th>
-                                        <th>Nama Lengkap</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+                            <!-- table head dark -->
+                            <div class="card-header table-responsive">
+                                <table class="table" id="mhsTable">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Nim</th>
+                                            <th>Nama Lengkap</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

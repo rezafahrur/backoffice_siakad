@@ -7,15 +7,36 @@ use App\Models\PaketMataKuliahDetail;
 use App\Models\Matakuliah;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class PaketMataKuliahController extends Controller
 {
     // Menampilkan daftar paket mata kuliah
-    public function index()
-{
-    $paketMatakuliah = PaketMataKuliah::with('programStudi')->get();
-    return view('master.paket-matakuliah.index', compact('paketMatakuliah'));
-}
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $paketMatakuliah = PaketMataKuliah::join('m_program_studi', 'm_paket_matakuliah.program_studi_id', '=', 'm_program_studi.id')
+            ->select('m_paket_matakuliah.*', 'm_program_studi.nama_program_studi')
+            ->get();
+
+            return DataTables::of($paketMatakuliah)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $editBtn = '<a href="' . route('paket-matakuliah.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $deleteBtn = '<form action="' . route('paket-matakuliah.destroy', $row->id) . '" method="post" class="d-inline">
+                                      ' . csrf_field() . method_field('DELETE') . '
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
+                                          <i class="bi bi-trash"></i>
+                                      </button>
+                                  </form>';
+                    $showBtn = '<a href="' . route('paket-matakuliah.show', $row->id) . '" class="btn icon btn-sm btn-info" title="Detail"><i class="bi bi-eye"></i></a>';
+                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('master.paket-matakuliah.index');
+    }
 
 
     // Menampilkan form untuk membuat paket mata kuliah baru
@@ -55,8 +76,8 @@ class PaketMataKuliahController extends Controller
         $paketMatakuliah = PaketMataKuliah::with('programStudi', 'paketMataKuliahDetail.matakuliah')->findOrFail($id);
         return view('master.paket-matakuliah.show', compact('paketMatakuliah'));
     }
-    
-    
+
+
 
     // Menampilkan form untuk mengedit paket mata kuliah
     public function edit($id)
@@ -101,7 +122,7 @@ public function destroy($id)
 {
     // Hapus detail yang terkait
     PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->delete();
-    
+
     // Hapus paket mata kuliah
     PaketMataKuliah::destroy($id);
 
@@ -114,21 +135,21 @@ public function destroy($id)
     {
         $kodeProgramStudi = $request->query('kode_prodi');
         $semester = $request->query('semester');
-    
+
         $mataKuliah = Matakuliah::where('kode_matakuliah', 'LIKE', $kodeProgramStudi . '%')
                                 ->where('kode_matakuliah', 'LIKE', '%' . $semester . '%')
                                 ->get(['id', 'kode_matakuliah', 'nama_matakuliah']);
-    
+
         // Mengabaikan bagian terakhir dari kode mata kuliah
         $mataKuliah->transform(function ($item) {
             $item->kode_matakuliah = substr($item->kode_matakuliah, 0, -3);
             return $item;
         });
-    
+
         return response()->json($mataKuliah);
     }
-    
-    
-    
-    
+
+
+
+
 }

@@ -57,6 +57,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </section>
         <!-- Table head options end -->
     </div>
