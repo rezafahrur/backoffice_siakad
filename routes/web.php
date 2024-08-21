@@ -20,6 +20,7 @@ Route::get('/wizard', function () {
     return view('wizard');
 });
 
+
 // jurusan
 Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
 Route::get('/jurusan/create', [JurusanController::class, 'create'])->name('jurusan.create');
