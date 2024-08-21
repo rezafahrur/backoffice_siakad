@@ -34,4 +34,9 @@ class MahasiswaWali extends Model
     {
         return $this->hasOne(MahasiswaWaliDetail::class, 'mahasiswa_wali_id', 'id');
     }
+
+    public function mahasiswaWaliDetailDelete()
+    {
+        return $this->hasMany(MahasiswaWaliDetail::class, 'mahasiswa_wali_id', 'id');
+    }
 }

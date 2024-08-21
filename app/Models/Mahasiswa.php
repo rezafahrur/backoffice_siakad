@@ -45,6 +45,16 @@ class Mahasiswa extends Model
 
     public function mahasiswaDetail()
     {
+        return $this->hasOne(MahasiswaDetail::class, 'mahasiswa_id', 'id');
+    }
+
+    public function mahasiswaDetailDelete()
+    {
         return $this->hasMany(MahasiswaDetail::class, 'mahasiswa_id', 'id');
+    }
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class, 'jurusan_id', 'id');
     }
 }
