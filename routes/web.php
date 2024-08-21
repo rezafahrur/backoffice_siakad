@@ -117,4 +117,4 @@ Route::put('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'update'
 Route::delete('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'destroy'])->name('paket-matakuliah.destroy');
 
 // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
-Route::get('/paket-matakuliah/get-matakuliah', [PaketMataKuliahController::class, 'getMataKuliah'])->name('get-matakuliah');
+Route::get('/paket-matakuliah/get-matakuliah/{programStudiId}/{semester}', [PaketMataKuliahController::class, 'getMataKuliah'])->name('get-matakuliah');
