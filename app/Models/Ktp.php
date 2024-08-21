@@ -53,4 +53,14 @@ class Ktp extends Model
     {
         return $this->belongsTo(Village::class, 'alamat_kel_code', 'code');
     }
+
+    public function mahasiswa()
+    {
+        return $this->hasMany(Mahasiswa::class, 'ktp_id', 'id');
+    }
+
+    public function mahasiswaWali()
+    {
+        return $this->hasMany(MahasiswaWali::class, 'ktp_id', 'id');
+    }
 }
