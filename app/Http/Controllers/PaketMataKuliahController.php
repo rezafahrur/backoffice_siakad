@@ -7,6 +7,7 @@ use App\Models\PaketMataKuliahDetail;
 use App\Models\Matakuliah;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class PaketMataKuliahController extends Controller
@@ -116,40 +117,41 @@ class PaketMataKuliahController extends Controller
         return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil diperbarui.');
     }
 
-    // Menghapus paket mata kuliah dari database
-// Menghapus paket mata kuliah dari database
-public function destroy($id)
-{
-    // Hapus detail yang terkait
-    PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->delete();
-
-    // Hapus paket mata kuliah
-    PaketMataKuliah::destroy($id);
-
-    return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil dihapus.');
-}
-
-
-    // Method untuk mendapatkan mata kuliah berdasarkan program studi dan semester yang dipilih
-    public function getMataKuliah(Request $request)
+    public function destroy($id)
     {
-        $kodeProgramStudi = $request->query('kode_prodi');
-        $semester = $request->query('semester');
+        // Hapus detail yang terkait
+        PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->delete();
 
-        $mataKuliah = Matakuliah::where('kode_matakuliah', 'LIKE', $kodeProgramStudi . '%')
-                                ->where('kode_matakuliah', 'LIKE', '%' . $semester . '%')
-                                ->get(['id', 'kode_matakuliah', 'nama_matakuliah']);
+        // Hapus paket mata kuliah
+        PaketMataKuliah::destroy($id);
 
-        // Mengabaikan bagian terakhir dari kode mata kuliah
-        $mataKuliah->transform(function ($item) {
-            $item->kode_matakuliah = substr($item->kode_matakuliah, 0, -3);
-            return $item;
-        });
-
-        return response()->json($mataKuliah);
+        return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil dihapus.');
     }
 
 
+    public function getMataKuliah(Request $request, $programStudiId, $semester)
+{
+    // Validasi nilai semester
+    if (is_null($semester) || !is_numeric($semester)) {
+        return response()->json(['message' => 'Invalid semester value'], 400);
+    }
+
+    try {
+        $mataKuliah = Matakuliah::where('program_studi_id', '=', $programStudiId)
+                                ->where(DB::raw('SUBSTRING(kode_matakuliah, 6, 1)'), '=', $semester)
+                                ->get(['id', 'kode_matakuliah', 'nama_matakuliah']);
+
+        if ($mataKuliah->isEmpty()) {
+            return response()->json(['message' => 'Mata Kuliah not found'], 404);
+        }
+
+        return response()->json($mataKuliah);
+    } catch (\Exception $e) {
+        // Log error untuk debugging
+        \Log::error('Error fetching Mata Kuliah: '.$e->getMessage());
+        return response()->json(['message' => 'Internal Server Error'], 500);
+    }
+}
 
 
 }

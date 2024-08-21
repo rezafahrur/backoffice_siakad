@@ -15,11 +15,17 @@ class Mahasiswa extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'ktp_id',
+        'nisn',
+        'email',
+        'jurusan_id',
         'program_studi_id',
         'nim',
         'nama',
         'registrasi_tanggal',
         'status',
+        'nama_kontak_darurat',
+        'hubungan_kontak_darurat',
+        'hp_kontak_darurat',
     ];
 
     public function programStudi()
@@ -34,11 +40,21 @@ class Mahasiswa extends Model
 
     public function mahasiswaWali()
     {
-        return $this->hasOne(MahasiswaWali::class, 'mahasiswa_id', 'id');
+        return $this->hasMany(MahasiswaWali::class, 'mahasiswa_id', 'id');
     }
 
     public function mahasiswaDetail()
     {
         return $this->hasOne(MahasiswaDetail::class, 'mahasiswa_id', 'id');
+    }
+
+    public function mahasiswaDetailDelete()
+    {
+        return $this->hasMany(MahasiswaDetail::class, 'mahasiswa_id', 'id');
+    }
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class, 'jurusan_id', 'id');
     }
 }

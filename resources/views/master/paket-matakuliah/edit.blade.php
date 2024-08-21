@@ -32,7 +32,7 @@
             <div class="mb-3">
                 <label for="program_studi_id" class="form-label">Program Studi</label>
                 <select class="form-select" id="program_studi_id" name="program_studi_id" required>
-                    <option value="" disabled selected>Pilih Program Studi</option> <!-- Opsi default -->
+                    <option value="" disabled selected>Pilih Program Studi</option>
                     @foreach($programStudi as $prodi)
                         <option value="{{ $prodi->id }}" {{ $prodi->id == $paketMatakuliah->program_studi_id ? 'selected' : '' }}>
                             {{ $prodi->kode_program_studi }} - {{ $prodi->nama_program_studi }}
@@ -64,11 +64,7 @@
             <div class="mb-3">
                 <label for="matakuliah_id" class="form-label">Mata Kuliah</label>
                 <select class="form-select" id="multiple-select-field" name="matakuliah_id[]" multiple required>
-                    @foreach($matakuliah as $matkul)
-                        <option value="{{ $matkul->id }}" {{ in_array($matkul->id, old('matakuliah_id', $matakuliahTerpilih)) ? 'selected' : '' }}>
-                            {{ $matkul->kode_matakuliah }} - {{ $matkul->nama_matakuliah }}
-                        </option>
-                    @endforeach
+                    {{-- Opsi mata kuliah diupdate via AJAX --}}
                 </select>
             </div>
 
@@ -85,12 +81,54 @@
 
     <script>
     $(document).ready(function() {
-        $('#multiple-select-field').select2({
+        const programStudiSelect = $('#program_studi_id');
+        const semesterSelect = $('#semester');
+        const mataKuliahSelect = $('#multiple-select-field');
+
+        function fetchMataKuliah() {
+            const programStudiId = programStudiSelect.val();
+            const semester = semesterSelect.val();
+
+            $.ajax({
+                url: `/paket-matakuliah/get-matakuliah/${programStudiId}/${semester}`,
+                method: 'GET',
+                success: function(response) {
+                    mataKuliahSelect.empty();
+                    if (response.length === 0) {
+                        mataKuliahSelect.append(new Option('Mata Kuliah tidak ditemukan.', '', false, false));
+                    } else {
+                        response.forEach(mataKuliah => {
+                            mataKuliahSelect.append(new Option(mataKuliah.nama_matakuliah, mataKuliah.id, false, false));
+                        });
+                    }
+                    mataKuliahSelect.val({{ json_encode($matakuliahTerpilih) }}).trigger('change');
+                },
+                error: function(xhr) {
+                    mataKuliahSelect.empty();
+                    if (xhr.status === 404) {
+                        mataKuliahSelect.append(new Option('Mata Kuliah tidak ditemukan.', '', false, false));
+                    } else {
+                        mataKuliahSelect.append(new Option('Terjadi kesalahan pada server.', '', false, false));
+                    }
+                    mataKuliahSelect.trigger('change');
+                }
+            });
+        }
+
+        // Inisialisasi Select2
+        mataKuliahSelect.select2({
             theme: "bootstrap-5",
             width: '100%',
             placeholder: "Pilih Mata Kuliah",
             closeOnSelect: false
         });
+
+        // Inisialisasi data mata kuliah saat halaman dimuat
+        fetchMataKuliah();
+
+        // Update data mata kuliah saat program studi atau semester berubah
+        programStudiSelect.on('change', fetchMataKuliah);
+        semesterSelect.on('change', fetchMataKuliah);
     });
     </script>
 

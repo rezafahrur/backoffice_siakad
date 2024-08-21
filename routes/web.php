@@ -1,15 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HrController;
-use App\Http\Controllers\KtpController;
 use App\Http\Controllers\JurusanController;
-use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\HrController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProgramStudiController;
 use App\Http\Controllers\PaketMataKuliahController;
 
@@ -118,4 +117,4 @@ Route::put('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'update'
 Route::delete('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'destroy'])->name('paket-matakuliah.destroy');
 
 // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
-Route::get('/paket-matakuliah/get-matakuliah', [PaketMataKuliahController::class, 'getMataKuliah'])->name('get-matakuliah');
+Route::get('/paket-matakuliah/get-matakuliah/{programStudiId}/{semester}', [PaketMataKuliahController::class, 'getMataKuliah'])->name('get-matakuliah');
