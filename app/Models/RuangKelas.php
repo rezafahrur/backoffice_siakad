@@ -12,6 +12,7 @@ class RuangKelas extends Model
     use SoftDeletes;
 
     protected $table = 'm_ruang_kelas';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'kode_ruang_kelas',
         'nama_ruang_kelas',
