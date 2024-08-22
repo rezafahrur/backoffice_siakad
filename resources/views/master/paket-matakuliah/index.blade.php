@@ -36,20 +36,14 @@
                                 Table Data Paket Matakuliah
                             </h4>
                         </div>
-                        <div class="card-content">
-                            <div class="card-body">
-                                <p>
-                                    "Welcome to our web page showcasing the user data of our boarding house, where comfort
-                                    and convenience come together in one place."
-                                </p>
-                                <a href="{{ route('paket-matakuliah.create') }}" class="btn icon icon-left btn-primary"><i
-                                        data-feather="user-plus"></i>
-                                    Add Data Paket Matakuliah</a>
-                            </div>
+                        <div class="card-body">
+                            <a href="{{ route('paket-matakuliah.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
+                                    data-feather="user-plus"></i>
+                                Add Data</a>
 
                             <!-- table head dark -->
                             <div class="table-responsive">
-                                <table class="table mb-0">
+                                <table class="table" id="dataTable">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>No.</th>
@@ -61,54 +55,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($paketMatakuliah as $index => $paketmatkul)
-                                        <tr>
-                                            <td class="text-bold-500">
-                                                {{ $index + 1 }}
-                                            </td>
-                                            <td class="text-bold-500">
-                                                {{ $paketmatkul->nama_paket_matakuliah }}
-                                            </td>
-                                            <td class="text-bold-500">
-                                                {{ $paketmatkul->programStudi->nama_program_studi }}
-                                            </td>
-                                            {{-- semester --}}
-                                            <td class="text-bold-500">
-                                                {{ $paketmatkul->semester }}
-                                            </td>
-                                            {{-- status --}}
-                                            <td>
-                                                <span class="badge {{ $paketmatkul->status == '1' ? 'bg-success' : 'bg-danger' }}">
-                                                    {{ $paketmatkul->status == '1' ? 'Aktif' : 'Tidak Aktif' }}
-                                                </span>
-                                            </td>
-                                            
-                                            
-                                            <td>
-                                                <a href="{{ url('/paket-matakuliah/show/'.$paketmatkul->id) }}" class="btn icon btn-primary" title="Detail"><i
-                                                        class="bi bi-eye"></i></a>
-                                                <a href="{{ url('/paket-matakuliah/edit/'.$paketmatkul->id) }}" class="btn icon btn-warning" title="Edit"><i
-                                                        class="bi bi-pencil-square"></i></a>
-                                                        <form action="{{ url('/paket-matakuliah/'.$paketmatkul->id) }}" method="post" class="d-inline">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button onclick="return confirm('Konfirmasi hapus data ?')"
-                                                                class="btn icon btn-danger" title="Delete"><i
-                                                                    class="bi bi-trash"></i></button>
-                                                        </form>
-
-                                            </td>
-                                        </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="6" class="text-center">No Data Found</td>
-                                            </tr>
-                                        @endforelse
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="m-3 pagination pagination-primary">
-                                {{-- {{ $users->links() }} --}}
                             </div>
                         </div>
                     </div>
@@ -117,8 +65,12 @@
         </section>
         <!-- Table head options end -->
     </div>
+
+@endsection
+
+@section('script')
     <script>
-        @if(session('success'))
+        @if (session('success'))
             Swal.fire({
                 title: 'Berhasil!',
                 text: '{{ session('success') }}',
@@ -126,8 +78,61 @@
                 confirmButtonText: 'OK'
             });
         @endif
+
+        // datatables
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                ajax: {
+                    url: "{{ route('paket-matakuliah.index') }}",
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'nama_paket_matakuliah',
+                        name: 'nama_paket_matakuliah'
+                    },
+                    {
+                        data: 'nama_program_studi',
+                        name: 'nama_program_studi'
+                    },
+                    {
+                        data: 'semester',
+                        name: 'semester'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        render: function(data, row, type) {
+                            if (data === 1) {
+                                return '<span class="badge bg-success">Aktif</span>';
+                            } else {
+                                return '<span class="badge bg-danger">Tidak Aktif</span>';
+                            }
+                        }
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                language: {
+                    searchPlaceholder: 'Search...',
+                    sSearch: '',
+                    paginate: {
+                        previous: "Prev",
+                        next: "Next"
+                    }
+                }
+            });
+        });
     </script>
 @endsection
-
-
-

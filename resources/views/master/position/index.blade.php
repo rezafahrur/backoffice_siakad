@@ -44,21 +44,22 @@
                             <a href="{{ url('master/position/create') }}" class="btn icon icon-left btn-primary"><i
                                     data-feather="user-plus"></i>
                                 Add Data Position</a>
-                        </div>
 
-                        <!-- table head dark -->
-                        <div class="card-header table-responsive">
-                            <table class="table" id="psTable">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Posisi</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
+
+                            <!-- table head dark -->
+                            <div class="card-header table-responsive">
+                                <table class="table" id="psTable">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Posisi</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

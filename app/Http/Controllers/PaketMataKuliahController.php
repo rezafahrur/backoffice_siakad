@@ -7,15 +7,37 @@ use App\Models\PaketMataKuliahDetail;
 use App\Models\Matakuliah;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class PaketMataKuliahController extends Controller
 {
     // Menampilkan daftar paket mata kuliah
-    public function index()
-{
-    $paketMatakuliah = PaketMataKuliah::with('programStudi')->get();
-    return view('master.paket-matakuliah.index', compact('paketMatakuliah'));
-}
+    public function index(Request $request)
+    {
+        if ($request->ajax()) {
+            $paketMatakuliah = PaketMataKuliah::join('m_program_studi', 'm_paket_matakuliah.program_studi_id', '=', 'm_program_studi.id')
+            ->select('m_paket_matakuliah.*', 'm_program_studi.nama_program_studi')
+            ->get();
+
+            return DataTables::of($paketMatakuliah)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $editBtn = '<a href="' . route('paket-matakuliah.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $deleteBtn = '<form action="' . route('paket-matakuliah.destroy', $row->id) . '" method="post" class="d-inline">
+                                      ' . csrf_field() . method_field('DELETE') . '
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
+                                          <i class="bi bi-trash"></i>
+                                      </button>
+                                  </form>';
+                    $showBtn = '<a href="' . route('paket-matakuliah.show', $row->id) . '" class="btn icon btn-sm btn-info" title="Detail"><i class="bi bi-eye"></i></a>';
+                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('master.paket-matakuliah.index');
+    }
 
 
     // Menampilkan form untuk membuat paket mata kuliah baru
@@ -27,26 +49,58 @@ class PaketMataKuliahController extends Controller
     }
 
     // Menyimpan paket mata kuliah baru ke dalam database
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'nama_paket_matakuliah' => 'required',
+    //         'program_studi_id' => 'required',
+    //         'semester' => 'required|integer|min:1|max:8',
+    //         'matakuliah_id' => 'required|array',
+    //     ]);
+
+    //     $paketMatakuliah = PaketMataKuliah::create($request->only('nama_paket_matakuliah', 'program_studi_id', 'semester', 'status'));
+
+    //     foreach ($request->matakuliah_id as $matakuliahId) {
+    //         PaketMataKuliahDetail::create([
+    //             'paket_matakuliah_id' => $paketMatakuliah->id,
+    //             'matakuliah_id' => $matakuliahId,
+    //         ]);
+    //     }
+
+    //     return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil ditambahkan.');
+    // }
+
     public function store(Request $request)
-    {
-        $request->validate([
-            'nama_paket_matakuliah' => 'required',
-            'program_studi_id' => 'required',
-            'semester' => 'required|integer|min:1|max:8',
-            'matakuliah_id' => 'required|array',
+{
+    $request->validate([
+        'nama_paket_matakuliah' => 'required',
+        'program_studi_id' => 'required',
+        'semester' => 'required|integer|min:1|max:8',
+        'matakuliah_id' => 'required|array',
+    ]);
+
+    // Mengatur status data lama menjadi tidak aktif
+    PaketMataKuliah::where('program_studi_id', $request->program_studi_id)
+        ->where('semester', $request->semester)
+        ->update(['status' => 0]);
+
+    // Menyimpan paket mata kuliah baru dengan status aktif
+    $paketMatakuliah = PaketMataKuliah::create(array_merge(
+        $request->only('nama_paket_matakuliah', 'program_studi_id', 'semester'),
+        ['status' => 1]  // Set status menjadi aktif
+    ));
+
+    // Menambahkan detail mata kuliah
+    foreach ($request->matakuliah_id as $matakuliahId) {
+        PaketMataKuliahDetail::create([
+            'paket_matakuliah_id' => $paketMatakuliah->id,
+            'matakuliah_id' => $matakuliahId,
         ]);
-
-        $paketMatakuliah = PaketMataKuliah::create($request->only('nama_paket_matakuliah', 'program_studi_id', 'semester', 'status'));
-
-        foreach ($request->matakuliah_id as $matakuliahId) {
-            PaketMataKuliahDetail::create([
-                'paket_matakuliah_id' => $paketMatakuliah->id,
-                'matakuliah_id' => $matakuliahId,
-            ]);
-        }
-
-        return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil ditambahkan.');
     }
+
+    return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil ditambahkan.');
+}
+
 
     // Menampilkan detail paket mata kuliah
     public function show($id)
@@ -55,8 +109,8 @@ class PaketMataKuliahController extends Controller
         $paketMatakuliah = PaketMataKuliah::with('programStudi', 'paketMataKuliahDetail.matakuliah')->findOrFail($id);
         return view('master.paket-matakuliah.show', compact('paketMatakuliah'));
     }
-    
-    
+
+
 
     // Menampilkan form untuk mengedit paket mata kuliah
     public function edit($id)
@@ -79,11 +133,22 @@ class PaketMataKuliahController extends Controller
             'semester' => 'required|integer|min:1|max:8',
             'matakuliah_id' => 'required|array',
         ]);
-
+    
         $paketMatakuliah = PaketMataKuliah::findOrFail($id);
-        $paketMatakuliah->update($request->only('nama_paket_matakuliah', 'program_studi_id', 'semester', 'status'));
-
-        // Hapus detail yang lama dan tambahkan yang baru
+    
+        // Mengatur status data lama yang sama menjadi tidak aktif (kecuali yang sedang diupdate)
+        PaketMataKuliah::where('program_studi_id', $request->program_studi_id)
+            ->where('semester', $request->semester)
+            ->where('id', '<>', $id)
+            ->update(['status' => 0]);
+    
+        // Memperbarui paket mata kuliah yang ada
+        $paketMatakuliah->update(array_merge(
+            $request->only('nama_paket_matakuliah', 'program_studi_id', 'semester'),
+            ['status' => $request->status] // Set status sesuai dengan input
+        ));
+    
+        // Hapus detail lama dan tambahkan detail baru
         PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->delete();
         foreach ($request->matakuliah_id as $matakuliahId) {
             PaketMataKuliahDetail::create([
@@ -91,44 +156,46 @@ class PaketMataKuliahController extends Controller
                 'matakuliah_id' => $matakuliahId,
             ]);
         }
-
+    
         return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil diperbarui.');
     }
-
-    // Menghapus paket mata kuliah dari database
-// Menghapus paket mata kuliah dari database
-public function destroy($id)
-{
-    // Hapus detail yang terkait
-    PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->delete();
     
-    // Hapus paket mata kuliah
-    PaketMataKuliah::destroy($id);
 
-    return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil dihapus.');
+    public function destroy($id)
+    {
+        // Hapus detail yang terkait
+        PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->delete();
+
+        // Hapus paket mata kuliah
+        PaketMataKuliah::destroy($id);
+
+        return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil dihapus.');
+    }
+
+
+    public function getMataKuliah(Request $request, $programStudiId, $semester)
+{
+    // Validasi nilai semester
+    if (is_null($semester) || !is_numeric($semester)) {
+        return response()->json(['message' => 'Invalid semester value'], 400);
+    }
+
+    try {
+        $mataKuliah = Matakuliah::where('program_studi_id', '=', $programStudiId)
+                                ->where(DB::raw('SUBSTRING(kode_matakuliah, 6, 1)'), '=', $semester)
+                                ->get(['id', 'kode_matakuliah', 'nama_matakuliah']);
+
+        if ($mataKuliah->isEmpty()) {
+            return response()->json(['message' => 'Mata Kuliah not found'], 404);
+        }
+
+        return response()->json($mataKuliah);
+    } catch (\Exception $e) {
+        // Log error untuk debugging
+        \Log::error('Error fetching Mata Kuliah: '.$e->getMessage());
+        return response()->json(['message' => 'Internal Server Error'], 500);
+    }
 }
 
 
-    // Method untuk mendapatkan mata kuliah berdasarkan program studi dan semester yang dipilih
-    public function getMataKuliah(Request $request)
-    {
-        $kodeProgramStudi = $request->query('kode_prodi');
-        $semester = $request->query('semester');
-    
-        $mataKuliah = Matakuliah::where('kode_matakuliah', 'LIKE', $kodeProgramStudi . '%')
-                                ->where('kode_matakuliah', 'LIKE', '%' . $semester . '%')
-                                ->get(['id', 'kode_matakuliah', 'nama_matakuliah']);
-    
-        // Mengabaikan bagian terakhir dari kode mata kuliah
-        $mataKuliah->transform(function ($item) {
-            $item->kode_matakuliah = substr($item->kode_matakuliah, 0, -3);
-            return $item;
-        });
-    
-        return response()->json($mataKuliah);
-    }
-    
-    
-    
-    
 }
