@@ -108,6 +108,9 @@
                     <li class="submenu-item {{ Route::is('paket-matakuliah.index') ? 'active' : '' }}">
                         <a href="{{ route('paket-matakuliah.index') }}">Paket Matakuliah</a>
                     </li>
+                    <li class="submenu-item {{ Route::is('berita.index') ? 'active' : '' }}">
+                        <a href="{{ route('berita.index') }}">Berita</a>
+                    </li>
                 </ul>
             </li>
         </ul>

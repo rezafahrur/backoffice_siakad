@@ -48,6 +48,9 @@
                             <li class="submenu-item {{ Route::is('paket-matakuliah.index') ? 'active' : '' }}">
                                 <a href="{{ route('paket-matakuliah.index') }}" class='submenu-link'>Paket Mata Kuliah</a>
                             </li>
+                            <li class="submenu-item {{ Route::is('berita.index') ? 'active' : '' }}">
+                                <a href="{{ route('berita.index') }}" class='submenu-link'>Berita</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
