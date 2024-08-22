@@ -371,6 +371,8 @@ class MahasiswaController extends Controller
         // Mengambil data KTP dari relasi mahasiswa
         $ktp = $mahasiswa->ktp;
         $waliCollection = $mahasiswa->id;
+        $krs = Krs::where('mahasiswa_id', $waliCollection)->first();
+        $paketMatakuliah = PaketMataKuliah::where('id', $krs->paket_matakuliah_id)->first();
 
         // Mengambil detail mahasiswa jika ada
         $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();
@@ -429,6 +431,8 @@ class MahasiswaController extends Controller
             'wali1Detail' => $wali1Detail ?? null,
             'wali2Detail' => $wali2Detail ?? null,
             'mhsDetail' => $mhsDetail ?? null,
+            'krs' => $krs ?? null,
+            'paketMatakuliah' => $paketMatakuliah ?? null,
         ]);
     }
 

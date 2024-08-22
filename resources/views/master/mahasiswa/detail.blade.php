@@ -81,9 +81,25 @@
                                     <dt class="col-sm-4">Semester Berjalan</dt>
                                     <dd class="col-sm-8">Semester {{ $mahasiswa->semester_berjalan }}</dd>
 
-                                    {{-- Status --}}
+                                    {{-- Status Mahasiswa --}}
                                     <dt class="col-sm-4">Status Mahasiswa</dt>
-                                    <dd class="col-sm-8">{{ $mahasiswa->status }}</dd>
+                                    <dd class="col-sm-8">
+                                        @if ($mahasiswa->status == 1)
+                                            Aktif
+                                        @else
+                                            Nonaktif
+                                        @endif
+                                    </dd>
+                                    
+                                    {{-- Paket Matakuliah --}}
+                                    <dt class="col-sm-4">Paket Matakuliah</dt>
+                                    <dd class="col-sm-8">{{ $paketMatakuliah->nama_paket_matakuliah }}</dd>
+
+                                    {{-- Tanggal Transfer --}}
+                                    <dt class="col-sm-4">Tanggal Transfer</dt>
+                                    <dd class="col-sm-8">
+                                        {{ \Carbon\Carbon::parse($krs->tgl_transfer)->format('d-m-Y') }}</dd>
+                                </dl>
                                 </dl>
                             </div>
                             <div class="col-md-12">
