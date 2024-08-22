@@ -49,6 +49,11 @@ Route::get('/mahasiswa/{mahasiswa}/edit', [MahasiswaController::class, 'edit'])-
 Route::put('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'storeOrUpdate'])->name('mahasiswa.update');
 Route::delete('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
 
+// Bayar
+Route::post('/mahasiswa/bayar', [MahasiswaController::class, 'bayar'])->name('mahasiswa.bayar');
+Route::get('/get-paket-matakuliah-details/{id}', [MahasiswaController::class, 'getPaketMatakuliahDetails']);
+Route::get('/get-paket-matakuliah-by-semester', [MahasiswaController::class, 'getPaketMataKuliahBySemester']);
+
 // ajax
 Route::get('/mahasiswa/cities/{provinceCode}', [MahasiswaController::class, 'getCities']);
 Route::get('/mahasiswa/districts/{cityCode}', [MahasiswaController::class, 'getDistricts']);

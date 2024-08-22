@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\KtpRequest;
 use App\Http\Requests\MahasiswaRequest;
 use App\Models\Jurusan;
+use App\Models\Krs;
 use App\Models\Ktp;
 use App\Models\Mahasiswa;
 use App\Models\MahasiswaDetail;
 use App\Models\MahasiswaWali;
 use App\Models\MahasiswaWaliDetail;
+use App\Models\mataKuliah;
+use App\Models\PaketMataKuliah;
+use App\Models\PaketMataKuliahDetail;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -37,12 +41,89 @@ class MahasiswaController extends Controller
                                           <i class="bi bi-trash"></i>
                                       </button>
                                   </form>';
-                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
+
+                    // Only show the "Bayar" button if the student's status is 0 (nonaktif)
+                    $bayarBtn = '';
+                    if ($row->status == 0) {
+                        $bayarBtn = '<button class="btn icon btn-sm btn-success" title="Bayar" data-semester="' . $row->semester_berjalan . '" data-mahasiswa-id="' . $row->id . '" data-program-studi-id="' . $row->program_studi_id . '" data-nama="' . $row->nama . '" data-bs-toggle="modal" data-bs-target="#bayarModal" onclick="openBayarModal(' . $row->id . ')">
+                                    <i class="bi bi-cash"></i>
+                                </button>';
+                    }
+                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn . '' . $bayarBtn;
                 })
                 ->rawColumns(['action']) // Ensures that HTML code for the action buttons is rendered correctly
                 ->make(true);
         }
+
+        // $paketMatakuliah = PaketMataKuliah::where('status', 1)->get();
         return view('master.mahasiswa.index');
+    }
+
+    public function bayar(Request $request)
+    {
+        $validatedData = $request->validate([
+            'mahasiswa_id' => 'required|exists:m_mahasiswa,id',
+            'paket_matakuliah_id' => 'required|exists:m_paket_matakuliah,id',
+            'status' => 'required|integer|max:2',
+            'tgl_transfer' => 'required|date',
+        ]);
+
+        // Proses pembayaran di sini, misalnya menyimpan data ke database
+        Krs::create($validatedData);
+
+        // Update status di tabel mahasiswa
+        Mahasiswa::find($validatedData['mahasiswa_id'])->update(['status' => $validatedData['status']]);
+
+        return redirect()->route('mahasiswa.index')->with('success', 'Pembayaran berhasil diproses.');
+    }
+
+    public function getPaketMatakuliahDetails($id)
+    {
+        // Ambil semua PaketMataKuliahDetail yang berhubungan dengan paket_matakuliah_id
+        $paketDetails = PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->get();
+
+        // Cek jika ada data yang ditemukan
+        if ($paketDetails->isNotEmpty()) {
+            // Array untuk menampung detail mata kuliah
+            $matakuliahDetails = [];
+
+            // Iterasi setiap paket detail dan ambil nama mata kuliah dari tabel Matakuliah
+            foreach ($paketDetails as $detail) {
+                $matakuliah = mataKuliah::find($detail->matakuliah_id);
+
+                // Pastikan data matakuliah ditemukan
+                if ($matakuliah) {
+                    $matakuliahDetails[] = [
+                        'nama_matakuliah' => $matakuliah->nama_matakuliah,
+                        // Tambahkan informasi lain yang dibutuhkan dari tabel matakuliah
+                    ];
+                }
+            }
+
+            // Mengembalikan data dalam format JSON
+            return response()->json([
+                'paket' => $paketDetails->first()->paketMatakuliah->nama_paket_matakuliah, // Nama paket diambil dari relasi
+                'matakuliah_details' => $matakuliahDetails
+            ]);
+        }
+
+        // Mengembalikan error 404 jika paket tidak ditemukan
+        return response()->json(null, 404);
+    }
+
+    public function getPaketMataKuliahBySemester(Request $request)
+    {
+        $semester = $request->input('semester');
+        $prodiId = $request->input('prodi_id');
+
+        // Fetch paket mata kuliah with matching semester and prodi_id
+        $paketMatakuliah = PaketMataKuliah::where('semester', $semester)
+            ->where('program_studi_id', $prodiId)
+            ->where('status', 1) // Optional: Ensure only active packages are shown
+            ->get();
+
+        // Return the data as JSON
+        return response()->json($paketMatakuliah);
     }
 
     public function create()
@@ -290,6 +371,8 @@ class MahasiswaController extends Controller
         // Mengambil data KTP dari relasi mahasiswa
         $ktp = $mahasiswa->ktp;
         $waliCollection = $mahasiswa->id;
+        $krs = Krs::where('mahasiswa_id', $waliCollection)->first();
+        $paketMatakuliah = PaketMataKuliah::where('id', $krs->paket_matakuliah_id)->first();
 
         // Mengambil detail mahasiswa jika ada
         $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();
@@ -348,6 +431,8 @@ class MahasiswaController extends Controller
             'wali1Detail' => $wali1Detail ?? null,
             'wali2Detail' => $wali2Detail ?? null,
             'mhsDetail' => $mhsDetail ?? null,
+            'krs' => $krs ?? null,
+            'paketMatakuliah' => $paketMatakuliah ?? null,
         ]);
     }
 
