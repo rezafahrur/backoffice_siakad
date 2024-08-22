@@ -28,7 +28,7 @@ class MahasiswaController extends Controller
 
             return DataTables::of($mhs)
                 ->addIndexColumn()
-                ->addColumn('action', function($row) {
+                ->addColumn('action', function ($row) {
                     $showBtn = '<a href="' . route('mahasiswa.show', $row->id) . '" class="btn icon btn-sm btn-info" title="Detail"><i class="bi bi-eye"></i></a>';
                     $editBtn = '<a href="' . route('mahasiswa.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
                     $deleteBtn = '<form action="' . route('mahasiswa.destroy', $row->id) . '" method="post" class="d-inline">
@@ -291,6 +291,9 @@ class MahasiswaController extends Controller
         $ktp = $mahasiswa->ktp;
         $waliCollection = $mahasiswa->id;
 
+        // Mengambil detail mahasiswa jika ada
+        $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();
+
         // Contoh mengambil wali pertama, jika ada
         $wali1 = MahasiswaWali::where('mahasiswa_id', $waliCollection)
             ->where('status_kewalian', 'AYAH')
@@ -299,6 +302,10 @@ class MahasiswaController extends Controller
         $wali2 = MahasiswaWali::where('mahasiswa_id', $waliCollection)
             ->where('status_kewalian', 'IBU')
             ->first();
+
+        // mengambil detail wali jika ada
+        $wali1Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali1->id)->latest()->get();
+        $wali2Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali2->id)->latest()->get();
 
         // Mendapatkan data provinsi, kota/kabupaten, kecamatan, dan kelurahan/desa dari relasi KTP
         $province = $ktp->province;
@@ -338,6 +345,9 @@ class MahasiswaController extends Controller
             'wali2city' => $wali2city ?? null,
             'wali2district' => $wali2district ?? null,
             'wali2village' => $wali2village ?? null,
+            'wali1Detail' => $wali1Detail ?? null,
+            'wali2Detail' => $wali2Detail ?? null,
+            'mhsDetail' => $mhsDetail ?? null,
         ]);
     }
 

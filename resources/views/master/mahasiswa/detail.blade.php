@@ -52,6 +52,10 @@
                                     <dt class="col-sm-4">Nama</dt>
                                     <dd class="col-sm-8">{{ $mahasiswa->nama }}</dd>
 
+                                    {{-- Email --}}
+                                    <dt class="col-sm-4">Email</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->email }}</dd>
+
                                     {{-- NISN --}}
                                     <dt class="col-sm-4">NISN</dt>
                                     <dd class="col-sm-8">{{ $mahasiswa->nisn }}</dd>
@@ -81,6 +85,26 @@
                                     <dt class="col-sm-4">Status Mahasiswa</dt>
                                     <dd class="col-sm-8">{{ $mahasiswa->status }}</dd>
                                 </dl>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table mb-1 table-bordered">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">No. Hp</th>
+                                                <th scope="col">Alamat Domisili</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($mhsDetail as $detail)
+                                                <tr>
+                                                    <td>{{ $detail->hp }}</td>
+                                                    <td>{{ $detail->alamat_domisili }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
@@ -170,6 +194,32 @@
                                     <dt class="col-sm-4">Status kewalian</dt>
                                     <dd class="col-sm-8">{{ $wali1->status_kewalian }}</dd>
                                 </dl>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table mb-1 table-bordered">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">No. Hp</th>
+                                                <th scope="col">Alamat Domisili</th>
+                                                <th scope="col">Pekerjaan</th>
+                                                <th scope="col">Penghasilan</th>
+                                                <th scope="col">Pendidikan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($wali1Detail as $detail)
+                                                <tr>
+                                                    <td>{{ $detail->hp }}</td>
+                                                    <td>{{ $detail->alamat_domisili }}</td>
+                                                    <td>{{ $detail->pekerjaan }}</td>
+                                                    <td>{{ $detail->penghasilan }}</td>
+                                                    <td>{{ $detail->pendidikan }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
@@ -261,6 +311,32 @@
                                     <dt class="col-sm-4">Status kewalian</dt>
                                     <dd class="col-sm-8">{{ $wali2->status_kewalian }}</dd>
                                 </dl>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table mb-1 table-bordered">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">No. Hp</th>
+                                                <th scope="col">Alamat Domisili</th>
+                                                <th scope="col">Pekerjaan</th>
+                                                <th scope="col">Penghasilan</th>
+                                                <th scope="col">Pendidikan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($wali2Detail as $detail)
+                                                <tr>
+                                                    <td>{{ $detail->hp }}</td>
+                                                    <td>{{ $detail->alamat_domisili }}</td>
+                                                    <td>{{ $detail->pekerjaan }}</td>
+                                                    <td>{{ $detail->penghasilan }}</td>
+                                                    <td>{{ $detail->pendidikan }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
