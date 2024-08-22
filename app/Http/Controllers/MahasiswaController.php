@@ -73,12 +73,15 @@ class MahasiswaController extends Controller
             ->where('status_kewalian', 'IBU')
             ->first();
 
-        // dd($wali1->mahasiswaWaliDetail->hp, $wali2->mahasiswaWaliDetail->hp, $mahasiswa->mahasiswaDetail->hp);
+        // Fetch data latest mahasiswa detail by mahasiswa ID
+        $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $id)->latest()->first();
+        $wali1Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali1->id)->latest()->first();
+        $wali2Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali2->id)->latest()->first();
 
         // Fetch data for the dropdowns and populate with existing data
         $provinces = Province::all();
 
-        return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'wali1', 'wali2', 'jurusan'));
+        return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'wali1', 'wali2', 'jurusan', 'mhsDetail', 'wali1Detail', 'wali2Detail'));
     }
 
     public function storeOrUpdate(MahasiswaRequest $request)

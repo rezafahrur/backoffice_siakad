@@ -187,7 +187,7 @@
                                 <label for="no_hp" class="form-label">No HP</label>
                                 <input type="text" class="form-control @error('no_hp') is-invalid @enderror"
                                     id="no_hp" name="no_hp" placeholder="No HP"
-                                    value="{{ old('no_hp') ?? $mahasiswa->mahasiswaDetail->hp }}" maxlength="13"
+                                    value="{{ old('no_hp') ?? $mhsDetail->hp }}" maxlength="13"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 13)">
                                 @error('no_hp')
                                     <div class="invalid-feedback">
@@ -200,7 +200,7 @@
                             <div class="col-md-4 mb-3">
                                 <label for="alamat_domisili" class="form-label">Alamat Domisili</label>
                                 <textarea class="form-control @error('alamat_domisili') is-invalid @enderror" id="alamat_domisili"
-                                    name="alamat_domisili" placeholder="Alamat Domisili" oninput="this.value = this.value.toUpperCase()">{{ old('alamat_domisili') ?? $mahasiswa->mahasiswaDetail->alamat_domisili }}</textarea>
+                                    name="alamat_domisili" placeholder="Alamat Domisili" oninput="this.value = this.value.toUpperCase()">{{ old('alamat_domisili') ?? $mhsDetail->alamat_domisili }}</textarea>
                                 @error('alamat_domisili')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -523,7 +523,7 @@
                                 <label for="wali_no_hp_1" class="form-label">No HP Wali</label>
                                 <input type="text" class="form-control @error('wali_no_hp_1') is-invalid @enderror"
                                     id="wali_no_hp_1" name="wali_no_hp_1" placeholder="No HP Wali"
-                                    value="{{ old('wali_no_hp_1') ?? $wali1->mahasiswaWaliDetail->hp }}" maxlength="13"
+                                    value="{{ old('wali_no_hp_1') ?? $wali1Detail->hp }}" maxlength="13"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 13)">
                                 @error('wali_no_hp_1')
                                     <div class="invalid-feedback">
@@ -536,7 +536,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="wali_alamat_domisili_1" class="form-label">Alamat Domisili Wali</label>
                                 <textarea class="form-control @error('wali_alamat_domisili_1') is-invalid @enderror" id="wali_alamat_domisili_1"
-                                    name="wali_alamat_domisili_1" placeholder="Alamat Wali" oninput="this.value = this.value.toUpperCase()">{{ old('wali_alamat_domisili_1') ?? $wali1->mahasiswaWaliDetail->alamat_domisili }}</textarea>
+                                    name="wali_alamat_domisili_1" placeholder="Alamat Wali" oninput="this.value = this.value.toUpperCase()">{{ old('wali_alamat_domisili_1') ?? $wali1Detail->alamat_domisili }}</textarea>
                                 @error('wali_alamat_domisili_1')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -550,7 +550,7 @@
                                 <input type="text"
                                     class="form-control @error('wali_pekerjaan_1') is-invalid @enderror"
                                     id="wali_pekerjaan_1" name="wali_pekerjaan_1" placeholder="Pekerjaan Wali"
-                                    value="{{ old('wali_pekerjaan_1') ?? $wali1->mahasiswaWaliDetail->pekerjaan }}"
+                                    value="{{ old('wali_pekerjaan_1') ?? $wali1Detail->pekerjaan }}"
                                     oninput="this.value = this.value.toUpperCase()">
                                 @error('wali_pekerjaan_1')
                                     <div class="invalid-feedback">
@@ -566,22 +566,22 @@
                                     id="wali_penghasilan_1" name="wali_penghasilan_1">
                                     <option value="">Pilih Penghasilan</option>
                                     <option value="< Rp. 500.000"
-                                        {{ old('wali_penghasilan_1', $wali1->mahasiswaWaliDetail->penghasilan) == '< Rp. 500.000' ? 'selected' : '' }}>
+                                        {{ old('wali_penghasilan_1', $wali1Detail->penghasilan) == '< Rp. 500.000' ? 'selected' : '' }}>
                                         < Rp. 500.000</option>
                                     <option value="Rp. 500.000 - Rp. 1.000.000"
-                                        {{ old('wali_penghasilan_1', $wali1->mahasiswaWaliDetail->penghasilan) == 'Rp. 500.000 - Rp. 1.000.000' ? 'selected' : '' }}>
+                                        {{ old('wali_penghasilan_1', $wali1Detail->penghasilan) == 'Rp. 500.000 - Rp. 1.000.000' ? 'selected' : '' }}>
                                         Rp. 500.000 - Rp. 1.000.000
                                     </option>
                                     <option value="Rp. 1.000.000 - Rp. 1.500.000"
-                                        {{ old('wali_penghasilan_1', $wali1->mahasiswaWaliDetail->penghasilan) == 'Rp. 1.000.000 - Rp. 1.500.000' ? 'selected' : '' }}>
+                                        {{ old('wali_penghasilan_1', $wali1Detail->penghasilan) == 'Rp. 1.000.000 - Rp. 1.500.000' ? 'selected' : '' }}>
                                         Rp. 1.000.000 - Rp. 1.500.000
                                     </option>
                                     <option value="Rp. 1.500.000 - Rp. 2.000.000"
-                                        {{ old('wali_penghasilan_1', $wali1->mahasiswaWaliDetail->penghasilan) == 'Rp. 1.500.000 - Rp. 2.000.000' ? 'selected' : '' }}>
+                                        {{ old('wali_penghasilan_1', $wali1Detail->penghasilan) == 'Rp. 1.500.000 - Rp. 2.000.000' ? 'selected' : '' }}>
                                         Rp. 1.500.000 - Rp. 2.000.000
                                     </option>
                                     <option value="> Rp. 2.000.000"
-                                        {{ old('wali_penghasilan_1', $wali1->mahasiswaWaliDetail->penghasilan) == '> Rp. 2.000.000' ? 'selected' : '' }}>
+                                        {{ old('wali_penghasilan_1', $wali1Detail->penghasilan) == '> Rp. 2.000.000' ? 'selected' : '' }}>
                                         > Rp. 2.000.000
                                     </option>
                                     {{-- Add more options here --}}
@@ -600,47 +600,47 @@
                                     id="pendidikan_terakhir_1" name="pendidikan_terakhir_1">
                                     <option value="">Pilih Pendidikan Terakhir</option>
                                     <option value="SD"
-                                        {{ old('pendidikan_terakhir_1', $wali1->mahasiswaWaliDetail->pendidikan) == 'SD' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_1', $wali1Detail->pendidikan) == 'SD' ? 'selected' : '' }}>
                                         SD
                                     </option>
                                     <option value="SMP"
-                                        {{ old('pendidikan_terakhir_1', $wali1->mahasiswaWaliDetail->pendidikan) == 'SMP' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_1', $wali1Detail->pendidikan) == 'SMP' ? 'selected' : '' }}>
                                         SMP
                                     </option>
                                     <option value="SMA"
-                                        {{ old('pendidikan_terakhir_1', $wali1->mahasiswaWaliDetail->pendidikan) == 'SMA' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_1', $wali1Detail->pendidikan) == 'SMA' ? 'selected' : '' }}>
                                         SMA
                                     </option>
                                     <option value="SMK"
-                                        {{ old('pendidikan_terakhir_1', $wali1->mahasiswaWaliDetail->pendidikan) == 'SMK' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_1', $wali1Detail->pendidikan) == 'SMK' ? 'selected' : '' }}>
                                         SMK
                                     </option>
                                     <option value="D1"
-                                        {{ old('pendidikan_terakhir_1', $wali1->mahasiswaWaliDetail->pendidikan) == 'D1' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_1', $wali1Detail->pendidikan) == 'D1' ? 'selected' : '' }}>
                                         D1
                                     </option>
                                     <option value="D2"
-                                        {{ old('pendidikan_terakhir_1', $wali1->mahasiswaWaliDetail->pendidikan) == 'D2' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_1', $wali1Detail->pendidikan) == 'D2' ? 'selected' : '' }}>
                                         D2
                                     </option>
                                     <option value="D3"
-                                        {{ old('pendidikan_terakhir_1', $wali1->mahasiswaWaliDetail->pendidikan) == 'D3' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_1', $wali1Detail->pendidikan) == 'D3' ? 'selected' : '' }}>
                                         D3
                                     </option>
                                     <option value="D4"
-                                        {{ old('pendidikan_terakhir_1', $wali1->mahasiswaWaliDetail->pendidikan) == 'D4' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_1', $wali1Detail->pendidikan) == 'D4' ? 'selected' : '' }}>
                                         D4
                                     </option>
                                     <option value="S1"
-                                        {{ old('pendidikan_terakhir_1', $wali1->mahasiswaWaliDetail->pendidikan) == 'S1' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_1', $wali1Detail->pendidikan) == 'S1' ? 'selected' : '' }}>
                                         S1
                                     </option>
                                     <option value="S2"
-                                        {{ old('pendidikan_terakhir_1', $wali1->mahasiswaWaliDetail->pendidikan) == 'S2' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_1', $wali1Detail->pendidikan) == 'S2' ? 'selected' : '' }}>
                                         S2
                                     </option>
                                     <option value="S3"
-                                        {{ old('pendidikan_terakhir_1', $wali1->mahasiswaWaliDetail->pendidikan) == 'S3' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_1', $wali1Detail->pendidikan) == 'S3' ? 'selected' : '' }}>
                                         S3
                                     </option>
                                 </select>
@@ -977,7 +977,7 @@
                                 <label for="wali_no_hp_2" class="form-label">No HP Wali</label>
                                 <input type="text" class="form-control @error('wali_no_hp_2') is-invalid @enderror"
                                     id="wali_no_hp_2" name="wali_no_hp_2" placeholder="No HP Wali"
-                                    value="{{ old('wali_no_hp_2') ?? $wali2->mahasiswaWaliDetail->hp }}" maxlength="13"
+                                    value="{{ old('wali_no_hp_2') ?? $wali2Detail->hp }}" maxlength="13"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 13)">
                                 @error('wali_no_hp_2')
                                     <div class="invalid-feedback">
@@ -990,7 +990,7 @@
                             <div class="col-md-6 mb-3">
                                 <label for="wali_alamat_domisili_2" class="form-label">Alamat Domisili Wali</label>
                                 <textarea class="form-control @error('wali_alamat_domisili_2') is-invalid @enderror" id="wali_alamat_domisili_2"
-                                    name="wali_alamat_domisili_2" placeholder="Alamat Wali" oninput="this.value = this.value.toUpperCase()">{{ old('wali_alamat_domisili_2') ?? $wali2->mahasiswaWaliDetail->alamat_domisili }}</textarea>
+                                    name="wali_alamat_domisili_2" placeholder="Alamat Wali" oninput="this.value = this.value.toUpperCase()">{{ old('wali_alamat_domisili_2') ?? $wali2Detail->alamat_domisili }}</textarea>
                                 @error('wali_alamat_domisili_2')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -1004,7 +1004,7 @@
                                 <input type="text"
                                     class="form-control @error('wali_pekerjaan_2') is-invalid @enderror"
                                     id="wali_pekerjaan_2" name="wali_pekerjaan_2" placeholder="Pekerjaan Wali"
-                                    value="{{ old('wali_pekerjaan_2') ?? $wali2->mahasiswaWaliDetail->pekerjaan }}"
+                                    value="{{ old('wali_pekerjaan_2') ?? $wali2Detail->pekerjaan }}"
                                     oninput="this.value = this.value.toUpperCase()">
                                 @error('wali_pekerjaan_2')
                                     <div class="invalid-feedback">
@@ -1020,22 +1020,22 @@
                                     id="wali_penghasilan_2" name="wali_penghasilan_2">
                                     <option value="">Pilih Penghasilan</option>
                                     <option value="< Rp. 500.000"
-                                        {{ old('wali_penghasilan_2', $wali2->mahasiswaWaliDetail->penghasilan) == '< Rp. 500.000' ? 'selected' : '' }}>
+                                        {{ old('wali_penghasilan_2', $wali2Detail->penghasilan) == '< Rp. 500.000' ? 'selected' : '' }}>
                                         < Rp. 500.000</option>
                                     <option value="Rp. 500.000 - Rp. 1.000.000"
-                                        {{ old('wali_penghasilan_2', $wali2->mahasiswaWaliDetail->penghasilan) == 'Rp. 500.000 - Rp. 1.000.000' ? 'selected' : '' }}>
+                                        {{ old('wali_penghasilan_2', $wali2Detail->penghasilan) == 'Rp. 500.000 - Rp. 1.000.000' ? 'selected' : '' }}>
                                         Rp. 500.000 - Rp. 1.000.000
                                     </option>
                                     <option value="Rp. 1.000.000 - Rp. 1.500.000"
-                                        {{ old('wali_penghasilan_2', $wali2->mahasiswaWaliDetail->penghasilan) == 'Rp. 1.000.000 - Rp. 1.500.000' ? 'selected' : '' }}>
+                                        {{ old('wali_penghasilan_2', $wali2Detail->penghasilan) == 'Rp. 1.000.000 - Rp. 1.500.000' ? 'selected' : '' }}>
                                         Rp. 1.000.000 - Rp. 1.500.000
                                     </option>
                                     <option value="Rp. 1.500.000 - Rp. 2.000.000"
-                                        {{ old('wali_penghasilan_2', $wali2->mahasiswaWaliDetail->penghasilan) == 'Rp. 1.500.000 - Rp. 2.000.000' ? 'selected' : '' }}>
+                                        {{ old('wali_penghasilan_2', $wali2Detail->penghasilan) == 'Rp. 1.500.000 - Rp. 2.000.000' ? 'selected' : '' }}>
                                         Rp. 1.500.000 - Rp. 2.000.000
                                     </option>
                                     <option value="> Rp. 2.000.000"
-                                        {{ old('wali_penghasilan_2', $wali2->mahasiswaWaliDetail->penghasilan) == '> Rp. 2.000.000' ? 'selected' : '' }}>
+                                        {{ old('wali_penghasilan_2', $wali2Detail->penghasilan) == '> Rp. 2.000.000' ? 'selected' : '' }}>
                                         > Rp. 2.000.000
                                     </option>
                                     {{-- Add more options here --}}
@@ -1054,47 +1054,47 @@
                                     id="pendidikan_terakhir_2" name="pendidikan_terakhir_2">
                                     <option value="">Pilih Pendidikan Terakhir</option>
                                     <option value="SD"
-                                        {{ old('pendidikan_terakhir_2', $wali2->mahasiswaWaliDetail->pendidikan) == 'SD' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_2', $wali2Detail->pendidikan) == 'SD' ? 'selected' : '' }}>
                                         SD
                                     </option>
                                     <option value="SMP"
-                                        {{ old('pendidikan_terakhir_2', $wali2->mahasiswaWaliDetail->pendidikan) == 'SMP' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_2', $wali2Detail->pendidikan) == 'SMP' ? 'selected' : '' }}>
                                         SMP
                                     </option>
                                     <option value="SMA"
-                                        {{ old('pendidikan_terakhir_2', $wali2->mahasiswaWaliDetail->pendidikan) == 'SMA' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_2', $wali2Detail->pendidikan) == 'SMA' ? 'selected' : '' }}>
                                         SMA
                                     </option>
                                     <option value="SMK"
-                                        {{ old('pendidikan_terakhir_2', $wali2->mahasiswaWaliDetail->pendidikan) == 'SMK' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_2', $wali2Detail->pendidikan) == 'SMK' ? 'selected' : '' }}>
                                         SMK
                                     </option>
                                     <option value="D1"
-                                        {{ old('pendidikan_terakhir_2', $wali2->mahasiswaWaliDetail->pendidikan) == 'D1' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_2', $wali2Detail->pendidikan) == 'D1' ? 'selected' : '' }}>
                                         D1
                                     </option>
                                     <option value="D2"
-                                        {{ old('pendidikan_terakhir_2', $wali2->mahasiswaWaliDetail->pendidikan) == 'D2' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_2', $wali2Detail->pendidikan) == 'D2' ? 'selected' : '' }}>
                                         D2
                                     </option>
                                     <option value="D3"
-                                        {{ old('pendidikan_terakhir_2', $wali2->mahasiswaWaliDetail->pendidikan) == 'D3' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_2', $wali2Detail->pendidikan) == 'D3' ? 'selected' : '' }}>
                                         D3
                                     </option>
                                     <option value="D4"
-                                        {{ old('pendidikan_terakhir_2', $wali2->mahasiswaWaliDetail->pendidikan) == 'D4' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_2', $wali2Detail->pendidikan) == 'D4' ? 'selected' : '' }}>
                                         D4
                                     </option>
                                     <option value="S1"
-                                        {{ old('pendidikan_terakhir_2', $wali2->mahasiswaWaliDetail->pendidikan) == 'S1' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_2', $wali2Detail->pendidikan) == 'S1' ? 'selected' : '' }}>
                                         S1
                                     </option>
                                     <option value="S2"
-                                        {{ old('pendidikan_terakhir_2', $wali2->mahasiswaWaliDetail->pendidikan) == 'S2' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_2', $wali2Detail->pendidikan) == 'S2' ? 'selected' : '' }}>
                                         S2
                                     </option>
                                     <option value="S3"
-                                        {{ old('pendidikan_terakhir_2', $wali2->mahasiswaWaliDetail->pendidikan) == 'S3' ? 'selected' : '' }}>
+                                        {{ old('pendidikan_terakhir_2', $wali2Detail->pendidikan) == 'S3' ? 'selected' : '' }}>
                                         S3
                                     </option>
                                 </select>
