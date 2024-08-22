@@ -1,14 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HrController;
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\TahunAjaranController;
-use App\Http\Controllers\HrController;
-use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProgramStudiController;
 use App\Http\Controllers\PaketMataKuliahController;
 
@@ -118,3 +119,12 @@ Route::delete('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'dest
 
 // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
 Route::get('/paket-matakuliah/get-matakuliah/{programStudiId}/{semester}', [PaketMataKuliahController::class, 'getMataKuliah'])->name('get-matakuliah');
+
+//crud berita
+Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
+Route::get('/berita/create', [BeritaController::class, 'create'])->name('berita.create');
+Route::post('/berita/store', [BeritaController::class, 'store'])->name('berita.store');
+Route::get('/berita/show/{id}', [BeritaController::class, 'show'])->name('berita.show');
+Route::get('/berita/edit/{id}', [BeritaController::class, 'edit'])->name('berita.edit');
+Route::put('/berita/update/{id}', [BeritaController::class, 'update'])->name('berita.update');
+Route::delete('/berita/delete/{id}', [BeritaController::class, 'destroy'])->name('berita.destroy');
