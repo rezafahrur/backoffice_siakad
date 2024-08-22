@@ -41,10 +41,10 @@ class HrController extends Controller
                     return '<img src="'.asset('storage/2.jpg').'" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">';
                 })
                 ->addColumn('action', function($row) {
-                    $editBtn = '<a href="' . route('hr.edit', $row->id) . '" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    $editBtn = '<a href="' . route('hr.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
                     $deleteBtn = '<form action="' . route('hr.destroy', $row->id) . '" method="post" class="d-inline">
                                       ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger" title="Delete">
+                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
                                           <i class="bi bi-trash"></i>
                                       </button>
                                   </form>';

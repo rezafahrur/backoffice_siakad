@@ -36,12 +36,11 @@
                                 Table Data SDM
                             </h4>
                         </div>
-                        <div class="card-content">
-                            <div class="card-body">
-                                <a href="{{ url('master/hr/create') }}" class="btn icon icon-left btn-primary"><i
-                                        data-feather="user-plus"></i>
-                                    Add Data SDM</a>
-                            </div>
+                        <div class="card-body">
+                            <a href="{{ url('master/hr/create') }}" class="btn icon icon-left btn-primary"><i
+                                    data-feather="user-plus"></i>
+                                Add Data SDM</a>
+
 
                             <!-- table head dark -->
                             <div class="card-header table-responsive">
