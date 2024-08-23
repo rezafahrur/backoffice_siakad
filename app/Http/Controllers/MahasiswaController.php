@@ -89,7 +89,7 @@ class MahasiswaController extends Controller
 
             // Iterasi setiap paket detail dan ambil nama mata kuliah dari tabel Matakuliah
             foreach ($paketDetails as $detail) {
-                $matakuliah = mataKuliah::find($detail->matakuliah_id);
+                $matakuliah = MataKuliah::find($detail->matakuliah_id);
 
                 // Pastikan data matakuliah ditemukan
                 if ($matakuliah) {
