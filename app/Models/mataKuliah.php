@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class mataKuliah extends Model
+class MataKuliah extends Model
 {
     use HasFactory;
     use SoftDeletes;

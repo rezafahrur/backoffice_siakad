@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\mataKuliah;
+use App\Models\MataKuliah;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
-class mataKuliahController extends Controller
+class MataKuliahController extends Controller
 {
     //
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $matkul = mataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->get();
+            $matkul = MataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->get();
 
             return DataTables::of($matkul)
                 ->addIndexColumn()
@@ -54,14 +54,14 @@ class mataKuliahController extends Controller
         ];
 
         $validateData = $request->validate($rulesData);
-        mataKuliah::create($validateData);
+        MataKuliah::create($validateData);
 
         return redirect()->route('mata-kuliah.index')->with('success', 'Mata Kuliah berhasil ditambahkan');
     }
 
     public function show($id)
     {
-        $matkul = mataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->find($id);
+        $matkul = MataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->find($id);
 
         return view('master.mata-kuliah.detail', compact('matkul'));
     }
@@ -69,7 +69,7 @@ class mataKuliahController extends Controller
     //edit
     public function edit($id)
     {
-        $matkul = mataKuliah::findOrFail($id);
+        $matkul = MataKuliah::findOrFail($id);
         $programStudis = ProgramStudi::all();
 
         return view('master.mata-kuliah.edit', [
@@ -89,7 +89,7 @@ class mataKuliahController extends Controller
         ];
 
         $validateData = $request->validate($rulesData);
-        mataKuliah::find($id)->update($validateData);
+        MataKuliah::find($id)->update($validateData);
 
         return redirect()->route('mata-kuliah.index')->with('success', 'Mata Kuliah berhasil diperbarui');
     }
