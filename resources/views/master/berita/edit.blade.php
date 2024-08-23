@@ -15,15 +15,15 @@
         <h4 class="card-title">Form Edit Berita</h4>
     </div>
     <div class="card-body">
-        <form action="{{ route('berita.update', $berita->id) }}" method="POST" enctype="multipart/form-data">
+        <form id="beritaForm" action="{{ route('berita.update', $berita->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
-            
             <div class="mb-3">
                 <label for="judul_berita" class="form-label">Judul Berita</label>
                 <input type="text" class="form-control" id="judul_berita" name="judul_berita" value="{{ $berita->judul_berita }}" required>
             </div>
+            
             <div class="mb-3">
                 <label for="kategori_berita_id" class="form-label">Kategori Berita</label>
                 <select class="form-control" id="kategori_berita_id" name="kategori_berita_id" required>
@@ -45,15 +45,59 @@
 
             <div class="mb-3">
                 <label for="isi_berita" class="form-label">Isi Berita</label>
-                <textarea class="form-control" id="isi_berita" name="isi_berita" rows="10" required>{{ $berita->isi_berita }}</textarea>
+                {{-- Quill.js Editor Container --}}
+                <div id="editor" style="height: 300px;">
+                    {!! $berita->isi_berita !!}
+                </div>
+                <textarea id="isi_berita" name="isi_berita" style="display:none;">{{ $berita->isi_berita }}</textarea>
             </div>
 
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
-    {{-- CKEditor Script --}}
-    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+
+    {{-- Include SweetAlert2 Script --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- Include Quill.js and Quill.css --}}
+    <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+
     <script>
-        CKEDITOR.replace('isi_berita');
+        // Initialize Quill editor
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'image'],
+                    [{ 'align': [] }, { 'color': [] }, { 'background': [] }],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Handle form submission
+        document.querySelector('#beritaForm').addEventListener('submit', function(e) {
+            // Prevent default form submission
+            e.preventDefault();
+
+            // Get the HTML content from Quill and set it to the hidden textarea
+            document.querySelector('#isi_berita').value = quill.root.innerHTML;
+
+            // Example SweetAlert usage
+            Swal.fire({
+                title: 'Success!',
+                text: 'Your post has been updated successfully.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.submit(); // Submit the form after confirmation
+                }
+            });
+        });
     </script>
 @endsection
