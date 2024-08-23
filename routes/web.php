@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HrController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SemesterController;
@@ -133,3 +134,13 @@ Route::get('/berita/show/{id}', [BeritaController::class, 'show'])->name('berita
 Route::get('/berita/edit/{id}', [BeritaController::class, 'edit'])->name('berita.edit');
 Route::put('/berita/update/{id}', [BeritaController::class, 'update'])->name('berita.update');
 Route::delete('/berita/delete/{id}', [BeritaController::class, 'destroy'])->name('berita.destroy');
+
+// paket jadwal
+Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
+Route::get('/jadwal/create', [JadwalController::class, 'create'])->name('jadwal.create');
+Route::post('/jadwal', [JadwalController::class, 'store'])->name('jadwal.store');
+Route::get('/jadwal/{jadwal}/edit', [JadwalController::class, 'edit'])->name('jadwal.edit');
+Route::put('/jadwal/{jadwal}', [JadwalController::class, 'update'])->name('jadwal.update');
+Route::delete('/jadwal/{jadwal}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
+Route::get('/jadwal/show/{id}', [JadwalController::class, 'show'])->name('jadwal.show');
+Route::get('/jadwal/details/{paketMataKuliah}', [JadwalController::class, 'getPaketDetails']);
