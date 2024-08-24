@@ -215,7 +215,7 @@
 
             // Ganti title modal dengan nama mahasiswa
             var namaMahasiswa = $('button[data-mahasiswa-id="' + mahasiswaId + '"]').data('nama');
-            $('#bayarModalTitle').text('Pilih Paket Mata Kuliah dan Pembayaran untuk ' + namaMahasiswa);
+            $('#bayarModalTitle').html('Pilih Paket Mata Kuliah dan Pembayaran : <br>' + namaMahasiswa);
 
             // Ambil semester dari data attribute pada button
             var semester = $('button[data-mahasiswa-id="' + mahasiswaId + '"]').data('semester');

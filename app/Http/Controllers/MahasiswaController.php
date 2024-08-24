@@ -175,7 +175,7 @@ class MahasiswaController extends Controller
             $year = substr($data['registrasi_tanggal'], 2, 2);
             $jenjang = '04';
 
-            $jurusan = Jurusan::find($data['program_studi']);
+            $jurusan = Jurusan::find($data['jurusan']);
             $jrs = str_pad($jurusan->kode_jurusan, 2, '0', STR_PAD_LEFT);
 
             $programStudi = ProgramStudi::find($data['program_studi']);
@@ -295,7 +295,7 @@ class MahasiswaController extends Controller
                     'pendidikan' => $data['pendidikan_terakhir_1'],
                 ];
 
-                if ($existingMahasiswaWaliDetail1->hp != $newMahasiswaWaliDetail1['hp'] || $existingMahasiswaWaliDetail1->alamat_domisili != $newMahasiswaWaliDetail1['alamat_domisili']) {
+                if (!$existingMahasiswaWaliDetail1 || $existingMahasiswaWaliDetail1->hp != $newMahasiswaWaliDetail1['hp'] || $existingMahasiswaWaliDetail1->alamat_domisili != $newMahasiswaWaliDetail1['alamat_domisili']) {
                     MahasiswaWaliDetail::create(
                         ['mahasiswa_wali_id' => $mahasiswaWali1->id] + $newMahasiswaWaliDetail1
                     );
@@ -346,7 +346,7 @@ class MahasiswaController extends Controller
                     'pendidikan' => $data['pendidikan_terakhir_2'],
                 ];
 
-                if ($existingMahasiswaWaliDetail2->hp != $newMahasiswaWaliDetail2['hp'] || $existingMahasiswaWaliDetail2->alamat_domisili != $newMahasiswaWaliDetail2['alamat_domisili']) {
+                if (!$existingMahasiswaWaliDetail2 || $existingMahasiswaWaliDetail2->hp != $newMahasiswaWaliDetail2['hp'] || $existingMahasiswaWaliDetail2->alamat_domisili != $newMahasiswaWaliDetail2['alamat_domisili']) {
                     MahasiswaWaliDetail::create(
                         ['mahasiswa_wali_id' => $mahasiswaWali2->id] + $newMahasiswaWaliDetail2
                     );
@@ -361,8 +361,10 @@ class MahasiswaController extends Controller
         } catch (\Exception $e) {
             // Handle the exception and redirect back with the error message
             $message = isset($request) && $request->has('id') ? 'Data gagal diperbarui' : 'Data gagal ditambahkan';
-            dd($message . $e->getMessage());
-            return redirect()->back()->with('error', $message . $e->getMessage());
+            return redirect()->back()->withInput()->with([
+                'error' => $e->getMessage(),
+                'toast_message' => $message,
+            ]);
         }
     }
 
@@ -371,8 +373,7 @@ class MahasiswaController extends Controller
         // Mengambil data KTP dari relasi mahasiswa
         $ktp = $mahasiswa->ktp;
         $waliCollection = $mahasiswa->id;
-        $krs = Krs::where('mahasiswa_id', $waliCollection)->first();
-        $paketMatakuliah = PaketMataKuliah::where('id', $krs->paket_matakuliah_id)->first();
+        $krs = Krs::where('mahasiswa_id', $waliCollection)->get();
 
         // Mengambil detail mahasiswa jika ada
         $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();
@@ -432,7 +433,6 @@ class MahasiswaController extends Controller
             'wali2Detail' => $wali2Detail ?? null,
             'mhsDetail' => $mhsDetail ?? null,
             'krs' => $krs ?? null,
-            'paketMatakuliah' => $paketMatakuliah ?? null,
         ]);
     }
 

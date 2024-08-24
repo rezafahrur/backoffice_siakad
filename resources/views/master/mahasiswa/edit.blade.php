@@ -10,15 +10,6 @@
             <a class="navbar-brand ms-4" href="">
                 <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
             </a>
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
         </div>
     </nav>
     {{-- end logo and back --}}
@@ -40,6 +31,26 @@
             </div>
         </div>
 
+        {{-- Check for validation errors --}}
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible show fade mt-4">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        {{-- Check for other error messages --}}
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible show fade mt-4">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <form id="formWizard" class="mt-4" action="{{ route('mahasiswa.update', $mahasiswa->id) }}" method="POST">
             @method('PUT')
             @csrf
@@ -59,6 +70,9 @@
 
                             {{-- Semester Berjalan --}}
                             <input type="hidden" name="semester_berjalan" id="semester_berjalan" value="1">
+
+                            {{-- Status Mahasiswa --}}
+                            <input type="hidden" name="status" id="status" value="{{ $mahasiswa->status }}">
 
                             {{-- Nama --}}
                             <div class="col-md-4 mb-3">
@@ -149,33 +163,6 @@
                                     id="registrasi_tanggal" name="registrasi_tanggal"
                                     value="{{ old('registrasi_tanggal') ?? $mahasiswa->registrasi_tanggal }}">
                                 @error('registrasi_tanggal')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            {{-- Status Mahasiswa --}}
-                            <div class="col-md-4 mb-3">
-                                <label for="status" class="form-label">Status Mahasiswa</label>
-                                <select class="form-select @error('status') is-invalid @enderror" id="status"
-                                    name="status">
-                                    <option value="" disabled selected>Pilih Status</option>
-                                    <option value="Aktif"
-                                        {{ old('status', $mahasiswa->status) == 'Aktif' ? 'selected' : '' }}>Aktif
-                                    </option>
-                                    <option value="Non Aktif"
-                                        {{ old('status', $mahasiswa->status) == 'Non Aktif' ? 'selected' : '' }}>Non
-                                        Aktif
-                                    </option>
-                                    <option value="Cuti"
-                                        {{ old('status', $mahasiswa->status) == 'Cuti' ? 'selected' : '' }}>Cuti
-                                    </option>
-                                    <option value="Lulus"
-                                        {{ old('status', $mahasiswa->status) == 'Lulus' ? 'selected' : '' }}>Lulus
-                                    </option>
-                                </select>
-                                @error('status')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -1733,4 +1720,17 @@
             }
         });
     </script>
+    {{-- Toast --}}
+    @if (session('toast_message'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                text: "{{ session('toast_message') }}",
+                toast: true,
+                position: 'top-right',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        </script>
+    @endif
 @endpush
