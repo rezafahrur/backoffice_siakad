@@ -43,8 +43,9 @@ class LoginController extends Controller
             $so->clicks = 0;
             $so->save();
 
+            $urlNow = 'https://so.poltekbatu.ac.id/' . $keyword;
             $res = array(
-                'url' => $url,
+                'url' => $urlNow,
                 'nama' => $user->nama,
             );
 
