@@ -6,11 +6,13 @@ use App\Models\Ktp;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Hr extends Model
+class Hr extends Authenticatable
 {
     use HasFactory;
     use SoftDeletes;
+
 
     protected $table = 'm_hr';
 
