@@ -5,6 +5,7 @@ use App\Http\Controllers\HrController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\MahasiswaController;
@@ -16,7 +17,7 @@ use App\Http\Controllers\PaketMataKuliahController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('/');
 
 Route::get('/wizard', function () {
     return view('wizard');
@@ -144,3 +145,9 @@ Route::put('/jadwal/{jadwal}', [JadwalController::class, 'update'])->name('jadwa
 Route::delete('/jadwal/{jadwal}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
 Route::get('/jadwal/show/{id}', [JadwalController::class, 'show'])->name('jadwal.show');
 Route::get('/jadwal/details/{paketMataKuliah}', [JadwalController::class, 'getPaketDetails']);
+
+
+//login
+Route::get('/login', [LoginController::class, 'index'])->name('login.index');
+Route::post('/loginFrom', [LoginController::class, 'generateLoginURL'])->name('login.generateURL');
+Route::get('/prosesLogin/{hp}/{otp}', [LoginController::class, 'prosesLogin'])->name('login.processLogin');
