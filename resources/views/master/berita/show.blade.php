@@ -22,8 +22,9 @@
             <div class="card-body">
                 <div class="mb-3">
                     <h6 class="mb-1 text-muted">Kategori:</h6>
-                    <p class="fw-bold">{{ $berita->kategoriBerita->kategori_berita }}</p>
+                    <p class="fw-bold text-uppercase">{{ $berita->kategoriBerita->kategori_berita }}</p>
                 </div>
+                
 
                 <div class="mb-3">
                     <h6 class="mb-1 text-muted">Foto:</h6>

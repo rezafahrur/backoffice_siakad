@@ -27,7 +27,7 @@ class Hr extends Model
 
     /**
      * Relasi dengan model Ktp
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function ktp()
@@ -37,7 +37,7 @@ class Hr extends Model
 
     /**
      * Relasi dengan model Position
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function position()
@@ -48,5 +48,10 @@ class Hr extends Model
     public function hrDetail()
     {
         return $this->hasOne(HrDetail::class, 'master_hr_id');
+    }
+
+    public function jadwalDetails()
+    {
+        return $this->hasMany(JadwalDetail::class, 'hr_id');
     }
 }
