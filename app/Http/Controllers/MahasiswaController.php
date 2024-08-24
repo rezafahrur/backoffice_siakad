@@ -35,17 +35,14 @@ class MahasiswaController extends Controller
                 ->addColumn('action', function ($row) {
                     $showBtn = '<a href="' . route('mahasiswa.show', $row->id) . '" class="btn icon btn-sm btn-info" title="Detail"><i class="bi bi-eye"></i></a>';
                     $editBtn = '<a href="' . route('mahasiswa.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    $deleteBtn = '<form action="' . route('mahasiswa.destroy', $row->id) . '" method="post" class="d-inline">
-                                      ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
-                                          <i class="bi bi-trash"></i>
-                                      </button>
-                                  </form>';
+                    $deleteBtn = '<button class="btn icon btn-sm btn-danger delete-btn" title="Delete" onclick="deleteMahasiswa(' . $row->id . ')">
+                                    <i class="bi bi-trash"></i>
+                                </button>';
 
                     // Only show the "Bayar" button if the student's status is 0 (nonaktif)
                     $bayarBtn = '';
                     if ($row->status == 0) {
-                        $bayarBtn = '<button class="btn icon btn-sm btn-success" title="Bayar" data-semester="' . $row->semester_berjalan . '" data-mahasiswa-id="' . $row->id . '" data-program-studi-id="' . $row->program_studi_id . '" data-nama="' . $row->nama . '" data-bs-toggle="modal" data-bs-target="#bayarModal" onclick="openBayarModal(' . $row->id . ')">
+                        $bayarBtn = '<button class="btn icon btn-sm btn-success ms-1" title="Bayar" data-semester="' . $row->semester_berjalan . '" data-mahasiswa-id="' . $row->id . '" data-program-studi-id="' . $row->program_studi_id . '" data-nama="' . $row->nama . '" data-bs-toggle="modal" data-bs-target="#bayarModal" onclick="openBayarModal(' . $row->id . ')">
                                     <i class="bi bi-cash"></i>
                                 </button>';
                     }
@@ -438,44 +435,55 @@ class MahasiswaController extends Controller
 
     public function destroy(Mahasiswa $mahasiswa)
     {
-        // Loop through each guardian (Wali)
-        foreach ($mahasiswa->mahasiswaWali as $wali) {
-            // Simpan referensi ke KTP wali sebelum menghapus MahasiswaWali
-            $ktpWali = $wali->ktp;
+        try {
+            // Loop through each guardian (Wali)
+            foreach ($mahasiswa->mahasiswaWali as $wali) {
+                // Simpan referensi ke KTP wali sebelum menghapus MahasiswaWali
+                $ktpWali = $wali->ktp;
 
-            // Hapus MahasiswaWaliDetail jika ada
-            if ($wali->mahasiswaWaliDetailDelete) {
-                foreach ($wali->mahasiswaWaliDetailDelete as $detail) {
+                // Hapus MahasiswaWaliDetail jika ada
+                if ($wali->mahasiswaWaliDetailDelete) {
+                    foreach ($wali->mahasiswaWaliDetailDelete as $detail) {
+                        $detail->delete();
+                    }
+                }
+
+                // Hapus KTP wali jika ada
+                if ($ktpWali) {
+                    $ktpWali->delete();
+                }
+
+                // Hapus MahasiswaWali
+                $wali->delete();
+            }
+
+            // Hapus MahasiswaDetail jika ada
+            if ($mahasiswa->mahasiswaDetailDelete) {
+                foreach ($mahasiswa->mahasiswaDetailDelete as $detail) {
                     $detail->delete();
                 }
             }
 
-            // Hapus KTP wali jika ada
-            if ($ktpWali) {
-                $ktpWali->delete();
+            // Hapus KTP mahasiswa jika ada
+            if ($mahasiswa->ktp) {
+                $mahasiswa->ktp->delete();
             }
 
-            // Hapus MahasiswaWali
-            $wali->delete();
-        }
-
-        // Hapus MahasiswaDetail jika ada
-        if ($mahasiswa->mahasiswaDetailDelete) {
-            foreach ($mahasiswa->mahasiswaDetailDelete as $detail) {
-                $detail->delete();
+            // hapus KRS jika ada
+            if ($mahasiswa->krs) {
+                foreach ($mahasiswa->krs as $krs) {
+                    $krs->delete();
+                }
             }
-            exit;
+
+            // Hapus Mahasiswa
+            $mahasiswa->delete();
+
+            return response()->json(['success' => 'Mahasiswa dan data terkait berhasil dihapus']);
+        } catch (\Exception $e) {
+            // Tangani pengecualian dan kembalikan dengan pesan error
+            return response()->json(['error' => 'Terjadi kesalahan. Silahkan coba lagi.'], 500);
         }
-
-        // Hapus KTP mahasiswa jika ada
-        if ($mahasiswa->ktp) {
-            $mahasiswa->ktp->delete();
-        }
-
-        // Hapus Mahasiswa
-        $mahasiswa->delete();
-
-        return redirect()->route('mahasiswa.index')->with('success', 'Mahasiswa dan data terkait berhasil dihapus');
     }
 
     // AJAX handlers for fetching cities, districts, and villages dynamically
