@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HrDetail;
 use App\Models\ShortenerURL;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,8 +20,9 @@ class LoginController extends Controller
         $wa = str_replace('@c.us', '', $data['hp']);
         $hp = '0' . substr($wa,2);
 
+
         //get ho from t_hr_detail
-        $user = DB::table('t_hr_detail')->where('hp', $hp)->join('m_hr', 't_hr_detail.master_hr_id', '=', 'm_hr.id')->select('t_hr_detail.*', 'm_hr.nama')->first();
+        $user = HrDetail::where('hp', $hp)->join('m_hr', 't_hr_detail.master_hr_id', '=', 'm_hr.id')->select('t_hr_detail.*', 'm_hr.nama')->orderBy('t_hr_detail.created_at', 'desc')->first();
 
         if($user)
         {
@@ -37,6 +39,8 @@ class LoginController extends Controller
             $so = new ShortenerURL;
             $so->keyword = $keyword;
             $so->url = $url;
+            $so->ip = $request->ip();
+            $so->clicks = 0;
             $so->save();
 
             $res = array(
