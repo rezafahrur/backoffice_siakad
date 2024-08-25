@@ -27,4 +27,9 @@ class PaketMataKuliahDetail extends Model
     {
         return $this->belongsTo(PaketMataKuliah::class, 'paket_matakuliah_id', 'id');
     }
+
+    public function jadwalDetails()
+    {
+        return $this->hasMany(JadwalDetail::class, 'paket_matakuliah_detail_id');
+    }
 }

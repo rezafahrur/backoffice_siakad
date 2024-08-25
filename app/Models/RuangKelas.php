@@ -18,4 +18,9 @@ class RuangKelas extends Model
         'nama_ruang_kelas',
         'kapasitas',
     ];
+
+    public function jadwalDetails()
+    {
+        return $this->hasMany(JadwalDetail::class, 'ruang_kelas_id');
+    }
 }

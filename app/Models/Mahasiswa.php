@@ -57,4 +57,8 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(Jurusan::class, 'jurusan_id', 'id');
     }
+
+    public function krs(){
+        return $this->hasMany(Krs::class, 'mahasiswa_id', 'id');
+    }
 }
