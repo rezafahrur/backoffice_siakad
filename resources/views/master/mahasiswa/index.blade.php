@@ -212,7 +212,7 @@
 
             // Ganti title modal dengan nama mahasiswa
             var namaMahasiswa = $('button[data-mahasiswa-id="' + mahasiswaId + '"]').data('nama');
-            $('#bayarModalTitle').text('Pilih Paket Mata Kuliah dan Pembayaran untuk ' + namaMahasiswa);
+            $('#bayarModalTitle').html('Pilih Paket Mata Kuliah dan Pembayaran : <br>' + namaMahasiswa);
 
             // Ambil semester dari data attribute pada button
             var semester = $('button[data-mahasiswa-id="' + mahasiswaId + '"]').data('semester');
@@ -242,6 +242,57 @@
                 },
                 error: function() {
                     alert('Gagal memuat data paket mata kuliah.');
+                }
+            });
+        }
+    </script>
+    <script>
+        function deleteMahasiswa(mahasiswaId) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Data mahasiswa akan dihapus secara permanen.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/mahasiswa/' + mahasiswaId,
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    title: 'Berhasil!',
+                                    text: response.success,
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(() => {
+                                    $('#mhsTable').DataTable().ajax.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Gagal!',
+                                    text: response.error,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                        },
+                        error: function() {
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: 'Terjadi kesalahan. Silahkan coba lagi.',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
                 }
             });
         }
