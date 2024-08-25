@@ -26,8 +26,8 @@ Route::get('/test', function () {
 });
 
 
-// Route::group(['middleware' => ['auth:hr']], function ()
-// {
+Route::group(['middleware' => ['auth:hr']], function ()
+{
     Route::get('/', function () {
         return view('home');
     })->name('/');
@@ -153,7 +153,7 @@ Route::get('/test', function () {
     Route::delete('/jadwal/{jadwal}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
     Route::get('/jadwal/show/{id}', [JadwalController::class, 'show'])->name('jadwal.show');
     Route::get('/jadwal/details/{paketMataKuliah}', [JadwalController::class, 'getPaketDetails']);
-// });
+});
 
 //login
 Route::get('/login', [LoginController::class, 'index'])->name('login');
