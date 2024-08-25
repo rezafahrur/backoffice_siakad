@@ -16,7 +16,7 @@
                                 <a href="">Master</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                <a href="">Table</a>
+                                <a href="">Mahasiswa</a>
                             </li>
                         </ol>
                     </nav>
