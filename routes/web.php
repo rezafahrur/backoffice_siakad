@@ -22,6 +22,10 @@ Route::get('/wizard', function () {
     return view('wizard');
 });
 
+Route::get('/test', function () {
+    return view('layouts.custom-test');
+});
+
 
 // jurusan
 Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
@@ -97,13 +101,13 @@ Route::delete('/mata-kuliah/{matkul}', [MataKuliahController::class, 'destroy'])
 Route::get('/mata-kuliah/show/{id}', [MataKuliahController::class, 'show'])->name('mata-kuliah.show');
 
 //crud position
-Route::get('/master/position/index', [PositionController::class, 'index'])->name('position.index');
-Route::post('/master/position/store', [PositionController::class, 'store'])->name('position.store');
-Route::get('/master/position/edit/{id}', [PositionController::class, 'edit'])->name('position.edit');
-Route::put('/master/position/update/{id}', [PositionController::class, 'update'])->name('position.update');
-Route::delete('master/position/delete/{id}', [PositionController::class, 'destroy'])->name('position.destroy');
-Route::get('/master/position/show/{id}', [PositionController::class, 'show'])->name('position.show');
-Route::get('/master/position/create', [PositionController::class, 'create'])->name('position.create');
+Route::get('/position', [PositionController::class, 'index'])->name('position.index');
+Route::post('/position', [PositionController::class, 'store'])->name('position.store');
+Route::get('/position/{id}/edit', [PositionController::class, 'edit'])->name('position.edit');
+Route::put('/position/{id}', [PositionController::class, 'update'])->name('position.update');
+Route::delete('/position/{id}', [PositionController::class, 'destroy'])->name('position.destroy');
+Route::get('/position/show/{id}', [PositionController::class, 'show'])->name('position.show');
+Route::get('/position/create', [PositionController::class, 'create'])->name('position.create');
 
 //crud hr
 Route::get('/master/hr/index', [HrController::class, 'index'])->name('hr.index');
