@@ -21,6 +21,10 @@ Route::get('/wizard', function () {
     return view('wizard');
 });
 
+Route::get('/test', function () {
+    return view('layouts.custom-test');
+});
+
 
 Route::group(['middleware' => ['auth:hr']], function ()
 {
@@ -102,13 +106,13 @@ Route::group(['middleware' => ['auth:hr']], function ()
     Route::get('/mata-kuliah/show/{id}', [MataKuliahController::class, 'show'])->name('mata-kuliah.show');
 
     //crud position
-    Route::get('/master/position/index', [PositionController::class, 'index'])->name('position.index');
-    Route::post('/master/position/store', [PositionController::class, 'store'])->name('position.store');
-    Route::get('/master/position/edit/{id}', [PositionController::class, 'edit'])->name('position.edit');
-    Route::put('/master/position/update/{id}', [PositionController::class, 'update'])->name('position.update');
-    Route::delete('master/position/delete/{id}', [PositionController::class, 'destroy'])->name('position.destroy');
-    Route::get('/master/position/show/{id}', [PositionController::class, 'show'])->name('position.show');
-    Route::get('/master/position/create', [PositionController::class, 'create'])->name('position.create');
+    Route::get('/position', [PositionController::class, 'index'])->name('position.index');
+    Route::post('/position', [PositionController::class, 'store'])->name('position.store');
+    Route::get('/position/{id}/edit', [PositionController::class, 'edit'])->name('position.edit');
+    Route::put('/position/{id}', [PositionController::class, 'update'])->name('position.update');
+    Route::delete('/position/{id}', [PositionController::class, 'destroy'])->name('position.destroy');
+    Route::get('/position/show/{id}', [PositionController::class, 'show'])->name('position.show');
+    Route::get('/position/create', [PositionController::class, 'create'])->name('position.create');
 
     //crud hr
     Route::get('/master/hr/index', [HrController::class, 'index'])->name('hr.index');
@@ -134,11 +138,11 @@ Route::group(['middleware' => ['auth:hr']], function ()
     //crud berita
     Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
     Route::get('/berita/create', [BeritaController::class, 'create'])->name('berita.create');
-    Route::post('/berita/store', [BeritaController::class, 'store'])->name('berita.store');
+    Route::post('/berita', [BeritaController::class, 'store'])->name('berita.store');
     Route::get('/berita/show/{id}', [BeritaController::class, 'show'])->name('berita.show');
-    Route::get('/berita/edit/{id}', [BeritaController::class, 'edit'])->name('berita.edit');
-    Route::put('/berita/update/{id}', [BeritaController::class, 'update'])->name('berita.update');
-    Route::delete('/berita/delete/{id}', [BeritaController::class, 'destroy'])->name('berita.destroy');
+    Route::get('/berita/{id}/edit', [BeritaController::class, 'edit'])->name('berita.edit');
+    Route::put('/berita/{id}', [BeritaController::class, 'update'])->name('berita.update');
+    Route::delete('/berita/{id}', [BeritaController::class, 'destroy'])->name('berita.destroy');
 
     // paket jadwal
     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');

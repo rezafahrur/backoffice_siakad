@@ -33,9 +33,13 @@ class BeritaController extends Controller
                     return strtoupper($row->judul_berita); // Convert to uppercase
                 })
                 ->addColumn('action', function($row) {
-                    $btn = '<a href="'.url('/berita/show/'.$row->id).'" class="btn icon btn-primary" title="Detail"><i class="bi bi-eye"></i></a> ';
-                    $btn .= '<a href="'.url('/berita/edit/'.$row->id).'" class="btn icon btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a> ';
+                    $btn = '<a href="'.route('berita.show', $row->id).'" class="btn icon btn-primary btn-sm" title="Detail"><i class="bi bi-eye"></i></a> ';
+                    $btn .= '<a href="'.route('berita.edit', $row->id).'" class="btn icon btn-warning btn-sm" title="Edit"><i class="bi bi-pencil-square"></i></a> ';
                     $btn .= '<button class="btn icon btn-danger btn-delete" data-id="'.$row->id.'" title="Delete"><i class="bi bi-trash"></i></button>';
+                    // $btn .= '<form action="'.route('berita.destroy', $row->id).'" method="post" class="d-inline">
+                    //             '.csrf_field().method_field('DELETE').'
+                    //             <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger btn-sm" title="Delete"><i class="bi bi-trash"></i></button>
+                    //         </form>';
                     return $btn;
                 })
                 ->rawColumns(['photo', 'action'])
@@ -44,7 +48,7 @@ class BeritaController extends Controller
 
         return view('master.berita.index');
     }
-    
+
 
 
     public function create()
@@ -61,16 +65,16 @@ class BeritaController extends Controller
             'path_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Nullable karena tidak selalu diperlukan
             'isi_berita' => 'required',
         ]);
-    
+
         // Initialize filePath as null
         $filePath = null;
-    
+
         // Handle the file upload
         if ($request->hasFile('path_photo')) {
             $file = $request->file('path_photo');
             $filePath = $file->store('berita_photos', 'public');
         }
-    
+
         // Create the berita with the uploaded file path
         Berita::create([
             'kategori_berita_id' => $request->kategori_berita_id,
@@ -78,10 +82,10 @@ class BeritaController extends Controller
             'path_photo' => $filePath, // Use the value of $filePath, even if it's null
             'isi_berita' => $request->isi_berita,
         ]);
-    
+
         return redirect()->route('berita.index')->with('success', 'Berita berhasil ditambahkan.');
     }
-    
+
 
     public function edit($id)
     {

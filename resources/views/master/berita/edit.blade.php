@@ -15,31 +15,35 @@
         <h4 class="card-title">Form Edit Berita</h4>
     </div>
     <div class="card-body">
-        <form id="beritaForm" action="{{ route('berita.update', $berita->id) }}" method="POST" enctype="multipart/form-data">
+        <form id="beritaForm" action="{{ route('berita.update', $berita->id) }}" method="POST"
+            enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <div class="mb-3">
                 <label for="judul_berita" class="form-label">Judul Berita</label>
-                <input type="text" class="form-control" id="judul_berita" name="judul_berita" value="{{ $berita->judul_berita }}" required>
+                <input type="text" class="form-control" id="judul_berita" name="judul_berita"
+                    value="{{ $berita->judul_berita }}" required>
             </div>
-            
+
             <div class="mb-3">
                 <label for="kategori_berita_id" class="form-label">Kategori Berita</label>
                 <select class="form-control" id="kategori_berita_id" name="kategori_berita_id" required>
-                    @foreach($kategoriBerita as $kategori)
-                        <option value="{{ $kategori->id }}" {{ $berita->kategori_berita_id == $kategori->id ? 'selected' : '' }}>
+                    @foreach ($kategoriBerita as $kategori)
+                        <option value="{{ $kategori->id }}"
+                            {{ $berita->kategori_berita_id == $kategori->id ? 'selected' : '' }}>
                             {{ strtoupper($kategori->kategori_berita) }}
                         </option>
                     @endforeach
                 </select>
             </div>
-            
+
             <div class="mb-3">
                 <label for="path_photo" class="form-label">Upload Photo</label>
                 <input type="file" class="form-control" id="path_photo" name="path_photo">
-                @if($berita->path_photo)
-                    <img src="{{ asset('storage/'.$berita->path_photo) }}" alt="photo" style="width: 100px; margin-top: 10px;">
+                @if ($berita->path_photo)
+                    <img src="{{ asset('storage/' . $berita->path_photo) }}" alt="photo"
+                        style="width: 100px; margin-top: 10px;">
                 @endif
             </div>
 
@@ -57,7 +61,7 @@
     </div>
 
     {{-- Include SweetAlert2 Script --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
     {{-- Include Quill.js and Quill.css --}}
     <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
@@ -69,11 +73,23 @@
             theme: 'snow',
             modules: {
                 toolbar: [
-                    [{ 'header': [1, 2, false] }],
+                    [{
+                        'header': [1, 2, false]
+                    }],
                     ['bold', 'italic', 'underline'],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }],
                     ['link', 'image'],
-                    [{ 'align': [] }, { 'color': [] }, { 'background': [] }],
+                    [{
+                        'align': []
+                    }, {
+                        'color': []
+                    }, {
+                        'background': []
+                    }],
                     ['clean']
                 ]
             }
