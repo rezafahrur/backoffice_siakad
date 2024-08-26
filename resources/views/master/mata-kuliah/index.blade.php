@@ -28,11 +28,11 @@
             <div class="row" id="table-head">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
+                        {{-- <div class="card-header">
                             <h4 class="card-title">
                                 Table Data Mata Kuliah
                             </h4>
-                        </div>
+                        </div> --}}
 
                         <div class="card-body">
                             <a href="{{ route('mata-kuliah.create') }}" class="mb-3 btn icon icon-left btn-primary"><i

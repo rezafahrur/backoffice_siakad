@@ -11,9 +11,14 @@
                     <span><i class="bi bi-person-workspace"></i> Mahasiswa</span>
                 </a>
             </li>
+            <li class="menu-item {{ Route::is('jadwal.index') ? 'active' : '' }}">
+                <a href="{{ route('jadwal.index') }}" class='menu-link'>
+                    <span><i class="bi bi-calendar"></i> Jadwal</span>
+                </a>
+            </li>
             <li class="menu-item has-sub">
                 <a href="#" class='menu-link'>
-                    <span><i class="bi bi-grid-1x2-fill"></i>Master</span>
+                    <span><i class="bi bi-grid-1x2-fill"></i> Master</span>
                 </a>
                 <div class="submenu">
                     <div class="submenu-group-wrapper">
@@ -36,6 +41,8 @@
                             <li class="submenu-item {{ Route::is('semester.index') ? 'active' : '' }}">
                                 <a href="{{ route('semester.index') }}" class='submenu-link'>Semester</a>
                             </li>
+                        </ul>
+                        <ul class="submenu-group">
                             <li class="submenu-item {{ Route::is('tahun-ajaran.index') ? 'active' : '' }}">
                                 <a href="{{ route('tahun-ajaran.index') }}" class='submenu-link'>Tahun Ajaran</a>
                             </li>
@@ -49,9 +56,9 @@
                                 <a href="{{ route('paket-matakuliah.index') }}" class='submenu-link'>
                                     Paket Matakuliah</a>
                             </li>
-                            <li class="submenu-item {{ Route::is('jadwal.index') ? 'active' : '' }}">
+                            {{-- <li class="submenu-item {{ Route::is('jadwal.index') ? 'active' : '' }}">
                                 <a href="{{ route('jadwal.index') }}" class='submenu-link'>Jadwal</a>
-                            </li>
+                            </li> --}}
                             <li class="submenu-item {{ Route::is('berita.index') ? 'active' : '' }}">
                                 <a href="{{ route('berita.index') }}" class='submenu-link'>Berita</a>
                             </li>
