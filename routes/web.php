@@ -30,7 +30,12 @@ Route::get('/test', function () {
 Route::group(['middleware' => ['auth:hr']], function ()
 {
 
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');
+
+    // route profile
+    Route::get('/profile', function () {
+        return view('master.profile.index');
+    })->name('profile');
 
     // jurusan
     Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
