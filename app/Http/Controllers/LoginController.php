@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Spatie\Permission\Models\Role;
 
 class LoginController extends Controller
 {
@@ -21,14 +22,13 @@ class LoginController extends Controller
     {
         $data = json_decode($request->getContent(), true);
         $wa = str_replace('@c.us', '', $data['hp']);
-        $hp = '0' . substr($wa,2);
+        $hp = '0' . substr($wa, 2);
 
 
         //get ho from t_hr_detail
         $user = HrDetail::where('hp', $hp)->join('m_hr', 't_hr_detail.master_hr_id', '=', 'm_hr.id')->select('t_hr_detail.*', 'm_hr.nama')->orderBy('t_hr_detail.created_at', 'desc')->first();
 
-        if($user)
-        {
+        if ($user) {
             //generate otp
             $otp = bin2hex(random_bytes(3));
             $user->otp = $otp;
@@ -54,14 +54,9 @@ class LoginController extends Controller
 
             //response ke wa bot
             return response($res, 200);
-
-        }
-        else
-        {
+        } else {
             return response('null', 404);
         }
-
-
     }
 
     function prosesLogin(Request $request, $hp, $otp)
@@ -71,8 +66,7 @@ class LoginController extends Controller
 
         $hr_detail = HrDetail::where('master_hr_id', $user->master_hr_id)->orderBy('created_at', 'desc')->first();
 
-        if($user->otp == $otp)
-        {
+        if ($user->otp == $otp) {
             //nullkan otp t_hr_detail
             $hr_detail->otp = null;
             $hr_detail->save();
@@ -81,8 +75,7 @@ class LoginController extends Controller
             $new_session_id = Session::getId();
             $last_session = Session::getHandler()->read($user->session_id);
 
-            if ($last_session)
-            {
+            if ($last_session) {
                 Session::getHandler()->destroy($user->session_id);
                 Auth::guard('hr')->logout();
             }
@@ -92,18 +85,28 @@ class LoginController extends Controller
             $hr_detail->save();
 
             Session::put('hr_id', $user->master_hr_id);
-            Session::put('nama', explode(" ",$user->nama)[0]);
+            Session::put('nama', explode(" ", $user->nama)[0]);
             Session::put('nama_lengkap', $user->gelar_depan . ' ' . $user->nama . ' ' . $user->gelar_belakang);
-            Session::put('posisi_id',$user->m_position_id);
+            Session::put('posisi_id', $user->m_position_id);
             Session::put('posisi', $user->posisi);
             Session::put('photo_profile', $user->photo_profile);
             Auth::guard('hr')->loginUsingId($user->master_hr_id);
 
-            return redirect()->route('/');
+            $user = Auth::guard('hr')->user();
+            // dd($user);
 
-        }
-        else
-        {
+            // Pastikan role ada dan assign ke user
+            $roleName = $user->position->posisi; // Ambil nama role dari posisi
+            $role = Role::where('name', $roleName)->first();
+
+            if ($role) {
+                $user->assignRole($role->name);
+            } else {
+                return redirect()->route('login')->with('error', 'Role tidak ditemukan.');
+            }
+
+            return redirect()->route('/');
+        } else {
             $hr_detail->otp = null;
             $hr_detail->session_id = null;
             $hr_detail->save();

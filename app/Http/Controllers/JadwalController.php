@@ -26,12 +26,23 @@ class JadwalController extends Controller
                     return $row->paketMataKuliah ? $row->paketMataKuliah->nama_paket_matakuliah : 'N/A';
                 })
                 ->addColumn('action', function($row) {
-                    $editBtn = '<a href="' . route('jadwal.edit', $row->id) . '" class="btn icon btn-warning btn-sm" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    $deleteBtn = '<form action="' . route('jadwal.destroy', $row->id) . '" method="post" class="d-inline">
-                                    ' . csrf_field() . method_field('DELETE') . '
-                                    <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger btn-sm" title="Delete"><i class="bi bi-trash"></i></button>
-                                </form>';
+                    $user = auth()->user();
+                    
+                    $editBtn = '';
+                    $deleteBtn = '';
                     $showBtn = '<a href="' . route('jadwal.show', $row->id) . '" class="btn icon btn-info btn-sm" title="Show"><i class="bi bi-eye"></i></a>';
+                    
+                    if ($user->can('update_jadwal')) {
+                        $editBtn = '<a href="' . route('jadwal.edit', $row->id) . '" class="btn icon btn-warning btn-sm" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+                    }
+                    
+                    if ($user->can('delete_jadwal')) {
+                        $deleteBtn = '<form action="' . route('jadwal.destroy', $row->id) . '" method="post" class="d-inline">
+                                        ' . csrf_field() . method_field('DELETE') . '
+                                        <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger btn-sm" title="Delete"><i class="bi bi-trash"></i></button>
+                                      </form>';
+                    }
+                    
                     return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
                 })
                 ->rawColumns(['action'])

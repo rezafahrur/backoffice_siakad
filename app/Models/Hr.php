@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
+use Spatie\Permission\Traits\HasRoles;
 use App\Models\Ktp;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class Hr extends Authenticatable
 {
+    use HasRoles;
     use HasFactory;
     use SoftDeletes;
+    use Notifiable;
 
 
     protected $table = 'm_hr';

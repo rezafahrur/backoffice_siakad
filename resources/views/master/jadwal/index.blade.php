@@ -30,9 +30,11 @@
                     <div class="card">
                         {{-- <div class="card-content"> --}}
                         <div class="card-body">
-                            <a href="{{ route('jadwal.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
-                                    data-feather="user-plus"></i>
-                                Add Data</a>
+                            @can('create_jadwal')
+                                <a href="{{ route('jadwal.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
+                                        data-feather="user-plus"></i>
+                                    Add Data</a>
+                            @endcan
                             {{-- </div> --}}
 
                             <!-- table head dark -->
