@@ -9,7 +9,7 @@
                     class="user-dropdown d-flex align-items-center dropend dropdown-toggle " data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <div class="avatar avatar-md2">
-                        <img src="{{ asset('assets/compiled/jpg/1.jpg') }}" alt="Avatar">
+                        <img src="{{ Session::get('photo_profile') ? asset('storage/' . Session::get('photo_profile')) : asset('storage/2.jpg') }}" alt="Avatar">
                     </div>
                     <div class="text">
                         <h6 class="user-dropdown-name">{{ Session::get('nama') }}</h6>
