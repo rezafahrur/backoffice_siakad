@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HrController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\LoginController;
@@ -28,9 +29,8 @@ Route::get('/test', function () {
 
 Route::group(['middleware' => ['auth:hr']], function ()
 {
-    Route::get('/', function () {
-        return view('home');
-    })->name('/');
+
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // jurusan
     Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
@@ -115,20 +115,20 @@ Route::group(['middleware' => ['auth:hr']], function ()
     Route::get('/position/create', [PositionController::class, 'create'])->name('position.create');
 
     //crud hr
-    Route::get('/master/hr/index', [HrController::class, 'index'])->name('hr.index');
-    Route::post('/master/hr/store', [HrController::class, 'store'])->name('hr.store');
-    Route::get('/master/hr/edit/{id}', [HrController::class, 'edit'])->name('hr.edit');
-    Route::put('/master/hr/update/{id}', [HrController::class, 'update'])->name('hr.update');
-    Route::delete('master/hr/delete/{id}', [HrController::class, 'destroy'])->name('hr.destroy');
-    Route::get('/master/hr/show/{id}', [HrController::class, 'show'])->name('hr.show');
-    Route::get('/master/hr/create', [HrController::class, 'create'])->name('hr.create');
+    Route::get('/hr', [HrController::class, 'index'])->name('hr.index');
+    Route::post('/hr', [HrController::class, 'store'])->name('hr.store');
+    Route::get('/hr/{id}/edit', [HrController::class, 'edit'])->name('hr.edit');
+    Route::put('/hr/{id}', [HrController::class, 'update'])->name('hr.update');
+    Route::delete('hr/{id}', [HrController::class, 'destroy'])->name('hr.destroy');
+    Route::get('/hr/show/{id}', [HrController::class, 'show'])->name('hr.show');
+    Route::get('/hr/create', [HrController::class, 'create'])->name('hr.create');
 
 
     Route::get('/paket-matakuliah', [PaketMataKuliahController::class, 'index'])->name('paket-matakuliah.index');
     Route::get('/paket-matakuliah/create', [PaketMataKuliahController::class, 'create'])->name('paket-matakuliah.create');
-    Route::post('/paket-matakuliah/store', [PaketMataKuliahController::class, 'store'])->name('paket-matakuliah.store');
+    Route::post('/paket-matakuliah', [PaketMataKuliahController::class, 'store'])->name('paket-matakuliah.store');
     Route::get('/paket-matakuliah/show/{id}', [PaketMataKuliahController::class, 'show'])->name('paket-matakuliah.show');
-    Route::get('/paket-matakuliah/edit/{id}', [PaketMataKuliahController::class, 'edit'])->name('paket-matakuliah.edit');
+    Route::get('/paket-matakuliah/{id}/edit', [PaketMataKuliahController::class, 'edit'])->name('paket-matakuliah.edit');
     Route::put('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'update'])->name('paket-matakuliah.update');
     Route::delete('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'destroy'])->name('paket-matakuliah.destroy');
 

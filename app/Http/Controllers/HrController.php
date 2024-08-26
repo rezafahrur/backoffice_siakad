@@ -48,7 +48,8 @@ class HrController extends Controller
                                           <i class="bi bi-trash"></i>
                                       </button>
                                   </form>';
-                    return $editBtn . ' ' . $deleteBtn;
+                    $showBtn = '<a href="' . route('hr.show', $row->id) . '" class="btn icon btn-sm btn-primary" title="Detail"><i class="bi bi-eye"></i></a>';
+                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
                 })
                 ->rawColumns(['photo_profile', 'action']) // Ensures that HTML code for the action buttons is rendered correctly
                 ->make(true);
