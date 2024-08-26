@@ -67,7 +67,7 @@ class LoginController extends Controller
     function prosesLogin(Request $request, $hp, $otp)
     {
         //get user
-        $user = Hr::join('t_hr_detail', 't_hr_detail.master_hr_id', '=', 'm_hr.id')->join('m_position', 'm_hr.position_id', '=', 'm_position.id')->where('t_hr_detail.hp', $hp)->select('t_hr_detail.*', 'm_hr.nama', 'm_hr.gelar_belakang', 'm_hr.gelar_depan', 'm_position.posisi', 'm_position.id AS position_id')->orderBy('t_hr_detail.created_at', 'desc')->first();
+        $user = Hr::join('t_hr_detail', 't_hr_detail.master_hr_id', '=', 'm_hr.id')->join('m_position', 'm_hr.position_id', '=', 'm_position.id')->where('t_hr_detail.hp', $hp)->select('t_hr_detail.*', 'm_hr.nama', 'm_hr.gelar_belakang', 'm_hr.gelar_depan', 'm_position.posisi', 'm_position.id AS position_id', 'm_hr.photo_profile')->orderBy('t_hr_detail.created_at', 'desc')->first();
 
         $hr_detail = HrDetail::where('master_hr_id', $user->master_hr_id)->orderBy('created_at', 'desc')->first();
 
@@ -96,6 +96,7 @@ class LoginController extends Controller
             Session::put('nama_lengkap', $user->gelar_depan . ' ' . $user->nama . ' ' . $user->gelar_belakang);
             Session::put('posisi_id',$user->m_position_id);
             Session::put('posisi', $user->posisi);
+            Session::put('photo_profile', $user->photo_profile);
             Auth::guard('hr')->loginUsingId($user->master_hr_id);
 
             return redirect()->route('/');
