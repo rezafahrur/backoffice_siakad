@@ -92,6 +92,7 @@ class LoginController extends Controller
             $hr_detail->save();
 
             Session::put('hr_id', $user->master_hr_id);
+            Session::put('nama_normal', $user->nama);
             Session::put('nama', explode(" ",$user->nama)[0]);
             Session::put('nama_lengkap', $user->gelar_depan . ' ' . $user->nama . ' ' . $user->gelar_belakang);
             Session::put('posisi_id',$user->m_position_id);
@@ -99,7 +100,7 @@ class LoginController extends Controller
             Session::put('photo_profile', $user->photo_profile);
             Auth::guard('hr')->loginUsingId($user->master_hr_id);
 
-            return redirect()->route('/');
+            return redirect()->route('dashboard');
 
         }
         else
