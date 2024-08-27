@@ -34,7 +34,7 @@
                             <div class="d-flex justify-content-center align-items-center flex-column">
                                 <div class="avatar avatar-2xl">
                                     <img src="{{ asset('storage/' . $user->photo_profile) }}" alt="Avatar"
-                                        id="profileAvatar " style="cursor: pointer;" />
+                                        id="profileAvatar" style="cursor: pointer;" />
                                 </div>
 
                                 <h3 class="mt-3">{{ $user->nama }}</h3>
@@ -83,6 +83,16 @@
     </div>
 
     <script>
+        @if (session('success'))
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        @endif
+
+
         document.getElementById('profileAvatar').addEventListener('click', function() {
             document.getElementById('photoInput').click();
         });

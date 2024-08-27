@@ -50,8 +50,8 @@ class JurusanController extends Controller
     public function store(Request $request)
     {
         $rulesData = [
-            'kode_jurusan' => 'required',
-            'nama_jurusan' => 'required',
+            'kode_jurusan' => 'required|max:2',
+            'nama_jurusan' => 'required|string|max:255|unique:m_jurusan,nama_jurusan',
         ];
 
         $validateData = $request->validate($rulesData);
@@ -84,8 +84,8 @@ class JurusanController extends Controller
     public function update(Request $request, Jurusan $jurusan)
     {
         $rulesData = [
-            'kode_jurusan' => 'required',
-            'nama_jurusan' => 'required',
+            'kode_jurusan' => 'required|max:2',
+            'nama_jurusan' => 'required|string|max:255|unique:m_jurusan,nama_jurusan,' . $jurusan->id,
         ];
 
         $validateData = $request->validate($rulesData);
