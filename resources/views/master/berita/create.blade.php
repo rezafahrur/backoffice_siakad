@@ -1,6 +1,6 @@
 @extends('layouts.custom')
 
-@section('title', 'Form Paket MataKuliah')
+@section('title', 'Form Tambah Berita')
 
 @section('content')
     {{-- Start logo and back --}}
