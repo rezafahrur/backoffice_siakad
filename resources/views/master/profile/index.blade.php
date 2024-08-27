@@ -16,7 +16,7 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="index.html">Dashboard</a>
+                                <a href="{{ route('dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
                                 Profile
@@ -33,11 +33,12 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-center align-items-center flex-column">
                                 <div class="avatar avatar-2xl">
-                                    <img src="./assets/compiled/jpg/2.jpg" alt="Avatar" />
+                                    <img src="{{ asset('storage/' . $user->photo_profile) }}" alt="Avatar"
+                                        id="profileAvatar " style="cursor: pointer;" />
                                 </div>
 
-                                <h3 class="mt-3">{{ Session::get('nama_normal') }}</h3>
-                                <p class="text-small">{{ Session::get('posisi') }}</p>
+                                <h3 class="mt-3">{{ $user->nama }}</h3>
+                                <p class="text-small">{{ $user->position->posisi }}</p>
                             </div>
                         </div>
                     </div>
@@ -45,33 +46,28 @@
                 <div class="col-12 col-lg-8">
                     <div class="card">
                         <div class="card-body">
-                            <form action="#" method="get">
+                            <form action="{{ route('profile.update') }}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+
+                                <input type="file" name="photo_profile" id="photoInput" style="display: none;"
+                                    onchange="this.form.submit()">
+
+                                <!-- Other form fields -->
                                 <div class="form-group">
                                     <label for="name" class="form-label">Name</label>
                                     <input type="text" name="name" id="name" class="form-control"
-                                        placeholder="Your Name" value="John Doe" />
+                                        placeholder="Your Name" value="{{ $user->nama }}" />
                                 </div>
                                 <div class="form-group">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="text" name="email" id="email" class="form-control"
-                                        placeholder="Your Email" value="john.doe@example.net" />
+                                        placeholder="Your Email" value="{{ $user->email }}" />
                                 </div>
                                 <div class="form-group">
                                     <label for="phone" class="form-label">Phone</label>
                                     <input type="text" name="phone" id="phone" class="form-control"
-                                        placeholder="Your Phone" value="083xxxxxxxxx" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="birthday" class="form-label">Birthday</label>
-                                    <input type="date" name="birthday" id="birthday" class="form-control"
-                                        placeholder="Your Birthday" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select name="gender" id="gender" class="form-control">
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                    </select>
+                                        placeholder="Your Phone" value="{{ $user->hrDetail->hp }}" />
                                 </div>
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">
@@ -86,5 +82,9 @@
         </section>
     </div>
 
-
+    <script>
+        document.getElementById('profileAvatar').addEventListener('click', function() {
+            document.getElementById('photoInput').click();
+        });
+    </script>
 @endsection

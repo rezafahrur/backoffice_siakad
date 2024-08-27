@@ -98,6 +98,7 @@ class LoginController extends Controller
             Session::put('posisi_id',$user->m_position_id);
             Session::put('posisi', $user->posisi);
             Session::put('photo_profile', $user->photo_profile);
+
             Auth::guard('hr')->loginUsingId($user->master_hr_id);
 
             return redirect()->route('dashboard');
