@@ -30,7 +30,7 @@ class HrController extends Controller
                 })
                 ->addColumn('photo_profile', function ($row) {
                     // Mendapatkan path yang tepat
-                    $photoPath = public_path('storage/' . $row->photo_profile);
+                    $photoPath = storage_path('app/public/' . $row->photo_profile);
 
                     // Menggunakan file_exists untuk memeriksa keberadaan file
                     if ($row->photo_profile && file_exists($photoPath)) {
@@ -38,8 +38,9 @@ class HrController extends Controller
                     }
 
                     // Default image jika foto tidak ditemukan
-                    return '<img src="'.asset('storage/2.jpg').'" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">';
+                    return '<img src="'.asset('assets/images/faces/2.jpg').'" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">';
                 })
+
                 ->addColumn('action', function($row) {
                     $editBtn = '<a href="' . route('hr.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
                     $deleteBtn = '<form action="' . route('hr.destroy', $row->id) . '" method="post" class="d-inline">

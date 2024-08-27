@@ -33,9 +33,12 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-center align-items-center flex-column">
                                 <div class="avatar avatar-2xl">
-                                    <img src="{{ asset('storage/' . $user->photo_profile) }}" alt="Avatar"
-                                        id="profileAvatar" style="cursor: pointer;" />
+                                    <img src="{{ $user->photo_profile && Storage::exists('public/' . $user->photo_profile)
+                                        ? asset('storage/' . $user->photo_profile)
+                                        : asset('assets/images/faces/2.jpg') }}"
+                                        alt="Avatar" id="profileAvatar" style="cursor: pointer;" />
                                 </div>
+
 
                                 <h3 class="mt-3">{{ $user->nama }}</h3>
                                 <p class="text-small">{{ $user->position->posisi }}</p>
