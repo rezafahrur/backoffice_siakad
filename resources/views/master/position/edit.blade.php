@@ -17,14 +17,20 @@
         <h4 class="card-title">Edit Data</h4>
     </div>
     <div class="card-body">
-        <form action="{{ url('master/position/update/' . $position->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('position.update', $position->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="mb-3">
-                <label for="name" class="form-label">Posisi</label>
-                <input type="text" class="form-control" id="posisi" name="posisi" placeholder="Kode Program Studi"
-                    value="{{ $position->posisi }}" required>
+                <label for="posisi" class="form-label">Posisi</label>
+                <input type="text" class="form-control @error('posisi') is-invalid @enderror" id="posisi"
+                    name="posisi" placeholder="Kode Program Studi" value="{{ $position->posisi }}" required>
+                @error('posisi')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
+
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

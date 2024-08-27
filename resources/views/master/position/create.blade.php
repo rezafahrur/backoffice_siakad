@@ -20,10 +20,15 @@
         <form action="{{ route('position.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Nama Posisi</label>
-                <input type="text" class="form-control" id="posisi" name="posisi" placeholder="Nama Posisi" required>
+                <label for="posisi" class="form-label">Nama Posisi</label>
+                <input type="text" class="form-control @error('posisi') is-invalid @enderror" id="posisi"
+                    name="posisi" placeholder="Nama Posisi" required>
+                @error('posisi')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
-
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
