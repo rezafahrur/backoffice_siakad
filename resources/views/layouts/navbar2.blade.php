@@ -18,7 +18,7 @@
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="topbarUserDropdown">
-                    <li><a class="dropdown-item" href="#">My Account</a></li>
+                    <li><a class="dropdown-item" href="{{ route('profile') }}">My Account</a></li>
                     <li><a class="dropdown-item" href="#">Settings</a></li>
 
                     <div class="dropdown-item theme-toggle d-flex gap-2 align-items-center">

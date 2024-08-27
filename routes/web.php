@@ -29,13 +29,16 @@ Route::get('/test', function () {
 
 Route::group(['middleware' => ['auth:hr']], function ()
 {
+    // get '/' to redirect to '/home'
+    Route::get('/', function () {
+        return redirect()->route('dashboard');
+    });
 
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');
 
     // route profile
-    Route::get('/profile', function () {
-        return view('master.profile.index');
-    })->name('profile');
+    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
+    Route::put('/profile', [DashboardController::class, 'updateProfile'])->name('profile.update');
 
     // jurusan
     Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');

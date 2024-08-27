@@ -66,82 +66,82 @@ class HrController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'nik' => 'required',
-        'nama' => 'required',
-        'alamat_jalan' => 'required',
-        'alamat_rt' => 'required',
-        'alamat_rw' => 'required',
-        'alamat_prov_code' => 'required',
-        'alamat_kotakab_code' => 'required',
-        'alamat_kec_code' => 'required',
-        'alamat_kel_code' => 'required',
-        'lahir_tempat' => 'required',
-        'lahir_tgl' => 'required',
-        'jenis_kelamin' => 'required',
-        'agama' => 'required',
-        'golongan_darah' => 'required',
-        'kewarganegaraan' => 'required',
-        'position_id' => 'required',
-        'nip' => 'required',
-        'gelar_depan' => 'nullable',
-        'nama' => 'required',
-        'gelar_belakang' => 'nullable',
-        'photo_profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'hp' => 'required',
-        'email' => 'required|email',
-    ]);
+    {
+        $request->validate([
+            'nik' => 'required',
+            'nama' => 'required',
+            'alamat_jalan' => 'required',
+            'alamat_rt' => 'required',
+            'alamat_rw' => 'required',
+            'alamat_prov_code' => 'required',
+            'alamat_kotakab_code' => 'required',
+            'alamat_kec_code' => 'required',
+            'alamat_kel_code' => 'required',
+            'lahir_tempat' => 'required',
+            'lahir_tgl' => 'required',
+            'jenis_kelamin' => 'required',
+            'agama' => 'required',
+            'golongan_darah' => 'required',
+            'kewarganegaraan' => 'required',
+            'position_id' => 'required',
+            'nip' => 'required',
+            'gelar_depan' => 'nullable',
+            'nama' => 'required',
+            'gelar_belakang' => 'nullable',
+            'photo_profile' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'hp' => 'required',
+            'email' => 'required|email',
+        ]);
 
-    // Step 1: Create KTP Data
-    $ktpData = $request->only([
-        'nik',
-        'nama',
-        'alamat_jalan',
-        'alamat_rt',
-        'alamat_rw',
-        'alamat_prov_code',
-        'alamat_kotakab_code',
-        'alamat_kec_code',
-        'alamat_kel_code',
-        'lahir_tempat',
-        'lahir_tgl',
-        'jenis_kelamin',
-        'agama',
-        'golongan_darah',
-        'kewarganegaraan'
-    ]);
+        // Step 1: Create KTP Data
+        $ktpData = $request->only([
+            'nik',
+            'nama',
+            'alamat_jalan',
+            'alamat_rt',
+            'alamat_rw',
+            'alamat_prov_code',
+            'alamat_kotakab_code',
+            'alamat_kec_code',
+            'alamat_kel_code',
+            'lahir_tempat',
+            'lahir_tgl',
+            'jenis_kelamin',
+            'agama',
+            'golongan_darah',
+            'kewarganegaraan'
+        ]);
 
-    $ktp = Ktp::create($ktpData);
+        $ktp = Ktp::create($ktpData);
 
-    // Step 2: Create HR Data with the created KTP ID
-    $hrData = $request->only([
-        'position_id',
-        'nip',
-        'gelar_depan',
-        'nama',
-        'gelar_belakang',
-        'email',
-    ]);
-    $hrData['ktp_id'] = $ktp->id;
+        // Step 2: Create HR Data with the created KTP ID
+        $hrData = $request->only([
+            'position_id',
+            'nip',
+            'gelar_depan',
+            'nama',
+            'gelar_belakang',
+            'email',
+        ]);
+        $hrData['ktp_id'] = $ktp->id;
 
-    if ($request->hasFile('photo_profile')) {
-        $path = $request->file('photo_profile')->store('photo_profiles', 'public');
-        $hrData['photo_profile'] = $path;
+        if ($request->hasFile('photo_profile')) {
+            $path = $request->file('photo_profile')->store('photo_profiles', 'public');
+            $hrData['photo_profile'] = $path;
+        }
+
+        $hr = Hr::create($hrData);
+
+        // Step 3: Create HrDetail Data with the created HR ID
+        $hrDetailData = $request->only([
+            'hp',
+        ]);
+        $hrDetailData['master_hr_id'] = $hr->id;
+
+        HrDetail::create($hrDetailData);
+
+        return redirect()->route('hr.index')->with('success', 'Biodata SDM berhasil ditambahkan');
     }
-
-    $hr = Hr::create($hrData);
-
-    // Step 3: Create HrDetail Data with the created HR ID
-    $hrDetailData = $request->only([
-        'hp',
-    ]);
-    $hrDetailData['master_hr_id'] = $hr->id;
-
-    HrDetail::create($hrDetailData);
-
-    return redirect()->route('hr.index')->with('success', 'Biodata SDM berhasil ditambahkan');
-}
 
 
     public function edit($id)
