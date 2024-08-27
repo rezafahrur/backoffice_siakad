@@ -11,6 +11,7 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\ProgramStudiController;
@@ -161,6 +162,9 @@ Route::group(['middleware' => ['auth:hr']], function ()
     Route::delete('/jadwal/{jadwal}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
     Route::get('/jadwal/show/{id}', [JadwalController::class, 'show'])->name('jadwal.show');
     Route::get('/jadwal/details/{paketMataKuliah}', [JadwalController::class, 'getPaketDetails']);
+
+    Route::get('/nilai/create', [NilaiController::class, 'index'])->name('nilai');
+
 });
 
 //login
