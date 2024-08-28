@@ -64,9 +64,9 @@ class MataKuliahController extends Controller
     {
         $rulesData = [
             'program_studi_id' => 'required',
-            'kode_matakuliah' => 'required',
-            'nama_matakuliah' => 'required',
-            'sks' => 'required',
+            'kode_matakuliah' => 'required|unique:m_matakuliah,kode_matakuliah|max:10',
+            'nama_matakuliah' => 'required|unique:m_matakuliah,nama_matakuliah|max:60',
+            'sks' => 'required|numeric',
         ];
 
         $validateData = $request->validate($rulesData);
@@ -99,9 +99,9 @@ class MataKuliahController extends Controller
     {
         $rulesData = [
             'program_studi_id' => 'required',
-            'kode_matakuliah' => 'required',
-            'nama_matakuliah' => 'required',
-            'sks' => 'required',
+            'kode_matakuliah' => 'required|max:10|unique:m_matakuliah,kode_matakuliah,' . $id,
+            'nama_matakuliah' => 'required|max:60|unique:m_matakuliah,nama_matakuliah,' . $id,
+            'sks' => 'required|numeric',
         ];
 
         $validateData = $request->validate($rulesData);

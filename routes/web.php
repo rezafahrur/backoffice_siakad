@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HrController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\LoginController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SemesterController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\ProgramStudiController;
@@ -26,11 +28,17 @@ Route::get('/test', function () {
 });
 
 
-Route::group(['middleware' => ['auth:hr']], function ()
-{
+Route::group(['middleware' => ['auth:hr']], function () {
+    // get '/' to redirect to '/home'
     Route::get('/', function () {
-        return view('home');
-    })->name('/');
+        return redirect()->route('dashboard');
+    });
+
+    Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');
+
+    // route profile
+    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
+    Route::put('/profile', [DashboardController::class, 'updateProfile'])->name('profile.update');
 
     // jurusan
     Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index')->middleware(['permission:read_jurusan']);
@@ -115,20 +123,20 @@ Route::group(['middleware' => ['auth:hr']], function ()
     Route::get('/position/create', [PositionController::class, 'create'])->name('position.create')->middleware(['permission:create_position']);
 
     //crud hr
-    Route::get('/master/hr/index', [HrController::class, 'index'])->name('hr.index')->middleware(['permission:read_hr']);
-    Route::post('/master/hr/store', [HrController::class, 'store'])->name('hr.store')->middleware(['permission:create_hr']);
-    Route::get('/master/hr/edit/{id}', [HrController::class, 'edit'])->name('hr.edit')->middleware(['permission:update_hr']);
-    Route::put('/master/hr/update/{id}', [HrController::class, 'update'])->name('hr.update')->middleware(['permission:update_hr']);
-    Route::delete('master/hr/delete/{id}', [HrController::class, 'destroy'])->name('hr.destroy')->middleware(['permission:delete_hr']);
-    Route::get('/master/hr/show/{id}', [HrController::class, 'show'])->name('hr.show')->middleware(['permission:read_hr']);
-    Route::get('/master/hr/create', [HrController::class, 'create'])->name('hr.create')->middleware(['permission:create_hr']);
+    Route::get('/hr', [HrController::class, 'index'])->name('hr.index')->middleware(['permission:read_hr']);
+    Route::post('/hr', [HrController::class, 'store'])->name('hr.store')->middleware(['permission:create_hr']);
+    Route::get('/hr/{id}/edit', [HrController::class, 'edit'])->name('hr.edit')->middleware(['permission:update_hr']);
+    Route::put('/hr/{id}', [HrController::class, 'update'])->name('hr.update')->middleware(['permission:update_hr']);
+    Route::delete('hr/{id}', [HrController::class, 'destroy'])->name('hr.destroy')->middleware(['permission:delete_hr']);
+    Route::get('/hr/show/{id}', [HrController::class, 'show'])->name('hr.show')->middleware(['permission:read_hr']);
+    Route::get('/hr/create', [HrController::class, 'create'])->name('hr.create')->middleware(['permission:create_hr']);
 
 
     Route::get('/paket-matakuliah', [PaketMataKuliahController::class, 'index'])->name('paket-matakuliah.index')->middleware(['permission:read_paket_mata_kuliah']);
     Route::get('/paket-matakuliah/create', [PaketMataKuliahController::class, 'create'])->name('paket-matakuliah.create')->middleware(['permission:create_paket_mata_kuliah']);
-    Route::post('/paket-matakuliah/store', [PaketMataKuliahController::class, 'store'])->name('paket-matakuliah.store')->middleware(['permission:create_paket_mata_kuliah']);
+    Route::post('/paket-matakuliah', [PaketMataKuliahController::class, 'store'])->name('paket-matakuliah.store')->middleware(['permission:create_paket_mata_kuliah']);
     Route::get('/paket-matakuliah/show/{id}', [PaketMataKuliahController::class, 'show'])->name('paket-matakuliah.show')->middleware(['permission:read_paket_mata_kuliah']);
-    Route::get('/paket-matakuliah/edit/{id}', [PaketMataKuliahController::class, 'edit'])->name('paket-matakuliah.edit')->middleware(['permission:update_paket_mata_kuliah']);
+    Route::get('/paket-matakuliah/{id}/edit', [PaketMataKuliahController::class, 'edit'])->name('paket-matakuliah.edit')->middleware(['permission:update_paket_mata_kuliah']);
     Route::put('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'update'])->name('paket-matakuliah.update')->middleware(['permission:update_paket_mata_kuliah']);
     Route::delete('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'destroy'])->name('paket-matakuliah.destroy')->middleware(['permission:delete_paket_mata_kuliah']);
 
@@ -152,7 +160,11 @@ Route::group(['middleware' => ['auth:hr']], function ()
     Route::put('/jadwal/{jadwal}', [JadwalController::class, 'update'])->name('jadwal.update')->middleware(['permission:update_jadwal']);
     Route::delete('/jadwal/{jadwal}', [JadwalController::class, 'destroy'])->name('jadwal.destroy')->middleware(['permission:delete_jadwal']);
     Route::get('/jadwal/show/{id}', [JadwalController::class, 'show'])->name('jadwal.show')->middleware(['permission:read_jadwal']);
-    Route::get('/jadwal/details/{paketMataKuliah}', [JadwalController::class, 'getPaketDetails'])->name('jadwal.details')->middleware(['permission:read_jadwal']);
+    Route::get('/jadwal/details/{paketMataKuliah}', [JadwalController::class, 'getPaketDetails'])->middleware(['permission:read_jadwal']);
+
+    Route::get('/nilai/create', [NilaiController::class, 'index'])->name('nilai');
+
+    Route::get('/nilai/getMahasiswaByMatakuliah', [NilaiController::class, 'getMahasiswaByMatakuliah']);
 });
 
 //login

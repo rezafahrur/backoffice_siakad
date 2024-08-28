@@ -1,8 +1,8 @@
 <nav class="main-navbar">
     <div class="container">
         <ul>
-            <li class="menu-item {{ Route::is('home') ? 'active' : '' }}">
-                <a href="{{ url('/') }}" class='menu-link'>
+            <li class="menu-item {{ Route::is('dashboard') ? 'active' : '' }}">
+                <a href="{{ route('dashboard') }}" class='menu-link'>
                     <span><i class="bi bi-grid-fill"></i> Dashboard</span>
                 </a>
             </li>

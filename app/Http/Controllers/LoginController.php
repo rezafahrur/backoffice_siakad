@@ -90,6 +90,7 @@ class LoginController extends Controller
             Session::put('posisi_id', $user->m_position_id);
             Session::put('posisi', $user->posisi);
             Session::put('photo_profile', $user->photo_profile);
+
             Auth::guard('hr')->loginUsingId($user->master_hr_id);
 
             $user = Auth::guard('hr')->user();
@@ -106,7 +107,10 @@ class LoginController extends Controller
             }
 
             return redirect()->route('/');
-        } else {
+
+        }
+        else
+        {
             $hr_detail->otp = null;
             $hr_detail->session_id = null;
             $hr_detail->save();

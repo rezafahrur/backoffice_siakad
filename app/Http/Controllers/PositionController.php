@@ -42,11 +42,14 @@ class PositionController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'posisi' => 'required'
-        ]);
+        $rulesData = [
+            'posisi' => 'required|unique:m_position,posisi|max:60'
+        ];
 
-        Position::create($request->all());
+        $validateData = $request->validate($rulesData);
+
+        Position::create($validateData);
+
         return redirect()->route('position.index')->with('success', 'Position berhasil ditambahkan');
     }
 
@@ -58,11 +61,14 @@ class PositionController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'posisi' => 'required'
-        ]);
+        $rulesData = [
+            'posisi' => 'required|unique:m_position,posisi|max:60'
+        ];
 
-        Position::find($id)->update($request->all());
+        $validateData = $request->validate($rulesData);
+
+        Position::find($id)->update($validateData);
+
         return redirect()->route('position.index')->with('success', 'Position berhasil diupdate');
     }
 

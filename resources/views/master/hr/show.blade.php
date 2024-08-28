@@ -1,3 +1,7 @@
+@php
+    $photoPath = public_path('storage/' . $hr->photo_profile);
+@endphp
+
 @extends('layouts.custom')
 
 @section('title', 'Detail HR')
@@ -8,7 +12,7 @@
         <div class="container d-block">
             <a href="{{ route('hr.index') }}"><i class="bi bi-chevron-left"></i></a>
             <a class="navbar-brand ms-4" href="">
-                <img src="{{ asset('assets/img/logo-kos.svg') }}" alt="Logo">
+                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
             </a>
         </div>
     </nav>
@@ -21,9 +25,14 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    {{-- Photo Profile --}}
                     <div class="col-md-4 d-flex justify-content-center">
-                        <img src="{{ asset('storage/' . $hr->photo_profile) }}" alt="Photo Profile" class="img-thumbnail mt-2" width="250px">
+                        @if ($hr->photo_profile && file_exists($photoPath))
+                            <img src="{{ asset('storage/' . $hr->photo_profile) }}" alt="Photo Profile"
+                                class="img-thumbnail mt-2" width="250px">
+                        @else
+                            <img src="{{ asset('storage/2.jpg') }}" alt="Default Photo Profile" class="img-thumbnail mt-2"
+                                width="250px">
+                        @endif
                     </div>
 
                     {{-- Biodata --}}
@@ -43,7 +52,8 @@
                                     <dt class="col-sm-6"><strong>Email</strong></dt>
                                     <dd class="col-sm-6">{{ $hr->email }}</dd>
                                     <dt class="col-sm-6"><strong>Nama Lengkap</strong></dt>
-                                    <dd class="col-sm-6">{{ $hr->gelar_depan }}  {{ ucwords(strtolower($hr->ktp->nama)) }} {{ $hr->gelar_belakang }}</dd>
+                                    <dd class="col-sm-6">{{ $hr->gelar_depan }} {{ ucwords(strtolower($hr->ktp->nama)) }}
+                                        {{ $hr->gelar_belakang }}</dd>
                                     <dt class="col-sm-6"><strong>Alamat Jalan</strong></dt>
                                     <dd class="col-sm-6">{{ $hr->ktp->alamat_jalan }}</dd>
                                     <dt class="col-sm-6"><strong>Agama</strong></dt>
@@ -69,12 +79,12 @@
                                     <dd class="col-sm-6">{{ $hr->ktp->lahir_tempat }}</dd>
                                     <dt class="col-sm-6"><strong>Jenis Kelamin</strong></dt>
                                     <dd class="col-sm-6">{{ $hr->ktp->jenis_kelamin }}</dd>
-                                    
+
                                     <dt class="col-sm-6"><strong>Golongan Darah</strong></dt>
                                     <dd class="col-sm-6">{{ $hr->ktp->golongan_darah }}</dd>
                                     <dt class="col-sm-6"><strong>Kewarganegaraan</strong></dt>
                                     <dd class="col-sm-6">{{ $hr->ktp->kewarganegaraan }}</dd>
-                                    
+
                                 </dl>
                             </div>
                         </div>

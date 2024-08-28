@@ -9,15 +9,19 @@
                     class="user-dropdown d-flex align-items-center dropend dropdown-toggle " data-bs-toggle="dropdown"
                     aria-expanded="false">
                     <div class="avatar avatar-md2">
-                        <img src="{{ Session::get('photo_profile') ? asset('storage/' . Session::get('photo_profile')) : asset('storage/2.jpg') }}" alt="Avatar">
+                        <img src="{{ Session::get('photo_profile') && Storage::exists('public/' . Session::get('photo_profile'))
+                            ? asset('storage/' . Session::get('photo_profile'))
+                            : asset('assets/images/faces/2.jpg') }}"
+                            alt="Avatar">
                     </div>
+
                     <div class="text">
                         <h6 class="user-dropdown-name">{{ Session::get('nama') }}</h6>
-                        <p class="user-dropdown-status text-sm text-muted">{{ Session::get('posisi') }}</p>
+                        <p class="user-dropdown-status text-sm text-muted">{{ Session::get('nama') }}</p>
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="topbarUserDropdown">
-                    <li><a class="dropdown-item" href="#">My Account</a></li>
+                    <li><a class="dropdown-item" href="{{ route('profile') }}">My Account</a></li>
                     <li><a class="dropdown-item" href="#">Settings</a></li>
 
                     <div class="dropdown-item theme-toggle d-flex gap-2 align-items-center">

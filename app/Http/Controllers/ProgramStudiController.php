@@ -47,8 +47,8 @@ class ProgramStudiController extends Controller
     public function store(Request $request)
     {
         $rulesData = [
-            'kode_program_studi' => 'required',
-            'nama_program_studi' => 'required'
+            'kode_program_studi' => 'required|unique:m_program_studi,kode_program_studi|max:3',
+            'nama_program_studi' => 'required|unique:m_program_studi,nama_program_studi|max:40'
         ];
 
         $validateData = $request->validate($rulesData);
@@ -75,8 +75,8 @@ class ProgramStudiController extends Controller
     public function update(Request $request, ProgramStudi $prodi)
     {
         $rulesData = [
-            'kode_program_studi' => 'required',
-            'nama_program_studi' => 'required'
+            'kode_program_studi' => 'required|unique:m_program_studi,kode_program_studi,' . $prodi->id . '|max:3',
+            'nama_program_studi' => 'required|unique:m_program_studi,nama_program_studi,' . $prodi->id . '|max:40'
         ];
 
         $validateData = $request->validate($rulesData);
