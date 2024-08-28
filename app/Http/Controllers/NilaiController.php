@@ -71,4 +71,31 @@ class NilaiController extends Controller
             'paketMatkuls' => $paketMatkul
         ]);
     }
+
+    public function getMahasiswaByMatakuliah(Request $request)
+    {
+        try {
+    
+            // Query untuk mendapatkan data mahasiswa yang join dengan tabel m_krs berdasarkan matakuliah_id
+            $mahasiswaKrsDetails = Mahasiswa::join('m_krs', 'm_mahasiswa.id', '=', 'm_krs.mahasiswa_id')
+                ->select('m_mahasiswa.nim', 'm_mahasiswa.nama', 'm_mahasiswa.status')
+                ->get();
+    
+      
+            if ($mahasiswaKrsDetails->isEmpty()) {
+                return response()->json([], 200);
+            }
+    
+    
+            return response()->json($mahasiswaKrsDetails, 200);
+            
+        } catch (\Exception $e) {
+            // Tangani error dan kembalikan pesan error sebagai response JSON
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    
+    
+    
+
 }

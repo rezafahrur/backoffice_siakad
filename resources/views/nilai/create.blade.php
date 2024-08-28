@@ -31,7 +31,7 @@
             @csrf
 
             <div class="mb-3">
-                <label for="judul_berita" class="form-label>">Matakuliah</label>
+                <label for="judul_berita" class="form-label">Matakuliah</label>
                 <select name="matakuliah" id="matakuliah" class="form-control">
                     <option value="">Pilih MATKUL</option>
                     @foreach ($matakuliahs as $key => $value)
@@ -40,29 +40,56 @@
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label for="judul_berita" class="form-label>">Mahasiswa</label>
-                <select name="mahasiswa" id="mahasiswa" class="form-control">
-                    <option value="">Pilih Mahasiswa</option>
-                    @foreach ($mahasiswas as $key => $value)
-                        <option value="{{ $value['mahasiswa_id'] }}">{{ $value['nama'] }}</option>
-                    @endforeach        
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="judul_berita" class="form-label>">Semester</label>
-                <select name="semester" id="semester" class="form-control">
-                    <option value="">Pilih Semester</option>
-                    @foreach ($paketMatkuls as $key => $value)
-                        <option value="{{ $value['paket_matakuliah_id'] }}">
-                            {{ $value['nama_paket_matakuliah'] }}, Semester {{ $value['semester'] }}
-                        </option>
-                    @endforeach        
-                </select>
+            {{-- Datatable Mahasiswa --}}
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered" id="mahasiswaTable" style="display: none;">
+                    <thead>
+                        <tr>
+                            <th>NIM</th>
+                            <th>Nama</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data mahasiswa akan dimuat di sini -->
+                    </tbody>
+                </table>
             </div>
 
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
+
+    <script>
+        document.getElementById('matakuliah').addEventListener('change', function() {
+            let matakuliahId = this.value;
+
+            if (matakuliahId) {
+                fetch(`/nilai/getMahasiswaByMatakuliah?matakuliah_id=${matakuliahId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let tableBody = document.querySelector('#mahasiswaTable tbody');
+                        tableBody.innerHTML = ''; // Clear previous data
+                        
+                        if (data.length > 0) {
+                            data.forEach(mahasiswa => {
+                                let row = `<tr>
+                                    <td>${mahasiswa.nim}</td>
+                                    <td>${mahasiswa.nama}</td>
+                                    <td>${mahasiswa.status}</td>
+                                </tr>`;
+                                tableBody.innerHTML += row;
+                            });
+
+                            document.getElementById('mahasiswaTable').style.display = 'table'; // Show table
+                        } else {
+                            document.getElementById('mahasiswaTable').style.display = 'none'; // Hide table if no data
+                        }
+                    })
+                    .catch(error => console.error('Error fetching mahasiswa data:', error));
+            } else {
+                document.getElementById('mahasiswaTable').style.display = 'none'; // Hide table if no matakuliah selected
+            }
+        });
+    </script>
 @endsection

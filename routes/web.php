@@ -165,6 +165,10 @@ Route::group(['middleware' => ['auth:hr']], function ()
 
     Route::get('/nilai/create', [NilaiController::class, 'index'])->name('nilai');
 
+    Route::get('/nilai/getMahasiswaByMatakuliah', [NilaiController::class, 'getMahasiswaByMatakuliah']);
+
+
+
 });
 
 //login
