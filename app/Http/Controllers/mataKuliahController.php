@@ -18,14 +18,30 @@ class MataKuliahController extends Controller
             return DataTables::of($matkul)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $editBtn = '<a href="' . route('mata-kuliah.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    $deleteBtn = '<form action="' . route('mata-kuliah.destroy', $row->id) . '" method="post" class="d-inline">
-                                      ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
-                                          <i class="bi bi-trash"></i>
-                                      </button>
-                                  </form>';
+                    $user = auth()->user();
+
+                    $editBtn = '';
+                    $deleteBtn = '';
                     // $showBtn = '<a href="' . route('mata-kuliah.show', $row->id) . '" class="btn icon btn-info" title="Show"><i class="bi bi-eye"></i></a>';
+
+                    // Menampilkan tombol Edit jika pengguna memiliki hak akses
+                    if ($user->can('update_mata_kuliah')) {
+                        $editBtn = '<a href="' . route('mata-kuliah.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>';
+                    }
+
+                    // Menampilkan tombol Delete jika pengguna memiliki hak akses
+                    if ($user->can('delete_mata_kuliah')) {
+                        $deleteBtn = '<form action="' . route('mata-kuliah.destroy', $row->id) . '" method="post" class="d-inline">
+                                        ' . csrf_field() . method_field('DELETE') . '
+                                        <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                      </form>';
+                    }
+
+                    // Gabungkan tombol-tombol yang diizinkan untuk ditampilkan
                     return $editBtn . ' ' . $deleteBtn;
                 })
                 ->rawColumns(['action'])

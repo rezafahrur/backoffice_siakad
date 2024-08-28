@@ -73,6 +73,11 @@ return [
             'model' => env('AUTH_MODEL', App\Models\Hr::class),
         ],
 
+        'roles' => [
+            'driver' => 'eloquent',
+            'model' => Spatie\Permission\Models\Role::class,
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

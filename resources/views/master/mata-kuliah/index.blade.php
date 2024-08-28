@@ -35,9 +35,11 @@
                         </div> --}}
 
                         <div class="card-body">
-                            <a href="{{ route('mata-kuliah.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
-                                    data-feather="user-plus"></i>
-                                Add Data</a>
+                            @can('create_mata_kuliah')
+                                <a href="{{ route('mata-kuliah.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
+                                        data-feather="user-plus"></i>
+                                    Add Data</a>
+                            @endcan
                             <!-- table head dark -->
                             <div class="card-header table-responsive">
                                 <table class="table" id="prodiTable">
