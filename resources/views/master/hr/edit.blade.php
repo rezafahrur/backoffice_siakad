@@ -119,7 +119,25 @@
                         @enderror
                     </div>
 
-
+                    {{-- posisi --}}
+                    <div class="mb-3">
+                        <label for="position_id" class="form-label
+                            ">Posisi</label>
+                        <select class="form-select @error('position_id') is-invalid @enderror" id="position_id"
+                            name="position_id">
+                            <option value="" disabled selected>Pilih Posisi</option>
+                            @foreach ($positions as $position)
+                                <option value="{{ $position->id }}"
+                                    {{ old('position_id', $hr->position_id) == $position->id ? 'selected' : '' }}>
+                                    {{ $position->posisi }}</option>
+                            @endforeach
+                        </select>
+                        @error('position_id')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
 
                     {{-- Alamat --}}
                     <div class="mb-3">
@@ -347,7 +365,9 @@
             </div>
         </form>
     </div>
+@endsection
 
+@push('scripts')
     <script>
         $(document).ready(function() {
             $('#alamat_prov_code').on('change', function() {
@@ -362,8 +382,7 @@
                                 '<option value="">Pilih Kota/Kabupaten</option>');
                             $.each(data, function(key, value) {
                                 $('#alamat_kotakab_code').append('<option value="' +
-                                    value
-                                    .code + '">' + value.name + '</option>');
+                                    value.code + '">' + value.name + '</option>');
                             });
                         }
                     });
@@ -417,5 +436,4 @@
             });
         });
     </script>
-
-@endsection
+@endpush

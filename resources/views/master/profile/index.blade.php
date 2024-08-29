@@ -40,7 +40,7 @@
                                 </div>
 
 
-                                <h3 class="mt-3">{{ $user->nama }}</h3>
+                                <h3 class="mt-3 text-center">{{ $user->nama }}</h3>
                                 <p class="text-small">{{ $user->position->posisi }}</p>
                             </div>
                         </div>
