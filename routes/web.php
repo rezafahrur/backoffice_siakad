@@ -32,7 +32,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
     Route::get('/', function () {
         return redirect()->route('dashboard');
-    });
+    })->name('/');
 
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');
 

@@ -94,8 +94,7 @@ class LoginController extends Controller
             Auth::guard('hr')->loginUsingId($user->master_hr_id);
 
             $user = Auth::guard('hr')->user();
-            // dd($user);
-
+            
             // Pastikan role ada dan assign ke user
             $roleName = $user->position->posisi; // Ambil nama role dari posisi
             $role = Role::where('name', $roleName)->first();
@@ -125,6 +124,8 @@ class LoginController extends Controller
         Session::getHandler()->destroy($user->session_id);
         $user->session_id = null;
         $user->save();
+        $userlog = Auth::guard('hr')->user();
+        $userlog->roles()->detach(); 
         Auth::guard('hr')->logout();
 
         return redirect()->route('login');

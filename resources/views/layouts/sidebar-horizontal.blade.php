@@ -37,13 +37,13 @@
                                 </li>
                             @endcan
 
-                            @can('read_prodi')
+                            @can('read_program_studi')
                                 <li class="submenu-item {{ Route::is('prodi.index') ? 'active' : '' }}">
                                     <a href="{{ route('prodi.index') }}" class='submenu-link'>Program Studi</a>
                                 </li>
                             @endcan
 
-                            @can('read_kelas')
+                            @can('read_ruang_kelas')
                                 <li class="submenu-item {{ Route::is('kelas.index') ? 'active' : '' }}">
                                     <a href="{{ route('kelas.index') }}" class='submenu-link'>Ruang Kelas</a>
                                 </li>
@@ -80,7 +80,7 @@
                                 </li>
                             @endcan
 
-                            @can('read_paket_matakuliah')
+                            @can('read_paket_mata_kuliah')
                                 <li class="submenu-item {{ Route::is('paket-matakuliah.index') ? 'active' : '' }}">
                                     <a href="{{ route('paket-matakuliah.index') }}" class='submenu-link'>Paket
                                         Matakuliah</a>
