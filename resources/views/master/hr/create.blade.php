@@ -358,7 +358,9 @@
         </form>
     </div>
 
+@endsection
 
+@push('scripts')
     <script>
         $(document).ready(function() {
             $('#alamat_prov_code').on('change', function() {
@@ -373,8 +375,7 @@
                                 '<option value="">Pilih Kota/Kabupaten</option>');
                             $.each(data, function(key, value) {
                                 $('#alamat_kotakab_code').append('<option value="' +
-                                    value
-                                    .code + '">' + value.name + '</option>');
+                                    value.code + '">' + value.name + '</option>');
                             });
                         }
                     });
@@ -428,5 +429,4 @@
             });
         });
     </script>
-
-@endsection
+@endpush
