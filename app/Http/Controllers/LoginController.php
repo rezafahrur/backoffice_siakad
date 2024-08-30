@@ -71,6 +71,9 @@ class LoginController extends Controller
             $hr_detail->otp = null;
             $hr_detail->save();
 
+            //null kan model has role
+            $user->roles()->detach(); 
+
             //logout session lama
             $new_session_id = Session::getId();
             $last_session = Session::getHandler()->read($user->session_id);
@@ -125,7 +128,7 @@ class LoginController extends Controller
         $user->session_id = null;
         $user->save();
         $userlog = Auth::guard('hr')->user();
-        $userlog->roles()->detach(); 
+        $userlog->roles()->detach();
         Auth::guard('hr')->logout();
 
         return redirect()->route('login');

@@ -1,6 +1,6 @@
 @extends('layouts.custom')
 
-@section('title', 'Form User')
+@section('title', 'Form Position')
 
 @section('content')
     {{-- start logo and back --}}
@@ -17,19 +17,55 @@
         <h4 class="card-title">Form Members</h4>
     </div>
     <div class="card-body">
-        <form action="{{ route('position.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('position.store') }}" method="POST">
             @csrf
-            <div class="mb-3">
-                <label for="posisi" class="form-label">Nama Posisi</label>
+
+            <div class="form-group">
+                <label for="posisi">Position Name:</label>
                 <input type="text" class="form-control @error('posisi') is-invalid @enderror" id="posisi"
-                    name="posisi" placeholder="Nama Posisi" required>
+                    name="posisi" value="{{ old('posisi') }}" required>
                 @error('posisi')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
                 @enderror
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <div class="form-group">
+                <div class="mb-3">
+                    <label class="form-label">Permissions:</label>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Create</th>
+                                <th>Read</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($features as $feature)
+                                <tr>
+                                    <td>{{ ucfirst(str_replace('_', ' ', $feature->name)) }}</td>
+                                    @foreach (['create', 'read', 'update', 'delete'] as $action)
+                                        <td>
+                                            <input class="form-check-input" type="checkbox" name="permissions[]"
+                                                value="{{ $action }}_{{ $feature->name }}">
+                                        </td>
+                                    @endforeach
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @error('permissions[]')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
         </form>
     </div>
 

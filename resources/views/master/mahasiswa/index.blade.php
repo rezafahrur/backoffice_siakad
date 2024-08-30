@@ -34,9 +34,11 @@
                             </h4>
                         </div> --}}
                         <div class="card-body">
-                            <a href="{{ route('mahasiswa.create') }}" class="btn icon icon-left btn-primary"><i
-                                    data-feather="user-plus"></i>
-                                Add Data</a>
+                            @can('create_mahasiswa')
+                                <a href="{{ route('mahasiswa.create') }}" class="btn icon icon-left btn-primary"><i
+                                        data-feather="user-plus"></i>
+                                    Add Data</a>
+                            @endcan
                             <!-- table head dark -->
                             <div class="card-header table-responsive">
                                 <table class="table" id="mhsTable">
