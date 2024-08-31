@@ -27,22 +27,22 @@ class JadwalController extends Controller
                 })
                 ->addColumn('action', function($row) {
                     $user = auth()->user();
-                    
+
                     $editBtn = '';
                     $deleteBtn = '';
                     $showBtn = '<a href="' . route('jadwal.show', $row->id) . '" class="btn icon btn-info btn-sm" title="Show"><i class="bi bi-eye"></i></a>';
-                    
+
                     if ($user->can('update_jadwal')) {
                         $editBtn = '<a href="' . route('jadwal.edit', $row->id) . '" class="btn icon btn-warning btn-sm" title="Edit"><i class="bi bi-pencil-square"></i></a>';
                     }
-                    
+
                     if ($user->can('delete_jadwal')) {
                         $deleteBtn = '<form action="' . route('jadwal.destroy', $row->id) . '" method="post" class="d-inline">
                                         ' . csrf_field() . method_field('DELETE') . '
                                         <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger btn-sm" title="Delete"><i class="bi bi-trash"></i></button>
                                       </form>';
                     }
-                    
+
                     return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
                 })
                 ->rawColumns(['action'])
@@ -81,8 +81,10 @@ class JadwalController extends Controller
      */
     public function show($id)
     {
-        // mengambil data jadwal sama details nya
-        $jadwal = Jadwal::with('details.paketMataKuliahDetail.matakuliah')->findOrFail($id);
+        // mengambil data jadwal sama details nya, order by jadwal_hari dan jadwal_jam_mulai dari details
+        $jadwal = Jadwal::with(['details' => function($query) {
+            $query->orderBy('jadwal_hari')->orderBy('jadwal_jam_mulai');
+        }])->findOrFail($id);
         return view('master.jadwal.detail', compact('jadwal'));
     }
 
