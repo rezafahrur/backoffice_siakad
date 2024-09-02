@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Program Studi')
+@section('title', 'Paket Mata Kuliah')
 
 @section('content')
     <div class="page-heading">
@@ -75,6 +75,15 @@
                 title: 'Berhasil!',
                 text: '{{ session('success') }}',
                 icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                icon: 'error',
                 confirmButtonText: 'OK'
             });
         @endif

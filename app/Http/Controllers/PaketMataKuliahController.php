@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jadwal;
 use App\Models\PaketMataKuliah;
 use App\Models\PaketMataKuliahDetail;
 use App\Models\MataKuliah;
@@ -18,8 +19,8 @@ class PaketMataKuliahController extends Controller
     {
         if ($request->ajax()) {
             $paketMatakuliah = PaketMataKuliah::join('m_program_studi', 'm_paket_matakuliah.program_studi_id', '=', 'm_program_studi.id')
-            ->select('m_paket_matakuliah.*', 'm_program_studi.nama_program_studi')
-            ->get();
+                ->select('m_paket_matakuliah.*', 'm_program_studi.nama_program_studi')
+                ->get();
 
             return DataTables::of($paketMatakuliah)
                 ->addIndexColumn()
@@ -72,42 +73,50 @@ class PaketMataKuliahController extends Controller
     // }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'nama_paket_matakuliah' => 'required',
-        'program_studi_id' => 'required',
-        'semester' => 'required|integer|min:1|max:8',
-        'matakuliah_id' => 'required|array',
-    ]);
-
-    // Mengatur status data lama menjadi tidak aktif
-    PaketMataKuliah::where('program_studi_id', $request->program_studi_id)
-        ->where('semester', $request->semester)
-        ->update(['status' => 0]);
-
-    // Menyimpan paket mata kuliah baru dengan status aktif
-    $paketMatakuliah = PaketMataKuliah::create(array_merge(
-        $request->only('nama_paket_matakuliah', 'program_studi_id', 'semester'),
-        ['status' => 1]  // Set status menjadi aktif
-    ));
-
-    // Menambahkan detail mata kuliah
-    foreach ($request->matakuliah_id as $matakuliahId) {
-        PaketMataKuliahDetail::create([
-            'paket_matakuliah_id' => $paketMatakuliah->id,
-            'matakuliah_id' => $matakuliahId,
+    {
+        $request->validate([
+            'nama_paket_matakuliah' => 'required',
+            'program_studi_id' => 'required',
+            'semester' => 'required|integer|min:1|max:8',
+            'matakuliah_id' => 'required|array',
         ]);
-    }
 
-    return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil ditambahkan.');
-}
+        // Mengatur status data lama menjadi tidak aktif jika data yang ditambah memilih status aktif
+        if ($request->status == 1) {
+            PaketMataKuliah::where('program_studi_id', $request->program_studi_id)
+                ->where('semester', $request->semester)
+                ->update(['status' => 0]);
+        }
+
+        // Menyimpan paket mata kuliah baru dengan status aktif
+        $paketMatakuliah = PaketMataKuliah::create(array_merge(
+            $request->only('nama_paket_matakuliah', 'program_studi_id', 'semester'),
+            ['status' => $request->status]
+        ));
+
+        // Menambahkan detail mata kuliah
+        foreach ($request->matakuliah_id as $matakuliahId) {
+            PaketMataKuliahDetail::create([
+                'paket_matakuliah_id' => $paketMatakuliah->id,
+                'matakuliah_id' => $matakuliahId,
+            ]);
+        }
+
+        return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil ditambahkan.');
+    }
 
 
     // Menampilkan detail paket mata kuliah
     public function show($id)
     {
-        // Menggunakan nama relasi yang benar
-        $paketMatakuliah = PaketMataKuliah::with('programStudi', 'paketMataKuliahDetail.matakuliah')->findOrFail($id);
+        $paketMatakuliah = PaketMataKuliah::with(['programStudi', 'paketMataKuliahDetail' => function ($query) {
+            $query->whereNotNull('matakuliah_id');
+        }, 'paketMataKuliahDetail.matakuliah'])
+            ->whereHas('paketMataKuliahDetail', function ($query) {
+                $query->whereNotNull('matakuliah_id');
+            })
+            ->findOrFail($id);
+
         return view('master.paket-matakuliah.show', compact('paketMatakuliah'));
     }
 
@@ -121,6 +130,12 @@ class PaketMataKuliahController extends Controller
         $matakuliah = MataKuliah::all();  // Mengambil semua mata kuliah
         $matakuliahTerpilih = PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->pluck('matakuliah_id')->toArray();
 
+        // Cek apakah paket mata kuliah digunakan di jadwal
+        $isUsedInJadwal = Jadwal::where('paket_matakuliah_id', $id)->exists();
+        if ($isUsedInJadwal) {
+            return redirect()->route('paket-matakuliah.index')->with('error', 'Paket Mata Kuliah tidak dapat diubah karena sedang digunakan di jadwal.');
+        }
+
         return view('master.paket-matakuliah.edit', compact('paketMatakuliah', 'programStudi', 'matakuliah', 'matakuliahTerpilih'));
     }
 
@@ -128,42 +143,57 @@ class PaketMataKuliahController extends Controller
     // Memperbarui paket mata kuliah di dalam databasez
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nama_paket_matakuliah' => 'required',
-            'program_studi_id' => 'required',
-            'semester' => 'required|integer|min:1|max:8',
-            'matakuliah_id' => 'required|array',
-        ]);
-
-        $paketMatakuliah = PaketMataKuliah::findOrFail($id);
-
-        // Mengatur status data lama yang sama menjadi tidak aktif (kecuali yang sedang diupdate)
-        PaketMataKuliah::where('program_studi_id', $request->program_studi_id)
-            ->where('semester', $request->semester)
-            ->where('id', '<>', $id)
-            ->update(['status' => 0]);
-
-        // Memperbarui paket mata kuliah yang ada
-        $paketMatakuliah->update(array_merge(
-            $request->only('nama_paket_matakuliah', 'program_studi_id', 'semester'),
-            ['status' => $request->status] // Set status sesuai dengan input
-        ));
-
-        // Hapus detail lama dan tambahkan detail baru
-        PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->delete();
-        foreach ($request->matakuliah_id as $matakuliahId) {
-            PaketMataKuliahDetail::create([
-                'paket_matakuliah_id' => $paketMatakuliah->id,
-                'matakuliah_id' => $matakuliahId,
+        try {
+            $request->validate([
+                'nama_paket_matakuliah' => 'required',
+                'program_studi_id' => 'required',
+                'semester' => 'required|integer|min:1|max:8',
+                'matakuliah_id' => 'required|array',
             ]);
-        }
 
-        return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil diperbarui.');
+            $paketMatakuliah = PaketMataKuliah::findOrFail($id);
+
+            // Mengatur status data lama yang sama menjadi tidak aktif jika data yang diedit memilih status aktif
+            if ($request->status == 1) {
+                PaketMataKuliah::where('program_studi_id', $request->program_studi_id)
+                    ->where('semester', $request->semester)
+                    ->update(['status' => 0]);
+            }
+
+            // Memperbarui paket mata kuliah yang ada
+            $paketMatakuliah->update(array_merge(
+                $request->only('nama_paket_matakuliah', 'program_studi_id', 'semester'),
+                ['status' => $request->status] // Set status sesuai dengan input
+            ));
+
+            // null kan matakuliah_id detail yang lama (untuk dihapus)
+            PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->update(['matakuliah_id' => null]);
+
+            // tambahkan detail mata kuliah yang baru. jika ada yang null dari data lama, gunakan data tersebut dan jika tidak ada maka buat data baru
+            foreach ($request->matakuliah_id as $matakuliahId) {
+                PaketMataKuliahDetail::updateOrCreate(
+                    ['paket_matakuliah_id' => $id, 'matakuliah_id' => null],
+                    ['matakuliah_id' => $matakuliahId]
+                );
+            }
+
+            return redirect()->route('paket-matakuliah.index')->with('success', 'Paket Mata Kuliah berhasil diperbarui.');
+        } catch (\Exception $e) {
+            // Log error untuk debugging
+            Log::error('Error updating Paket Mata Kuliah: ' . $e->getMessage());
+            return redirect()->route('paket-matakuliah.index')->with('error', $e->getMessage());
+        }
     }
 
 
     public function destroy($id)
     {
+        // Cek apakah paket mata kuliah digunakan di jadwal
+        $isUsedInJadwal = Jadwal::where('paket_matakuliah_id', $id)->exists();
+        if ($isUsedInJadwal) {
+            return redirect()->route('paket-matakuliah.index')->with('error', 'Paket Mata Kuliah tidak dapat dihapus karena sedang digunakan di jadwal.');
+        }
+
         // Hapus detail yang terkait
         PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->delete();
 
@@ -175,28 +205,26 @@ class PaketMataKuliahController extends Controller
 
 
     public function getMataKuliah(Request $request, $programStudiId, $semester)
-{
-    // Validasi nilai semester
-    if (is_null($semester) || !is_numeric($semester)) {
-        return response()->json(['message' => 'Invalid semester value'], 400);
-    }
-
-    try {
-        $mataKuliah = MataKuliah::where('program_studi_id', '=', $programStudiId)
-                                ->where(DB::raw('SUBSTRING(kode_matakuliah, 6, 1)'), '=', $semester)
-                                ->get(['id', 'kode_matakuliah', 'nama_matakuliah']);
-
-        if ($mataKuliah->isEmpty()) {
-            return response()->json(['message' => 'Mata Kuliah not found'], 404);
+    {
+        // Validasi nilai semester
+        if (is_null($semester) || !is_numeric($semester)) {
+            return response()->json(['message' => 'Invalid semester value'], 400);
         }
 
-        return response()->json($mataKuliah);
-    } catch (\Exception $e) {
-        // Log error untuk debugging
-        Log::error('Error fetching Mata Kuliah: '.$e->getMessage());
-        return response()->json(['message' => 'Internal Server Error'], 500);
+        try {
+            $mataKuliah = MataKuliah::where('program_studi_id', '=', $programStudiId)
+                ->where(DB::raw('SUBSTRING(kode_matakuliah, 6, 1)'), '=', $semester)
+                ->get(['id', 'kode_matakuliah', 'nama_matakuliah']);
+
+            if ($mataKuliah->isEmpty()) {
+                return response()->json(['message' => 'Mata Kuliah not found'], 404);
+            }
+
+            return response()->json($mataKuliah);
+        } catch (\Exception $e) {
+            // Log error untuk debugging
+            Log::error('Error fetching Mata Kuliah: ' . $e->getMessage());
+            return response()->json(['message' => 'Internal Server Error'], 500);
+        }
     }
-}
-
-
 }
