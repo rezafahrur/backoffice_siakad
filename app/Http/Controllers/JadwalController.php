@@ -58,7 +58,9 @@ class JadwalController extends Controller
      */
     public function create()
     {
-        $paketMataKuliahs = PaketMataKuliah::where('status', 1)->get();
+        $paketMataKuliahs = PaketMataKuliah::where('status', 1)
+            ->whereDoesntHave('jadwal')
+            ->get();
         return view('master.jadwal.create', compact('paketMataKuliahs'));
     }
 
@@ -67,13 +69,20 @@ class JadwalController extends Controller
      */
     public function store(JadwalRequest $request)
     {
-        $jadwal = Jadwal::create($request->validated());
+        try {
+            $jadwal = Jadwal::create($request->validated());
 
-        foreach ($request->details as $detail) {
-            $jadwal->details()->create($detail);
+            foreach ($request->details as $detail) {
+                $jadwal->details()->create($detail);
+            }
+
+            return redirect()->route('jadwal.index')->with('success', 'Data berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with([
+                'error' => $e->getMessage(),
+                'toast_message' => 'Data Gagal Ditambahkan',
+            ]);
         }
-
-        return redirect()->route('jadwal.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -122,9 +131,19 @@ class JadwalController extends Controller
      */
     public function destroy(Jadwal $jadwal)
     {
-        $jadwal->delete();
+        try {
+            if ($jadwal->details) {
+                foreach ($jadwal->details as $detail) {
+                    $detail->delete();
+                }
+            }
 
-        return redirect()->route('jadwal.index')->with('success', 'Data berhasil dihapus');
+            $jadwal->delete();
+
+            return redirect()->route('jadwal.index')->with('success', 'Data berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->route('jadwal.index')->with('error', 'Data gagal dihapus');
+        }
     }
 
     public function getPaketDetails($paketMataKuliahId)
