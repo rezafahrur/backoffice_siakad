@@ -129,7 +129,7 @@ class JadwalController extends Controller
 
     public function getPaketDetails($paketMataKuliahId)
     {
-        $paketDetails = PaketMataKuliah::with('paketMataKuliahDetail.matakuliah')->find($paketMataKuliahId);
+        $paketDetails = PaketMataKuliah::with('paketMataKuliahDetail.Matakuliah')->find($paketMataKuliahId);
         $ruangKelas = RuangKelas::all();
         $hrs = Hr::all();
 
