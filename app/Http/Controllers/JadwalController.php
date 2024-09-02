@@ -81,8 +81,10 @@ class JadwalController extends Controller
      */
     public function show($id)
     {
-        // mengambil data jadwal sama details nya
-        $jadwal = Jadwal::with('details.paketMataKuliahDetail.matakuliah')->findOrFail($id);
+        // mengambil data jadwal sama details nya, order by jadwal_hari dan jadwal_jam_mulai dari details
+        $jadwal = Jadwal::with(['details' => function($query) {
+            $query->orderBy('jadwal_hari')->orderBy('jadwal_jam_mulai');
+        }])->findOrFail($id);
         return view('master.jadwal.detail', compact('jadwal'));
     }
 
