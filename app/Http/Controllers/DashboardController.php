@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Hr;
 use App\Models\Mahasiswa;
+use App\Models\RuangKelas;
+use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -23,7 +25,19 @@ class DashboardController extends Controller
         // Menghitung total HR
         $total_hr = Hr::count();
 
+        // get total ruang kelas
+        $total_ruang_kelas = RuangKelas::count();
+
+        // get program studi
+        $total_prodi = ProgramStudi::count();
+
+        // get mahasiswa dengan status 1 dan 0
+        $mahasiswa = Mahasiswa::where('status', 1)->orWhere('status', 0)->get();
+
         return view('home', [
+            'total_prodi' => $total_prodi,
+            'total_ruang_kelas' => $total_ruang_kelas,
+            'mahasiswa' => $mahasiswa,
             'total_mahasiswa' => $total_mahasiswa,
             'total_hr' => $total_hr,
             'total_dosen' => $total_dosen,
