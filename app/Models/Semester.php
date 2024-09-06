@@ -13,6 +13,10 @@ class Semester extends Model
 
     protected $table = 'm_semester';
     protected $fillable = [
+        'kode_semester',
         'nama_semester',
+        'tahun_awal',
+        'tahun_akhir',
+        'semester',
     ];
 }
