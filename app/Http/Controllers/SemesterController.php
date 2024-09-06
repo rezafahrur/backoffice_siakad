@@ -19,6 +19,18 @@ class SemesterController extends Controller
 
             return DataTables::of($semester)
                 ->addIndexColumn()
+                ->editColumn('tahun_ajaran', function($row) {
+                    return $row->tahun_awal . '/' . $row->tahun_akhir;
+                })
+                ->editColumn('semester', function($row) {
+                    if ($row->semester == 1) {
+                        return 'Ganjil';
+                    } elseif ($row->semester == 2) {
+                        return 'Genap';
+                    } else {
+                        return 'Pendek';
+                    }
+                })
                 ->addColumn('action', function($row) {
                     $editBtn = '<a href="' . route('semester.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
                     $deleteBtn = '<form action="' . route('semester.destroy', $row->id) . '" method="post" class="d-inline">
@@ -51,11 +63,24 @@ class SemesterController extends Controller
     {
         $validateData = $request->validated();
 
+        // Membuat kode_semester dari tahun awal dan tipe semester
+        $validateData['kode_semester'] = $validateData['tahun_awal'] . $validateData['semester'];
+
+        // Menentukan nama semester berdasarkan tahun dan tipe semester
+        $semesterName = $validateData['tahun_awal'] . '/' . $validateData['tahun_akhir'];
+        if ($validateData['semester'] == 1) {
+            $semesterName .= ' Ganjil';
+        } elseif ($validateData['semester'] == 2) {
+            $semesterName .= ' Genap';
+        } else {
+            $semesterName .= ' Pendek';
+        }
+        $validateData['nama_semester'] = $semesterName;
+
         Semester::create($validateData);
 
         return redirect()->route('semester.index')->with('success', 'Data berhasil ditambahkan');
     }
-
     /**
      * Display the specified resource.
      */
@@ -79,6 +104,20 @@ class SemesterController extends Controller
     public function update(SemesterRequest $request, Semester $semester)
     {
         $validateData = $request->validated();
+
+        // Membuat kode_semester dari tahun awal dan tipe semester
+        $validateData['kode_semester'] = $validateData['tahun_awal'] . $validateData['semester'];
+
+        // Menentukan nama semester berdasarkan tahun dan tipe semester
+        $semesterName = $validateData['tahun_awal'] . '/' . $validateData['tahun_akhir'];
+        if ($validateData['semester'] == 1) {
+            $semesterName .= ' Ganjil';
+        } elseif ($validateData['semester'] == 2) {
+            $semesterName .= ' Genap';
+        } else {
+            $semesterName .= ' Pendek';
+        }
+        $validateData['nama_semester'] = $semesterName;
 
         $semester->update($validateData);
 
