@@ -92,6 +92,12 @@
                                     <a href="{{ route('berita.index') }}" class='submenu-link'>Berita</a>
                                 </li>
                             @endcan
+
+                            @can('read_prestasi')
+                                <li class="submenu-item {{ Route::is('prestasi.index') ? 'active' : '' }}">
+                                    <a href="{{ route('prestasi.index') }}" class='submenu-link'>Prestasi</a>
+                                </li>
+                            @endcan
                         </ul>
                     </div>
                 </div>

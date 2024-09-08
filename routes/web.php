@@ -16,8 +16,7 @@ use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\ProgramStudiController;
 use App\Http\Controllers\PaketMataKuliahController;
-
-
+use App\Http\Controllers\PrestasiController;
 
 Route::get('/wizard', function () {
     return view('wizard');
@@ -165,6 +164,16 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/nilai/create', [NilaiController::class, 'index'])->name('nilai');
 
     Route::get('/nilai/getMahasiswaByMatakuliah', [NilaiController::class, 'getMahasiswaByMatakuliah']);
+
+    // prestasi
+    Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index')->middleware(['permission:read_prestasi']);
+    Route::get('/prestasi/create', [PrestasiController::class, 'create'])->name('prestasi.create')->middleware(['permission:create_prestasi']);
+    Route::post('/prestasi', [PrestasiController::class, 'store'])->name('prestasi.store')->middleware(['permission:create_prestasi']);
+    Route::get('/prestasi/{prestasi}/edit', [PrestasiController::class, 'edit'])->name('prestasi.edit')->middleware(['permission:update_prestasi']);
+    Route::put('/prestasi/{prestasi}', [PrestasiController::class, 'update'])->name('prestasi.update')->middleware(['permission:update_prestasi']);
+    Route::delete('/prestasi/{prestasi}', [PrestasiController::class, 'destroy'])->name('prestasi.destroy')->middleware(['permission:delete_prestasi']);
+    Route::get('/prestasi/show/{id}', [PrestasiController::class, 'show'])->name('prestasi.show')->middleware(['permission:read_prestasi']);
+    Route::get('/getMahasiswaByProdi', [PrestasiController::class, 'getMahasiswaByProdi'])->name('getMahasiswaByProdi');
 });
 
 //login

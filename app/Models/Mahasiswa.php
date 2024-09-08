@@ -61,4 +61,9 @@ class Mahasiswa extends Model
     public function krs(){
         return $this->hasMany(Krs::class, 'mahasiswa_id', 'id');
     }
+
+    public function prestasi()
+    {
+        return $this->hasMany(Prestasi::class, 'mahasiswa_id', 'id');
+    }
 }
