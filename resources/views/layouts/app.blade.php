@@ -34,7 +34,7 @@
     <!-- endinject -->
 
     <!-- Layout styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/demo1/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/demo3/style.css') }}">
     <!-- End layout styles -->
 
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
@@ -48,12 +48,12 @@
 <body>
     <div class="main-wrapper">
 
-        @include('layouts.sidebar')
+        @include('layouts.navbar')
 
         <div class="page-wrapper">
 
 
-            @include('layouts.navbar')
+            {{-- @include('layouts.navbar') --}}
 
             <div class="page-content">
                 @yield('content')
