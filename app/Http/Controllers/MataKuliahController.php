@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MataKuliahRequest;
 use App\Models\MataKuliah;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
@@ -41,8 +42,15 @@ class MataKuliahController extends Controller
                                       </form>';
                     }
 
+                    // Menampilkan tombol Show jika pengguna memiliki hak akses
+                    // if ($user->can('show_mata_kuliah')) {
+                        $showBtn = '<a href="' . route('mata-kuliah.show', $row->id) . '" class="btn icon btn-info btn-sm" title="Show">
+                                        <i class="bi bi-eye"></i>
+                                    </a>';
+                    // }
+
                     // Gabungkan tombol-tombol yang diizinkan untuk ditampilkan
-                    return $editBtn . ' ' . $deleteBtn;
+                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -59,20 +67,36 @@ class MataKuliahController extends Controller
     }
 
     //store
-    public function store(Request $request)
+    public function store(MataKuliahRequest $request)
 
     {
-        $rulesData = [
-            'program_studi_id' => 'required',
-            'kode_matakuliah' => 'required|unique:m_matakuliah,kode_matakuliah|max:10',
-            'nama_matakuliah' => 'required|unique:m_matakuliah,nama_matakuliah|max:60',
-            'sks' => 'required|numeric',
-        ];
+        try {
+            $validateData = $request->validated();
 
-        $validateData = $request->validate($rulesData);
-        MataKuliah::create($validateData);
+            // default nilai 0 pada status
+            $validateData['status'] = 0;
 
-        return redirect()->route('mata-kuliah.index')->with('success', 'Mata Kuliah berhasil ditambahkan');
+            MataKuliah::create($validateData);
+
+            return redirect()->route('mata-kuliah.index')->with('success', 'Mata Kuliah berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with([
+                'error' => $e->getMessage(),
+                'toast_message' => 'Data Gagal Ditambahkan',
+            ]);
+        }
+
+        // $rulesData = [
+        //     'program_studi_id' => 'required',
+        //     'kode_matakuliah' => 'required|unique:m_matakuliah,kode_matakuliah|max:10',
+        //     'nama_matakuliah' => 'required|unique:m_matakuliah,nama_matakuliah|max:60',
+        //     'sks' => 'required|numeric',
+        // ];
+
+        // $validateData = $request->validate($rulesData);
+        // MataKuliah::create($validateData);
+
+        // return redirect()->route('mata-kuliah.index')->with('success', 'Mata Kuliah berhasil ditambahkan');
     }
 
     public function show($id)
@@ -95,19 +119,35 @@ class MataKuliahController extends Controller
     }
 
     //update
-    public function update(Request $request, $id)
+    public function update(MataKuliahRequest $request, $id)
     {
-        $rulesData = [
-            'program_studi_id' => 'required',
-            'kode_matakuliah' => 'required|max:10|unique:m_matakuliah,kode_matakuliah,' . $id,
-            'nama_matakuliah' => 'required|max:60|unique:m_matakuliah,nama_matakuliah,' . $id,
-            'sks' => 'required|numeric',
-        ];
+        try {
+            $validateData = $request->validated();
 
-        $validateData = $request->validate($rulesData);
-        MataKuliah::find($id)->update($validateData);
+            $validateData['status'] = 0;
 
-        return redirect()->route('mata-kuliah.index')->with('success', 'Mata Kuliah berhasil diperbarui');
+            MataKuliah::find($id)->update($validateData);
+
+            return redirect()->route('mata-kuliah.index')->with('success', 'Mata Kuliah berhasil diperbarui');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with([
+                'error' => $e->getMessage(),
+                'toast_message' => 'Data Gagal Diubah',
+            ]);
+        }
+
+
+        // $rulesData = [
+        //     'program_studi_id' => 'required',
+        //     'kode_matakuliah' => 'required|max:10|unique:m_matakuliah,kode_matakuliah,' . $id,
+        //     'nama_matakuliah' => 'required|max:60|unique:m_matakuliah,nama_matakuliah,' . $id,
+        //     'sks' => 'required|numeric',
+        // ];
+
+        // $validateData = $request->validate($rulesData);
+        // MataKuliah::find($id)->update($validateData);
+
+        // return redirect()->route('mata-kuliah.index')->with('success', 'Mata Kuliah berhasil diperbarui');
     }
 
 

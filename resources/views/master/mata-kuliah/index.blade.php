@@ -49,7 +49,6 @@
                                             <th>Program Studi</th>
                                             <th>Kode Mata Kuliah</th>
                                             <th>Nama Mata Kuliah</th>
-                                            <th>SKS</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -101,10 +100,6 @@
                     {
                         data: 'nama_matakuliah',
                         name: 'nama_matakuliah'
-                    },
-                    {
-                        data: 'sks',
-                        name: 'sks'
                     },
                     {
                         data: 'action',

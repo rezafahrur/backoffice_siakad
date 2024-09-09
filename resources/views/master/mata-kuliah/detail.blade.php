@@ -32,10 +32,29 @@
             <dt class="col-sm-3">Nama Mata Kuliah</dt>
             <dd class="col-sm-9">{{ $matkul->nama_matakuliah }}</dd>
 
-            {{-- RT/RW --}}
-            <dt class="col-sm-3">SKS</dt>
-            <dd class="col-sm-9">{{ $matkul->sks }}</dd>
+            {{-- sks tatap muka --}}
+            <dt class="col-sm-3">SKS Tatap Muka</dt>
+            <dd class="col-sm-9">{{ $matkul->sks_tatap_muka }}</dd>
 
+            {{-- sks praktek --}}
+            <dt class="col-sm-3">SKS Praktek</dt>
+            <dd class="col-sm-9">{{ $matkul->sks_praktek }}</dd>
+
+            {{-- sks lapangan --}}
+            <dt class="col-sm-3">SKS Lapangan</dt>
+            <dd class="col-sm-9">{{ $matkul->sks_praktek_lapangan }}</dd>
+
+            {{-- sks simulasi --}}
+            <dt class="col-sm-3">SKS Simulasi</dt>
+            <dd class="col-sm-9">{{ $matkul->sks_simulasi }}</dd>
+
+            {{-- metode belajar --}}
+            <dt class="col-sm-3">Metode Belajar</dt>
+            <dd class="col-sm-9">{{ $matkul->metode_belajar }}</dd>
+
+            {{-- tanggal efektif = tgl_mulai_efektif - tgl_akhir_efektif --}}
+            <dt class="col-sm-3">Tanggal Efektif</dt>
+            <dd class="col-sm-9">{{ $matkul->tgl_mulai_efektif }} - {{ $matkul->tgl_akhir_efektif }}</dd>
         </dl>
     </div>
 

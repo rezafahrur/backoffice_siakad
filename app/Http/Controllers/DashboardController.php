@@ -34,7 +34,7 @@ class DashboardController extends Controller
         // get mahasiswa dengan status 1 dan 0
         $mahasiswa = Mahasiswa::where('status', 1)->orWhere('status', 0)->get();
 
-        return view('home', [
+        return view('dashboard', [
             'total_prodi' => $total_prodi,
             'total_ruang_kelas' => $total_ruang_kelas,
             'mahasiswa' => $mahasiswa,

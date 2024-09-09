@@ -17,16 +17,27 @@ class RuangKelasController extends Controller
             return DataTables::of($kelas)
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
-                    $editBtn = '<a href="' . route('kelas.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    $deleteBtn = '<form action="' . route('kelas.destroy', $row->id) . '" method="post" class="d-inline">
-                                      ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
-                                          <i class="bi bi-trash"></i>
-                                      </button>
-                                  </form>';
+                    // Tombol Edit
+                    $editBtn = '<a href="' . route('kelas.edit', $row->id) . '" class="btn btn-info btn-xs">
+                                    <i class="btn-icon-prepend" data-feather="edit"></i>
+                                </a>';
+
+                    // Tombol Detail (mengarah ke halaman detail)
+                    // $detailBtn = '<a href="' . route('kelas.show', $row->id) . '" class="btn btn-primary btn-xs">
+                    //                 <i class="btn-icon-prepend" data-feather="eye"></i>
+                    //             </a>';
+
+                    // Tombol Delete
+                    $deleteBtn = '<form action="' . route('kelas.destroy', $row->id) . '" method="POST" style="display:inline;">
+                                    ' . csrf_field() . method_field('DELETE') . '
+                                    <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(\'Konfirmasi hapus data?\')">
+                                        <i class="btn-icon-prepend" data-feather="trash-2"></i>
+                                    </button>
+                                </form>';
+
                     return $editBtn . ' ' . $deleteBtn;
                 })
-                ->rawColumns(['action']) // Ensures that HTML code for the action buttons is rendered correctly
+                ->rawColumns(['action']) // Pastikan HTML code untuk action button dirender dengan benar
                 ->make(true);
         }
 
