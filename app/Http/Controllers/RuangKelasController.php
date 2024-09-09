@@ -17,32 +17,28 @@ class RuangKelasController extends Controller
             return DataTables::of($kelas)
                 ->addIndexColumn()
                 ->addColumn('action', function($row) {
-                    // Tombol Edit
-                    $editBtn = '<a href="' . route('kelas.edit', $row->id) . '" class="btn btn-info btn-xs">
-                                    <i class="btn-icon-prepend" data-feather="edit"></i>
+                    // Edit button with new style
+                    $editBtn = '<a href="' . route('kelas.edit', $row->id) . '" class="btn btn-sm btn-primary btn-icon">
+                                    <i data-feather="check-square"></i>
                                 </a>';
 
-                    // Tombol Detail (mengarah ke halaman detail)
-                    // $detailBtn = '<a href="' . route('kelas.show', $row->id) . '" class="btn btn-primary btn-xs">
-                    //                 <i class="btn-icon-prepend" data-feather="eye"></i>
-                    //             </a>';
-
-                    // Tombol Delete
+                    // Delete button with new style
                     $deleteBtn = '<form action="' . route('kelas.destroy', $row->id) . '" method="POST" style="display:inline;">
                                     ' . csrf_field() . method_field('DELETE') . '
-                                    <button type="submit" class="btn btn-danger btn-xs" onclick="return confirm(\'Konfirmasi hapus data?\')">
-                                        <i class="btn-icon-prepend" data-feather="trash-2"></i>
+                                    <button type="submit" class="btn btn-sm btn-danger btn-icon" onclick="return confirm(\'Konfirmasi hapus data?\')">
+                                        <i data-feather="trash-2"></i>
                                     </button>
                                 </form>';
 
                     return $editBtn . ' ' . $deleteBtn;
                 })
-                ->rawColumns(['action']) // Pastikan HTML code untuk action button dirender dengan benar
+                ->rawColumns(['action'])
                 ->make(true);
         }
 
         return view('master.ruang-kelas.index');
     }
+
 
     public function create()
     {

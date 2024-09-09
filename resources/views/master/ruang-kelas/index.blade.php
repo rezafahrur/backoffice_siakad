@@ -17,11 +17,10 @@
                     <h6 class="card-title">Data Ruang Kelas</h6>
                     <div class="d-flex justify-content-end mb-3">
                         <div>
-                            <button type="button" id="modal-button" class="btn btn-primary btn-icon-text mb-2 mb-md-0"
-                                data-bs-toggle="modal" data-bs-target="#productModal">
+                            <a href="{{ route('kelas.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
-                                Tambah Produk
-                            </button>
+                                Tambah Data
+                            </a>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -46,6 +45,7 @@
 @endsection
 @push('scripts')
     <script src="{{ asset('assets/js/data-table.js') }}"></script>
+    <script type="text/javascript"></script>
     <script>
         @if (session('success'))
             Swal.fire({
@@ -95,6 +95,10 @@
                         previous: "Prev",
                         next: "Next"
                     }
+                },
+                // Tambahkan ini agar feather icons di-replace setelah render
+                drawCallback: function(settings) {
+                    feather.replace(); // Inisialisasi ulang feather icons setelah draw
                 }
             });
         });
