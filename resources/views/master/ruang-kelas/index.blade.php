@@ -45,6 +45,7 @@
     </div>
 @endsection
 @push('scripts')
+    <script src="{{ asset('assets/js/data-table.js') }}"></script>
     <script>
         @if (session('success'))
             Swal.fire({
