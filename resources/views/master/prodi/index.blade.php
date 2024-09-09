@@ -3,112 +3,67 @@
 @section('title', 'Program Studi')
 
 @section('content')
-    <div class="page-heading">
-        <div class="page-title">
-            <div class="row">
-                <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Data Program Studi</h3>
-                    {{-- <p class="text-subtitle text-muted">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, accusamus.
-                    </p> --}}
-                </div>
-                <div class="col-12 col-md-6 order-md-2 order-first">
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="">Master</a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                                <a href="">Prodi</a>
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <!-- Table head options start -->
-        <section class="section">
-            <div class="row" id="table-head">
-                <div class="col-12">
-                    <div class="card">
-                        {{-- <div class="card-header">
-                            <h4 class="card-title">
-                                Table Data Program Studi
-                            </h4>
-                        </div> --}}
-                        <div class="card-body">
-                            <a href="{{ route('prodi.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
-                                    data-feather="user-plus"></i>
-                                Add Data</a>
-                            <div class="card-header table-responsive">
-                                <table class="table" id="prodiTable">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Kode Program Studi</th>
-                                            <th>Nama Program Studi</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+    <nav class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Program Studi</li>
+            <li class="breadcrumb-item active" aria-current="page">Detail Program Studi</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Data Program Studi</h6>
+                    <div class="d-flex justify-content-end mb-3">
+                        <div>
+                            <a href="{{ route('prodi.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+                                <i class="btn-icon-prepend" data-feather="plus-square"></i>
+                                Tambah Data
+                            </a>
                         </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="dataTableExample">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Kode</th>
+                                    <th>Nama</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($prodi as $p)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $p->kode_program_studi }}</td>
+                                        <td>{{ $p->nama_program_studi }}</td>
+                                        <td>
+                                            <a href="{{ route('prodi.edit', $p->id) }}"
+                                                class="btn btn-sm btn-primary btn-icon">
+                                                <i class="btn-icon-prepend" data-feather="check-square"></i>
+                                            </a>
+                                            <form action="{{ route('prodi.destroy', $p->id) }}" method="post"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="btn btn-sm btn-danger btn-icon">
+                                                    <i class="btn-icon-prepend" data-feather="trash-2"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="text-center">Data tidak ditemukan</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
-@endsection
-@section('script')
-    <script>
-        @if (session('success'))
-            Swal.fire({
-                title: 'Berhasil!',
-                text: '{{ session('success') }}',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        @endif
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#prodiTable').DataTable({
-                processing: true,
-                serverSide: true,
-                responsive: true,
-                ajax: '{{ route('prodi.index') }}',
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'kode_program_studi',
-                        name: 'kode_program_studi'
-                    },
-                    {
-                        data: 'nama_program_studi',
-                        name: 'nama_program_studi'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    }
-                ],
-                language: {
-                    searchPlaceholder: 'Search...',
-                    sSearch: '',
-                    paginate: {
-                        previous: "Prev",
-                        next: "Next"
-                    }
-                }
-            });
-        });
-    </script>
 @endsection

@@ -3,7 +3,7 @@
         <div class="container">
             <div class="navbar-content">
                 <a href="#" class="navbar-brand">
-                    POLI<span>BATU</span>
+                    POLIBA<span>TU</span>
                 </a>
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
@@ -35,7 +35,7 @@
                                     </a>
                                 </li>
                                 <li class="dropdown-item py-2">
-                                    <a href="javascript:;" class="text-body ms-0">
+                                    <a href="{{ route('logout') }}" class="text-body ms-0">
                                         <i class="me-2 icon-md" data-feather="log-out"></i>
                                         <span>Log Out</span>
                                     </a>
@@ -112,6 +112,11 @@
                                     @can('read_mata_kuliah')
                                         <li class="nav-item {{ Route::is('mata-kuliah.index') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
+                                        </li>
+                                    @endcan
+                                    @can('read_berita')
+                                        <li class="nav-item {{ Route::is('berita.index') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('berita.index') }}">Berita</a>
                                         </li>
                                     @endcan
                                 </ul>

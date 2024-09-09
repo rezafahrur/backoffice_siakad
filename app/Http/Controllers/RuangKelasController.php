@@ -11,32 +11,9 @@ class RuangKelasController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $kelas = RuangKelas::query();
+        $kelas = RuangKelas::all();
 
-            return DataTables::of($kelas)
-                ->addIndexColumn()
-                ->addColumn('action', function($row) {
-                    // Edit button with new style
-                    $editBtn = '<a href="' . route('kelas.edit', $row->id) . '" class="btn btn-sm btn-primary btn-icon">
-                                    <i data-feather="check-square"></i>
-                                </a>';
-
-                    // Delete button with new style
-                    $deleteBtn = '<form action="' . route('kelas.destroy', $row->id) . '" method="POST" style="display:inline;">
-                                    ' . csrf_field() . method_field('DELETE') . '
-                                    <button type="submit" class="btn btn-sm btn-danger btn-icon" onclick="return confirm(\'Konfirmasi hapus data?\')">
-                                        <i data-feather="trash-2"></i>
-                                    </button>
-                                </form>';
-
-                    return $editBtn . ' ' . $deleteBtn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-        return view('master.ruang-kelas.index');
+        return view('master.ruang-kelas.index', compact('kelas'));
     }
 
 

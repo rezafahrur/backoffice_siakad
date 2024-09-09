@@ -25,11 +25,11 @@
 
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.css') }}">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('assets/fonts/feather-font/css/iconfont.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/flag-icon-css/css/flag-icon.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/datatables.net-bs5/dataTables.bootstrap5.css') }}">
     <!-- endinject -->
 
@@ -37,7 +37,10 @@
     <link rel="stylesheet" href="{{ asset('assets/css/demo3/style.css') }}">
     <!-- End layout styles -->
 
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    {{-- <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" /> --}}
+    {{-- {{-- <link rel="shortcut icon" href="{{ asset('assets/images/logo/logo.png') }}"> --}}
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo/logo.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo/logo.png') }}" type="image/png">
 
     {{-- Jquery --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -47,7 +50,7 @@
 
 </head>
 
-<body>
+<body data-session-success="{{ session('success') }}" data-session-error="{{ session('error') }}">
     <div class="main-wrapper">
 
         @include('layouts.navbar')
@@ -78,6 +81,7 @@
     <script src="{{ asset('assets/vendors/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
     <!-- End plugin js for this page -->
 
     <!-- inject:js -->
@@ -89,6 +93,7 @@
     <script src="{{ asset('assets/js/dashboard-light.js') }}"></script>
     <script src="{{ asset('assets/js/datepicker.js') }}"></script>
     <script src="{{ asset('assets/js/data-table.js') }}"></script>
+    <script src="{{ asset('assets/js/sweet-alert.js') }}"></script>
     <script src="../../../assets/vendors/prismjs/prism.js"></script>
     <script src="../../../assets/vendors/clipboard/clipboard.min.js"></script>
     <!-- End custom js for this page -->

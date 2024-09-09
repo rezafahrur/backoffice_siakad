@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-hover" id="kelasTable">
+                        <table class="table table-hover" id="dataTableExample">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -35,6 +35,32 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @forelse ($kelas as $k)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $k->kode_ruang_kelas }}</td>
+                                        <td>{{ $k->nama_ruang_kelas }}</td>
+                                        <td>{{ $k->kapasitas }}</td>
+                                        <td>
+                                            <a href="{{ route('kelas.edit', $k->id) }}"
+                                                class="btn btn-sm btn-primary btn-icon">
+                                                <i class="btn-icon-prepend" data-feather="check-square"></i>
+                                            </a>
+                                            <form action="{{ route('kelas.destroy', $k->id) }}" method="post"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="btn btn-sm btn-danger btn-icon">
+                                                    <i class="btn-icon-prepend" data-feather="trash-2"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center">Data tidak ditemukan</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -43,64 +69,3 @@
         </div>
     </div>
 @endsection
-@push('scripts')
-    <script src="{{ asset('assets/js/data-table.js') }}"></script>
-    <script type="text/javascript"></script>
-    <script>
-        @if (session('success'))
-            Swal.fire({
-                title: 'Berhasil!',
-                text: '{{ session('success') }}',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        @endif
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#kelasTable').DataTable({
-                processing: true,
-                serverSide: true,
-                responsive: true,
-                ajax: '{{ route('kelas.index') }}',
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'kode_ruang_kelas',
-                        name: 'kode_ruang_kelas'
-                    },
-                    {
-                        data: 'nama_ruang_kelas',
-                        name: 'nama_ruang_kelas'
-                    },
-                    {
-                        data: 'kapasitas',
-                        name: 'kapasitas'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    }
-                ],
-                language: {
-                    searchPlaceholder: 'Search...',
-                    sSearch: '',
-                    paginate: {
-                        previous: "Prev",
-                        next: "Next"
-                    }
-                },
-                // Tambahkan ini agar feather icons di-replace setelah render
-                drawCallback: function(settings) {
-                    feather.replace(); // Inisialisasi ulang feather icons setelah draw
-                }
-            });
-        });
-    </script>
-@endpush
