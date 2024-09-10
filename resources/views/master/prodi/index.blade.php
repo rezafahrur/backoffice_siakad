@@ -7,7 +7,6 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Data</a></li>
             <li class="breadcrumb-item active" aria-current="page">Program Studi</li>
-            <li class="breadcrumb-item active" aria-current="page">Detail Program Studi</li>
         </ol>
     </nav>
     <div class="row">
