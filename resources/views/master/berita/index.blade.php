@@ -3,27 +3,11 @@
 @section('title', 'Berita')
 
 @section('content')
-    <div class="page-heading">
+    {{-- <div class="page-heading">
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
                     <h3>Data Berita</h3>
-                    {{-- <p class="text-subtitle text-muted">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, accusamus.
-                </p>
-            </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="index.html">Master</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page">
-                            <a href="#">Berita</a>
-                        </li>
-                    </ol>
-                </nav>
-                </p> --}}
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -44,23 +28,12 @@
             <div class="row" id="table-head">
                 <div class="col-12">
                     <div class="card">
-                        {{-- <div class="card-header">
-                            <h4 class="card-title">
-                                Table Data Berita
-                            </h4>
-                        </div> --}}
                         <div class="card-content">
                             <div class="card-body">
-                                {{-- <p>
-                                    "Welcome to our web page showcasing the user data of our boarding house, where comfort
-                                    and convenience come together in one place."
-                                </p> --}}
                                 <a href="{{ route('berita.create') }}" class="btn icon icon-left btn-primary">
                                     <i data-feather="user-plus"></i> Add Data
                                 </a>
                             </div>
-
-                            <!-- table head dark -->
                             <div class="card-header table-responsive">
                                 <table id="beritaTable" class="table mb-0">
                                     <thead class="thead-dark">
@@ -74,20 +47,89 @@
                                     </thead>
                                 </table>
                             </div>
-                            {{-- <div class="m-3 pagination pagination-primary">
-                                {{ $users->links() }}
-                            </div> --}}
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         <!-- Table head options end -->
-    </div>
+    </div> --}}
+    <nav class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Berita</li>
+            <li class="breadcrumb-item active" aria-current="page">Detail Berita</li>
+        </ol>
+    </nav>
 
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Data Berita</h6>
+                    <div class="d-flex justify-content-end mb-3">
+                        <div>
+                            <a href="{{ route('berita.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+                                <i class="btn-icon-prepend" data-feather="plus-square"></i>
+                                Tambah Data
+                            </a>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="dataTableExample">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Judul Berita</th>
+                                    <th>Kategori</th>
+                                    <th>Photo</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($berita as $brt)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $brt->judul_berita }}</td>
+                                        <td>{{ $brt->kategoriBerita->kategori_berita ?? 'N/A' }}</td>
+                                        <td>
+                                            <img src="{{ asset('storage/' . $brt->photo) }}" alt="photo"
+                                                style="width: 100px;">
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('berita.edit', $brt->id) }}"
+                                                class="btn btn-sm btn-primary btn-icon">
+                                                <i class="btn-icon-prepend" data-feather="check-square"></i>
+                                            </a>
+                                            <a href="{{ route('berita.show', $brt->id) }}"
+                                                class="btn btn-sm btn-info btn-icon">
+                                                <i class="btn-icon-prepend text-white" data-feather="eye"></i>
+                                            </a>
+                                            <form action="{{ route('berita.destroy', $brt->id) }}" method="post"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="btn btn-sm btn-danger btn-icon">
+                                                    <i class="btn-icon-prepend" data-feather="trash-2"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center">Data tidak ditemukan</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
-@section('script')
+{{-- @section('script')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             $('#beritaTable').DataTable({
@@ -179,4 +221,4 @@
         });
     </script>
 
-@endsection
+@endsection --}}

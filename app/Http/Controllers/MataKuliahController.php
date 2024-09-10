@@ -13,50 +13,51 @@ class MataKuliahController extends Controller
     //
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $matkul = MataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->get();
+        // if ($request->ajax()) {
+        //     $matkul = MataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->get();
 
-            return DataTables::of($matkul)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $user = auth()->user();
+        //     return DataTables::of($matkul)
+        //         ->addIndexColumn()
+        //         ->addColumn('action', function ($row) {
+        //             $user = auth()->user();
 
-                    $editBtn = '';
-                    $deleteBtn = '';
-                    // $showBtn = '<a href="' . route('mata-kuliah.show', $row->id) . '" class="btn icon btn-info" title="Show"><i class="bi bi-eye"></i></a>';
+        //             $editBtn = '';
+        //             $deleteBtn = '';
+        //             // $showBtn = '<a href="' . route('mata-kuliah.show', $row->id) . '" class="btn icon btn-info" title="Show"><i class="bi bi-eye"></i></a>';
 
-                    // Menampilkan tombol Edit jika pengguna memiliki hak akses
-                    if ($user->can('update_mata_kuliah')) {
-                        $editBtn = '<a href="' . route('mata-kuliah.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>';
-                    }
+        //             // Menampilkan tombol Edit jika pengguna memiliki hak akses
+        //             if ($user->can('update_mata_kuliah')) {
+        //                 $editBtn = '<a href="' . route('mata-kuliah.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit">
+        //                                 <i class="bi bi-pencil-square"></i>
+        //                             </a>';
+        //             }
 
-                    // Menampilkan tombol Delete jika pengguna memiliki hak akses
-                    if ($user->can('delete_mata_kuliah')) {
-                        $deleteBtn = '<form action="' . route('mata-kuliah.destroy', $row->id) . '" method="post" class="d-inline">
-                                        ' . csrf_field() . method_field('DELETE') . '
-                                        <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                      </form>';
-                    }
+        //             // Menampilkan tombol Delete jika pengguna memiliki hak akses
+        //             if ($user->can('delete_mata_kuliah')) {
+        //                 $deleteBtn = '<form action="' . route('mata-kuliah.destroy', $row->id) . '" method="post" class="d-inline">
+        //                                 ' . csrf_field() . method_field('DELETE') . '
+        //                                 <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
+        //                                     <i class="bi bi-trash"></i>
+        //                                 </button>
+        //                               </form>';
+        //             }
 
-                    // Menampilkan tombol Show jika pengguna memiliki hak akses
-                    // if ($user->can('show_mata_kuliah')) {
-                        $showBtn = '<a href="' . route('mata-kuliah.show', $row->id) . '" class="btn icon btn-info btn-sm" title="Show">
-                                        <i class="bi bi-eye"></i>
-                                    </a>';
-                    // }
+        //             // Menampilkan tombol Show jika pengguna memiliki hak akses
+        //             // if ($user->can('show_mata_kuliah')) {
+        //                 $showBtn = '<a href="' . route('mata-kuliah.show', $row->id) . '" class="btn icon btn-info btn-sm" title="Show">
+        //                                 <i class="bi bi-eye"></i>
+        //                             </a>';
+        //             // }
 
-                    // Gabungkan tombol-tombol yang diizinkan untuk ditampilkan
-                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
+        //             // Gabungkan tombol-tombol yang diizinkan untuk ditampilkan
+        //             return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
+        //         })
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
 
-        return view('master.mata-kuliah.index');
+        $matkul = MataKuliah::join('m_program_studi', 'm_program_studi.id', '=', 'm_matakuliah.program_studi_id')->select('m_matakuliah.*', 'm_program_studi.nama_program_studi')->get();
+        return view('master.mata-kuliah.index', compact('matkul'));
     }
 
     //create

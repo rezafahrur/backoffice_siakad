@@ -87,12 +87,12 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // Route::get('/ruang-kelas/show/{id}', [RuangKelasController::class, 'show'])->name('kelas.show');
 
     // tahun ajaran
-    Route::get('/tahun-ajaran', [TahunAjaranController::class, 'index'])->name('tahun-ajaran.index')->middleware(['permission:read_tahun_ajaran']);
-    Route::get('/tahun-ajaran/create', [TahunAjaranController::class, 'create'])->name('tahun-ajaran.create')->middleware(['permission:create_tahun_ajaran']);
-    Route::post('/tahun-ajaran', [TahunAjaranController::class, 'store'])->name('tahun-ajaran.store')->middleware(['permission:create_tahun_ajaran']);
-    Route::get('/tahun-ajaran/{tahunAjaran}/edit', [TahunAjaranController::class, 'edit'])->name('tahun-ajaran.edit')->middleware(['permission:update_tahun_ajaran']);
-    Route::put('/tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'update'])->name('tahun-ajaran.update')->middleware(['permission:update_tahun_ajaran']);
-    Route::delete('/tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'destroy'])->name('tahun-ajaran.destroy')->middleware(['permission:delete_tahun_ajaran']);
+    // Route::get('/tahun-ajaran', [TahunAjaranController::class, 'index'])->name('tahun-ajaran.index')->middleware(['permission:read_tahun_ajaran']);
+    // Route::get('/tahun-ajaran/create', [TahunAjaranController::class, 'create'])->name('tahun-ajaran.create')->middleware(['permission:create_tahun_ajaran']);
+    // Route::post('/tahun-ajaran', [TahunAjaranController::class, 'store'])->name('tahun-ajaran.store')->middleware(['permission:create_tahun_ajaran']);
+    // Route::get('/tahun-ajaran/{tahunAjaran}/edit', [TahunAjaranController::class, 'edit'])->name('tahun-ajaran.edit')->middleware(['permission:update_tahun_ajaran']);
+    // Route::put('/tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'update'])->name('tahun-ajaran.update')->middleware(['permission:update_tahun_ajaran']);
+    // Route::delete('/tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'destroy'])->name('tahun-ajaran.destroy')->middleware(['permission:delete_tahun_ajaran']);
 
     // semester
     Route::get('/semester', [SemesterController::class, 'index'])->name('semester.index')->middleware(['permission:read_semester']);

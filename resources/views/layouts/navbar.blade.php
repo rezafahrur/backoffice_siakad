@@ -114,11 +114,7 @@
                                             <a class="nav-link" href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
                                         </li>
                                     @endcan
-                                    @can('read_berita')
-                                        <li class="nav-item {{ Route::is('berita.index') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('berita.index') }}">Berita</a>
-                                        </li>
-                                    @endcan
+
                                 </ul>
                             </div>
                             <div class="col-md-6">
@@ -129,11 +125,11 @@
                                         </li>
                                     @endcan
 
-                                    @can('read_tahun_ajaran')
+                                    {{-- @can('read_tahun_ajaran')
                                         <li class="nav-item {{ Route::is('tahun-ajaran.index') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('tahun-ajaran.index') }}">Tahun Ajaran</a>
                                         </li>
-                                    @endcan
+                                    @endcan --}}
 
                                     @can('read_position')
                                         <li class="nav-item {{ Route::is('position.index') ? 'active' : '' }}">
@@ -159,6 +155,22 @@
                     </div>
                 </li>
 
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="link-icon" data-feather="archive"></i>
+                        <span class="menu-title">Feature</span>
+                        <i class="link-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <ul class="submenu-item">
+                            @can('read_berita')
+                                <li class="nav-item {{ Route::is('berita.index') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('berita.index') }}">Berita</a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>

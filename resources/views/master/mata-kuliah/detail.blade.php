@@ -1,62 +1,62 @@
-@extends('layouts.custom')
+@extends('layouts.app')
 
 @section('title', 'Detail Mata Kuliah')
 
 @section('content')
-    {{-- start logo and back --}}
-    <nav class="navbar navbar-light">
-        <div class="container d-block">
-            <a href="{{ route('mata-kuliah.index') }}"><i class="bi bi-chevron-left"></i></a>
-            <a class="navbar-brand ms-4" href="{{ route('mata-kuliah.index') }}">
-                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
-            </a>
-        </div>
+    <nav class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Mata Kuliah</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Detail Mata Kuliah
+            </li>
+        </ol>
     </nav>
-    {{-- endt logo and back --}}
 
-    <div class="card-header">
-        <h4 class="card-title">Detail Mata Kuliah</h4>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Detail Mata Kuliah</h4>
+            <dl class="row">
+                {{-- Nama Program Studi --}}
+                <dt class="col-sm-3">Nama Program Studi</dt>
+                <dd class="col-sm-9">{{ $matkul->nama_program_studi }}</dd>
+
+                {{-- Nama Lengkap --}}
+                <dt class="col-sm-3">Kode Mata Kuliah</dt>
+                <dd class="col-sm-9">{{ $matkul->kode_matakuliah }}</dd>
+
+                {{-- Alamat Jalan --}}
+                <dt class="col-sm-3">Nama Mata Kuliah</dt>
+                <dd class="col-sm-9">{{ $matkul->nama_matakuliah }}</dd>
+
+                {{-- sks tatap muka --}}
+                <dt class="col-sm-3">SKS Tatap Muka</dt>
+                <dd class="col-sm-9">{{ $matkul->sks_tatap_muka }}</dd>
+
+                {{-- sks praktek --}}
+                <dt class="col-sm-3">SKS Praktek</dt>
+                <dd class="col-sm-9">{{ $matkul->sks_praktek }}</dd>
+
+                {{-- sks lapangan --}}
+                <dt class="col-sm-3">SKS Lapangan</dt>
+                <dd class="col-sm-9">{{ $matkul->sks_praktek_lapangan }}</dd>
+
+                {{-- sks simulasi --}}
+                <dt class="col-sm-3">SKS Simulasi</dt>
+                <dd class="col-sm-9">{{ $matkul->sks_simulasi }}</dd>
+
+                {{-- metode belajar --}}
+                <dt class="col-sm-3">Metode Belajar</dt>
+                <dd class="col-sm-9">{{ $matkul->metode_belajar }}</dd>
+
+                {{-- tanggal efektif = tgl_mulai_efektif - tgl_akhir_efektif --}}
+                <dt class="col-sm-3">Tanggal Efektif</dt>
+                <dd class="col-sm-9">{{ $matkul->tgl_mulai_efektif }} - {{ $matkul->tgl_akhir_efektif }}</dd>
+            </dl>
+        </div>
     </div>
 
-    <div class="card-body">
-        <dl class="row">
-            {{-- Nama Program Studi --}}
-            <dt class="col-sm-3">Nama Program Studi</dt>
-            <dd class="col-sm-9">{{ $matkul->nama_program_studi }}</dd>
-
-            {{-- Nama Lengkap --}}
-            <dt class="col-sm-3">Kode Mata Kuliah</dt>
-            <dd class="col-sm-9">{{ $matkul->kode_matakuliah }}</dd>
-
-            {{-- Alamat Jalan --}}
-            <dt class="col-sm-3">Nama Mata Kuliah</dt>
-            <dd class="col-sm-9">{{ $matkul->nama_matakuliah }}</dd>
-
-            {{-- sks tatap muka --}}
-            <dt class="col-sm-3">SKS Tatap Muka</dt>
-            <dd class="col-sm-9">{{ $matkul->sks_tatap_muka }}</dd>
-
-            {{-- sks praktek --}}
-            <dt class="col-sm-3">SKS Praktek</dt>
-            <dd class="col-sm-9">{{ $matkul->sks_praktek }}</dd>
-
-            {{-- sks lapangan --}}
-            <dt class="col-sm-3">SKS Lapangan</dt>
-            <dd class="col-sm-9">{{ $matkul->sks_praktek_lapangan }}</dd>
-
-            {{-- sks simulasi --}}
-            <dt class="col-sm-3">SKS Simulasi</dt>
-            <dd class="col-sm-9">{{ $matkul->sks_simulasi }}</dd>
-
-            {{-- metode belajar --}}
-            <dt class="col-sm-3">Metode Belajar</dt>
-            <dd class="col-sm-9">{{ $matkul->metode_belajar }}</dd>
-
-            {{-- tanggal efektif = tgl_mulai_efektif - tgl_akhir_efektif --}}
-            <dt class="col-sm-3">Tanggal Efektif</dt>
-            <dd class="col-sm-9">{{ $matkul->tgl_mulai_efektif }} - {{ $matkul->tgl_akhir_efektif }}</dd>
-        </dl>
-    </div>
 
     {{-- <div class="card-body">
         <div class="mb-3">
