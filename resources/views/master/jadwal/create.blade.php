@@ -1,72 +1,75 @@
-@extends('layouts.custom')
+@extends('layouts.app')
 
 @section('title', 'Form Tambah Paket Jadwal')
 
 @section('content')
-    <nav class="navbar navbar-light">
-        <div class="container d-block">
-            <a href="{{ route('jadwal.index') }}"><i class="bi bi-chevron-left"></i></a>
-            <a class="navbar-brand ms-4" href="">
-                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
-            </a>
-        </div>
+    <nav class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="#">Jadwal</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Create
+            </li>
+        </ol>
     </nav>
 
-    <div class="card-header">
-        <h3 class="card-title">Form Tambah Paket Jadwal</h3>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Form Tambah Paket Jadwal</h3>
 
-        {{-- Check for validation errors --}}
-        @if ($errors->any())
-            <div class="alert alert-danger alert-dismissible show fade mt-4">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        {{-- Check for other error messages --}}
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible show fade mt-4">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-    </div>
-    <div class="card-body">
-        <form action="{{ route('jadwal.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-
-            <div class="row">
-                <div class="col-md-12 mb-3">
-                    <label for="paket_matakuliah_id" class="form-label">Paket Mata Kuliah</label>
-                    <select name="paket_matakuliah_id" id="paket_matakuliah_id" class="form-control"
-                        onchange="fetchPaketDetails()">
-                        <option value="">Pilih Paket Mata Kuliah</option>
-                        @foreach ($paketMataKuliahs as $paketMataKuliah)
-                            <option value="{{ $paketMataKuliah->id }}"
-                                {{ old('paket_matakuliah_id') == $paketMataKuliah->id ? 'selected' : '' }}>
-                                {{ $paketMataKuliah->nama_paket_matakuliah }}
-                            </option>
+            {{-- Check for validation errors --}}
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible show fade mt-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
                         @endforeach
-                    </select>
-                    @error('paket_matakuliah_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            </div>
+            @endif
 
-            <!-- Detail Paket Jadwal -->
-            <div id="jadwal-details">
+            {{-- Check for other error messages --}}
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible show fade mt-4">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+        </div>
+        <div class="card-body">
+            <form action="{{ route('jadwal.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
-            </div>
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="paket_matakuliah_id" class="form-label">Paket Mata Kuliah</label>
+                        <select name="paket_matakuliah_id" id="paket_matakuliah_id" class="form-control"
+                            onchange="fetchPaketDetails()">
+                            <option value="">Pilih Paket Mata Kuliah</option>
+                            @foreach ($paketMataKuliahs as $paketMataKuliah)
+                                <option value="{{ $paketMataKuliah->id }}"
+                                    {{ old('paket_matakuliah_id') == $paketMataKuliah->id ? 'selected' : '' }}>
+                                    {{ $paketMataKuliah->nama_paket_matakuliah }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('paket_matakuliah_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
 
-            <div class="mb-3 text-end">
+                <!-- Detail Paket Jadwal -->
+                <div id="jadwal-details">
+
+                </div>
+
+                <a href="{{ route('jadwal.index') }}" class="btn btn-secondary">Back</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 @endsection
 
