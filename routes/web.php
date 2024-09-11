@@ -17,6 +17,7 @@ use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\ProgramStudiController;
 use App\Http\Controllers\PaketMataKuliahController;
 use App\Http\Controllers\PrestasiController;
+use App\Http\Controllers\TahunAkademikController;
 
 Route::get('/wizard', function () {
     return view('wizard');
@@ -174,6 +175,8 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::delete('/prestasi/{prestasi}', [PrestasiController::class, 'destroy'])->name('prestasi.destroy')->middleware(['permission:delete_prestasi']);
     Route::get('/prestasi/show/{id}', [PrestasiController::class, 'show'])->name('prestasi.show')->middleware(['permission:read_prestasi']);
     Route::get('/getMahasiswaByProdi', [PrestasiController::class, 'getMahasiswaByProdi'])->name('getMahasiswaByProdi');
+
+    Route::put('/tahun-akademik/{id}', [TahunAkademikController::class, 'update'])->name('tahun-akademik.update');
 });
 
 //login

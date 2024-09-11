@@ -8,11 +8,13 @@
             <h4 class="mb-3 mb-md-0">👋 Welcome back, John Doe</h4>
         </div>
         <div class="d-flex align-items-center flex-wrap text-nowrap">
-            <div class="input-group date datepicker wd-200 me-2 mb-2 mb-md-0" id="dashboardDate">
-                <span class="input-group-text input-group-addon bg-transparent border-primary"><i data-feather="calendar"
-                        class=" text-primary"></i></span>
-                <input type="text" class="form-control border-primary bg-transparent">
-            </div>
+            <!-- Button untuk menampilkan semester sekarang -->
+            <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0" data-bs-toggle="modal"
+                data-bs-target="#editSemesterModal">
+                <i class="btn-icon-prepend" data-feather="calendar"></i>
+                {{ $tahunAkademik->semester->nama_semester }}
+            </button>
+
             <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="printer"></i>
                 Print
@@ -304,4 +306,38 @@
             </div>
         </div>
     </div> <!-- row -->
+
+    <!-- Modal untuk edit semester -->
+    <div class="modal fade" id="editSemesterModal" tabindex="-1" aria-labelledby="editSemesterModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSemesterModalLabel">Edit Semester</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('tahun-akademik.update', $tahunAkademik->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="semester_id" class="form-label">Semester</label>
+                            <select class="form-select" id="semester_id" name="semester_id">
+                                @foreach ($semesters as $semester)
+                                    <option value="{{ $semester->id }}"
+                                        {{ $tahunAkademik->semester_id == $semester->id ? 'selected' : '' }}>
+                                        {{ $semester->nama_semester }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

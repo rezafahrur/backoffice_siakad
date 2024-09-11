@@ -19,4 +19,9 @@ class Semester extends Model
         'tahun_akhir',
         'semester',
     ];
+
+    public function tahunAkademik()
+    {
+        return $this->hasMany(TahunAkademik::class, 'semester_id', 'id');
+    }
 }

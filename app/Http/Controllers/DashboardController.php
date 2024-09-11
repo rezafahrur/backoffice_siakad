@@ -6,6 +6,8 @@ use App\Models\Hr;
 use App\Models\Mahasiswa;
 use App\Models\RuangKelas;
 use App\Models\ProgramStudi;
+use App\Models\Semester;
+use App\Models\TahunAkademik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -34,6 +36,10 @@ class DashboardController extends Controller
         // get mahasiswa dengan status 1 dan 0
         $mahasiswa = Mahasiswa::where('status', 1)->orWhere('status', 0)->get();
 
+        // Get the current academic year (Tahun Akademik) and available semesters
+        $tahunAkademik = TahunAkademik::with('semester')->first();
+        $semesters = Semester::all();
+
         return view('dashboard', [
             'total_prodi' => $total_prodi,
             'total_ruang_kelas' => $total_ruang_kelas,
@@ -41,6 +47,8 @@ class DashboardController extends Controller
             'total_mahasiswa' => $total_mahasiswa,
             'total_hr' => $total_hr,
             'total_dosen' => $total_dosen,
+            'tahunAkademik' => $tahunAkademik,
+            'semesters' => $semesters,
         ]);
     }
 
@@ -95,6 +103,8 @@ class DashboardController extends Controller
 
         return redirect()->route('profile');
     }
+
+
 
 
 
