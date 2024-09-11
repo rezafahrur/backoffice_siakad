@@ -6,7 +6,7 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Mata Kuliah</a>
+                <a href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 Edit

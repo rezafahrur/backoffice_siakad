@@ -7,7 +7,7 @@
         <nav class="page-breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="#">Human Resource</a>
+                    <a href="{{ route('hr.index') }}">Human Resource</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
                     Create

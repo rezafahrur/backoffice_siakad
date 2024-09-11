@@ -6,7 +6,7 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Posisi</a>
+                <a href="{{ route('position.index') }}">Posisi</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 Detail Position
@@ -50,6 +50,7 @@
                     </table>
                 </div>
             </div>
+            <a href="{{ route('position.index') }}" class="btn btn-secondary mt-3">Back</a>
         </div>
     </div>
 

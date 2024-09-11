@@ -62,6 +62,7 @@
                     </table>
                 </div>
             @endif
+            <a href="{{ route('paket-matakuliah.index') }}" class="btn btn-secondary mt-3">Back</a>
         </div>
     </div>
 @endsection

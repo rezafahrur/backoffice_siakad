@@ -6,7 +6,7 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Program Studi</a>
+                <a href="{{ route('prodi.index') }}">Program Studi</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 Create

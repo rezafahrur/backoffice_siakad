@@ -9,7 +9,7 @@
 @section('content')
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Human Resource</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('hr.index') }}">Human Resource</a></li>
             <li class="breadcrumb-item active" aria-current="page">Detail HR</li>
         </ol>
     </nav>
@@ -86,6 +86,7 @@
                     </div>
                 </div>
             </div>
+            <a href="{{ route('hr.index') }}" class="btn btn-secondary mt-3">Back</a>
         </div>
 
         {{-- Kartu Pengenal Dosen Politeknik Batu --}}

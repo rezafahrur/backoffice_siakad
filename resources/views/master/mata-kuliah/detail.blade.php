@@ -6,7 +6,7 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Mata Kuliah</a>
+                <a href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 Detail Mata Kuliah
@@ -54,6 +54,7 @@
                 <dt class="col-sm-3">Tanggal Efektif</dt>
                 <dd class="col-sm-9">{{ $matkul->tgl_mulai_efektif }} - {{ $matkul->tgl_akhir_efektif }}</dd>
             </dl>
+            <a href="{{ route('mata-kuliah.index') }}" class="btn btn-secondary mt-3">Back</a>
         </div>
     </div>
 

@@ -6,7 +6,7 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Semester</a>
+                <a href="{{ route('semester.index') }}">Semester</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 Edit

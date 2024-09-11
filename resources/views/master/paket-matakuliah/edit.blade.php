@@ -12,7 +12,7 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="#">Kurikulum</a>
+                <a href="{{ route('paket-matakuliah.index') }}">Kurikulum</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 Update
