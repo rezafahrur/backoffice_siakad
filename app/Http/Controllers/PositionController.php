@@ -33,9 +33,9 @@ class PositionController extends Controller
         //         ->rawColumns(['action'])
         //         ->make(true);
         // }
-        $position = Position::all();
+        $positions = Position::all();
 
-        return view('master.position.index', compact('position'));
+        return view('master.position.index', compact('positions'));
     }
 
     // Membuat posisi baru dan peran yang terkait

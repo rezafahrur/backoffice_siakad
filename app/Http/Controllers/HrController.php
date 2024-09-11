@@ -18,44 +18,46 @@ class HrController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $hr = Hr::with(['ktp', 'position', 'hrDetail']);
-            return DataTables::of($hr)
-                ->addIndexColumn()
-                ->addColumn('nama', function ($row) {
-                    return $row->ktp->nama;
-                })
-                ->addColumn('posisi', function ($row) {
-                    return $row->position->posisi ?? 'No Position Assigned';
-                })
-                ->addColumn('photo_profile', function ($row) {
-                    // Mendapatkan path yang tepat
-                    $photoPath = storage_path('app/public/' . $row->photo_profile);
+        // if ($request->ajax()) {
+        //     $hr = Hr::with(['ktp', 'position', 'hrDetail']);
+        //     return DataTables::of($hr)
+        //         ->addIndexColumn()
+        //         ->addColumn('nama', function ($row) {
+        //             return $row->ktp->nama;
+        //         })
+        //         ->addColumn('posisi', function ($row) {
+        //             return $row->position->posisi ?? 'No Position Assigned';
+        //         })
+        //         ->addColumn('photo_profile', function ($row) {
+        //             // Mendapatkan path yang tepat
+        //             $photoPath = storage_path('app/public/' . $row->photo_profile);
 
-                    // Menggunakan file_exists untuk memeriksa keberadaan file
-                    if ($row->photo_profile && file_exists($photoPath)) {
-                        return '<img src="'.asset('storage/' . $row->photo_profile).'" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">';
-                    }
+        //             // Menggunakan file_exists untuk memeriksa keberadaan file
+        //             if ($row->photo_profile && file_exists($photoPath)) {
+        //                 return '<img src="'.asset('storage/' . $row->photo_profile).'" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">';
+        //             }
 
-                    // Default image jika foto tidak ditemukan
-                    return '<img src="'.asset('assets/images/faces/2.jpg').'" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">';
-                })
+        //             // Default image jika foto tidak ditemukan
+        //             return '<img src="'.asset('assets/images/faces/2.jpg').'" class="img-fluid rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">';
+        //         })
 
-                ->addColumn('action', function($row) {
-                    $editBtn = '<a href="' . route('hr.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    $deleteBtn = '<form action="' . route('hr.destroy', $row->id) . '" method="post" class="d-inline">
-                                      ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
-                                          <i class="bi bi-trash"></i>
-                                      </button>
-                                  </form>';
-                    $showBtn = '<a href="' . route('hr.show', $row->id) . '" class="btn icon btn-sm btn-primary" title="Detail"><i class="bi bi-eye"></i></a>';
-                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
-                })
-                ->rawColumns(['photo_profile', 'action']) // Ensures that HTML code for the action buttons is rendered correctly
-                ->make(true);
-        }
-        return view('master.hr.index');
+        //         ->addColumn('action', function($row) {
+        //             $editBtn = '<a href="' . route('hr.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+        //             $deleteBtn = '<form action="' . route('hr.destroy', $row->id) . '" method="post" class="d-inline">
+        //                               ' . csrf_field() . method_field('DELETE') . '
+        //                               <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
+        //                                   <i class="bi bi-trash"></i>
+        //                               </button>
+        //                           </form>';
+        //             $showBtn = '<a href="' . route('hr.show', $row->id) . '" class="btn icon btn-sm btn-primary" title="Detail"><i class="bi bi-eye"></i></a>';
+        //             return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
+        //         })
+        //         ->rawColumns(['photo_profile', 'action']) // Ensures that HTML code for the action buttons is rendered correctly
+        //         ->make(true);
+        // }
+        $hr = Hr::with(['ktp', 'position', 'hrDetail'])->get();
+
+        return view('master.hr.index', compact('hr'));
     }
 
     public function create()

@@ -1,147 +1,85 @@
 @extends('layouts.app')
 
-@section('title', 'Paket Mata Kuliah')
+@section('title', 'Kurikulum')
 
 @section('content')
-    <div class="page-heading">
-        <div class="page-title">
-            <div class="row">
-                <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Data Paket Matakuliah</h3>
-                    {{-- <p class="text-subtitle text-muted">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit, accusamus.
-                    </p> --}}
-                </div>
-                <div class="col-12 col-md-6 order-md-2 order-first">
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="index.html">Dashboard</a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                                <a href="#">Table</a>
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <!-- Table head options start -->
-        <section class="section">
-            <div class="row" id="table-head">
-                <div class="col-12">
-                    <div class="card">
-                        {{-- <div class="card-header">
-                            <h4 class="card-title">
-                                Table Data Paket Matakuliah
-                            </h4>
-                        </div> --}}
-                        <div class="card-body">
-                            <a href="{{ route('paket-matakuliah.create') }}" class="mb-3 btn icon icon-left btn-primary"><i
-                                    data-feather="user-plus"></i>
-                                Add Data</a>
+    <nav class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Kurikulum</li>
+        </ol>
+    </nav>
 
-                            <!-- table head dark -->
-                            <div class="table-responsive">
-                                <table class="table" id="dataTable">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Nama Paket Matakuliah</th>
-                                            <th>Program Studi</th>
-                                            <th>Semester</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Data Kurikulum</h6>
+                    <div class="d-flex justify-content-end mb-3">
+                        <div>
+                            <a href="{{ route('paket-matakuliah.create') }}"
+                                class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+                                <i class="btn-icon-prepend" data-feather="plus-square"></i>
+                                Tambah Data
+                            </a>
                         </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="dataTableExample">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Nama Kurikulum</th>
+                                    <th>Program Studi</th>
+                                    <th>Semester</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($paketMatakuliahs as $paketMatakuliah)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $paketMatakuliah->nama_paket_matakuliah }}</td>
+                                        <td>{{ $paketMatakuliah->programStudi->nama_program_studi }}</td>
+                                        <td>{{ $paketMatakuliah->semester }}</td>
+                                        <td>
+                                            @if ($paketMatakuliah->status == 1)
+                                                <span class="badge bg-success">Aktif</span>
+                                            @else
+                                                <span class="badge bg-danger">Tidak Aktif</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('paket-matakuliah.edit', $paketMatakuliah->id) }}"
+                                                class="btn btn-sm btn-primary btn-icon">
+                                                <i class="btn-icon-prepend" data-feather="check-square"></i>
+                                            </a>
+                                            <a href="{{ route('paket-matakuliah.show', $paketMatakuliah->id) }}"
+                                                class="btn btn-sm btn-info btn-icon">
+                                                <i class="btn-icon-prepend text-white" data-feather="eye"></i>
+                                            </a>
+                                            <form action="{{ route('paket-matakuliah.destroy', $paketMatakuliah->id) }}"
+                                                method="post" class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="btn btn-sm btn-danger btn-icon">
+                                                    <i class="btn-icon-prepend" data-feather="trash-2"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">Data tidak ditemukan</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- Table head options end -->
+        </div>
     </div>
 
-@endsection
-
-@section('script')
-    <script>
-        @if (session('success'))
-            Swal.fire({
-                title: 'Berhasil!',
-                text: '{{ session('success') }}',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        @endif
-
-        @if (session('error'))
-            Swal.fire({
-                title: 'Gagal!',
-                text: '{{ session('error') }}',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-        @endif
-
-        // datatables
-        $(document).ready(function() {
-            $('#dataTable').DataTable({
-                processing: true,
-                serverSide: true,
-                responsive: true,
-                ajax: {
-                    url: "{{ route('paket-matakuliah.index') }}",
-                },
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'nama_paket_matakuliah',
-                        name: 'nama_paket_matakuliah'
-                    },
-                    {
-                        data: 'nama_program_studi',
-                        name: 'nama_program_studi'
-                    },
-                    {
-                        data: 'semester',
-                        name: 'semester'
-                    },
-                    {
-                        data: 'status',
-                        name: 'status',
-                        render: function(data, row, type) {
-                            if (data === 1) {
-                                return '<span class="badge bg-success">Aktif</span>';
-                            } else {
-                                return '<span class="badge bg-danger">Tidak Aktif</span>';
-                            }
-                        }
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    }
-                ],
-                language: {
-                    searchPlaceholder: 'Search...',
-                    sSearch: '',
-                    paginate: {
-                        previous: "Prev",
-                        next: "Next"
-                    }
-                }
-            });
-        });
-    </script>
 @endsection
