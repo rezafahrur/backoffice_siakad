@@ -20,27 +20,30 @@
             <form action="{{ route('semester.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
-                <div class="mb-3">
-                    <label for="tahun_awal" class="form-label">Tahun Awal</label>
-                    <input type="number" class="form-control @error('tahun_awal') is-invalid @enderror" id="tahun_awal"
-                        name="tahun_awal" value="{{ old('tahun_awal') }}">
-                    @error('tahun_awal')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="tahun_awal" class="form-label">Tahun Awal</label>
+                        <input type="number" class="form-control @error('tahun_awal') is-invalid @enderror" id="tahun_awal"
+                            name="tahun_awal" value="{{ old('tahun_awal') }}">
+                        @error('tahun_awal')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                
+                    <div class="col-md-6">
+                        <label for="tahun_akhir" class="form-label">Tahun Akhir</label>
+                        <input type="number" class="form-control @error('tahun_akhir') is-invalid @enderror" id="tahun_akhir"
+                            name="tahun_akhir" value="{{ old('tahun_akhir') }}" readonly>
+                        @error('tahun_akhir')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
                 </div>
-
-                <div class="mb-3">
-                    <label for="tahun_akhir" class="form-label">Tahun Akhir</label>
-                    <input type="number" class="form-control @error('tahun_akhir') is-invalid @enderror" id="tahun_akhir"
-                        name="tahun_akhir" value="{{ old('tahun_akhir') }}" readonly>
-                    @error('tahun_akhir')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
+                
 
                 <div class="mb-3">
                     <label for="semester" class="form-label">Semester</label>
