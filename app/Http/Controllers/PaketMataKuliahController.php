@@ -17,28 +17,32 @@ class PaketMataKuliahController extends Controller
     // Menampilkan daftar paket mata kuliah
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $paketMatakuliah = PaketMataKuliah::join('m_program_studi', 'm_paket_matakuliah.program_studi_id', '=', 'm_program_studi.id')
-                ->select('m_paket_matakuliah.*', 'm_program_studi.nama_program_studi')
-                ->get();
+        // if ($request->ajax()) {
+        //     $paketMatakuliah = PaketMataKuliah::join('m_program_studi', 'm_paket_matakuliah.program_studi_id', '=', 'm_program_studi.id')
+        //         ->select('m_paket_matakuliah.*', 'm_program_studi.nama_program_studi')
+        //         ->get();
 
-            return DataTables::of($paketMatakuliah)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $editBtn = '<a href="' . route('paket-matakuliah.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    $deleteBtn = '<form action="' . route('paket-matakuliah.destroy', $row->id) . '" method="post" class="d-inline">
-                                      ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
-                                          <i class="bi bi-trash"></i>
-                                      </button>
-                                  </form>';
-                    $showBtn = '<a href="' . route('paket-matakuliah.show', $row->id) . '" class="btn icon btn-sm btn-info" title="Detail"><i class="bi bi-eye"></i></a>';
-                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-        return view('master.paket-matakuliah.index');
+        //     return DataTables::of($paketMatakuliah)
+        //         ->addIndexColumn()
+        //         ->addColumn('action', function ($row) {
+        //             $editBtn = '<a href="' . route('paket-matakuliah.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+        //             $deleteBtn = '<form action="' . route('paket-matakuliah.destroy', $row->id) . '" method="post" class="d-inline">
+        //                               ' . csrf_field() . method_field('DELETE') . '
+        //                               <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
+        //                                   <i class="bi bi-trash"></i>
+        //                               </button>
+        //                           </form>';
+        //             $showBtn = '<a href="' . route('paket-matakuliah.show', $row->id) . '" class="btn icon btn-sm btn-info" title="Detail"><i class="bi bi-eye"></i></a>';
+        //             return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
+        //         })
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
+        $paketMatakuliahs = PaketMataKuliah::join('m_program_studi', 'm_paket_matakuliah.program_studi_id', '=', 'm_program_studi.id')
+            ->select('m_paket_matakuliah.*', 'm_program_studi.nama_program_studi')
+            ->get();
+
+        return view('master.paket-matakuliah.index', compact('paketMatakuliahs'));
     }
 
 

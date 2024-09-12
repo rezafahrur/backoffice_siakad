@@ -17,6 +17,14 @@ class MataKuliah extends Model
         'kode_matakuliah',
         'nama_matakuliah',
         'program_studi_id',
-        'sks'
+        'jenis_matakuliah',
+        'sks_tatap_muka',
+        'sks_praktek',
+        'sks_praktek_lapangan',
+        'sks_simulasi',
+        'metode_belajar',
+        'tgl_mulai_efektif',
+        'tgl_akhir_efektif',
+        'status',
     ];
 }

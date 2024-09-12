@@ -3,107 +3,91 @@
 @section('title', 'HR')
 
 @section('content')
-    <div class="page-heading">
-        <div class="page-title">
-            <div class="row">
-                <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h3>Data SDM</h3>
-                    {{-- <p class="text-subtitle text-muted">
-                        Who does not love The Kost
-                    </p> --}}
-                </div>
-                <div class="col-12 col-md-6 order-md-2 order-first">
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="">Master</a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                                <a href="">Human Resource</a>
-                            </li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <!-- Table head options start -->
-        <section class="section">
-            <div class="row" id="table-head">
-                <div class="col-12">
-                    <div class="card">
-                        {{-- <div class="card-header">
-                            <h4 class="card-title">
-                                Table Data SDM
-                            </h4>
-                        </div> --}}
-                        <div class="card-body">
-                            <a href="{{ route('hr.create') }}" class="btn icon icon-left btn-primary"><i
-                                    data-feather="user-plus"></i>
-                                Add Data</a>
+    <nav class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Data</a></li>
+            <li class="breadcrumb-item active" aria-current="page">HR</li>
+        </ol>
+    </nav>
 
-
-                            <!-- table head dark -->
-                            <div class="card-header table-responsive">
-                                <table class="table" id="hrTable">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>NIP</th>
-                                            <th>Nama SDM</th>
-                                            <th>Posisi</th>
-                                            <th>Photo Profile</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{-- @forelse ($hr as $index => $hr_dosen)
-                                            <tr>
-                                                <td class="text-bold-500">
-                                                    {{ $index + $hr->firstItem() }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    {{ $hr_dosen->nip }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    {{ $hr_dosen->ktp->nama }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    {{ $hr_dosen->position->posisi ?? 'No Position Assigned' }}
-                                                </td>
-                                                <td class="text-bold-500">
-                                                    <img src="{{ asset('storage/' . $hr_dosen->photo_profile) }}"
-                                                        alt="Photo Profile" class="img-fluid rounded-circle"
-                                                        style="width: 50px; height: 50px; object-fit: cover;">
-                                                </td>
-                                                <td>
-                                                    <a href="{{ route('hr.show', $hr_dosen->id) }}"
-                                                        class="btn icon btn-primary" title="Detail"><i
-                                                            class="bi bi-eye"></i></a>
-                                                    <a href="{{ url('master/hr/edit/' . $hr_dosen->id) }}"
-                                                        class="btn icon btn-warning" title="Edit"><i
-                                                            class="bi bi-pencil-square"></i></a>
-                                                    <button class="btn icon btn-danger delete-btn"
-                                                        data-id="{{ $hr_dosen->id }}" title="Delete"><i
-                                                            class="bi bi-trash"></i></button>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="6" class="text-center">No Data Found</td>
-                                            </tr>
-                                        @endforelse --}}
-                                    </tbody>
-                                </table>
-                            </div>
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">Data HR</h6>
+                    <div class="d-flex justify-content-end mb-3">
+                        <div>
+                            <a href="{{ route('hr.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+                                <i class="btn-icon-prepend" data-feather="plus-square"></i>
+                                Tambah Data
+                            </a>
                         </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="dataTableExample">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>NIP</th>
+                                    <th>Nama</th>
+                                    <th>Posisi</th>
+                                    <th>Photo Profile</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($hr as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->nip }}</td>
+                                        <td>{{ $item->nama }}</td>
+                                        <td>{{ $item->position->posisi }}</td>
+                                        @if ($item->photo_profile == null || !file_exists(public_path('storage/' . $item->photo_profile)))
+                                            <td>
+                                                <img src="{{ asset('assets/images/others/default-avatar.jpg') }}"
+                                                    alt="photo_profile"
+                                                    style="width: 50px; height: 50px; object-fit: cover;"
+                                                    class="img-thumbnail">
+                                            </td>
+                                        @else
+                                            <td>
+                                                <img src="{{ asset('storage/' . $item->photo_profile) }}"
+                                                    alt="photo_profile" class="img-fluid rounded-circle"
+                                                    style="width: 50px; height: 50px; object-fit: cover;">
+                                            </td>
+                                        @endif
+                                        <td>
+                                            <a href="{{ route('hr.edit', $item->id) }}"
+                                                class="btn btn-sm btn-primary btn-icon">
+                                                <i class="btn-icon-prepend" data-feather="check-square"></i>
+                                            </a>
+                                            <a href="{{ route('hr.show', $item->id) }}"
+                                                class="btn btn-sm btn-info btn-icon">
+                                                <i class="btn-icon-prepend text-white" data-feather="eye"></i>
+                                            </a>
+                                            <form action="{{ route('hr.destroy', $item->id) }}" method="post"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="btn btn-sm btn-danger btn-icon">
+                                                    <i class="btn-icon-prepend" data-feather="trash-2"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">Data tidak ditemukan</td>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- Table head options end -->
+        </div>
     </div>
 @endsection
-@section('script')
+{{-- @section('script')
     <script>
         $(document).ready(function() {
             $('#hrTable').DataTable({
@@ -201,4 +185,4 @@
             });
         @endif
     </script>
-@endsection
+@endsection --}}

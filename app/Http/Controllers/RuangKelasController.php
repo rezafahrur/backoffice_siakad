@@ -11,27 +11,11 @@ class RuangKelasController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $kelas = RuangKelas::query();
+        $kelas = RuangKelas::all();
 
-            return DataTables::of($kelas)
-                ->addIndexColumn()
-                ->addColumn('action', function($row) {
-                    $editBtn = '<a href="' . route('kelas.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    $deleteBtn = '<form action="' . route('kelas.destroy', $row->id) . '" method="post" class="d-inline">
-                                      ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
-                                          <i class="bi bi-trash"></i>
-                                      </button>
-                                  </form>';
-                    return $editBtn . ' ' . $deleteBtn;
-                })
-                ->rawColumns(['action']) // Ensures that HTML code for the action buttons is rendered correctly
-                ->make(true);
-        }
-
-        return view('master.ruang-kelas.index');
+        return view('master.ruang-kelas.index', compact('kelas'));
     }
+
 
     public function create()
     {
@@ -41,8 +25,8 @@ class RuangKelasController extends Controller
     public function store(Request $request)
     {
         $ruleData = [
-            'kode_ruang_kelas' => 'required|unique:m_ruang_kelas,kode_ruang_kelas|max:10',
-            'nama_ruang_kelas' => 'required|unique:m_ruang_kelas,nama_ruang_kelas|max:30',
+            'kode_ruang_kelas' => 'required||max:10',
+            'nama_ruang_kelas' => 'required||max:30',
             'kapasitas' => 'required|numeric',
         ];
 
@@ -67,8 +51,8 @@ class RuangKelasController extends Controller
     public function update(Request $request, RuangKelas $kelas)
     {
         $ruleData = [
-            'kode_ruang_kelas' => 'required|max:10|unique:m_ruang_kelas,kode_ruang_kelas,' . $kelas->id,
-            'nama_ruang_kelas' => 'required|max:30|unique:m_ruang_kelas,nama_ruang_kelas,' . $kelas->id,
+            'kode_ruang_kelas' => 'required|max:10',
+            'nama_ruang_kelas' => 'required|max:30',
             'kapasitas' => 'required|numeric',
         ];
 

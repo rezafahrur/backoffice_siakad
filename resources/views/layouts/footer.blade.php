@@ -1,14 +1,7 @@
-<div class="container">
-    <div class="footer clearfix mb-0 text-muted">
-        <div class="float-start">
-            <p>2024 &copy; Politeknik Batu</p>
-        </div>
-        <div class="float-end">
-            <p>
-                Crafted with
-                <span class="text-danger"><i class="bi bi-heart"></i></span>
-                by <a href="https://saugi.me">Dev Team</a>
-            </p>
-        </div>
+<footer class="footer border-top">
+    <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between py-3 small">
+        <p class="text-muted mb-1 mb-md-0">Copyright © 2024 <a href="https://poltekbatu.ac.id/" target="_blank">POLIBA</a>.
+        </p>
+        <p class="text-muted">Handcrafted With <i class="mb-1 text-primary ms-1 icon-sm" data-feather="heart"></i></p>
     </div>
-</div>
+</footer>

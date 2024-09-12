@@ -1,0 +1,59 @@
+.card {
+    border: none;
+}
+.card-gradient {
+    background: linear-gradient(#9ac0ec, #092365);
+    color: white;
+}
+
+.card-news-besar {
+    height: 31rem;
+}
+
+.gambar-news-besar {
+    height: 31rem;
+    width: 46rem;
+}
+
+.card-news-kecil {
+    height: 15rem;
+}
+
+.gambar-news-kecil {
+    height: 15rem;
+    width: 46rem;
+}
+
+.rating {
+    font-size: 15px;
+    color: #d3d3d3; /* Warna bintang kosong */
+}
+.rating .bi-star {
+    color: #ffd700; /* Warna bintang terisi */
+}
+.rating .bi-star.checked {
+    color: #ffd700;
+}
+
+.button-view {
+    margin: 5px;
+    background: #092365;
+    color: white;
+    border-radius: 5px;
+    height: 2.5rem;
+}
+
+.footer {
+    background: #092365;
+    color: white;
+}
+
+.copyright {
+    background: #092365;
+    border-top: 1px solid grey;
+    color: grey;
+}
+input::placeholder {
+    color: white !important;
+    opacity: 1;
+}

@@ -10,43 +10,11 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BeritaController extends Controller
 {
-    // public function index()
-    // {
-    //     $berita = Berita::with('kategoriBerita')->get();
-    //     return view('master.berita.index', compact('berita'));
-    // }
-
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $berita = Berita::with('kategoriBerita')->get();
+        $berita = Berita::with('kategoriBerita')->get();
 
-            return DataTables::of($berita)
-                ->addIndexColumn()
-                ->addColumn('photo', function ($row) {
-                    return '<img src="'.asset('storage/'.$row->path_photo).'" alt="photo" style="width: 100px">';
-                })
-                ->addColumn('kategori_berita', function ($row) {
-                    return strtoupper($row->kategoriBerita->kategori_berita ?? 'N/A'); // Convert to uppercase
-                })
-                ->addColumn('judul_berita', function ($row) {
-                    return strtoupper($row->judul_berita); // Convert to uppercase
-                })
-                ->addColumn('action', function($row) {
-                    $btn = '<a href="'.route('berita.show', $row->id).'" class="btn icon btn-primary btn-sm" title="Detail"><i class="bi bi-eye"></i></a> ';
-                    $btn .= '<a href="'.route('berita.edit', $row->id).'" class="btn icon btn-warning btn-sm" title="Edit"><i class="bi bi-pencil-square"></i></a> ';
-                    $btn .= '<button class="btn icon btn-danger btn-delete" data-id="'.$row->id.'" title="Delete"><i class="bi bi-trash"></i></button>';
-                    // $btn .= '<form action="'.route('berita.destroy', $row->id).'" method="post" class="d-inline">
-                    //             '.csrf_field().method_field('DELETE').'
-                    //             <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger btn-sm" title="Delete"><i class="bi bi-trash"></i></button>
-                    //         </form>';
-                    return $btn;
-                })
-                ->rawColumns(['photo', 'action'])
-                ->make(true);
-        }
-
-        return view('master.berita.index');
+        return view('master.berita.index', compact('berita'));
     }
 
 
@@ -147,7 +115,7 @@ class BeritaController extends Controller
         $berita->delete();
 
         // Return a JSON response for AJAX requests
-        return response()->json(['success' => 'Berita berhasil dihapus.']);
+        return redirect()->route('berita.index')->with('success', 'Berita berhasil dihapus.');
     }
 
 

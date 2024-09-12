@@ -17,39 +17,41 @@ class JadwalController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->ajax()) {
-            $jadwals = Jadwal::with(['paketMataKuliah:id,nama_paket_matakuliah'])->get();
+        // if($request->ajax()) {
+        //     $jadwals = Jadwal::with(['paketMataKuliah:id,nama_paket_matakuliah'])->get();
 
-            return DataTables::of($jadwals)
-                ->addIndexColumn()
-                ->addColumn('nama_paket_matakuliah', function($row) {
-                    return $row->paketMataKuliah ? $row->paketMataKuliah->nama_paket_matakuliah : 'N/A';
-                })
-                ->addColumn('action', function($row) {
-                    $user = auth()->user();
+        //     return DataTables::of($jadwals)
+        //         ->addIndexColumn()
+        //         ->addColumn('nama_paket_matakuliah', function($row) {
+        //             return $row->paketMataKuliah ? $row->paketMataKuliah->nama_paket_matakuliah : 'N/A';
+        //         })
+        //         ->addColumn('action', function($row) {
+        //             $user = auth()->user();
 
-                    $editBtn = '';
-                    $deleteBtn = '';
-                    $showBtn = '<a href="' . route('jadwal.show', $row->id) . '" class="btn icon btn-info btn-sm" title="Show"><i class="bi bi-eye"></i></a>';
+        //             $editBtn = '';
+        //             $deleteBtn = '';
+        //             $showBtn = '<a href="' . route('jadwal.show', $row->id) . '" class="btn icon btn-info btn-sm" title="Show"><i class="bi bi-eye"></i></a>';
 
-                    if ($user->can('update_jadwal')) {
-                        $editBtn = '<a href="' . route('jadwal.edit', $row->id) . '" class="btn icon btn-warning btn-sm" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    }
+        //             if ($user->can('update_jadwal')) {
+        //                 $editBtn = '<a href="' . route('jadwal.edit', $row->id) . '" class="btn icon btn-warning btn-sm" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+        //             }
 
-                    if ($user->can('delete_jadwal')) {
-                        $deleteBtn = '<form action="' . route('jadwal.destroy', $row->id) . '" method="post" class="d-inline">
-                                        ' . csrf_field() . method_field('DELETE') . '
-                                        <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger btn-sm" title="Delete"><i class="bi bi-trash"></i></button>
-                                      </form>';
-                    }
+        //             if ($user->can('delete_jadwal')) {
+        //                 $deleteBtn = '<form action="' . route('jadwal.destroy', $row->id) . '" method="post" class="d-inline">
+        //                                 ' . csrf_field() . method_field('DELETE') . '
+        //                                 <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger btn-sm" title="Delete"><i class="bi bi-trash"></i></button>
+        //                               </form>';
+        //             }
 
-                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
+        //             return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
+        //         })
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
 
-        return view('master.jadwal.index');
+        $jadwals = Jadwal::with(['paketMataKuliah:id,nama_paket_matakuliah'])->get();
+
+        return view('master.jadwal.index', compact('jadwals'));
     }
 
 

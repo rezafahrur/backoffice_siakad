@@ -13,26 +13,9 @@ class JurusanController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $jurusan = Jurusan::query();
+        $jurusan = Jurusan::all();
 
-            return DataTables::of($jurusan)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $editBtn = '<a href="' . route('jurusan.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    $deleteBtn = '<form action="' . route('jurusan.destroy', $row->id) . '" method="post" class="d-inline">
-                                      ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
-                                          <i class="bi bi-trash"></i>
-                                      </button>
-                                  </form>';
-                    // $showBtn = '<a href="' . route('jurusan.show', $row->id) . '" class="btn icon btn-info" title="Show"><i class="bi bi-eye"></i></a>';
-                    return $editBtn . ' ' . $deleteBtn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-        return view('master.jurusan.index');
+        return view('master.jurusan.index', compact('jurusan'));
     }
 
     /**

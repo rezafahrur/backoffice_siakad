@@ -14,38 +14,40 @@ class SemesterController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $semester = Semester::query();
+        // if ($request->ajax()) {
+        //     $semester = Semester::query();
 
-            return DataTables::of($semester)
-                ->addIndexColumn()
-                ->editColumn('tahun_ajaran', function($row) {
-                    return $row->tahun_awal . '/' . $row->tahun_akhir;
-                })
-                ->editColumn('semester', function($row) {
-                    if ($row->semester == 1) {
-                        return 'Ganjil';
-                    } elseif ($row->semester == 2) {
-                        return 'Genap';
-                    } else {
-                        return 'Pendek';
-                    }
-                })
-                ->addColumn('action', function($row) {
-                    $editBtn = '<a href="' . route('semester.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    $deleteBtn = '<form action="' . route('semester.destroy', $row->id) . '" method="post" class="d-inline">
-                                      ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
-                                          <i class="bi bi-trash"></i>
-                                      </button>
-                                  </form>';
-                    return $editBtn . ' ' . $deleteBtn;
-                })
-                ->rawColumns(['action']) // Ensures that HTML code for the action buttons is rendered correctly
-                ->make(true);
-        }
+        //     return DataTables::of($semester)
+        //         ->addIndexColumn()
+        //         ->editColumn('tahun_ajaran', function($row) {
+        //             return $row->tahun_awal . '/' . $row->tahun_akhir;
+        //         })
+        //         ->editColumn('semester', function($row) {
+        //             if ($row->semester == 1) {
+        //                 return 'Ganjil';
+        //             } elseif ($row->semester == 2) {
+        //                 return 'Genap';
+        //             } else {
+        //                 return 'Pendek';
+        //             }
+        //         })
+        //         ->addColumn('action', function($row) {
+        //             $editBtn = '<a href="' . route('semester.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+        //             $deleteBtn = '<form action="' . route('semester.destroy', $row->id) . '" method="post" class="d-inline">
+        //                               ' . csrf_field() . method_field('DELETE') . '
+        //                               <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
+        //                                   <i class="bi bi-trash"></i>
+        //                               </button>
+        //                           </form>';
+        //             return $editBtn . ' ' . $deleteBtn;
+        //         })
+        //         ->rawColumns(['action']) // Ensures that HTML code for the action buttons is rendered correctly
+        //         ->make(true);
+        // }
 
-        return view('master.semester.index');
+        $semester = Semester::all();
+
+        return view('master.semester.index', compact('semester'));
     }
 
     /**

@@ -1,64 +1,65 @@
-@extends('layouts.custom')
+@extends('layouts.app')
 
 @section('title', 'Create Semester')
 
 @section('content')
-    {{-- start logo and back --}}
-    <nav class="navbar navbar-light">
-        <div class="container d-block">
-            <a href="{{ route('semester.index') }}"><i class="bi bi-chevron-left"></i></a>
-            <a class="navbar-brand ms-4" href="{{ route('semester.index') }}">
-                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
-            </a>
-        </div>
+    <nav class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ route('semester.index') }}">Semester</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Create
+            </li>
+        </ol>
     </nav>
-    {{-- end logo and back --}}
 
-    <div class="card-header">
-        <h4 class="card-title">Form Semester</h4>
-    </div>
-    <div class="card-body">
-        <form action="{{ route('semester.store') }}" method="post" enctype="multipart/form-data">
-            @csrf
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Create Semester</h4>
+            <form action="{{ route('semester.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
 
-            <div class="mb-3">
-                <label for="tahun_awal" class="form-label">Tahun Awal</label>
-                <input type="number" class="form-control @error('tahun_awal') is-invalid @enderror" id="tahun_awal"
-                    name="tahun_awal" value="{{ old('tahun_awal') }}">
-                @error('tahun_awal')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
+                <div class="mb-3">
+                    <label for="tahun_awal" class="form-label">Tahun Awal</label>
+                    <input type="number" class="form-control @error('tahun_awal') is-invalid @enderror" id="tahun_awal"
+                        name="tahun_awal" value="{{ old('tahun_awal') }}">
+                    @error('tahun_awal')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-            <div class="mb-3">
-                <label for="tahun_akhir" class="form-label">Tahun Akhir</label>
-                <input type="number" class="form-control @error('tahun_akhir') is-invalid @enderror" id="tahun_akhir"
-                    name="tahun_akhir" value="{{ old('tahun_akhir') }}" readonly>
-                @error('tahun_akhir')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
+                <div class="mb-3">
+                    <label for="tahun_akhir" class="form-label">Tahun Akhir</label>
+                    <input type="number" class="form-control @error('tahun_akhir') is-invalid @enderror" id="tahun_akhir"
+                        name="tahun_akhir" value="{{ old('tahun_akhir') }}" readonly>
+                    @error('tahun_akhir')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-            <div class="mb-3">
-                <label for="semester" class="form-label">Semester</label>
-                <select class="form-control @error('semester') is-invalid @enderror" id="semester" name="semester">
-                    <option value="1" {{ old('semester') == '1' ? 'selected' : '' }}>Ganjil</option>
-                    <option value="2" {{ old('semester') == '2' ? 'selected' : '' }}>Genap</option>
-                    <option value="3" {{ old('semester') == '3' ? 'selected' : '' }}>Pendek</option>
-                </select>
-                @error('semester')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
-            </div>
+                <div class="mb-3">
+                    <label for="semester" class="form-label">Semester</label>
+                    <select class="form-control @error('semester') is-invalid @enderror" id="semester" name="semester">
+                        <option value="1" {{ old('semester') == '1' ? 'selected' : '' }}>Ganjil</option>
+                        <option value="2" {{ old('semester') == '2' ? 'selected' : '' }}>Genap</option>
+                        <option value="3" {{ old('semester') == '3' ? 'selected' : '' }}>Pendek</option>
+                    </select>
+                    @error('semester')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+                <a href="{{ route('semester.index') }}" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
     </div>
 
     <script>

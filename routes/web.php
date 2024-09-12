@@ -2,21 +2,23 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HrController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\BeritaController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JurusanController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
-use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\ProgramStudiController;
+use App\Http\Controllers\TahunAkademikController;
 use App\Http\Controllers\PaketMataKuliahController;
-use App\Http\Controllers\PrestasiController;
 
 Route::get('/wizard', function () {
     return view('wizard');
@@ -87,12 +89,12 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // Route::get('/ruang-kelas/show/{id}', [RuangKelasController::class, 'show'])->name('kelas.show');
 
     // tahun ajaran
-    Route::get('/tahun-ajaran', [TahunAjaranController::class, 'index'])->name('tahun-ajaran.index')->middleware(['permission:read_tahun_ajaran']);
-    Route::get('/tahun-ajaran/create', [TahunAjaranController::class, 'create'])->name('tahun-ajaran.create')->middleware(['permission:create_tahun_ajaran']);
-    Route::post('/tahun-ajaran', [TahunAjaranController::class, 'store'])->name('tahun-ajaran.store')->middleware(['permission:create_tahun_ajaran']);
-    Route::get('/tahun-ajaran/{tahunAjaran}/edit', [TahunAjaranController::class, 'edit'])->name('tahun-ajaran.edit')->middleware(['permission:update_tahun_ajaran']);
-    Route::put('/tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'update'])->name('tahun-ajaran.update')->middleware(['permission:update_tahun_ajaran']);
-    Route::delete('/tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'destroy'])->name('tahun-ajaran.destroy')->middleware(['permission:delete_tahun_ajaran']);
+    // Route::get('/tahun-ajaran', [TahunAjaranController::class, 'index'])->name('tahun-ajaran.index')->middleware(['permission:read_tahun_ajaran']);
+    // Route::get('/tahun-ajaran/create', [TahunAjaranController::class, 'create'])->name('tahun-ajaran.create')->middleware(['permission:create_tahun_ajaran']);
+    // Route::post('/tahun-ajaran', [TahunAjaranController::class, 'store'])->name('tahun-ajaran.store')->middleware(['permission:create_tahun_ajaran']);
+    // Route::get('/tahun-ajaran/{tahunAjaran}/edit', [TahunAjaranController::class, 'edit'])->name('tahun-ajaran.edit')->middleware(['permission:update_tahun_ajaran']);
+    // Route::put('/tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'update'])->name('tahun-ajaran.update')->middleware(['permission:update_tahun_ajaran']);
+    // Route::delete('/tahun-ajaran/{tahunAjaran}', [TahunAjaranController::class, 'destroy'])->name('tahun-ajaran.destroy')->middleware(['permission:delete_tahun_ajaran']);
 
     // semester
     Route::get('/semester', [SemesterController::class, 'index'])->name('semester.index')->middleware(['permission:read_semester']);
@@ -174,6 +176,10 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::delete('/prestasi/{prestasi}', [PrestasiController::class, 'destroy'])->name('prestasi.destroy')->middleware(['permission:delete_prestasi']);
     Route::get('/prestasi/show/{id}', [PrestasiController::class, 'show'])->name('prestasi.show')->middleware(['permission:read_prestasi']);
     Route::get('/getMahasiswaByProdi', [PrestasiController::class, 'getMahasiswaByProdi'])->name('getMahasiswaByProdi');
+
+    // Route::put('/tahun-akademik/{id}', [TahunAkademikController::class, 'update'])->name('tahun-akademik.update');
+    Route::get('/config', [ConfigController::class, 'index'])->name('config.index');
+    Route::post('/config', [ConfigController::class, 'update'])->name('config.update');
 });
 
 //login

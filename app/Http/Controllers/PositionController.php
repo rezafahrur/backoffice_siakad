@@ -14,26 +14,28 @@ class PositionController extends Controller
     // Menampilkan daftar posisi dan peran
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $position = Position::query();
+        // if ($request->ajax()) {
+        //     $position = Position::query();
 
-            return DataTables::of($position)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $editBtn = '<a href="' . route('position.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    $deleteBtn = '<form action="' . route('position.destroy', $row->id) . '" method="post" class="d-inline">
-                                      ' . csrf_field() . method_field('DELETE') . '
-                                      <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
-                                          <i class="bi bi-trash"></i>
-                                      </button>
-                                  </form>';
-                    $showBtn = '<a href="' . route('position.show', $row->id) . '" class="btn icon btn-sm btn-info" title="Show"><i class="bi bi-eye"></i></a>';
-                    return $editBtn . ' ' . $deleteBtn . ' ' . $showBtn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-        return view('master.position.index');
+        //     return DataTables::of($position)
+        //         ->addIndexColumn()
+        //         ->addColumn('action', function ($row) {
+        //             $editBtn = '<a href="' . route('position.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
+        //             $deleteBtn = '<form action="' . route('position.destroy', $row->id) . '" method="post" class="d-inline">
+        //                               ' . csrf_field() . method_field('DELETE') . '
+        //                               <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-sm btn-danger" title="Delete">
+        //                                   <i class="bi bi-trash"></i>
+        //                               </button>
+        //                           </form>';
+        //             $showBtn = '<a href="' . route('position.show', $row->id) . '" class="btn icon btn-sm btn-info" title="Show"><i class="bi bi-eye"></i></a>';
+        //             return $editBtn . ' ' . $deleteBtn . ' ' . $showBtn;
+        //         })
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
+        $positions = Position::all();
+
+        return view('master.position.index', compact('positions'));
     }
 
     // Membuat posisi baru dan peran yang terkait
