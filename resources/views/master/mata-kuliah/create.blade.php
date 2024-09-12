@@ -19,113 +19,134 @@
             <h4 class="card-title">Form Mata Kuliah</h4>
             <form action="{{ route('mata-kuliah.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                {{-- Program Studi --}}
-                <div class="mb-3">
-                    <select name="program_studi_id" id="program_studi_id" class="form-select">
-                        <option value="">Pilih Program Studi</option>
-                        @foreach ($matkuls as $matkul)
-                            <option value="{{ $matkul->id }}">{{ $matkul->nama_program_studi }}</option>
-                        @endforeach
-                    </select>
-                    @error('program_studi_id')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                <div class="row">
+                    {{-- Program Studi --}}
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="program_studi_id" class="form-label">Program Studi</label>
+                            <select name="program_studi_id" id="program_studi_id" class="form-select">
+                                <option value="">Pilih Program Studi</option>
+                                @foreach ($matkuls as $matkul)
+                                    <option value="{{ $matkul->id }}">{{ $matkul->nama_program_studi }}</option>
+                                @endforeach
+                            </select>
+                            @error('program_studi_id')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                    @enderror
+                    </div>
+                    {{-- Kode Mata Kuliah --}}
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="kode_matakuliah" class="form-label">Kode Mata Kuliah</label>
+                            <input type="text" class="form-control @error('kode_matakuliah') is-invalid @enderror"
+                                id="kode_matakuliah" name="kode_matakuliah" placeholder="Masukan Kode Mata Kuliah"
+                                value="{{ old('kode_matakuliah') }}">
+                            @error('kode_matakuliah')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
 
-                {{-- Kode Mata Kuliah --}}
-                <div class="mb-3">
-                    <label for="kode_matakuliah" class="form-label">Kode Mata Kuliah</label>
-                    <input type="text" class="form-control @error('kode_matakuliah') is-invalid @enderror"
-                        id="kode_matakuliah" name="kode_matakuliah" placeholder="Masukan Kode Mata Kuliah"
-                        value="{{ old('kode_matakuliah') }}">
-                    @error('kode_matakuliah')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                <div class="row">
+                    <div class="col-sm-6">
+                        {{-- Nama Mata Kuliah --}}
+                        <div class="mb-3">
+                            <label for="nama_matakuliah" class="form-label">Nama Mata Kuliah</label>
+                            <input type="text" class="form-control @error('nama_matakuliah') is-invalid @enderror"
+                                id="nama_matakuliah" name="nama_matakuliah" placeholder="Masukan Nama Mata Kuliah"
+                                value="{{ old('nama_matakuliah') }}">
+                            @error('nama_matakuliah')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                    @enderror
+                    </div>
+                    <div class="col-sm-6">
+                        {{-- Jenis Mata Kuliah --}}
+                        <div class="mb-3">
+                            <label for="jenis_matakuliah" class="form-label">Jenis Mata Kuliah</label>
+                            <select name="jenis_matakuliah" id="jenis_matakuliah" class="form-select">
+                                <option value="">Pilih Jenis Mata Kuliah</option>
+                                <option value="W">Wajib Nasional</option>
+                                <option value="A">Wajib Program Studi</option>
+                                <option value="B">Pilihan</option>
+                                <option value="C">Peminatan</option>
+                                <option value="S">TA/Skripsi/Thesis/Disertasi</option>
+                            </select>
+                            @error('jenis_matakuliah')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
 
-                {{-- Nama Mata Kuliah --}}
-                <div class="mb-3">
-                    <label for="nama_matakuliah" class="form-label">Nama Mata Kuliah</label>
-                    <input type="text" class="form-control @error('nama_matakuliah') is-invalid @enderror"
-                        id="nama_matakuliah" name="nama_matakuliah" placeholder="Masukan Nama Mata Kuliah"
-                        value="{{ old('nama_matakuliah') }}">
-                    @error('nama_matakuliah')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                <div class="row">
+                    <div class="col-sm-3">
+                        {{-- SKS Tatap Muka --}}
+                        <div class="mb-3">
+                            <label for="sks_tatap_muka" class="form-label">SKS Tatap Muka</label>
+                            <input type="number" class="form-control @error('sks_tatap_muka') is-invalid @enderror"
+                                id="sks_tatap_muka" name="sks_tatap_muka" placeholder="Masukan jumlah SKS Tatap Muka"
+                                value="{{ old('sks_tatap_muka', 0) }}">
+                            @error('sks_tatap_muka')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                    @enderror
-                </div>
-
-                {{-- Jenis Mata Kuliah --}}
-                <div class="mb-3">
-                    <label for="jenis_matakuliah" class="form-label">Jenis Mata Kuliah</label>
-                    <select name="jenis_matakuliah" id="jenis_matakuliah" class="form-select">
-                        <option value="">Pilih Jenis Mata Kuliah</option>
-                        <option value="W">Wajib Nasional</option>
-                        <option value="A">Wajib Program Studi</option>
-                        <option value="B">Pilihan</option>
-                        <option value="C">Peminatan</option>
-                        <option value="S">TA/Skripsi/Thesis/Disertasi</option>
-                    </select>
-                    @error('jenis_matakuliah')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{-- SKS Praktek --}}
+                        <div class="mb-3">
+                            <label for="sks_praktek" class="form-label">SKS Praktek</label>
+                            <input type="number" class="form-control @error('sks_praktek') is-invalid @enderror"
+                                id="sks_praktek" name="sks_praktek" placeholder="Masukan jumlah SKS Praktek"
+                                value="{{ old('sks_praktek', 0) }}">
+                            @error('sks_praktek')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                    @enderror
-                </div>
-
-                {{-- SKS Tatap Muka --}}
-                <div class="mb-3">
-                    <label for="sks_tatap_muka" class="form-label">SKS Tatap Muka</label>
-                    <input type="number" class="form-control @error('sks_tatap_muka') is-invalid @enderror"
-                        id="sks_tatap_muka" name="sks_tatap_muka" placeholder="Masukan jumlah SKS Tatap Muka"
-                        value="{{ old('sks_tatap_muka', 0) }}">
-                    @error('sks_tatap_muka')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{-- SKS Praktek Lapangan --}}
+                        <div class="mb-3">
+                            <label for="sks_praktek_lapangan" class="form-label">SKS Praktek Lapangan</label>
+                            <input type="number" class="form-control @error('sks_praktek_lapangan') is-invalid @enderror"
+                                id="sks_praktek_lapangan" name="sks_praktek_lapangan"
+                                placeholder="Masukan jumlah SKS Praktek Lapangan"
+                                value="{{ old('sks_praktek_lapangan', 0) }}">
+                            @error('sks_praktek_lapangan')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                    @enderror
-                </div>
-
-                {{-- SKS Praktek --}}
-                <div class="mb-3">
-                    <label for="sks_praktek" class="form-label">SKS Praktek</label>
-                    <input type="number" class="form-control @error('sks_praktek') is-invalid @enderror" id="sks_praktek"
-                        name="sks_praktek" placeholder="Masukan jumlah SKS Praktek" value="{{ old('sks_praktek', 0) }}">
-                    @error('sks_praktek')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                    </div>
+                    <div class="col-sm-3">
+                        {{-- SKS Simulasi --}}
+                        <div class="mb-3">
+                            <label for="sks_simulasi" class="form-label">SKS Simulasi</label>
+                            <input type="number" class="form-control @error('sks_simulasi') is-invalid @enderror"
+                                id="sks_simulasi" name="sks_simulasi" placeholder="Masukan jumlah SKS Simulasi"
+                                value="{{ old('sks_simulasi', 0) }}">
+                            @error('sks_simulasi')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                    @enderror
-                </div>
-
-                {{-- SKS Praktek Lapangan --}}
-                <div class="mb-3">
-                    <label for="sks_praktek_lapangan" class="form-label">SKS Praktek Lapangan</label>
-                    <input type="number" class="form-control @error('sks_praktek_lapangan') is-invalid @enderror"
-                        id="sks_praktek_lapangan" name="sks_praktek_lapangan"
-                        placeholder="Masukan jumlah SKS Praktek Lapangan" value="{{ old('sks_praktek_lapangan', 0) }}">
-                    @error('sks_praktek_lapangan')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-
-                {{-- SKS Simulasi --}}
-                <div class="mb-3">
-                    <label for="sks_simulasi" class="form-label">SKS Simulasi</label>
-                    <input type="number" class="form-control @error('sks_simulasi') is-invalid @enderror" id="sks_simulasi"
-                        name="sks_simulasi" placeholder="Masukan jumlah SKS Simulasi" value="{{ old('sks_simulasi', 0) }}">
-                    @error('sks_simulasi')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                    </div>
                 </div>
 
                 {{-- Metode Belajar --}}
@@ -141,30 +162,34 @@
                     @enderror
                 </div>
 
-                {{-- Tanggal Mulai Efektif --}}
-                <div class="mb-3">
-                    <label for="tgl_mulai_efektif" class="form-label">Tanggal Mulai Efektif</label>
-                    <input type="date" class="form-control @error('tgl_mulai_efektif') is-invalid @enderror"
-                        id="tgl_mulai_efektif" name="tgl_mulai_efektif" value="{{ old('tgl_mulai_efektif') }}">
-                    @error('tgl_mulai_efektif')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                <div class="row">
+                    <div class="col-sm-6">
+                        {{-- Tanggal Mulai Efektif --}}
+                        <div class="mb-3">
+                            <label for="tgl_mulai_efektif" class="form-label">Tanggal Mulai Efektif</label>
+                            <input type="date" class="form-control @error('tgl_mulai_efektif') is-invalid @enderror"
+                                id="tgl_mulai_efektif" name="tgl_mulai_efektif" value="{{ old('tgl_mulai_efektif') }}">
+                            @error('tgl_mulai_efektif')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                    @enderror
-                </div>
-
-                {{-- Tanggal Akhir Efektif --}}
-                <div class="mb-3">
-                    <label for="tgl_akhir_efektif" class="form-label">Tanggal Akhir Efektif</label>
-                    <input type="date" class="form-control @error('tgl_akhir_efektif') is-invalid @enderror"
-                        id="tgl_akhir_efektif" name="tgl_akhir_efektif" value="{{ old('tgl_akhir_efektif') }}">
-                    @error('tgl_akhir_efektif')
-                        <div class="invalid-feedback">
-                            {{ $message }}
+                    </div>
+                    <div class="col-sm-6">
+                        {{-- Tanggal Akhir Efektif --}}
+                        <div class="mb-3">
+                            <label for="tgl_akhir_efektif" class="form-label">Tanggal Akhir Efektif</label>
+                            <input type="date" class="form-control @error('tgl_akhir_efektif') is-invalid @enderror"
+                                id="tgl_akhir_efektif" name="tgl_akhir_efektif" value="{{ old('tgl_akhir_efektif') }}">
+                            @error('tgl_akhir_efektif')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                    @enderror
+                    </div>
                 </div>
-
                 {{-- Status --}}
                 {{-- <div class="mb-3">
                     <label for="status" class="form-label">Status</label>
