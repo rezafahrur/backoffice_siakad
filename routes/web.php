@@ -2,22 +2,23 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HrController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\BeritaController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JurusanController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
-use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\ProgramStudiController;
-use App\Http\Controllers\PaketMataKuliahController;
-use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\TahunAkademikController;
+use App\Http\Controllers\PaketMataKuliahController;
 
 Route::get('/wizard', function () {
     return view('wizard');
@@ -176,7 +177,9 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/prestasi/show/{id}', [PrestasiController::class, 'show'])->name('prestasi.show')->middleware(['permission:read_prestasi']);
     Route::get('/getMahasiswaByProdi', [PrestasiController::class, 'getMahasiswaByProdi'])->name('getMahasiswaByProdi');
 
-    Route::put('/tahun-akademik/{id}', [TahunAkademikController::class, 'update'])->name('tahun-akademik.update');
+    // Route::put('/tahun-akademik/{id}', [TahunAkademikController::class, 'update'])->name('tahun-akademik.update');
+    Route::get('/config', [ConfigController::class, 'index'])->name('config.index');
+    Route::post('/config', [ConfigController::class, 'update'])->name('config.update');
 });
 
 //login

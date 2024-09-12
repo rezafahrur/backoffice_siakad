@@ -5,14 +5,13 @@
 @section('content')
     <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
         <div>
-            <h4 class="mb-3 mb-md-0">👋 Welcome back, John Doe</h4>
+            <h4 class="mb-3 mb-md-0">👋 Selamat Datang, {{ Session::get('nama_lengkap') }}</h4>
         </div>
         <div class="d-flex align-items-center flex-wrap text-nowrap">
             <!-- Button untuk menampilkan semester sekarang -->
-            <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0" data-bs-toggle="modal"
-                data-bs-target="#editSemesterModal">
+            <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="calendar"></i>
-                {{ $tahunAkademik->semester->nama_semester }}
+                {{ $semester_aktif->nama_semester ?? 'Semester not set' }}
             </button>
 
             <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
@@ -29,12 +28,12 @@
     <div class="row">
         <div class="col-12 col-xl-12 stretch-card">
             <div class="row flex-grow-1">
-                <div class="col-md-4 grid-margin stretch-card">
+                <div class="col-md-3 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">Pelanggan</h6>
-                                <div class="dropdown mb-2">
+                                <h6 class="card-title mb-2">Mahasiswa</h6>
+                                {{-- <div class="dropdown mb-2">
                                     <button class="btn p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
@@ -56,11 +55,11 @@
                                                 data-feather="download" class="icon-sm me-2"></i> <span
                                                 class="">Download</span></a>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="row">
                                 <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">3,897</h3>
+                                    <h3 class="mb-2">{{ $total_mahasiswa }}</h3>
                                     <div class="d-flex align-items-baseline">
                                         <p class="text-success">
                                             <span>+3.3%</span>
@@ -75,11 +74,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 grid-margin stretch-card">
+                <div class="col-md-3 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">Penjualan Produk</h6>
+                                <h6 class="card-title mb-0">Dosen</h6>
                                 <div class="dropdown mb-2">
                                     <button class="btn p-0" type="button" id="dropdownMenuButton1"
                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -106,7 +105,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">35,084</h3>
+                                    <h3 class="mb-2">{{ $total_dosen }}</h3>
                                     <div class="d-flex align-items-baseline">
                                         <div class="d-flex align-items-baseline">
                                             <p class="text-secondary">
@@ -122,11 +121,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 grid-margin stretch-card">
+                <div class="col-md-3 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">Service</h6>
+                                <h6 class="card-title mb-0">Human Resource</h6>
                                 <div class="dropdown mb-2">
                                     <button class="btn p-0" type="button" id="dropdownMenuButton2"
                                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -153,7 +152,52 @@
                             </div>
                             <div class="row">
                                 <div class="col-6 col-md-12 col-xl-5">
-                                    <h3 class="mb-2">89.87%</h3>
+                                    <h3 class="mb-2">{{ $total_hr }}</h3>
+                                    <div class="d-flex align-items-baseline">
+                                        <p class="text-secondary">
+                                            <span>Agustus 2024</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-12 col-xl-7">
+                                    <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <h6 class="card-title mb-0">Program Studi</h6>
+                                <div class="dropdown mb-2">
+                                    <button class="btn p-0" type="button" id="dropdownMenuButton2"
+                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
+                                                data-feather="eye" class="icon-sm me-2"></i> <span
+                                                class="">View</span></a>
+                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
+                                                data-feather="edit-2" class="icon-sm me-2"></i> <span
+                                                class="">Edit</span></a>
+                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
+                                                data-feather="trash" class="icon-sm me-2"></i> <span
+                                                class="">Delete</span></a>
+                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
+                                                data-feather="printer" class="icon-sm me-2"></i> <span
+                                                class="">Print</span></a>
+                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
+                                                data-feather="download" class="icon-sm me-2"></i> <span
+                                                class="">Download</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-md-12 col-xl-5">
+                                    <h3 class="mb-2">{{ $total_prodi }}</h3>
                                     <div class="d-flex align-items-baseline">
                                         <p class="text-secondary">
                                             <span>Agustus 2024</span>
@@ -308,7 +352,7 @@
     </div> <!-- row -->
 
     <!-- Modal untuk edit semester -->
-    <div class="modal fade" id="editSemesterModal" tabindex="-1" aria-labelledby="editSemesterModalLabel"
+    {{-- <div class="modal fade" id="editSemesterModal" tabindex="-1" aria-labelledby="editSemesterModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -339,5 +383,5 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection

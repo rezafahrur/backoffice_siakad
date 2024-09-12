@@ -13,14 +13,17 @@
                             <img class="wd-30 ht-30 rounded-circle"
                                 src="{{ Session::get('photo_profile') && Storage::exists('public/' . Session::get('photo_profile'))
                                     ? asset('storage/' . Session::get('photo_profile'))
-                                    : 'https://via.placeholder.com/30x30' }}"
+                                    : asset('assets/images/others/default-avatar.jpg') }}"
                                 alt="profile">
                         </a>
                         <div class="dropdown-menu p-0" aria-labelledby="profileDropdown">
                             <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
                                 <div class="mb-3">
-                                    <img class="wd-80 ht-80 rounded-circle" src="https://via.placeholder.com/80x80"
-                                        alt="">
+                                    <img class="wd-80 ht-80 rounded-circle"
+                                        src="{{ Session::get('photo_profile') && Storage::exists('public/' . Session::get('photo_profile'))
+                                            ? asset('storage/' . Session::get('photo_profile'))
+                                            : asset('assets/images/others/default-avatar.jpg') }}"
+                                        alt="profile">
                                 </div>
                                 <div class="text-center">
                                     <p class="tx-16 fw-bolder">{{ Session::get('nama') }}</p>
@@ -168,6 +171,9 @@
                                     <a class="nav-link" href="{{ route('berita.index') }}">Berita</a>
                                 </li>
                             @endcan
+                            <li class="nav-item {{ Route::is('config.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('config.index') }}">Config</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

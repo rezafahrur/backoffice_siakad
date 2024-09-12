@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Config;
 
 class Semester extends Model
 {
@@ -20,8 +21,4 @@ class Semester extends Model
         'semester',
     ];
 
-    public function tahunAkademik()
-    {
-        return $this->hasMany(TahunAkademik::class, 'semester_id', 'id');
-    }
 }

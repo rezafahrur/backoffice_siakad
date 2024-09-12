@@ -25,8 +25,8 @@ class RuangKelasController extends Controller
     public function store(Request $request)
     {
         $ruleData = [
-            'kode_ruang_kelas' => 'required|unique:m_ruang_kelas,kode_ruang_kelas|max:10',
-            'nama_ruang_kelas' => 'required|unique:m_ruang_kelas,nama_ruang_kelas|max:30',
+            'kode_ruang_kelas' => 'required||max:10',
+            'nama_ruang_kelas' => 'required||max:30',
             'kapasitas' => 'required|numeric',
         ];
 
@@ -51,8 +51,8 @@ class RuangKelasController extends Controller
     public function update(Request $request, RuangKelas $kelas)
     {
         $ruleData = [
-            'kode_ruang_kelas' => 'required|max:10|unique:m_ruang_kelas,kode_ruang_kelas,' . $kelas->id,
-            'nama_ruang_kelas' => 'required|max:30|unique:m_ruang_kelas,nama_ruang_kelas,' . $kelas->id,
+            'kode_ruang_kelas' => 'required|max:10',
+            'nama_ruang_kelas' => 'required|max:30',
             'kapasitas' => 'required|numeric',
         ];
 
