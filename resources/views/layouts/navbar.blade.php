@@ -153,12 +153,12 @@
                                     </li>
                                     {{-- @endcan --}}
 
-                                    @can('read_paket_mata_kuliah')
+                                    {{-- @can('read_paket_mata_kuliah')
                                         <li class="nav-item {{ Route::is('paket-matakuliah.index') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('paket-matakuliah.index') }}">Paket
                                                 Matakuliah</a>
                                         </li>
-                                    @endcan
+                                    @endcan --}}
                                 </ul>
                             </div>
                         </div>

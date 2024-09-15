@@ -16,21 +16,28 @@ class Kurikulum extends Model
 
     protected $fillable = [
         'nama_kurikulum',
+        'program_studi_id',
         'semester',
+        'semester_angka',
         'sum_sks_lulus',
         'sum_sks_wajib',
         'sum_sks_pilihan',
-        'kode_prodi',
+        'status',
     ];
 
     public function programStudi()
     {
-        return $this->belongsTo(ProgramStudi::class, 'kode_prodi', 'kode_program_studi');
+        return $this->belongsTo(ProgramStudi::class, 'program_studi_id', 'id');
     }
 
-    public function semester()
+    public function semesters()
     {
         return $this->belongsTo(Semester::class, 'semester', 'kode_semester');
+    }
+
+    public function kurikulumDetails()
+    {
+        return $this->hasMany(KurikulumDetail::class, 'kurikulum_id', 'id');
     }
 
 }

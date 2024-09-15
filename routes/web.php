@@ -187,6 +187,9 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::delete('/kurikulum/{kurikulum}', [KurikulumController::class, 'destroy'])->name('kurikulum.destroy');
     Route::get('/kurikulum/show/{id}', [KurikulumController::class, 'show'])->name('kurikulum.show');
 
+    // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
+    Route::get('/kurikulum/get-matakuliah/{prodi}/{semester}', [KurikulumController::class, 'getMataKuliah'])->name('get-matakuliah');
+
     // Route::put('/tahun-akademik/{id}', [TahunAkademikController::class, 'update'])->name('tahun-akademik.update');
     Route::get('/config', [ConfigController::class, 'index'])->name('config.index');
     Route::post('/config', [ConfigController::class, 'update'])->name('config.update');

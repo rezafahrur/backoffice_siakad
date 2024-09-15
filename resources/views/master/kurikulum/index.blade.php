@@ -29,8 +29,8 @@
                                     <th>No.</th>
                                     <th>Nama Kurikulum</th>
                                     <th>Semester</th>
-                                    <th>Sks Lulus</th>
                                     <th>Program Studi</th>
+                                    <th>Status</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -39,9 +39,12 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $kr->nama_kurikulum }}</td>
-                                        <td>{{ $kr->semester }}</td>
-                                        <td>{{ $kr->sum_sks_lulus }}</td>
+                                        <td>{{ $kr->semester_angka }} - {{ $kr->semesters->nama_semester }}</td>
                                         <td>{{ $kr->programStudi->nama_program_studi }}</td>
+                                        <td>
+                                            <span
+                                                class="badge {{ $kr->status == '1' ? 'bg-success' : 'bg-danger' }}">{{ $kr->status == '1' ? 'Aktif' : 'Tidak Aktif' }}</span>
+                                        </td>
                                         <td>
                                             <a href="{{ route('kurikulum.edit', $kr->id) }}"
                                                 class="btn btn-sm btn-primary btn-icon">
@@ -49,7 +52,7 @@
                                             </a>
                                             <a href="{{ route('kurikulum.show', $kr->id) }}"
                                                 class="btn btn-sm btn-info btn-icon">
-                                                <i class="btn-icon-prepend" data-feather="eye"></i>
+                                                <i class="btn-icon-prepend text-white" data-feather="eye"></i>
                                             </a>
                                             <form action="{{ route('kurikulum.destroy', $kr->id) }}" method="post"
                                                 class="d-inline">

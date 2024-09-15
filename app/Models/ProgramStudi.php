@@ -18,7 +18,7 @@ class ProgramStudi extends Model
     // Relasi one-to-many dengan tabel Kurikulum
     public function kurikulum()
     {
-        return $this->hasMany(Kurikulum::class, 'kode_prodi', 'kode_prodi');
+        return $this->hasMany(Kurikulum::class, 'program_studi_id', 'id');
     }
 
 }

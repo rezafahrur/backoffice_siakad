@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Kurikulum;
-use App\Models\ProgramStudi;
 use App\Models\Semester;
+use App\Models\Kurikulum;
+use App\Models\MataKuliah;
+use App\Models\ProgramStudi;
+use Illuminate\Http\Request;
+use App\Models\KurikulumDetail;
+use Illuminate\Support\Facades\DB;
 
 class KurikulumController extends Controller
 {
 
     public function index()
     {
-        $kurikulums = Kurikulum::with(['programStudi', 'semester'])->get();
+        $kurikulums = Kurikulum::with(['programStudi', 'semesters'])->get();
 
         return view('master.kurikulum.index', compact('kurikulums'));
     }
@@ -21,27 +24,57 @@ class KurikulumController extends Controller
     {
         $semesters = Semester::all();
         $programStudis = ProgramStudi::all();
-        return view('master.kurikulum.create', compact('semesters', 'programStudis'));
+        $matakuliah = MataKuliah::all();
+        return view('master.kurikulum.create', compact('semesters', 'programStudis', 'matakuliah'));
     }
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'nama_kurikulum' => 'required',
+            'program_studi_id' => 'required',
             'semester' => 'required',
+            'semester_angka' => 'required|integer|min:1|max:8',
             'sum_sks_lulus' => 'required|numeric',
             'sum_sks_wajib' => 'required|numeric',
             'sum_sks_pilihan' => 'required|numeric',
-            'kode_prodi' => 'required',
+            'matakuliah_id' => 'required|array',
         ]);
 
-        Kurikulum::create($validatedData);
+        // Mengatur status data lama menjadi tidak aktif jika ditambah data baru yang aktif
+        if ($request->status == 1) {
+            Kurikulum::where('program_studi_id', $request->program_studi_id)
+            ->where('semester_angka', $request->semester_angka)
+            ->update(['status' => 0]);
+        }
+
+        // Save kurikulum baru dengan status aktif
+        $kurikulum = Kurikulum::create(array_merge(
+            $request->only('nama_kurikulum', 'program_studi_id', 'semester', 'semester_angka', 'sum_sks_lulus', 'sum_sks_wajib', 'sum_sks_pilihan'),
+            ['status' => $request->status]
+        ));
+
+        // Save detail kurikulum
+        foreach ($request->matakuliah_id as $matkulId) {
+            KurikulumDetail::create([
+                'kurikulum_id' => $kurikulum->id,
+                'matakuliah_id' => $matkulId,
+            ]);
+        }
+
         return redirect()->route('kurikulum.index')->with('success', 'Kurikulum berhasil ditambahkan.');
     }
 
+
     public function show($id)
     {
-        $kurikulum = Kurikulum::with(['programStudi', 'semester'])->findOrFail($id);
+        $kurikulum = Kurikulum::with(['programStudi', 'semesters', 'kurikulumDetails' => function ($query) {
+            $query->whereNotNull('matakuliah_id');
+        }, 'kurikulumDetails.matakuliah'])
+            ->whereHas('kurikulumDetails', function ($query) {
+                $query->whereNotNull('matakuliah_id');
+            })
+        ->findOrFail($id);
         return view('master.kurikulum.detail', compact('kurikulum'));
     }
 
@@ -50,23 +83,56 @@ class KurikulumController extends Controller
         $kurikulum = Kurikulum::findOrFail($id);
         $semesters = Semester::all();
         $programStudis = ProgramStudi::all();
-        return view('master.kurikulum.edit', compact('kurikulum', 'semesters', 'programStudis'));
+        $matakuliah = MataKuliah::all();
+        $matakuliahSelected = KurikulumDetail::where('kurikulum_id', $id)->pluck('matakuliah_id')->toArray();
+
+        return view('master.kurikulum.edit', compact('kurikulum', 'semesters', 'programStudis', 'matakuliah', 'matakuliahSelected'));
     }
 
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'nama_kurikulum' => 'required',
-            'semester' => 'required',
-            'sum_sks_lulus' => 'required|numeric',
-            'sum_sks_wajib' => 'required|numeric',
-            'sum_sks_pilihan' => 'required|numeric',
-            'kode_prodi' => 'required',
-        ]);
+        try {
+            $request->validate([
+                'nama_kurikulum' => 'required',
+                'program_studi_id' => 'required',
+                'semester' => 'required',
+                'semester_angka' => 'required|integer|min:1|max:8',
+                'sum_sks_lulus' => 'required|numeric',
+                'sum_sks_wajib' => 'required|numeric',
+                'sum_sks_pilihan' => 'required|numeric',
+                'matakuliah_id' => 'required|array',
+            ]);
 
-        $kurikulum = Kurikulum::findOrFail($id);
-        $kurikulum->update($validatedData);
-        return redirect()->route('kurikulum.index')->with('success', 'Kurikulum berhasil diperbarui.');
+            $kurikulum = Kurikulum::findOrFail($id);
+
+            // Mengatur status data lama menjadi tidak aktif jika data yang diupdate menjadi aktif
+            if ($request->status == 1 && $kurikulum->status == 0) {
+                Kurikulum::where('program_studi_id', $request->program_studi_id)
+                ->where('semester_angka', $request->semester_angka)
+                ->update(['status' => 0]);
+            }
+
+            // Update kurikulum
+            $kurikulum->update(array_merge(
+                $request->only('nama_kurikulum', 'program_studi_id', 'semester', 'semester_angka', 'sum_sks_lulus', 'sum_sks_wajib', 'sum_sks_pilihan'),
+                ['status' => $request->status]
+            ));
+
+            // Delete detail kurikulum lama
+            KurikulumDetail::where('kurikulum_id', $id)->update(['matakuliah_id' => null]);
+
+            // Save detail kurikulum
+            foreach ($request->matakuliah_id as $matkulId) {
+                KurikulumDetail::updateOrcreate(
+                    ['kurikulum_id' => $id, 'matakuliah_id' => null],
+                    ['matakuliah_id' => $matkulId]
+                );
+            }
+            return redirect()->route('kurikulum.index')->with('success', 'Kurikulum berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
     }
 
     public function destroy($id)
@@ -76,4 +142,25 @@ class KurikulumController extends Controller
         return redirect()->route('kurikulum.index')->with('success', 'Kurikulum berhasil dihapus.');
     }
 
+    public function getMatakuliah(Request $request, $programStudiId, $semester)
+    {
+        // Validasi nilai semester
+        if (is_null($semester) || !is_numeric($semester)) {
+            return response()->json(['message' => 'Invalid semester value'], 400);
+        }
+
+        try {
+            $matkul = MataKuliah::where('program_studi_id', '=', $programStudiId)
+                ->where(DB::raw('SUBSTRING(kode_matakuliah, 6, 1)'), '=', $semester)
+                ->get(['id', 'kode_matakuliah', 'nama_matakuliah']);
+
+            if ($matkul->isEmpty()) {
+                return response()->json(['message' => 'Matakuliah not found'], 404);
+            }
+
+            return response()->json($matkul);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+    }
 }
