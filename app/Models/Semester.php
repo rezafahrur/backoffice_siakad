@@ -21,4 +21,11 @@ class Semester extends Model
         'semester',
     ];
 
+    // relasi one-to-many dengan tabel Kurikulum
+    public function kurikulum()
+    {
+        return $this->hasMany(Kurikulum::class, 'semester', 'kode_semester');
+    }
+
+
 }

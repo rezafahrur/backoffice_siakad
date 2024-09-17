@@ -146,12 +146,19 @@
                                         </li>
                                     @endcan
 
-                                    @can('read_paket_mata_kuliah')
+                                    {{-- Kurikulum --}}
+                                    {{-- @can('read_kurikulum') --}}
+                                    <li class="nav-item {{ Route::is('kurikulum.index') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('kurikulum.index') }}">Kurikulum</a>
+                                    </li>
+                                    {{-- @endcan --}}
+
+                                    {{-- @can('read_paket_mata_kuliah')
                                         <li class="nav-item {{ Route::is('paket-matakuliah.index') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('paket-matakuliah.index') }}">Paket
                                                 Matakuliah</a>
                                         </li>
-                                    @endcan
+                                    @endcan --}}
                                 </ul>
                             </div>
                         </div>
