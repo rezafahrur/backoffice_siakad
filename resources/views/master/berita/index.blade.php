@@ -58,7 +58,6 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Data</a></li>
             <li class="breadcrumb-item active" aria-current="page">Berita</li>
-            <li class="breadcrumb-item active" aria-current="page">Detail Berita</li>
         </ol>
     </nav>
 
