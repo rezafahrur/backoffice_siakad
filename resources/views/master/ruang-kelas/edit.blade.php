@@ -6,7 +6,7 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('ruang-kelas.index') }}">Ruang Kelas</a>
+                <a href="{{ route('kelas.index') }}">Ruang Kelas</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 Edit
