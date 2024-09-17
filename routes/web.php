@@ -16,10 +16,9 @@ use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\RuangKelasController;
-use App\Http\Controllers\TahunAjaranController;
 use App\Http\Controllers\ProgramStudiController;
-use App\Http\Controllers\TahunAkademikController;
 use App\Http\Controllers\PaketMataKuliahController;
+use App\Http\Controllers\KelasController;
 
 Route::get('/wizard', function () {
     return view('wizard');
@@ -186,6 +185,16 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::put('/kurikulum/{kurikulum}', [KurikulumController::class, 'update'])->name('kurikulum.update');
     Route::delete('/kurikulum/{kurikulum}', [KurikulumController::class, 'destroy'])->name('kurikulum.destroy');
     Route::get('/kurikulum/show/{id}', [KurikulumController::class, 'show'])->name('kurikulum.show');
+
+    //kelas
+    Route::get('/kelas', [KelasController::class, 'index'])->name('kelast.index');
+    Route::get('/kelas/create', [KelasController::class, 'create'])->name('kelast.create');
+    Route::post('/kelas', [KelasController::class, 'store'])->name('kelast.store');
+    Route::get('/kelas/{kelas}/edit', [KelasController::class, 'edit'])->name('kelast.edit');
+    Route::put('/kelas/{kelas}', [KelasController::class, 'update'])->name('kelast.update');
+    Route::delete('/kelas/{kelas}', [KelasController::class, 'destroy'])->name('kelast.destroy');
+    Route::get('/kelas/show/{id}', [KelasController::class, 'show'])->name('kelast.show');
+    Route::get('/kelas/details/{kurikulum}', [KelasController::class, 'getKurikulumDetails'])->name('kelast.details');
 
     // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
     Route::get('/kurikulum/get-matakuliah/{prodi}/{semester}', [KurikulumController::class, 'getMataKuliah'])->name('get-matakuliah');

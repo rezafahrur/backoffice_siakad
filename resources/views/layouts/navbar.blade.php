@@ -75,14 +75,84 @@
                     </li>
                 @endcan
 
-                @can('read_jadwal')
-                    <li class="nav-item {{ Route::is('jadwal.index') ? 'active' : '' }}">
-                        <a href="{{ route('jadwal.index') }}" class="nav-link">
-                            <i class="link-icon" data-feather="calendar"></i>
-                            <span class="menu-title">Jadwal</span>
+                {{-- human resource --}}
+                @can('read_hr')
+                    <li class="nav-item {{ Route::is('hr.index') ? 'active' : '' }}">
+                        <a href="{{ route('hr.index') }}" class="nav-link">
+                            <i class="link-icon" data-feather="users"></i>
+                            <span class="menu-title">Employee</span>
                         </a>
                     </li>
                 @endcan
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="link-icon" data-feather="book"></i>
+                        <span class="menu-title">Kurikulum</span>
+                        <i class="link-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <ul class="submenu-item">
+                            {{-- @can('read_kurikulum') --}}
+                            <li class="nav-item {{ Route::is('kurikulum.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('kurikulum.index') }}">Kurikulum</a>
+                            </li>
+                            {{-- @endcan --}}
+
+                            {{-- rencana evaluasi --}}
+                            {{-- @can('read_rencana_evaluasi') --}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Rencana Evaluasi</a>
+                            </li>
+                            {{-- @endcan --}}
+
+                            {{-- rencana pembelajaran --}}
+                            {{-- @can('read_rencana_pembelajaran') --}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Rencana
+                                    Pembelajaran</a>
+                            </li>
+                            {{-- @endcan --}}
+                        </ul>
+                    </div>
+                </li>
+
+                {{-- Perkuliahan --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="link-icon" data-feather="book-open"></i>
+                        <span class="menu-title">Perkuliahan</span>
+                        <i class="link-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <ul class="submenu-item">
+                            {{-- @can('read_perkuliahan') --}}
+                            <li class="nav-item {{ Route::is('kelast.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('kelast.index') }}">Kelas</a>
+                            </li>
+                            {{-- @endcan --}}
+
+                            {{-- jadwal --}}
+                            @can('read_jadwal')
+                                <li class="nav-item {{ Route::is('jadwal.index') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('jadwal.index') }}">Jadwal</a>
+                                </li>
+                            @endcan
+
+                            {{-- @can('read_absensi') --}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Absensi</a>
+                            </li>
+                            {{-- @endcan --}}
+
+                            {{-- @can('read_nilai') --}}
+                            <li class="nav-item">
+                                <a class="nav-link" href="">Nilai</a>
+                            </li>
+                            {{-- @endcan --}}
+                        </ul>
+                    </div>
+                </li>
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -111,13 +181,6 @@
                                             <a class="nav-link" href="{{ route('kelas.index') }}">Ruang Kelas</a>
                                         </li>
                                     @endcan
-
-                                    @can('read_mata_kuliah')
-                                        <li class="nav-item {{ Route::is('mata-kuliah.index') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
-                                        </li>
-                                    @endcan
-
                                 </ul>
                             </div>
                             <div class="col-md-6">
@@ -128,37 +191,17 @@
                                         </li>
                                     @endcan
 
-                                    {{-- @can('read_tahun_ajaran')
-                                        <li class="nav-item {{ Route::is('tahun-ajaran.index') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('tahun-ajaran.index') }}">Tahun Ajaran</a>
-                                        </li>
-                                    @endcan --}}
-
                                     @can('read_position')
                                         <li class="nav-item {{ Route::is('position.index') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('position.index') }}">Posisi</a>
                                         </li>
                                     @endcan
 
-                                    @can('read_hr')
-                                        <li class="nav-item {{ Route::is('hr.index') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('hr.index') }}">HR</a>
+                                    @can('read_mata_kuliah')
+                                        <li class="nav-item {{ Route::is('mata-kuliah.index') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
                                         </li>
                                     @endcan
-
-                                    {{-- Kurikulum --}}
-                                    {{-- @can('read_kurikulum') --}}
-                                    <li class="nav-item {{ Route::is('kurikulum.index') ? 'active' : '' }}">
-                                        <a class="nav-link" href="{{ route('kurikulum.index') }}">Kurikulum</a>
-                                    </li>
-                                    {{-- @endcan --}}
-
-                                    {{-- @can('read_paket_mata_kuliah')
-                                        <li class="nav-item {{ Route::is('paket-matakuliah.index') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('paket-matakuliah.index') }}">Paket
-                                                Matakuliah</a>
-                                        </li>
-                                    @endcan --}}
                                 </ul>
                             </div>
                         </div>
