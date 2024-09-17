@@ -27,4 +27,10 @@ class MataKuliah extends Model
         'tgl_akhir_efektif',
         'status',
     ];
+
+    // relation to kuriulum detail
+    public function kurikulumDetails()
+    {
+        return $this->hasMany(KurikulumDetail::class, 'matakuliah_id', 'id');
+    }
 }
