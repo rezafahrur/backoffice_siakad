@@ -127,8 +127,8 @@
                     <div class="submenu">
                         <ul class="submenu-item">
                             {{-- @can('read_perkuliahan') --}}
-                            <li class="nav-item {{ Route::is('kelast.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('kelast.index') }}">Kelas</a>
+                            <li class="nav-item {{ Route::is('kelas.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('kelas.index') }}">Kelas</a>
                             </li>
                             {{-- @endcan --}}
 
@@ -177,8 +177,8 @@
                                     @endcan
 
                                     @can('read_ruang_kelas')
-                                        <li class="nav-item {{ Route::is('kelas.index') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('kelas.index') }}">Ruang Kelas</a>
+                                        <li class="nav-item {{ Route::is('ruang-kelas.index') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('ruang-kelas.index') }}">Ruang Kelas</a>
                                         </li>
                                     @endcan
                                 </ul>

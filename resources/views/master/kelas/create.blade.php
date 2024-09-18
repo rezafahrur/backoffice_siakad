@@ -19,7 +19,7 @@
             <h3 class="card-title">Form Create Kelas</h3>
         </div>
         <div class="card-body">
-            <form action="{{ route('kelast.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('kelas.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row">
@@ -170,7 +170,7 @@
                 <div id="kelas-details">
                 </div>
 
-                <a href="{{ route('kelast.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('kelas.index') }}" class="btn btn-secondary">Back</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>

@@ -80,12 +80,12 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/mahasiswa/villages/{districtCode}', [MahasiswaController::class, 'getVillages'])->middleware(['permission:read_mahasiswa']);
 
     // ruang kelas
-    Route::get('/ruang-kelas', [RuangKelasController::class, 'index'])->name('kelas.index')->middleware(['permission:read_ruang_kelas']);
-    Route::get('/ruang-kelas/create', [RuangKelasController::class, 'create'])->name('kelas.create')->middleware(['permission:create_ruang_kelas']);
-    Route::post('/ruang-kelas', [RuangKelasController::class, 'store'])->name('kelas.store')->middleware(['permission:create_ruang_kelas']);
-    Route::get('/ruang-kelas/{kelas}/edit', [RuangKelasController::class, 'edit'])->name('kelas.edit')->middleware(['permission:update_ruang_kelas']);
-    Route::put('/ruang-kelas/{kelas}', [RuangKelasController::class, 'update'])->name('kelas.update')->middleware(['permission:update_ruang_kelas']);
-    Route::delete('/ruang-kelas/{kelas}', [RuangKelasController::class, 'destroy'])->name('kelas.destroy')->middleware(['permission:delete_ruang_kelas']);
+    Route::get('/classroom', [RuangKelasController::class, 'index'])->name('ruang-kelas.index')->middleware(['permission:read_ruang_kelas']);
+    Route::get('/classroom/create', [RuangKelasController::class, 'create'])->name('ruang-kelas.create')->middleware(['permission:create_ruang_kelas']);
+    Route::post('/classroom', [RuangKelasController::class, 'store'])->name('ruang-kelas.store')->middleware(['permission:create_ruang_kelas']);
+    Route::get('/classroom/{kelas}/edit', [RuangKelasController::class, 'edit'])->name('ruang-kelas.edit')->middleware(['permission:update_ruang_kelas']);
+    Route::put('/classroom/{kelas}', [RuangKelasController::class, 'update'])->name('ruang-kelas.update')->middleware(['permission:update_ruang_kelas']);
+    Route::delete('/classroom/{kelas}', [RuangKelasController::class, 'destroy'])->name('ruang-kelas.destroy')->middleware(['permission:delete_ruang_kelas']);
     // Route::get('/ruang-kelas/show/{id}', [RuangKelasController::class, 'show'])->name('kelas.show');
 
     // tahun ajaran
@@ -185,14 +185,14 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/kurikulum/show/{id}', [KurikulumController::class, 'show'])->name('kurikulum.show');
 
     //kelas
-    Route::get('/kelas', [KelasController::class, 'index'])->name('kelast.index');
-    Route::get('/kelas/create', [KelasController::class, 'create'])->name('kelast.create');
-    Route::post('/kelas', [KelasController::class, 'store'])->name('kelast.store');
-    Route::get('/kelas/{kelas}/edit', [KelasController::class, 'edit'])->name('kelast.edit');
-    Route::put('/kelas/{kelas}', [KelasController::class, 'update'])->name('kelast.update');
-    Route::delete('/kelas/{kelas}', [KelasController::class, 'destroy'])->name('kelast.destroy');
-    Route::get('/kelas/show/{id}', [KelasController::class, 'show'])->name('kelast.show');
-    Route::get('/kelas/details/{kurikulum}', [KelasController::class, 'getKurikulumDetails'])->name('kelast.details');
+    Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');
+    Route::get('/kelas/create', [KelasController::class, 'create'])->name('kelas.create');
+    Route::post('/kelas', [KelasController::class, 'store'])->name('kelas.store');
+    Route::get('/kelas/{kelas}/edit', [KelasController::class, 'edit'])->name('kelas.edit');
+    Route::put('/kelas/{kelas}', [KelasController::class, 'update'])->name('kelas.update');
+    Route::delete('/kelas/{kelas}', [KelasController::class, 'destroy'])->name('kelas.destroy');
+    Route::get('/kelas/show/{id}', [KelasController::class, 'show'])->name('kelas.show');
+    Route::get('/kelas/details/{kurikulum}', [KelasController::class, 'getKurikulumDetails'])->name('kelas.details');
 
     // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
     Route::get('/kurikulum/get-matakuliah/{prodi}/{semester}', [KurikulumController::class, 'getMataKuliah'])->name('get-matakuliah');

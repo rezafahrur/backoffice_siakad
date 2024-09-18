@@ -19,7 +19,7 @@
             <h3 class="card-title">Form Edit Kelas</h3>
         </div>
         <div class="card-body">
-            <form action="{{ route('kelast.update', $kelas->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('kelas.update', $kelas->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -251,7 +251,7 @@
                         </div>
                     @endforeach
                 </div>
-                <a href="{{ route('kelast.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('kelas.index') }}" class="btn btn-secondary">Back</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>

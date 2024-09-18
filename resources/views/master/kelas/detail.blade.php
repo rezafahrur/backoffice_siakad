@@ -182,7 +182,7 @@
                 </div>
             @endif
 
-            <a href="{{ route('kelast.index') }}" class="btn btn-secondary mt-3">Back</a>
+            <a href="{{ route('kelas.index') }}" class="btn btn-secondary mt-3">Back</a>
         </div>
     </div>
 @endsection
