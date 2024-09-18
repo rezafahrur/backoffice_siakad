@@ -133,16 +133,14 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/hr/create', [HrController::class, 'create'])->name('hr.create')->middleware(['permission:create_hr']);
 
 
-    Route::get('/paket-matakuliah', [PaketMataKuliahController::class, 'index'])->name('paket-matakuliah.index')->middleware(['permission:read_paket_mata_kuliah']);
-    Route::get('/paket-matakuliah/create', [PaketMataKuliahController::class, 'create'])->name('paket-matakuliah.create')->middleware(['permission:create_paket_mata_kuliah']);
-    Route::post('/paket-matakuliah', [PaketMataKuliahController::class, 'store'])->name('paket-matakuliah.store')->middleware(['permission:create_paket_mata_kuliah']);
-    Route::get('/paket-matakuliah/show/{id}', [PaketMataKuliahController::class, 'show'])->name('paket-matakuliah.show')->middleware(['permission:read_paket_mata_kuliah']);
-    Route::get('/paket-matakuliah/{id}/edit', [PaketMataKuliahController::class, 'edit'])->name('paket-matakuliah.edit')->middleware(['permission:update_paket_mata_kuliah']);
-    Route::put('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'update'])->name('paket-matakuliah.update')->middleware(['permission:update_paket_mata_kuliah']);
-    Route::delete('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'destroy'])->name('paket-matakuliah.destroy')->middleware(['permission:delete_paket_mata_kuliah']);
-
-    // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
-    Route::get('/paket-matakuliah/get-matakuliah/{programStudiId}/{semester}', [PaketMataKuliahController::class, 'getMataKuliah'])->name('get-matakuliah')->middleware(['permission:read_paket_mata_kuliah']);
+    // Route::get('/paket-matakuliah', [PaketMataKuliahController::class, 'index'])->name('paket-matakuliah.index')->middleware(['permission:read_paket_mata_kuliah']);
+    // Route::get('/paket-matakuliah/create', [PaketMataKuliahController::class, 'create'])->name('paket-matakuliah.create')->middleware(['permission:create_paket_mata_kuliah']);
+    // Route::post('/paket-matakuliah', [PaketMataKuliahController::class, 'store'])->name('paket-matakuliah.store')->middleware(['permission:create_paket_mata_kuliah']);
+    // Route::get('/paket-matakuliah/show/{id}', [PaketMataKuliahController::class, 'show'])->name('paket-matakuliah.show')->middleware(['permission:read_paket_mata_kuliah']);
+    // Route::get('/paket-matakuliah/{id}/edit', [PaketMataKuliahController::class, 'edit'])->name('paket-matakuliah.edit')->middleware(['permission:update_paket_mata_kuliah']);
+    // Route::put('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'update'])->name('paket-matakuliah.update')->middleware(['permission:update_paket_mata_kuliah']);
+    // Route::delete('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'destroy'])->name('paket-matakuliah.destroy')->middleware(['permission:delete_paket_mata_kuliah']);
+    // Route::get('/paket-matakuliah/get-matakuliah/{programStudiId}/{semester}', [PaketMataKuliahController::class, 'getMataKuliah'])->name('get-matakuliah')->middleware(['permission:read_paket_mata_kuliah']);
 
     //crud berita
     Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index')->middleware(['permission:read_berita']);

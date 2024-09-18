@@ -31,6 +31,9 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Nama Kelas</th>
+                                    <th>Program Studi</th>
+                                    <th>Semester</th>
+                                    <th>Kurikulum</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -39,6 +42,9 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $kl->nama_kelas }}</td>
+                                        <td>{{ $kl->programStudi->nama_program_studi ?? 'N/A' }}</td>
+                                        <td>{{ $kl->semester->nama_semester ?? 'N/A' }}</td>
+                                        <td>{{ $kl->kurikulum->nama_kurikulum ?? 'N/A' }}</td>
                                         <td>
                                             <a href="{{ route('kelast.edit', $kl->id) }}"
                                                 class="btn btn-sm btn-primary btn-icon">

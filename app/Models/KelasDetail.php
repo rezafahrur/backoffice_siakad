@@ -16,6 +16,10 @@ class KelasDetail extends Model
     protected $fillable = [
         'kelas_id',
         'kurikulum_detail_id',
+        'hr_id',
+        'tatap_muka',
+        'sks_ajar',
+        'jenis_evaluasi',
         'description',
         'lingkup_kelas',
         'mode_kelas',
@@ -29,5 +33,10 @@ class KelasDetail extends Model
     public function kurikulumDetail()
     {
         return $this->belongsTo(KurikulumDetail::class, 'kurikulum_detail_id', 'id');
+    }
+
+    public function hr()
+    {
+        return $this->belongsTo(Hr::class, 'hr_id', 'id');
     }
 }

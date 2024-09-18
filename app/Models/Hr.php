@@ -60,4 +60,9 @@ class Hr extends Authenticatable
     {
         return $this->hasMany(JadwalDetail::class, 'hr_id');
     }
+
+    public function kelasDetails()
+    {
+        return $this->hasMany(KelasDetail::class, 'hr_id');
+    }
 }
