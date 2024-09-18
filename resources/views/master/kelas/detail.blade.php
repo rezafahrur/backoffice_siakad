@@ -112,6 +112,11 @@
                                 <th scope="col">Deskripsi</th>
                                 <th scope="col">Lingkup Kelas</th>
                                 <th scope="col">Mode Kelas</th>
+                                <th scope="col">Dosen</th>
+                                <th scope="col">Tatap Muka</th>
+                                <th scope="col">Sks</th>
+                                <th scope="col">Evaluasi</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -136,6 +141,31 @@
                                         @else
                                             Campuran
                                         @endif
+                                    </td>
+                                    <td>{{ $detail->hr->nama ?? 'N/A' }}</td>
+                                    <td>{{ $detail->tatap_muka }}</td>
+                                    <td>{{ $detail->sks_ajar }}</td>
+                                    <td>
+                                        @switch($detail->jenis_evaluasi)
+                                            @case(1)
+                                                Evaluasi Akademik
+                                            @break
+
+                                            @case(2)
+                                                Aktivitas Partisipatif
+                                            @break
+
+                                            @case(3)
+                                                Proyek
+                                            @break
+
+                                            @case(4)
+                                                Kognitif / Pengetahuan
+                                            @break
+
+                                            @default
+                                                N/A
+                                        @endswitch
                                     </td>
                                 </tr>
                             @endforeach

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\ProgramStudi;
 use App\Models\Semester;
 use App\Models\Kurikulum;
+use App\Models\HR;
 
 class KelasController extends Controller
 {
@@ -30,8 +31,10 @@ class KelasController extends Controller
         $programStudi = ProgramStudi::all();
         $semester = Semester::all();
         $kurikulum = Kurikulum::all();
+        // get HR where role position_id = 6, which is dosen
+        $dosen = HR::where('position_id', 6)->get();
 
-        return view('master.kelas.create', compact('programStudi', 'semester', 'kurikulum'));
+        return view('master.kelas.create', compact('programStudi', 'semester', 'kurikulum', 'dosen'));
     }
 
     /**
@@ -63,6 +66,7 @@ class KelasController extends Controller
     public function show($id)
     {
         $kelas = Kelas::with('programStudi', 'semester', 'kurikulum', 'details')->findOrFail($id);
+        // dd($kelas);
 
         return view('master.kelas.detail', compact('kelas'));
     }
@@ -76,8 +80,9 @@ class KelasController extends Controller
         $programStudi = ProgramStudi::all();
         $semester = Semester::all();
         $kurikulum = Kurikulum::all();
+        $dosen = HR::where('position_id', 6)->get(); // Dosen
 
-        return view('master.kelas.edit', compact('kelas', 'programStudi', 'semester', 'kurikulum'));
+        return view('master.kelas.edit', compact('kelas', 'programStudi', 'semester', 'kurikulum', 'dosen'));
     }
 
     /**
@@ -135,9 +140,12 @@ class KelasController extends Controller
         // filter out any kurikulum details without a related mata kuliah
         $filteredDetails = $kurikulum->kurikulumDetails->filter(fn($detail) => $detail->matakuliah !== null);
 
+        $dosen = HR::where('position_id', 6)->get(); // Dosen
+
 
         return response()->json([
             'details' => $filteredDetails,
+            'dosen' => $dosen,
         ]);
     }
 }

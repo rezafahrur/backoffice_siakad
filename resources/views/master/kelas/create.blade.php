@@ -227,35 +227,83 @@
                                 `<option value="${mode.value}" ${mode.value == detail.mode_kelas ? 'selected' : ''}>${mode.label}</option>`
                             ).join('');
 
+                            let jenisEvaluasiOptions = [{
+                                    value: 1,
+                                    label: "Evaluasi Akademik"
+                                },
+                                {
+                                    value: 2,
+                                    label: "Aktivitas Partisipatif"
+                                },
+                                {
+                                    value: 3,
+                                    label: "Hasil Proyek"
+                                },
+                                {
+                                    value: 4,
+                                    label: "Kognitif / Pengetahuan"
+                                }
+                            ].map(evaluasi =>
+                                `<option value="${evaluasi.value}" ${evaluasi.value == detail.jenis_evaluasi ? 'selected' : ''}>${evaluasi.label}</option>`
+                            ).join('');
+
+                            // Fetch dosen options (this will be fetched from the controller as an array)
+                            let dosenOptions = data.dosen.map(dosen =>
+                                `<option value="${dosen.id}" ${dosen.id == detail.hr_id ? 'selected' : ''}>${dosen.nama}</option>`
+                            ).join('');
+
                             let detailField = `
-                            <!-- Detail Kelas -->
-                            <hr> <!-- Separator line between details -->
-                            <div class="detail-kelas my-5">
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label class="form-label">Mata Kuliah</label>
-                                        <input type="hidden" name="details[${detail.id}][kurikulum_detail_id]" value="${detail.id}">
-                                        <input type="text" class="form-control" value="${namaMatakuliah}" readonly>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">Deskripsi</label>
-                                        <input type="text" name="details[${detail.id}][description]" class="form-control" value="${detail.description || ''}">
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">Lingkup Kelas</label>
-                                        <select name="details[${detail.id}][lingkup_kelas]" class="form-control">
-                                            ${lingkupKelasOptions}
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">Mode Kelas</label>
-                                        <select name="details[${detail.id}][mode_kelas]" class="form-control">
-                                            ${modeKelasOptions}
-                                        </select>
-                                    </div>
-                                </div>
+                    <!-- Detail Kelas -->
+                    <hr> <!-- Separator line between details -->
+                    <div class="detail-kelas my-5">
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Mata Kuliah</label>
+                                <input type="hidden" name="details[${detail.id}][kurikulum_detail_id]" value="${detail.id}">
+                                <input type="text" class="form-control" value="${namaMatakuliah}" readonly>
                             </div>
-                    `;
+                            <div class="col-md-3">
+                                <label class="form-label">Deskripsi</label>
+                                <input type="text" name="details[${detail.id}][description]" class="form-control" value="${detail.description || ''}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Lingkup Kelas</label>
+                                <select name="details[${detail.id}][lingkup_kelas]" class="form-control">
+                                    ${lingkupKelasOptions}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Mode Kelas</label>
+                                <select name="details[${detail.id}][mode_kelas]" class="form-control">
+                                    ${modeKelasOptions}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Dosen</label>
+                                <select name="details[${detail.id}][hr_id]" class="form-control">
+                                    <option value="">-- Pilih Dosen --</option>
+                                    ${dosenOptions}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Tatap Muka</label>
+                                <input type="number" name="details[${detail.id}][tatap_muka]" class="form-control" value="${detail.tatap_muka || ''}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">SKS Ajar</label>
+                                <input type="number" name="details[${detail.id}][sks_ajar]" class="form-control" value="${detail.sks_ajar || ''}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Jenis Evaluasi</label>
+                                <select name="details[${detail.id}][jenis_evaluasi]" class="form-control">
+                                    ${jenisEvaluasiOptions}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                `;
                             detailsDiv.insertAdjacentHTML('beforeend', detailField);
                         });
                     });

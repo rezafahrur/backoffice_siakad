@@ -212,12 +212,49 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label">Dosen</label>
+                                    <select name="details[{{ $detail->id }}][hr_id]" class="form-control">
+                                        <option value="">-- Pilih Dosen --</option>
+                                        @foreach ($dosen as $d)
+                                            <option value="{{ $d->id }}"
+                                                {{ $detail->hr_id == $d->id ? 'selected' : '' }}>{{ $d->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Tatap Muka</label>
+                                    <input type="number" name="details[{{ $detail->id }}][tatap_muka]"
+                                        class="form-control"
+                                        value="{{ old('details.' . $detail->id . '.tatap_muka', $detail->tatap_muka) }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">SKS Ajar</label>
+                                    <input type="number" name="details[{{ $detail->id }}][sks_ajar]"
+                                        class="form-control"
+                                        value="{{ old('details.' . $detail->id . '.sks_ajar', $detail->sks_ajar) }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Jenis Evaluasi</label>
+                                    <select name="details[{{ $detail->id }}][jenis_evaluasi]" class="form-control">
+                                        <option value="1" {{ $detail->jenis_evaluasi == 1 ? 'selected' : '' }}>
+                                            Evaluasi Akademik</option>
+                                        <option value="2" {{ $detail->jenis_evaluasi == 2 ? 'selected' : '' }}>
+                                            Aktivitas Partisipatif</option>
+                                        <option value="3" {{ $detail->jenis_evaluasi == 3 ? 'selected' : '' }}>Hasil
+                                            Proyek</option>
+                                        <option value="4" {{ $detail->jenis_evaluasi == 4 ? 'selected' : '' }}>
+                                            Kognitif / Pengetahuan</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     @endforeach
                 </div>
-
-                {{-- Submit Button --}}
-                <button type="submit" class="btn btn-primary">Update Kelas</button>
+                <a href="{{ route('kelast.index') }}" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
