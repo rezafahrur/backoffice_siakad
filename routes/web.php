@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HrController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\BeritaController;
@@ -16,10 +17,10 @@ use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\RuangKelasController;
-use App\Http\Controllers\TahunAjaranController;
+use App\Http\Controllers\SkalaNilaiController;
 use App\Http\Controllers\ProgramStudiController;
-use App\Http\Controllers\TahunAkademikController;
 use App\Http\Controllers\PaketMataKuliahController;
+use App\Http\Controllers\PeriodePerkuliahanController;
 
 Route::get('/wizard', function () {
     return view('wizard');
@@ -72,8 +73,8 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     // Bayar
     Route::post('/mahasiswa/bayar', [MahasiswaController::class, 'bayar'])->name('mahasiswa.bayar')->middleware(['permission:update_mahasiswa']);
-    Route::get('/get-paket-matakuliah-details/{id}', [MahasiswaController::class, 'getPaketMatakuliahDetails'])->middleware(['permission:update_mahasiswa']);
-    Route::get('/get-paket-matakuliah-by-semester', [MahasiswaController::class, 'getPaketMataKuliahBySemester'])->middleware(['permission:update_mahasiswa']);
+    Route::get('/get-kurikulum-details/{id}', [MahasiswaController::class, 'getKurikulumDetails'])->middleware(['permission:update_mahasiswa']);
+    Route::get('/get-kurikulum-by-semester', [MahasiswaController::class, 'getKurikulumBySemester'])->middleware(['permission:update_mahasiswa']);
 
     // ajax
     Route::get('/mahasiswa/cities/{provinceCode}', [MahasiswaController::class, 'getCities'])->middleware(['permission:read_mahasiswa']);
@@ -134,16 +135,14 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/hr/create', [HrController::class, 'create'])->name('hr.create')->middleware(['permission:create_hr']);
 
 
-    Route::get('/paket-matakuliah', [PaketMataKuliahController::class, 'index'])->name('paket-matakuliah.index')->middleware(['permission:read_paket_mata_kuliah']);
-    Route::get('/paket-matakuliah/create', [PaketMataKuliahController::class, 'create'])->name('paket-matakuliah.create')->middleware(['permission:create_paket_mata_kuliah']);
-    Route::post('/paket-matakuliah', [PaketMataKuliahController::class, 'store'])->name('paket-matakuliah.store')->middleware(['permission:create_paket_mata_kuliah']);
-    Route::get('/paket-matakuliah/show/{id}', [PaketMataKuliahController::class, 'show'])->name('paket-matakuliah.show')->middleware(['permission:read_paket_mata_kuliah']);
-    Route::get('/paket-matakuliah/{id}/edit', [PaketMataKuliahController::class, 'edit'])->name('paket-matakuliah.edit')->middleware(['permission:update_paket_mata_kuliah']);
-    Route::put('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'update'])->name('paket-matakuliah.update')->middleware(['permission:update_paket_mata_kuliah']);
-    Route::delete('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'destroy'])->name('paket-matakuliah.destroy')->middleware(['permission:delete_paket_mata_kuliah']);
-
-    // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
-    Route::get('/paket-matakuliah/get-matakuliah/{programStudiId}/{semester}', [PaketMataKuliahController::class, 'getMataKuliah'])->name('get-matakuliah')->middleware(['permission:read_paket_mata_kuliah']);
+    // Route::get('/paket-matakuliah', [PaketMataKuliahController::class, 'index'])->name('paket-matakuliah.index')->middleware(['permission:read_paket_mata_kuliah']);
+    // Route::get('/paket-matakuliah/create', [PaketMataKuliahController::class, 'create'])->name('paket-matakuliah.create')->middleware(['permission:create_paket_mata_kuliah']);
+    // Route::post('/paket-matakuliah', [PaketMataKuliahController::class, 'store'])->name('paket-matakuliah.store')->middleware(['permission:create_paket_mata_kuliah']);
+    // Route::get('/paket-matakuliah/show/{id}', [PaketMataKuliahController::class, 'show'])->name('paket-matakuliah.show')->middleware(['permission:read_paket_mata_kuliah']);
+    // Route::get('/paket-matakuliah/{id}/edit', [PaketMataKuliahController::class, 'edit'])->name('paket-matakuliah.edit')->middleware(['permission:update_paket_mata_kuliah']);
+    // Route::put('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'update'])->name('paket-matakuliah.update')->middleware(['permission:update_paket_mata_kuliah']);
+    // Route::delete('/paket-matakuliah/{id}', [PaketMataKuliahController::class, 'destroy'])->name('paket-matakuliah.destroy')->middleware(['permission:delete_paket_mata_kuliah']);
+    // Route::get('/paket-matakuliah/get-matakuliah/{programStudiId}/{semester}', [PaketMataKuliahController::class, 'getMataKuliah'])->name('get-matakuliah')->middleware(['permission:read_paket_mata_kuliah']);
 
     //crud berita
     Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index')->middleware(['permission:read_berita']);
@@ -179,13 +178,32 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/getMahasiswaByProdi', [PrestasiController::class, 'getMahasiswaByProdi'])->name('getMahasiswaByProdi');
 
     //kuriukulum
-    Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.index');
-    Route::get('/kurikulum/create', [KurikulumController::class, 'create'])->name('kurikulum.create');
-    Route::post('/kurikulum', [KurikulumController::class, 'store'])->name('kurikulum.store');
-    Route::get('/kurikulum/{kurikulum}/edit', [KurikulumController::class, 'edit'])->name('kurikulum.edit');
-    Route::put('/kurikulum/{kurikulum}', [KurikulumController::class, 'update'])->name('kurikulum.update');
-    Route::delete('/kurikulum/{kurikulum}', [KurikulumController::class, 'destroy'])->name('kurikulum.destroy');
-    Route::get('/kurikulum/show/{id}', [KurikulumController::class, 'show'])->name('kurikulum.show');
+    Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.index')->middleware(['permission:read_kurikulum']);
+    Route::get('/kurikulum/create', [KurikulumController::class, 'create'])->name('kurikulum.create')->middleware(['permission:create_kurikulum']);
+    Route::post('/kurikulum', [KurikulumController::class, 'store'])->name('kurikulum.store')->middleware(['permission:create_kurikulum']);
+    Route::get('/kurikulum/{kurikulum}/edit', [KurikulumController::class, 'edit'])->name('kurikulum.edit')->middleware(['permission:update_kurikulum']);
+    Route::put('/kurikulum/{kurikulum}', [KurikulumController::class, 'update'])->name('kurikulum.update')->middleware(['permission:update_kurikulum']);
+    Route::delete('/kurikulum/{kurikulum}', [KurikulumController::class, 'destroy'])->name('kurikulum.destroy')->middleware(['permission:delete_kurikulum']);
+    Route::get('/kurikulum/show/{id}', [KurikulumController::class, 'show'])->name('kurikulum.show')->middleware(['permission:read_kurikulum']);
+
+    //kelas
+    Route::get('/kelas', [KelasController::class, 'index'])->name('kelast.index')->middleware(['permission:read_kelas']);
+    Route::get('/kelas/create', [KelasController::class, 'create'])->name('kelast.create')->middleware(['permission:create_kelas']);
+    Route::post('/kelas', [KelasController::class, 'store'])->name('kelast.store')->middleware(['permission:create_kelas']);
+    Route::get('/kelas/{kelas}/edit', [KelasController::class, 'edit'])->name('kelast.edit')->middleware(['permission:update_kelas']);
+    Route::put('/kelas/{kelas}', [KelasController::class, 'update'])->name('kelast.update')->middleware(['permission:update_kelas']);
+    Route::delete('/kelas/{kelas}', [KelasController::class, 'destroy'])->name('kelast.destroy')->middleware(['permission:delete_kelas']);
+    Route::get('/kelas/show/{id}', [KelasController::class, 'show'])->name('kelast.show')->middleware(['permission:read_kelas']);
+    Route::get('/kelas/details/{kurikulum}', [KelasController::class, 'getKurikulumDetails'])->name('kelast.details');
+
+    //periode perkuliahan
+    Route::get('/periode-perkuliahan', [PeriodePerkuliahanController::class, 'index'])->name('periode-perkuliahan.index');
+    Route::get('/periode-perkuliahan/create', [PeriodePerkuliahanController::class, 'create'])->name('periode-perkuliahan.create');
+    Route::post('/periode-perkuliahan', [PeriodePerkuliahanController::class, 'store'])->name('periode-perkuliahan.store');
+    Route::get('/periode-perkuliahan/{id}/edit', [PeriodePerkuliahanController::class, 'edit'])->name('periode-perkuliahan.edit');
+    Route::put('/periode-perkuliahan/{id}', [PeriodePerkuliahanController::class, 'update'])->name('periode-perkuliahan.update');
+    Route::delete('/periode-perkuliahan/{id}', [PeriodePerkuliahanController::class, 'destroy'])->name('periode-perkuliahan.destroy');
+    Route::get('/periode-perkuliahan/show/{id}', [PeriodePerkuliahanController::class, 'show'])->name('periode-perkuliahan.show');
 
     // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
     Route::get('/kurikulum/get-matakuliah/{prodi}/{semester}', [KurikulumController::class, 'getMataKuliah'])->name('get-matakuliah');
@@ -193,6 +211,16 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // Route::put('/tahun-akademik/{id}', [TahunAkademikController::class, 'update'])->name('tahun-akademik.update');
     Route::get('/config', [ConfigController::class, 'index'])->name('config.index');
     Route::post('/config', [ConfigController::class, 'update'])->name('config.update');
+
+    // skala-nilai
+    Route::get('/skala-nilai', [SkalaNilaiController::class, 'index'])->name('skala-nilai.index');
+    Route::get('/skala-nilai/create', [SkalaNilaiController::class, 'create'])->name('skala-nilai.create');
+    Route::post('/skala-nilai', [SkalaNilaiController::class, 'store'])->name('skala-nilai.store');
+    Route::get('/skala-nilai/{skalaNilai}/edit', [SkalaNilaiController::class, 'edit'])->name('skala-nilai.edit');
+    Route::put('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'update'])->name('skala-nilai.update');
+    Route::delete('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'destroy'])->name('skala-nilai.destroy');
+    Route::get('/skala-nilai/show/{id}', [SkalaNilaiController::class, 'show'])->name('skala-nilai.show');
+    
 });
 
 //login
