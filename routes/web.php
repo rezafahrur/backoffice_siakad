@@ -19,6 +19,7 @@ use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\ProgramStudiController;
 use App\Http\Controllers\PaketMataKuliahController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\PeriodePerkuliahanController;
 
 Route::get('/wizard', function () {
     return view('wizard');
@@ -193,6 +194,15 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::delete('/kelas/{kelas}', [KelasController::class, 'destroy'])->name('kelast.destroy')->middleware(['permission:delete_kelas']);
     Route::get('/kelas/show/{id}', [KelasController::class, 'show'])->name('kelast.show')->middleware(['permission:read_kelas']);
     Route::get('/kelas/details/{kurikulum}', [KelasController::class, 'getKurikulumDetails'])->name('kelast.details');
+
+    //periode perkuliahan
+    Route::get('/periode-perkuliahan', [PeriodePerkuliahanController::class, 'index'])->name('periode-perkuliahan.index');
+    Route::get('/periode-perkuliahan/create', [PeriodePerkuliahanController::class, 'create'])->name('periode-perkuliahan.create');
+    Route::post('/periode-perkuliahan', [PeriodePerkuliahanController::class, 'store'])->name('periode-perkuliahan.store');
+    Route::get('/periode-perkuliahan/{id}/edit', [PeriodePerkuliahanController::class, 'edit'])->name('periode-perkuliahan.edit');
+    Route::put('/periode-perkuliahan/{id}', [PeriodePerkuliahanController::class, 'update'])->name('periode-perkuliahan.update');
+    Route::delete('/periode-perkuliahan/{id}', [PeriodePerkuliahanController::class, 'destroy'])->name('periode-perkuliahan.destroy');
+    Route::get('/periode-perkuliahan/show/{id}', [PeriodePerkuliahanController::class, 'show'])->name('periode-perkuliahan.show');
 
     // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
     Route::get('/kurikulum/get-matakuliah/{prodi}/{semester}', [KurikulumController::class, 'getMataKuliah'])->name('get-matakuliah');
