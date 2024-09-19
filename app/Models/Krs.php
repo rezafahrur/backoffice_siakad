@@ -18,6 +18,8 @@ class Krs extends Model
         'paket_matakuliah_id',
         'status',
         'tgl_transfer',
+        'kurikulum_id',
+        'kelas_id',
     ];
 
     public function mahasiswa()
@@ -25,8 +27,13 @@ class Krs extends Model
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id', 'id');
     }
 
-    public function paketMatakuliah()
+    public function kurikulum()
     {
-        return $this->belongsTo(PaketMataKuliah::class, 'paket_matakuliah_id', 'id');
+        return $this->belongsTo(Kurikulum::class, 'kurikulum_id', 'id');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'kelas_id', 'id');
     }
 }

@@ -16,16 +16,26 @@ class Mahasiswa extends Model
     protected $fillable = [
         'ktp_id',
         'nisn',
-        'email',
         'jurusan_id',
         'program_studi_id',
         'nim',
+        'email',
         'nama',
         'registrasi_tanggal',
+        'semester_berjalan',
         'status',
+        'npwp',
+        'jenis_tinggal',
+        'terima_kps',
+        'no_kps',
+        'alat_transportasi',
         'nama_kontak_darurat',
         'hubungan_kontak_darurat',
         'hp_kontak_darurat',
+        'tgl_lahir_kontak_darurat',
+        'pekerjaan_kontak_darurat',
+        'pendidikan_kontak_darurat',
+        'penghasilan_kontak_darurat',
     ];
 
     public function programStudi()

@@ -18,6 +18,7 @@ class MahasiswaWali extends Model
         'ktp_id',
         'nama',
         'status_kewalian',
+        'kebutuhan_khusus',
     ];
 
     public function mahasiswa()

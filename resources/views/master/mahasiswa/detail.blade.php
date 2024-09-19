@@ -1,19 +1,9 @@
-@extends('layouts.custom')
+@extends('layouts.app')
 
 @section('title', 'Detail Mahasiswa')
 
 @section('content')
     <div class="container">
-        {{-- start logo and back --}}
-        <nav class="navbar navbar-light">
-            <div class="container d-block">
-                <a href="{{ route('mahasiswa.index') }}"><i class="bi bi-chevron-left"></i></a>
-                <a class="navbar-brand ms-4" href="">
-                    <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
-                </a>
-            </div>
-        </nav>
-        {{-- end logo and back --}}
         <div class="card">
             <div class="card-body">
                 <!-- Wizard Navigation -->
@@ -33,8 +23,17 @@
                             aria-controls="pills-kontak-darurat" aria-selected="false">Kontak Darurat</button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-kebutuhan-tab" data-bs-toggle="pill" data-bs-target="#pills-kebutuhan"
+                            type="button" role="tab" aria-controls="pills-kebutuhan" aria-selected="false">Kebutuhan Khusus</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-krs-tab" data-bs-toggle="pill" data-bs-target="#pills-krs"
                             type="button" role="tab" aria-controls="pills-krs" aria-selected="false">KRS</button>
+                    </li>
+
+                    {{-- Back page button --}}
+                    <li class="nav-item ms-auto" role="presentation">
+                        <a href="{{ route('mahasiswa.index') }}" class="btn btn-secondary">Back</a>
                     </li>
                 </ul>
 
@@ -64,10 +63,17 @@
                                     <dt class="col-sm-4">NISN</dt>
                                     <dd class="col-sm-8">{{ $mahasiswa->nisn }}</dd>
 
-                                    {{-- Registrasi Tanggal --}}
-                                    <dt class="col-sm-4">Registrasi Tanggal</dt>
-                                    <dd class="col-sm-8">
-                                        {{ \Carbon\Carbon::parse($mahasiswa->registrasi_tgl)->format('d-m-Y') }}</dd>
+                                    {{-- NPWP --}}
+                                    <dt class="col-sm-4">NPWP</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->npwp ?? '-' }}</dd>
+
+                                    {{-- Jenis Tinggal --}}
+                                    <dt class="col-sm-4">Jenis Tinggal</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->jenis_tinggal }}</dd>
+
+                                    {{-- Alat Transportasi --}}
+                                    <dt class="col-sm-4">Alat Transportasi</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->alat_transportasi }}</dd>
                                 </dl>
                             </div>
                             <div class="col-md-6">
@@ -80,6 +86,11 @@
                                     {{-- Program Studi --}}
                                     <dt class="col-sm-4">Program Studi</dt>
                                     <dd class="col-sm-8">{{ $mahasiswa->programStudi->nama_program_studi }}</dd>
+
+                                    {{-- Registrasi Tanggal --}}
+                                    <dt class="col-sm-4">Registrasi Tanggal</dt>
+                                    <dd class="col-sm-8">
+                                        {{ \Carbon\Carbon::parse($mahasiswa->registrasi_tgl)->format('d-m-Y') }}</dd>
 
                                     {{-- Semester Berjalan --}}
                                     <dt class="col-sm-4">Semester Berjalan</dt>
@@ -94,7 +105,20 @@
                                             Nonaktif
                                         @endif
                                     </dd>
-                                </dl>
+
+                                    {{-- Terima KPS --}}
+                                    <dt class="col-sm-4">Terima KPS</dt>
+                                    <dd class="col-sm-8">
+                                        @if ($mahasiswa->terima_kps == 1)
+                                            Ya
+                                        @else
+                                            Tidak
+                                        @endif
+                                    </dd>
+
+                                    {{-- No KPS --}}
+                                    <dt class="col-sm-4">No KPS</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->no_kps ?? '-' }}</dd>
                                 </dl>
                             </div>
                             <div class="col-md-12">
@@ -102,15 +126,19 @@
                                     <table class="table mb-1 table-bordered">
                                         <thead class="thead-dark">
                                             <tr>
+                                                <th scope="col">Telp Rumah</th>
                                                 <th scope="col">No. Hp</th>
                                                 <th scope="col">Alamat Domisili</th>
+                                                <th scope="col">Kode Pos</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($mhsDetail as $detail)
                                                 <tr>
+                                                    <td>{{ $detail->telp_rumah ?? '-' }}</td>
                                                     <td>{{ $detail->hp }}</td>
                                                     <td>{{ $detail->alamat_domisili }}</td>
+                                                    <td>{{ $detail->kode_pos ?? '-' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -234,8 +262,6 @@
                             </div>
                         </div>
 
-                        <hr>
-
                         <!-- Kolom Data KTP Wali 1 Mahasiswa (2 baris) -->
                         <div class="row mt-4">
                             <h4 class="card-title">KTP Wali Mahasiswa</h4>
@@ -351,8 +377,6 @@
                             </div>
                         </div>
 
-                        <hr>
-
                         <!-- Kolom Data KTP Wali Mahasiswa (2 baris) -->
                         <div class="row mt-4">
                             <h4 class="card-title">KTP Wali Mahasiswa</h4>
@@ -440,6 +464,50 @@
                                     <dd class="col-sm-8">{{ $mahasiswa->hp_kontak_darurat }}</dd>
                                 </dl>
                             </div>
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    {{-- Tanggal Lahir --}}
+                                    <dt class="col-sm-4">Tanggal Lahir</dt>
+                                    <dd class="col-sm-8">
+                                        {{ \Carbon\Carbon::parse($mahasiswa->tgl_lahir_kontak_darurat)->format('d-m-Y') }}
+                                    </dd>
+
+                                    {{-- Pekerjaan --}}
+                                    <dt class="col-sm-4">Pekerjaan</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->pekerjaan_kontak_darurat }}</dd>
+
+                                    {{-- Penghasilan --}}
+                                    <dt class="col-sm-4">Penghasilan</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->penghasilan_kontak_darurat }}</dd>
+
+                                    {{-- Pendidikan Terakhir --}}
+                                    <dt class="col-sm-4">Pendidikan Terakhir</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->pendidikan_kontak_darurat }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kebutuhan Khusus -->
+                    <div class="tab-pane fade" id="pills-kebutuhan" role="tabpanel" aria-labelledby="pills-kebutuhan-tab">
+                        <!-- Kolom Kebutuhan Khusus -->
+                        <div class="row">
+                            <h4 class="card-title">Kebutuhan Khusus</h4>
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    {{-- Kebutuhan Khusus --}}
+                                    <dt class="col-sm-4">Kebutuhan Khusus</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->kebutuhan_khusus }}</dd>
+
+                                    {{-- Alat Bantu --}}
+                                    <dt class="col-sm-4">Alat Bantu</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->alat_bantu }}</dd>
+
+                                    {{-- Kebutuhan Khusus Lainnya --}}
+                                    <dt class="col-sm-4">Kebutuhan Khusus Lainnya</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->kebutuhan_khusus_lainnya }}</dd>
+                                </dl>
+                            </div>
                         </div>
                     </div>
 
@@ -448,97 +516,166 @@
                         <!-- Title and Wizard Buttons -->
                         <div class="row">
                             <h4 class="card-title">KRS</h4>
-                            <ul class="nav nav-pills mb-3" id="pills-semester-tab" role="tablist">
-                                @foreach ($krs as $index => $krsItem)
-                                    @if ($krsItem && $krsItem->paketMatakuliah)
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link @if ($index == 0) active @endif"
-                                                id="pills-semester-{{ $krsItem->paketMatakuliah->semester }}-tab"
-                                                data-bs-toggle="pill"
-                                                data-bs-target="#pills-semester-{{ $krsItem->paketMatakuliah->semester }}"
-                                                type="button" role="tab"
-                                                aria-controls="pills-semester-{{ $krsItem->paketMatakuliah->semester }}"
-                                                aria-selected="{{ $index == 0 ? 'true' : 'false' }}">
-                                                Semester {{ $krsItem->paketMatakuliah->semester }}
-                                            </button>
-                                        </li>
-                                    @endif
-                                @endforeach
-                            </ul>
-                        </div>
+                            @if ($krs->isEmpty())
+                                <!-- Pesan jika tidak ada data KRS -->
+                                <p>KRS tidak ditemukan untuk mahasiswa ini.</p>
+                            @else
+                                <div class="col-md-12">
+                                    <!-- Semester Navigation -->
+                                    <ul class="nav nav-pills mb-3" id="pills-semester-tab" role="tablist">
+                                        @foreach ($krs as $index => $krsItem)
+                                            @if ($krsItem && $krsItem->kurikulum)
+                                                <li class="nav-item" role="presentation">
+                                                    <button
+                                                        class="nav-link @if ($index == 0) active @endif"
+                                                        id="pills-semester-{{ $krsItem->kurikulum->semester_angka }}-tab"
+                                                        data-bs-toggle="pill"
+                                                        data-bs-target="#pills-semester-{{ $krsItem->kurikulum->semester_angka }}"
+                                                        type="button" role="tab"
+                                                        aria-controls="pills-semester-{{ $krsItem->kurikulum->semester_angka }}"
+                                                        aria-selected="{{ $index == 0 ? 'true' : 'false' }}">
+                                                        Semester {{ $krsItem->kurikulum->semester_angka }}
+                                                    </button>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </div>
 
-                        <!-- KRS Content for Each Semester -->
-                        <div class="tab-content" id="pills-semester-content">
-                            @foreach ($krs as $index => $krsItem)
-                                @if ($krsItem && $krsItem->paketMatakuliah)
-                                    <!-- Tambahkan pengecekan ini -->
-                                    <div class="tab-pane fade @if ($index == 0) show active @endif"
-                                        id="pills-semester-{{ $krsItem->semester }}" role="tabpanel"
-                                        aria-labelledby="pills-semester-{{ $krsItem->semester }}-tab">
-                                        <!-- Kolom KRS -->
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <dl class="row">
-                                                    <dt class="col-sm-4">Tanggal Transfer</dt>
-                                                    <dd class="col-sm-8">
-                                                        {{ \Carbon\Carbon::parse($krsItem->tgl_transfer)->format('d-m-Y') }}
-                                                    </dd>
+                                <!-- KRS Content for Each Semester -->
+                                <div class="tab-content" id="pills-semester-content">
+                                    @foreach ($krs as $index => $krsItem)
+                                        @if ($krsItem && $krsItem->kurikulum)
+                                            <div class="tab-pane fade @if ($index == 0) show active @endif"
+                                                id="pills-semester-{{ $krsItem->kurikulum->semester }}" role="tabpanel"
+                                                aria-labelledby="pills-semester-{{ $krsItem->kurikulum->semester }}-tab">
+                                                <!-- Kolom KRS -->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <dl class="row">
+                                                            <dt class="col-sm-4">Tanggal Transfer</dt>
+                                                            <dd class="col-sm-8">
+                                                                {{ \Carbon\Carbon::parse($krsItem->tgl_transfer)->format('d-m-Y') }}
+                                                            </dd>
 
-                                                    <dt class="col-sm-4">Paket Matakuliah</dt>
-                                                    <dd class="col-sm-8">
-                                                        {{ $krsItem->paketMatakuliah->nama_paket_matakuliah }}</dd>
+                                                            <dt class="col-sm-4">Kurikulum</dt>
+                                                            <dd class="col-sm-8">{{ $krsItem->kurikulum->nama_kurikulum }}
+                                                            </dd>
 
-                                                    <dt class="col-sm-4">Total SKS</dt>
-                                                    <dd class="col-sm-8">
-                                                        @php
-                                                            $totalSks = 0;
-                                                            foreach (
-                                                                $krsItem->paketMatakuliah->paketMatakuliahDetail
-                                                                as $matkul
-                                                            ) {
-                                                                $totalSks += $matkul->matakuliah->sks;
-                                                            }
-                                                            echo $totalSks;
-                                                        @endphp
-                                                    </dd>
-                                                </dl>
-                                            </div>
-                                        </div>
+                                                            <dt class="col-sm-4">Tahun Akademik</dt>
+                                                            <dd class="col-sm-8">
+                                                                {{ $krsItem->kurikulum->semesters->nama_semester }}
+                                                            </dd>
 
-                                        <!-- Table for Paket Matakuliah Details -->
-                                        <div class="row mt-4">
-                                            <div class="col-md-12">
-                                                <h5 class="mb-3">Detail Paket Matakuliah</h5>
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Kode Matakuliah</th>
-                                                            <th>Nama Matakuliah</th>
-                                                            <th>SKS</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($krsItem->paketMatakuliah->paketMatakuliahDetail as $index => $matkul)
+                                                            <dt class="col-sm-4">Program Studi</dt>
+                                                            <dd class="col-sm-8">
+                                                                {{ $krsItem->kurikulum->programStudi->kode_program_studi }}
+                                                                -
+                                                                {{ $krsItem->kurikulum->programStudi->nama_program_studi }}
+                                                            </dd>
+                                                        </dl>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <dl class="row">
+                                                            <dt class="col-sm-4">SKS Lulus</dt>
+                                                            <dd class="col-sm-8">{{ $krsItem->kurikulum->sum_sks_lulus }}
+                                                            </dd>
+
+                                                            <dt class="col-sm-4">SKS Wajib</dt>
+                                                            <dd class="col-sm-8">{{ $krsItem->kurikulum->sum_sks_wajib }}
+                                                            </dd>
+
+                                                            <dt class="col-sm-4">SKS Pilihan</dt>
+                                                            <dd class="col-sm-8">
+                                                                {{ $krsItem->kurikulum->sum_sks_pilihan }}</dd>
+
+                                                            <dt class="col-sm-4">Tanggal Mulai - Akhir</dt>
+                                                            <dd class="col-sm-8">
+                                                                {{ \Carbon\Carbon::parse($krsItem->kelas->tgl_mulai)->format('d-m-Y') }}
+                                                                -
+                                                                {{ \Carbon\Carbon::parse($krsItem->kelas->tgl_akhir)->format('d-m-Y') }}
+                                                            </dd>
+                                                        </dl>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Table for Matakuliah Details -->
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered mb-0">
+                                                        <thead>
                                                             <tr>
-                                                                <td>{{ $index + 1 }}</td>
-                                                                <td>{{ $matkul->matakuliah->kode_matakuliah }}</td>
-                                                                <td>{{ $matkul->matakuliah->nama_matakuliah }}</td>
-                                                                <td>{{ $matkul->matakuliah->sks }}</td>
+                                                                <th scope="col">Nama Mata Kuliah</th>
+                                                                <th scope="col">Deskripsi</th>
+                                                                <th scope="col">Lingkup Kelas</th>
+                                                                <th scope="col">Mode Kelas</th>
+                                                                <th scope="col">Dosen</th>
+                                                                <th scope="col">Tatap Muka</th>
+                                                                <th scope="col">Sks</th>
+                                                                <th scope="col">Evaluasi</th>
+
                                                             </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($krsItem->kelas->details as $detail)
+                                                                <tr>
+                                                                    <td>{{ $detail->kurikulumDetail->matakuliah->nama_matakuliah ?? 'N/A' }}
+                                                                    </td>
+                                                                    <td>{{ $detail->description }}</td>
+                                                                    <td>
+                                                                        @if ($detail->lingkup_kelas == 1)
+                                                                            Internal
+                                                                        @elseif($detail->lingkup_kelas == 2)
+                                                                            Eksternal
+                                                                        @else
+                                                                            Campuran
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        @if ($detail->mode_kelas == 'O')
+                                                                            Online
+                                                                        @elseif($detail->mode_kelas == 'F')
+                                                                            Offline
+                                                                        @else
+                                                                            Campuran
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>{{ $detail->hr->nama ?? 'N/A' }}</td>
+                                                                    <td>{{ $detail->tatap_muka }}</td>
+                                                                    <td>{{ $detail->sks_ajar }}</td>
+                                                                    <td>
+                                                                        @switch($detail->jenis_evaluasi)
+                                                                            @case(1)
+                                                                                Evaluasi Akademik
+                                                                            @break
+
+                                                                            @case(2)
+                                                                                Aktivitas Partisipatif
+                                                                            @break
+
+                                                                            @case(3)
+                                                                                Proyek
+                                                                            @break
+
+                                                                            @case(4)
+                                                                                Kognitif / Pengetahuan
+                                                                            @break
+
+                                                                            @default
+                                                                                N/A
+                                                                        @endswitch
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                @else
-                                    <p>KRS tidak ditemukan untuk semester ini.</p>
-                                @endif
-                            @endforeach
+                                        @endif
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
