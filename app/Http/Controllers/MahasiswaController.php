@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\KtpRequest;
 use App\Http\Requests\MahasiswaRequest;
 use App\Models\Jurusan;
+use App\Models\Kelas;
 use App\Models\Krs;
 use App\Models\Ktp;
+use App\Models\Kurikulum;
+use App\Models\KurikulumDetail;
 use App\Models\Mahasiswa;
 use App\Models\MahasiswaDetail;
 use App\Models\MahasiswaWali;
@@ -15,6 +18,7 @@ use App\Models\mataKuliah;
 use App\Models\PaketMataKuliah;
 use App\Models\PaketMataKuliahDetail;
 use App\Models\ProgramStudi;
+use App\Models\Semester;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laravolt\Indonesia\Models\Province;
@@ -27,56 +31,19 @@ class MahasiswaController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $mhs = Mahasiswa::query();
+        $mahasiswa = Mahasiswa::all();
 
-            return DataTables::of($mhs)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $user = auth()->user();
-
-                    $editBtn = '';
-                    $deleteBtn = '';
-                    $bayarBtn = '';
-                    $showBtn = '<a href="' . route('mahasiswa.show', $row->id) . '" class="btn icon btn-sm btn-info" title="Detail"><i class="bi bi-eye"></i></a>';
-
-                    if ($user->can('update_mahasiswa')) {
-                        $editBtn = '<a href="' . route('mahasiswa.edit', $row->id) . '" class="btn icon btn-sm btn-warning" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-                    }
-
-                    if ($user->can('delete_mahasiswa')) {
-                        $deleteBtn = '<button class="btn icon btn-sm btn-danger delete-btn" title="Delete" onclick="deleteMahasiswa(' . $row->id . ')">
-                                    <i class="bi bi-trash"></i>
-                                </button>';
-                    }
-
-                    if ($user->can('update_mahasiswa')) {
-                        // Only show the "Bayar" button if the student's status is 0 (nonaktif)
-                        $bayarBtn = '';
-                        if ($row->status == 0) {
-                            $bayarBtn = '<button class="btn icon btn-sm btn-success ms-1" title="Bayar" data-semester="' . $row->semester_berjalan . '" data-mahasiswa-id="' . $row->id . '" data-program-studi-id="' . $row->program_studi_id . '" data-nama="' . $row->nama . '" data-bs-toggle="modal" data-bs-target="#bayarModal" onclick="openBayarModal(' . $row->id . ')">
-                <i class="bi bi-cash"></i>
-            </button>';
-                        }
-                    }
-
-                    return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn . '' . $bayarBtn;
-                })
-                ->rawColumns(['action']) // Ensures that HTML code for the action buttons is rendered correctly
-                ->make(true);
-        }
-
-        // $paketMatakuliah = PaketMataKuliah::where('status', 1)->get();
-        return view('master.mahasiswa.index');
+        return view('master.mahasiswa.index', compact('mahasiswa'));
     }
 
     public function bayar(Request $request)
     {
         $validatedData = $request->validate([
             'mahasiswa_id' => 'required|exists:m_mahasiswa,id',
-            'paket_matakuliah_id' => 'required|exists:m_paket_matakuliah,id',
             'status' => 'required|integer|max:2',
             'tgl_transfer' => 'required|date',
+            'kurikulum_id' => 'required|exists:m_kurikulum,id',
+            'kelas_id' => 'required|exists:m_kelas,id',
         ]);
 
         // Proses pembayaran di sini, misalnya menyimpan data ke database
@@ -88,53 +55,72 @@ class MahasiswaController extends Controller
         return redirect()->route('mahasiswa.index')->with('success', 'Pembayaran berhasil diproses.');
     }
 
-    public function getPaketMatakuliahDetails($id)
+    public function getKurikulumDetails($id)
     {
-        // Ambil semua PaketMataKuliahDetail yang berhubungan dengan paket_matakuliah_id
-        $paketDetails = PaketMataKuliahDetail::where('paket_matakuliah_id', $id)->get();
+        // Ambil semua KurikulumDetail yang berhubungan dengan kurikulum_id
+        $kurikulumDetails = KurikulumDetail::where('kurikulum_id', $id)->get();
 
         // Cek jika ada data yang ditemukan
-        if ($paketDetails->isNotEmpty()) {
-            // Array untuk menampung detail mata kuliah
+        if ($kurikulumDetails->isNotEmpty()) {
             $matakuliahDetails = [];
+            $kelasDetails = [];
 
-            // Iterasi setiap paket detail dan ambil nama mata kuliah dari tabel Matakuliah
-            foreach ($paketDetails as $detail) {
+            // Iterasi setiap kurikulum detail dan ambil nama mata kuliah dari tabel Matakuliah
+            foreach ($kurikulumDetails as $detail) {
                 $matakuliah = MataKuliah::find($detail->matakuliah_id);
 
                 // Pastikan data matakuliah ditemukan
                 if ($matakuliah) {
                     $matakuliahDetails[] = [
                         'nama_matakuliah' => $matakuliah->nama_matakuliah,
-                        // Tambahkan informasi lain yang dibutuhkan dari tabel matakuliah
+                    ];
+                }
+            }
+
+            // Ambil daftar kelas yang terkait dengan kurikulum_id
+            $kelasList = Kelas::where('kurikulum_id', $id)->get();
+
+            // Iterasi setiap kelas dan cek apakah kapasitasnya sudah penuh
+            foreach ($kelasList as $kelas) {
+                // Hitung jumlah mahasiswa di kelas ini
+                $jumlahMahasiswa = Krs::where('kelas_id', $kelas->id)->count();
+
+                // Cek apakah jumlah mahasiswa kurang dari kapasitas kelas
+                if ($jumlahMahasiswa < $kelas->kapasitas) {
+                    $kelasDetails[] = [
+                        'id' => $kelas->id,
+                        'nama_kelas' => $kelas->nama_kelas,
+                        'kapasitas' => $kelas->kapasitas,
+                        'jumlah_mahasiswa' => $jumlahMahasiswa // Hitungan dari query
                     ];
                 }
             }
 
             // Mengembalikan data dalam format JSON
             return response()->json([
-                'paket' => $paketDetails->first()->paketMatakuliah->nama_paket_matakuliah, // Nama paket diambil dari relasi
-                'matakuliah_details' => $matakuliahDetails
+                'kurikulum' => $kurikulumDetails->first()->kurikulum->nama_kurikulum, // Nama kurikulum diambil dari relasi
+                'matakuliah_details' => $matakuliahDetails,
+                'kelas_details' => $kelasDetails
             ]);
         }
 
-        // Mengembalikan error 404 jika paket tidak ditemukan
+        // Mengembalikan error 404 jika kurikulum tidak ditemukan
         return response()->json(null, 404);
     }
 
-    public function getPaketMataKuliahBySemester(Request $request)
+    public function getKurikulumBySemester(Request $request)
     {
         $semester = $request->input('semester');
         $prodiId = $request->input('prodi_id');
 
         // Fetch paket mata kuliah with matching semester and prodi_id
-        $paketMatakuliah = PaketMataKuliah::where('semester', $semester)
+        $kurikulum = Kurikulum::where('semester_angka', $semester)
             ->where('program_studi_id', $prodiId)
             ->where('status', 1) // Optional: Ensure only active packages are shown
             ->get();
 
         // Return the data as JSON
-        return response()->json($paketMatakuliah);
+        return response()->json($kurikulum);
     }
 
     public function create()
@@ -243,9 +229,19 @@ class MahasiswaController extends Controller
                         'registrasi_tanggal' => $data['registrasi_tanggal'],
                         'status' => $data['status'],
                         'semester_berjalan' => $data['semester_berjalan'],
+                        'npwp' => $data['npwp'],
+                        'jenis_tinggal' => $data['jenis_tinggal'],
+                        'alat_transportasi' => $data['alat_transportasi'],
+                        'terima_kps' => $data['terima_kps'],
+                        'no_kps' => $data['no_kps'],
+                        'kebutuhan_khusus' => implode(',', $data['kebutuhan_khusus_mahasiswa']),
                         'nama_kontak_darurat' => $data['kd_nama'],
                         'hubungan_kontak_darurat' => $data['kd_hubungan'],
                         'hp_kontak_darurat' => $data['kd_no_hp'],
+                        'tgl_lahir_kontak_darurat' => $data['kd_tgl_lahir'],
+                        'pekerjaan_kontak_darurat' => $data['kd_pekerjaan'],
+                        'pendidikan_kontak_darurat' => $data['kd_pendidikan'],
+                        'penghasilan_kontak_darurat' => $data['kd_penghasilan'],
                         'ktp_id' => $ktpMahasiswa->id,
                     ]
                 );
@@ -255,6 +251,8 @@ class MahasiswaController extends Controller
                 $newMahasiswaDetail = [
                     'hp' => $data['no_hp'],
                     'alamat_domisili' => $data['alamat_domisili'],
+                    'telp_rumah' => $data['telp_rumah'],
+                    'kode_pos' => $data['kode_pos'],
                 ];
 
                 if (!$existingMahasiswaDetail || $existingMahasiswaDetail->hp != $newMahasiswaDetail['hp'] || $existingMahasiswaDetail->alamat_domisili != $newMahasiswaDetail['alamat_domisili']) {
@@ -293,6 +291,7 @@ class MahasiswaController extends Controller
                     [
                         'nama' => $data['wali_nama_1'],
                         'status_kewalian' => 'AYAH',
+                        'kebutuhan_khusus' => implode(',', $data['kebutuhan_khusus_ayah']),
                     ]
                 );
 
@@ -344,6 +343,7 @@ class MahasiswaController extends Controller
                     [
                         'nama' => $data['wali_nama_2'],
                         'status_kewalian' => 'IBU',
+                        'kebutuhan_khusus' => implode(',', $data['kebutuhan_khusus_ibu']),
                     ]
                 );
 
@@ -385,6 +385,7 @@ class MahasiswaController extends Controller
         $ktp = $mahasiswa->ktp;
         $waliCollection = $mahasiswa->id;
         $krs = Krs::where('mahasiswa_id', $waliCollection)->get();
+        
 
         // Mengambil detail mahasiswa jika ada
         $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();
