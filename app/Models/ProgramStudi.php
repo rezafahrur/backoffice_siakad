@@ -21,5 +21,10 @@ class ProgramStudi extends Model
         return $this->hasMany(Kurikulum::class, 'program_studi_id', 'id');
     }
 
+    // relasi ke periode perkuliahan
+    public function periodePerkuliahan()
+    {
+        return $this->hasMany(PeriodePerkuliahan::class, 'program_studi_id', 'id');
+    }
 }
 

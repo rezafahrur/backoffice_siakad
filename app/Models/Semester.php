@@ -27,5 +27,10 @@ class Semester extends Model
         return $this->hasMany(Kurikulum::class, 'semester', 'kode_semester');
     }
 
+    // relasi ke periode perkuliahan
+    public function periodePerkuliahan()
+    {
+        return $this->hasMany(PeriodePerkuliahan::class, 'semester_id', 'id');
+    }
 
 }
