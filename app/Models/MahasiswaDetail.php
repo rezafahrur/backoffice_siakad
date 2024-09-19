@@ -15,7 +15,9 @@ class MahasiswaDetail extends Model
     protected $fillable = [
         'mahasiswa_id',
         'hp',
-        'alamat_domisili'
+        'alamat_domisili',
+        'telp_rumah',
+        'kode_pos'
     ];
 
     public function mahasiswa()
