@@ -71,8 +71,8 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     // Bayar
     Route::post('/mahasiswa/bayar', [MahasiswaController::class, 'bayar'])->name('mahasiswa.bayar')->middleware(['permission:update_mahasiswa']);
-    Route::get('/get-paket-matakuliah-details/{id}', [MahasiswaController::class, 'getPaketMatakuliahDetails'])->middleware(['permission:update_mahasiswa']);
-    Route::get('/get-paket-matakuliah-by-semester', [MahasiswaController::class, 'getPaketMataKuliahBySemester'])->middleware(['permission:update_mahasiswa']);
+    Route::get('/get-kurikulum-details/{id}', [MahasiswaController::class, 'getKurikulumDetails'])->middleware(['permission:update_mahasiswa']);
+    Route::get('/get-kurikulum-by-semester', [MahasiswaController::class, 'getKurikulumBySemester'])->middleware(['permission:update_mahasiswa']);
 
     // ajax
     Route::get('/mahasiswa/cities/{provinceCode}', [MahasiswaController::class, 'getCities'])->middleware(['permission:read_mahasiswa']);
@@ -176,13 +176,13 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/getMahasiswaByProdi', [PrestasiController::class, 'getMahasiswaByProdi'])->name('getMahasiswaByProdi');
 
     //kuriukulum
-    Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.index');
-    Route::get('/kurikulum/create', [KurikulumController::class, 'create'])->name('kurikulum.create');
-    Route::post('/kurikulum', [KurikulumController::class, 'store'])->name('kurikulum.store');
-    Route::get('/kurikulum/{kurikulum}/edit', [KurikulumController::class, 'edit'])->name('kurikulum.edit');
-    Route::put('/kurikulum/{kurikulum}', [KurikulumController::class, 'update'])->name('kurikulum.update');
-    Route::delete('/kurikulum/{kurikulum}', [KurikulumController::class, 'destroy'])->name('kurikulum.destroy');
-    Route::get('/kurikulum/show/{id}', [KurikulumController::class, 'show'])->name('kurikulum.show');
+    Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.index')->middleware(['permission:read_kurikulum']);
+    Route::get('/kurikulum/create', [KurikulumController::class, 'create'])->name('kurikulum.create')->middleware(['permission:create_kurikulum']);
+    Route::post('/kurikulum', [KurikulumController::class, 'store'])->name('kurikulum.store')->middleware(['permission:create_kurikulum']);
+    Route::get('/kurikulum/{kurikulum}/edit', [KurikulumController::class, 'edit'])->name('kurikulum.edit')->middleware(['permission:update_kurikulum']);
+    Route::put('/kurikulum/{kurikulum}', [KurikulumController::class, 'update'])->name('kurikulum.update')->middleware(['permission:update_kurikulum']);
+    Route::delete('/kurikulum/{kurikulum}', [KurikulumController::class, 'destroy'])->name('kurikulum.destroy')->middleware(['permission:delete_kurikulum']);
+    Route::get('/kurikulum/show/{id}', [KurikulumController::class, 'show'])->name('kurikulum.show')->middleware(['permission:read_kurikulum']);
 
     //kelas
     Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');
