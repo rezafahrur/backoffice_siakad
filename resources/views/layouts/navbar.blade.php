@@ -149,6 +149,17 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="">Nilai</a>
                             </li>
+
+                            
+                            <li class="nav-item {{ Route::is('skala-nilai.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('skala-nilai.index') }}">Skala Nilai</a>
+                            </li>
+                            {{-- @endcan --}}
+
+                            {{-- @can('read_periode') --}}
+                            <li class="nav-item {{ Route::is('periode-perkuliahan.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('periode-perkuliahan.index') }}">Periode Perkuliahan</a>
+                            </li>
                             {{-- @endcan --}}
                         </ul>
                     </div>
