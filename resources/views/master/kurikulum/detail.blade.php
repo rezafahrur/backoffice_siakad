@@ -10,7 +10,7 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('paket-matakuliah.index') }}">Kurikulum</a>
+                <a href="{{ route('kurikulum.index') }}">Kurikulum</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">Detail Kurikulum</li>
         </ol>
@@ -90,6 +90,8 @@
 
             @endif
 
+            {{-- back --}}
+            <a href="{{ route('kurikulum.index') }}" class="btn btn-secondary mt-3">Back</a>
         </div>
     </div>
 
