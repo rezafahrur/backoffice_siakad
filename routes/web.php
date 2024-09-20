@@ -207,6 +207,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
     Route::get('/kurikulum/get-matakuliah/{prodi}/{semester}', [KurikulumController::class, 'getMataKuliah'])->name('get-matakuliah');
+    Route::post('/kurikulum/get-matakuliah-details', [KurikulumController::class, 'getMataKuliahDetails']);
 
     // Route::put('/tahun-akademik/{id}', [TahunAkademikController::class, 'update'])->name('tahun-akademik.update');
     Route::get('/config', [ConfigController::class, 'index'])->name('config.index');

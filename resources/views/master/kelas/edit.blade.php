@@ -231,7 +231,7 @@
                                 <div class="col-md-3">
                                     <label class="form-label">SKS Ajar</label>
                                     <input type="number" name="details[{{ $detail->id }}][sks_ajar]"
-                                        class="form-control"
+                                        class="form-control" readonly
                                         value="{{ old('details.' . $detail->id . '.sks_ajar', $detail->sks_ajar) }}">
                                 </div>
                                 <div class="col-md-3">
