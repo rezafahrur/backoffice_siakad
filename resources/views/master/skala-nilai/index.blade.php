@@ -30,6 +30,8 @@
                                     <th>No.</th>
                                     <th>Semester</th>
                                     <th>Program Studi</th>
+                                    <th>Nilai Huruf</th>
+                                    <th>Bobot Maksimum</th>
                                     <th>Tanggal Mulai Efektif</th>
                                     <th>Tanggal Akhir Efektif</th>
                                     <th>Action</th>
@@ -42,6 +44,8 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $skala->semester->nama_semester }}</td>
                                         <td>{{ $skala->programStudi->nama_program_studi }}</td>
+                                        <td>{{ $skala->nilai_huruf }}</td>
+                                        <td>{{ $skala->bobot_maksimum }}</td>
                                         <td>{{ $skala->tgl_mulai_efektif }}</td>
                                         <td>{{ $skala->tgl_akhir_efektif }}</td>
 
