@@ -194,6 +194,15 @@
                             let namaMatakuliah = detail.matakuliah ? detail.matakuliah.nama_matakuliah :
                                 'Mata kuliah tidak tersedia';
 
+                            // Calculate SKS Ajar by summing up the relevant SKS fields
+                            let sksTatapMuka = detail.matakuliah ? (detail.matakuliah.sks_tatap_muka || 0) : 0;
+                            let sksPraktek = detail.matakuliah ? (detail.matakuliah.sks_praktek || 0) : 0;
+                            let sksPraktekLapangan = detail.matakuliah ? (detail.matakuliah
+                                .sks_praktek_lapangan || 0) : 0;
+                            let sksSimulasi = detail.matakuliah ? (detail.matakuliah.sks_simulasi || 0) : 0;
+
+                            let totalSksAjar = sksTatapMuka + sksPraktek + sksPraktekLapangan + sksSimulasi;
+
                             let lingkupKelasOptions = [{
                                     value: 1,
                                     label: "Internal"
@@ -292,7 +301,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">SKS Ajar</label>
-                                <input type="number" name="details[${detail.id}][sks_ajar]" class="form-control" value="${detail.sks_ajar || ''}">
+                                <input type="number" name="details[${detail.id}][sks_ajar]" class="form-control" value="${totalSksAjar}" readonly>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Jenis Evaluasi</label>

@@ -58,7 +58,6 @@
                     </div>
                 </div>
 
-
                 <div class="row">
                     <div class="col-sm-6">
                         {{-- Program Studi --}}
@@ -152,7 +151,6 @@
                             @enderror
                         </div>
                     </div>
-
                 </div>
 
                 <div class="mb-3">
@@ -223,51 +221,49 @@
             programStudiSelect.on('change', fetchMataKuliah);
             semesterSelect.on('change', fetchMataKuliah);
 
-            // Logic to automatically sum SKS Wajib and SKS Pilihan
+            // Automatically calculate SKS Wajib based on selected Mata Kuliah
+            mataKuliahSelect.on('change', function() {
+                const selectedIds = $(this).val();
+
+                if (selectedIds.length > 0) {
+                    $.ajax({
+                        url: `/kurikulum/get-matakuliah-details`,
+                        method: 'POST',
+                        data: {
+                            mataKuliahIds: selectedIds,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            let totalSKSWajib = 0;
+
+                            response.forEach(mataKuliah => {
+                                totalSKSWajib += (mataKuliah.sks_tatap_muka + mataKuliah
+                                    .sks_praktek +
+                                    mataKuliah.sks_praktek_lapangan + mataKuliah
+                                    .sks_simulasi);
+                            });
+
+                            $('#sum_sks_wajib').val(totalSKSWajib);
+                            calculateSKSLulus(); // Recalculate total SKS Lulus
+                        },
+                        error: function() {
+                            alert('Error fetching Mata Kuliah details.');
+                        }
+                    });
+                } else {
+                    $('#sum_sks_wajib').val(0);
+                    calculateSKSLulus();
+                }
+            });
+
+            // Logic to automatically sum SKS Lulus and reset empty inputs
             function calculateSKSLulus() {
                 let sksWajib = parseInt($('#sum_sks_wajib').val()) || 0;
                 let sksPilihan = parseInt($('#sum_sks_pilihan').val()) || 0;
                 $('#sum_sks_lulus').val(sksWajib + sksPilihan);
             }
 
-            // Handle input for SKS Wajib
-            $('#sum_sks_wajib').on('input', function() {
-                let value = $(this).val();
-
-                // Prevent negative values
-                if (value < 0) {
-                    $(this).val(0);
-                } else if (value === '') {
-                    $(this).val('');
-                }
-
-                calculateSKSLulus();
-            });
-
-            // Handle input for SKS Pilihan
-            $('#sum_sks_pilihan').on('input', function() {
-                let value = $(this).val();
-
-                // Prevent negative values
-                if (value < 0) {
-                    $(this).val(0);
-                } else if (value === '') {
-                    $(this).val('');
-                }
-
-                calculateSKSLulus();
-            });
-
-            // Handle blur event to reset empty inputs to 0
-            $('#sum_sks_wajib, #sum_sks_pilihan').on('blur', function() {
-                if ($(this).val() === '') {
-                    $(this).val(0);
-                }
-                calculateSKSLulus();
-            });
-
-            // Initial calculation to set SKS Lulus on page load
-            calculateSKSLulus();
+            $('#sum_sks_wajib, #sum_sks_pilihan').on('input', calculateSKSLulus);
         });
     </script>
 @endpush
