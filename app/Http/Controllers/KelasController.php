@@ -51,7 +51,7 @@ class KelasController extends Controller
                 $kelas->details()->create($detail);
             }
 
-            return redirect()->route('kelast.index')->with('success', 'Data berhasil disimpan');
+            return redirect()->route('kelas.index')->with('success', 'Data berhasil disimpan');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with([
                 'error' => $e->getMessage(),
@@ -99,7 +99,7 @@ class KelasController extends Controller
                 $kelas->details()->create($detail);
             }
 
-            return redirect()->route('kelast.index')->with('success', 'Data berhasil diperbarui');
+            return redirect()->route('kelas.index')->with('success', 'Data berhasil diperbarui');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with([
                 'error' => $e->getMessage(),
@@ -122,7 +122,7 @@ class KelasController extends Controller
 
             $kelas->delete();
 
-            return redirect()->route('kelast.index')->with('success', 'Data berhasil dihapus');
+            return redirect()->route('kelas.index')->with('success', 'Data berhasil dihapus');
         } catch (\Exception $e) {
             return redirect()->back()->with([
                 'error' => $e->getMessage(),

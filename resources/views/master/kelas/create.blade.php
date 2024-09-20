@@ -17,29 +17,9 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">Form Create Kelas</h3>
-
-            {{-- Check for validation errors --}}
-            @if ($errors->any())
-                <div class="alert alert-danger alert-dismissible show fade mt-4">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
-            {{-- Check for other error messages --}}
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible show fade mt-4">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
         </div>
         <div class="card-body">
-            <form action="{{ route('kelast.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('kelas.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row">
@@ -167,11 +147,30 @@
                         </div>
                     </div>
                 </div>
+                {{-- kapasitas --}}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row mb-3">
+                            <label for="kapasitas" class="col-md-3 col-form-label">Kapasitas</label>
+                            <div class="col-md-9">
+                                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)"
+                                    name="kapasitas" class="form-control @error('kapasitas') is-invalid @enderror"
+                                    id="kapasitas" value="{{ old('kapasitas') }}">
+                                @error('kapasitas')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Detail Paket Jadwal -->
                 <div id="kelas-details">
                 </div>
 
-                <a href="{{ route('kelast.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('kelas.index') }}" class="btn btn-secondary">Back</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
