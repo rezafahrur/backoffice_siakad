@@ -108,8 +108,8 @@
 
                             {{-- rencana pembelajaran --}}
                             {{-- @can('read_rencana_pembelajaran') --}}
-                            <li class="nav-item">
-                                <a class="nav-link" href="">Rencana
+                            <li class="nav-item" {{ Route::is('pembelajaran_plans.index') ? 'active' : '' }}>
+                                <a class="nav-link" href="{{ route('pembelajaran_plans.index') }}">Rencana
                                     Pembelajaran</a>
                             </li>
                             {{-- @endcan --}}
@@ -150,7 +150,7 @@
                                 <a class="nav-link" href="">Nilai</a>
                             </li>
 
-                            
+
                             <li class="nav-item {{ Route::is('skala-nilai.index') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('skala-nilai.index') }}">Skala Nilai</a>
                             </li>
@@ -158,7 +158,8 @@
 
                             {{-- @can('read_periode') --}}
                             <li class="nav-item {{ Route::is('periode-perkuliahan.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('periode-perkuliahan.index') }}">Periode Perkuliahan</a>
+                                <a class="nav-link" href="{{ route('periode-perkuliahan.index') }}">Periode
+                                    Perkuliahan</a>
                             </li>
                             {{-- @endcan --}}
                         </ul>
