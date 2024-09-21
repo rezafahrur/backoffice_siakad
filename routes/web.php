@@ -20,6 +20,7 @@ use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\SkalaNilaiController;
 use App\Http\Controllers\ProgramStudiController;
 use App\Http\Controllers\PaketMataKuliahController;
+use App\Http\Controllers\PembelajaranPlanController;
 use App\Http\Controllers\PeriodePerkuliahanController;
 
 Route::get('/wizard', function () {
@@ -221,6 +222,16 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::put('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'update'])->name('skala-nilai.update');
     Route::delete('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'destroy'])->name('skala-nilai.destroy');
     Route::get('/skala-nilai/show/{id}', [SkalaNilaiController::class, 'show'])->name('skala-nilai.show');
+
+    // pembelajaran plan
+    Route::get('/pembelajaran-plan', [PembelajaranPlanController::class, 'index'])->name('pembelajaran_plans.index');
+    Route::get('/pembelajaran-plan/create', [PembelajaranPlanController::class, 'create'])->name('pembelajaran_plans.create');
+    Route::post('/pembelajaran-plan', [PembelajaranPlanController::class, 'store'])->name('pembelajaran_plans.store');
+    Route::get('/pembelajaran-plan/{pembelajaranPlan}/edit', [PembelajaranPlanController::class, 'edit'])->name('pembelajaran_plans.edit');
+    Route::put('/pembelajaran-plan/{pembelajaranPlan}', [PembelajaranPlanController::class, 'update'])->name('pembelajaran_plans.update');
+    Route::delete('/pembelajaran-plan/{pembelajaranPlan}', [PembelajaranPlanController::class, 'destroy'])->name('pembelajaran_plans.destroy');
+    Route::get('/pembelajaran-plan/show/{id}', [PembelajaranPlanController::class, 'show'])->name('pembelajaran_plans.show');
+    Route::get('/api/get-program-studi/{matakuliahId}', [PembelajaranPlanController::class, 'getProgramStudi']);
 
 });
 
