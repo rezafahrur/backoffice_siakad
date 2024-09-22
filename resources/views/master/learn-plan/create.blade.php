@@ -14,7 +14,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Create Pembelajaran Plan</h4>
+            <h4 class="card-title">Create Rencana Pembelajaran</h4>
             <form action="{{ route('pembelajaran_plans.store') }}" method="POST">
                 @csrf
 
@@ -57,10 +57,10 @@
                                         value="1" required>
                                 </td>
                                 <td>
-                                    <textarea type="text" name="details[0][materi_indo]" class="form-control" required> </textarea>
+                                    <textarea type="text" name="details[0][materi_indo]" class="form-control"> </textarea>
                                 </td>
                                 <td>
-                                    <textarea type="text" name="details[0][materi_eng]" class="form-control" required> </textarea>
+                                    <textarea type="text" name="details[0][materi_eng]" class="form-control"> </textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -93,10 +93,10 @@
                     <input type="number" name="details[${detailIndex}][pertemuan]" class="form-control" value="${pertemuanValue}" required>
                 </td>
                 <td>
-                    <textarea type="text" name="details[${detailIndex}][materi_indo]" class="form-control" required> </textarea>
+                    <textarea type="text" name="details[${detailIndex}][materi_indo]" class="form-control"> </textarea>
                 </td>
                 <td>
-                    <textarea type="text" name="details[${detailIndex}][materi_eng]" class="form-control" required> </textarea>
+                    <textarea type="text" name="details[${detailIndex}][materi_eng]" class="form-control"> </textarea>
                 </td>
             </tr>
             `;

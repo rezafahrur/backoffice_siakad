@@ -14,7 +14,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Detail Pembelajaran Plan</h4>
+            <h4 class="card-title">Detail Rencana Pembelajaran</h4>
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">

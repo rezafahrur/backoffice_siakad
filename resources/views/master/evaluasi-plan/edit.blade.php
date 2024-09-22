@@ -3,14 +3,14 @@
 @section('content')
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('evaluasi_plan.index') }}">Evaluasi Plan</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('evaluasi_plan.index') }}">Rencana Evaluasi</a></li>
             <li class="breadcrumb-item active" aria-current="page">Edit</li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Edit Evaluasi Plan</h4>
+            <h4 class="card-title">Edit Rencana Evaluasi</h4>
             <form id="evaluasi-form" action="{{ route('evaluasi_plan.update', $evaluasiPlan->id) }}" method="POST">
                 @csrf
                 @method('PUT')

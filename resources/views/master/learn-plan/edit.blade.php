@@ -14,7 +14,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Edit Pembelajaran Plan</h4>
+            <h4 class="card-title">Edit Rencana Pembelajaran</h4>
             <form action="{{ route('pembelajaran_plans.update', $pembelajaranPlan->id) }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -64,10 +64,10 @@
                                             class="form-control" value="{{ $detail->pertemuan }}" required>
                                     </td>
                                     <td>
-                                        <textarea name="details[{{ $index }}][materi_indo]" class="form-control" required>{{ $detail->materi_indo }}</textarea>
+                                        <textarea name="details[{{ $index }}][materi_indo]" class="form-control">{{ $detail->materi_indo }}</textarea>
                                     </td>
                                     <td>
-                                        <textarea name="details[{{ $index }}][materi_eng]" class="form-control" required>{{ $detail->materi_eng }}</textarea>
+                                        <textarea name="details[{{ $index }}][materi_eng]" class="form-control">{{ $detail->materi_eng }}</textarea>
                                     </td>
                                 </tr>
                             @endforeach
@@ -101,10 +101,10 @@
                     <input type="number" name="details[${detailIndex}][pertemuan]" class="form-control" value="${pertemuanValue}" required>
                 </td>
                 <td>
-                    <textarea name="details[${detailIndex}][materi_indo]" class="form-control" required></textarea>
+                    <textarea name="details[${detailIndex}][materi_indo]" class="form-control"></textarea>
                 </td>
                 <td>
-                    <textarea name="details[${detailIndex}][materi_eng]" class="form-control" required></textarea>
+                    <textarea name="details[${detailIndex}][materi_eng]" class="form-control"></textarea>
                 </td>
             </tr>
             `;

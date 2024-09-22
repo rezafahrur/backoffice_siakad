@@ -39,8 +39,8 @@ class PembelajaranPlanController extends Controller
                 'matakuliah_id' => 'required',
                 'program_studi_id' => 'required',
                 'details.*.pertemuan' => 'required',
-                'details.*.materi_indo' => 'required',
-                'details.*.materi_eng' => 'required',
+                'details.*.materi_indo' => 'nullable',
+                'details.*.materi_eng' => 'nullable',
             ]);
 
             $pembelajaranPlan = PembelajaranPlan::create($validatedData);
@@ -82,8 +82,8 @@ class PembelajaranPlanController extends Controller
                 'matakuliah_id' => 'required',
                 'program_studi_id' => 'required',
                 'details.*.pertemuan' => 'required',
-                'details.*.materi_indo' => 'required',
-                'details.*.materi_eng' => 'required',
+                'details.*.materi_indo' => 'nullable',
+                'details.*.materi_eng' => 'nullable',
             ]);
 
             $pembelajaranPlan->update($validatedData);
