@@ -163,4 +163,28 @@ class KurikulumController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+
+    // Method to get Mata Kuliah details and calculate SKS
+    public function getMataKuliahDetails(Request $request)
+    {
+        // Validate if mataKuliahIds exist in the request
+        $request->validate([
+            'mataKuliahIds' => 'required|array'
+        ]);
+
+        $mataKuliahIds = $request->mataKuliahIds;
+
+        // Fetch the Mata Kuliah details by IDs
+        $mataKuliahDetails = MataKuliah::whereIn('id', $mataKuliahIds)->get();
+
+        // Check if any Mata Kuliah found
+        if ($mataKuliahDetails->isEmpty()) {
+            return response()->json([
+                'message' => 'Tidak ada detail Mata Kuliah yang ditemukan.'
+            ], 404);
+        }
+
+        // Return Mata Kuliah details as JSON
+        return response()->json($mataKuliahDetails);
+    }
 }

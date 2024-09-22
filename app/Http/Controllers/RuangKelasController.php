@@ -34,7 +34,7 @@ class RuangKelasController extends Controller
 
         RuangKelas::create($validateData);
 
-        return redirect()->route('kelas.index')->with('success', 'Data berhasil ditambahkan');
+        return redirect()->route('ruang-kelas.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     public function show($id)
@@ -60,12 +60,12 @@ class RuangKelasController extends Controller
 
         $kelas->update($validateData);
 
-        return redirect()->route('kelas.index')->with('success', 'Data berhasil diubah');
+        return redirect()->route('ruang-kelas.index')->with('success', 'Data berhasil diubah');
     }
 
     public function destroy(RuangKelas $kelas)
     {
         $kelas->delete();
-        return redirect()->route('kelas.index')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('ruang-kelas.index')->with('success', 'Data berhasil dihapus');
     }
 }

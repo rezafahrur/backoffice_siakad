@@ -16,7 +16,7 @@
                     <h6 class="card-title">Data Ruang Kelas</h6>
                     <div class="d-flex justify-content-end mb-3">
                         <div>
-                            <a href="{{ route('kelas.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+                            <a href="{{ route('ruang-kelas.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
@@ -41,11 +41,11 @@
                                         <td>{{ $k->nama_ruang_kelas }}</td>
                                         <td>{{ $k->kapasitas }}</td>
                                         <td>
-                                            <a href="{{ route('kelas.edit', $k->id) }}"
+                                            <a href="{{ route('ruang-kelas.edit', $k->id) }}"
                                                 class="btn btn-sm btn-primary btn-icon">
                                                 <i class="btn-icon-prepend" data-feather="check-square"></i>
                                             </a>
-                                            <form action="{{ route('kelas.destroy', $k->id) }}" method="post"
+                                            <form action="{{ route('ruang-kelas.destroy', $k->id) }}" method="post"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('delete')

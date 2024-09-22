@@ -19,7 +19,7 @@
                     <h6 class="card-title">Data Kelas</h6>
                     <div class="d-flex justify-content-end mb-3">
                         <div>
-                            <a href="{{ route('kelast.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+                            <a href="{{ route('kelas.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
@@ -46,15 +46,15 @@
                                         <td>{{ $kl->semester->nama_semester ?? 'N/A' }}</td>
                                         <td>{{ $kl->kurikulum->nama_kurikulum ?? 'N/A' }}</td>
                                         <td>
-                                            <a href="{{ route('kelast.edit', $kl->id) }}"
+                                            <a href="{{ route('kelas.edit', $kl->id) }}"
                                                 class="btn btn-sm btn-primary btn-icon">
                                                 <i class="btn-icon-prepend" data-feather="check-square"></i>
                                             </a>
-                                            <a href="{{ route('kelast.show', $kl->id) }}"
+                                            <a href="{{ route('kelas.show', $kl->id) }}"
                                                 class="btn btn-sm btn-info btn-icon">
                                                 <i class="btn-icon-prepend text-white" data-feather="eye"></i>
                                             </a>
-                                            <form action="{{ route('kelast.destroy', $kl->id) }}" method="post"
+                                            <form action="{{ route('kelas.destroy', $kl->id) }}" method="post"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('delete')

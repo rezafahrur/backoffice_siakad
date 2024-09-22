@@ -21,21 +21,32 @@ class SkalaNilaiController extends Controller
     }
 
     public function store(Request $request) {
-        try {
-            $data = $request->all();
+        // Tambahkan validasi
+        $request->validate([
+            'semester_id' => 'required',
+            'program_studi_id' => 'required',
+            'nilai_huruf' => 'required|alpha|size:1', // Memastikan input berupa huruf dan hanya satu karakter
+            'nilai_indeks' => 'required|numeric',
+            'bobot_minimum' => 'required|numeric',
+            'bobot_maksimum' => 'required|numeric',
+            'tgl_mulai_efektif' => 'required|date',
+            'tgl_akhir_efektif' => 'required|date',
+        ], [
+            'nilai_huruf.size' => 'Nilai huruf harus berupa satu huruf.',
+            'nilai_huruf.alpha' => 'Nilai huruf harus berupa huruf alfabet.',
+        ]);
     
-            // Pastikan kolom deleted_at tidak diset secara manual saat penyimpanan
+        try {
+            // Simpan data
             SkalaNilai::create([
-                'semester_id' => $data['semester_id'],
-                'program_studi_id' => $data['program_studi_id'],
-                'nilai_huruf' => $data['nilai_huruf'],
-                'nilai_indeks' => $data['nilai_indeks'],
-                'bobot_minimum' => $data['bobot_minimum'],
-                'bobot_maksimum' => $data['bobot_maksimum'],
-                'tgl_mulai_efektif' => $data['tgl_mulai_efektif'],
-                'tgl_akhir_efektif' => $data['tgl_akhir_efektif'],
-                // Pastikan deleted_at tetap null saat penyimpanan
-                'deleted_at' => null,
+                'semester_id' => $request->semester_id,
+                'program_studi_id' => $request->program_studi_id,
+                'nilai_huruf' => $request->nilai_huruf,
+                'nilai_indeks' => $request->nilai_indeks,
+                'bobot_minimum' => $request->bobot_minimum,
+                'bobot_maksimum' => $request->bobot_maksimum,
+                'tgl_mulai_efektif' => $request->tgl_mulai_efektif,
+                'tgl_akhir_efektif' => $request->tgl_akhir_efektif,
             ]);
     
             return redirect()->route('skala-nilai.index')->with('success', 'Data berhasil disimpan');
@@ -43,6 +54,7 @@ class SkalaNilaiController extends Controller
             return redirect()->route('skala-nilai.index')->with('error', 'Data gagal disimpan');
         }
     }
+    
     
     
 
@@ -58,26 +70,48 @@ class SkalaNilaiController extends Controller
         return view('master.skala-nilai.edit', compact('semesters', 'programStudis', 'skalaNilai'));
     }
 
-    public function update (Request $request, $id) {
+    public function update(Request $request, $id) {
+        // Tambahkan validasi
+        $request->validate([
+            'semester_id' => 'required',
+            'program_studi_id' => 'required',
+            'nilai_huruf' => 'required|alpha|size:1', // Validasi agar hanya satu huruf
+            'nilai_indeks' => 'required|numeric',
+            'bobot_minimum' => 'required|numeric',
+            'bobot_maksimum' => 'required|numeric',
+            'tgl_mulai_efektif' => 'required|date',
+            'tgl_akhir_efektif' => 'required|date',
+        ], [
+            'nilai_huruf.size' => 'Nilai huruf harus berupa satu huruf.',
+            'nilai_huruf.alpha' => 'Nilai huruf harus berupa huruf alfabet.',
+        ]);
+    
         try {
-            $data = $request->all();
-
-            SkalaNilai::find($id)->update([
-                'semester_id' => $data['semester_id'],
-                'program_studi_id' => $data['program_studi_id'],
-                'nilai_huruf' => $data['nilai_huruf'],
-                'nilai_indeks' => $data['nilai_indeks'],
-                'bobot_minimum' => $data['bobot_minimum'],
-                'bobot_maksimum' => $data['bobot_maksimum'],
-                'tgl_mulai_efektif' => $data['tgl_mulai_efektif'],
-                'tgl_akhir_efektif' => $data['tgl_akhir_efektif'],
+            // Cari data SkalaNilai berdasarkan ID
+            $skalaNilai = SkalaNilai::find($id);
+    
+            if (!$skalaNilai) {
+                return redirect()->route('skala-nilai.index')->with('error', 'Data tidak ditemukan');
+            }
+    
+            // Update data
+            $skalaNilai->update([
+                'semester_id' => $request->semester_id,
+                'program_studi_id' => $request->program_studi_id,
+                'nilai_huruf' => $request->nilai_huruf,
+                'nilai_indeks' => $request->nilai_indeks,
+                'bobot_minimum' => $request->bobot_minimum,
+                'bobot_maksimum' => $request->bobot_maksimum,
+                'tgl_mulai_efektif' => $request->tgl_mulai_efektif,
+                'tgl_akhir_efektif' => $request->tgl_akhir_efektif,
             ]);
-
+    
             return redirect()->route('skala-nilai.index')->with('success', 'Data berhasil diupdate');
         } catch (\Exception $e) {
             return redirect()->route('skala-nilai.index')->with('error', 'Data gagal diupdate');
         }
     }
+    
 
     public function destroy ($id) {
         try {

@@ -6,7 +6,7 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{{ route('kelas.index') }}">Ruang Kelas</a>
+                <a href="{{ route('ruang-kelas.index') }}">Ruang Kelas</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
                 Create
@@ -16,7 +16,7 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Form Ruang Kelas</h4>
-            <form id="kelasForm" action="{{ route('kelas.store') }}" method="post" enctype="multipart/form-data">
+            <form id="kelasForm" action="{{ route('ruang-kelas.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-3">
@@ -56,7 +56,7 @@
                     @enderror
                 </div>
 
-                <a href="{{ route('kelas.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('ruang-kelas.index') }}" class="btn btn-secondary">Back</a>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
