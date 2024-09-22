@@ -67,7 +67,8 @@
                 </li>
 
                 @can('read_mahasiswa')
-                    <li class="nav-item {{ Route::is('mahasiswa.index') ? 'active' : '' }}">
+                    <li
+                        class="nav-item {{ Route::is('mahasiswa.index', 'mahasiswa.show', 'mahasiswa.create', 'mahasiswa.edit') ? 'active' : '' }}">
                         <a href="{{ route('mahasiswa.index') }}" class="nav-link">
                             <i class="link-icon" data-feather="inbox"></i>
                             <span class="menu-title">Mahasiswa</span>
@@ -102,13 +103,14 @@
                             {{-- rencana evaluasi --}}
                             {{-- @can('read_rencana_evaluasi') --}}
                             <li class="nav-item">
-                                <a class="nav-link" href="">Rencana Evaluasi</a>
+                                <a class="nav-link" href="{{ route('evaluasi_plan.index') }}">Rencana Evaluasi</a>
                             </li>
                             {{-- @endcan --}}
 
                             {{-- rencana pembelajaran --}}
                             {{-- @can('read_rencana_pembelajaran') --}}
-                            <li class="nav-item" {{ Route::is('pembelajaran_plans.index') ? 'active' : '' }}>
+                            <li class="nav-item"
+                                {{ Route::is('pembelajaran_plans.index', 'pembelajaran_plans.show', 'pembelajaran_plans.edit') ? 'active' : '' }}>
                                 <a class="nav-link" href="{{ route('pembelajaran_plans.index') }}">Rencana
                                     Pembelajaran</a>
                             </li>
