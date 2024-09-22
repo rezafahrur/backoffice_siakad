@@ -33,4 +33,10 @@ class MataKuliah extends Model
     {
         return $this->hasMany(KurikulumDetail::class, 'matakuliah_id', 'id');
     }
+
+    // relation to program studi
+    public function programStudi()
+    {
+        return $this->belongsTo(ProgramStudi::class, 'program_studi_id', 'id');
+    }
 }

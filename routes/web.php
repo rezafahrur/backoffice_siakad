@@ -18,18 +18,11 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\SkalaNilaiController;
+use App\Http\Controllers\EvaluasiPlanController;
 use App\Http\Controllers\ProgramStudiController;
 use App\Http\Controllers\PaketMataKuliahController;
+use App\Http\Controllers\PembelajaranPlanController;
 use App\Http\Controllers\PeriodePerkuliahanController;
-
-Route::get('/wizard', function () {
-    return view('wizard');
-});
-
-Route::get('/test', function () {
-    return view('layouts.custom-test');
-});
-
 
 Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
@@ -222,7 +215,27 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::delete('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'destroy'])->name('skala-nilai.destroy');
     Route::get('/skala-nilai/show/{id}', [SkalaNilaiController::class, 'show'])->name('skala-nilai.show');
 
+    // pembelajaran plan
+    Route::get('/rps', [PembelajaranPlanController::class, 'index'])->name('pembelajaran_plans.index');
+    Route::get('/rps/create', [PembelajaranPlanController::class, 'create'])->name('pembelajaran_plans.create');
+    Route::post('/rps', [PembelajaranPlanController::class, 'store'])->name('pembelajaran_plans.store');
+    Route::get('/rps/{pembelajaranPlan}/edit', [PembelajaranPlanController::class, 'edit'])->name('pembelajaran_plans.edit');
+    Route::put('/rps/{pembelajaranPlan}', [PembelajaranPlanController::class, 'update'])->name('pembelajaran_plans.update');
+    Route::delete('/rps/{pembelajaranPlan}', [PembelajaranPlanController::class, 'destroy'])->name('pembelajaran_plans.destroy');
+    Route::get('/rps/show/{id}', [PembelajaranPlanController::class, 'show'])->name('pembelajaran_plans.show');
+    Route::get('/api/get-program-studi/{matakuliahId}', [PembelajaranPlanController::class, 'getProgramStudi']);
+
+    // evaluasi plan
+    Route::get('/evaluasi-plan', [EvaluasiPlanController::class, 'index'])->name('evaluasi_plan.index');
+    Route::get('/evaluasi-plan/create', [EvaluasiPlanController::class, 'create'])->name('evaluasi_plan.create');
+    Route::post('/evaluasi-plan', [EvaluasiPlanController::class, 'store'])->name('evaluasi_plan.store');
+    Route::get('/evaluasi-plan/{evaluasiPlan}/edit', [EvaluasiPlanController::class, 'edit'])->name('evaluasi_plan.edit');
+    Route::put('/evaluasi-plan/{evaluasiPlan}', [EvaluasiPlanController::class, 'update'])->name('evaluasi_plan.update');
+    Route::delete('/evaluasi-plan/{evaluasiPlan}', [EvaluasiPlanController::class, 'destroy'])->name('evaluasi_plan.destroy');
+    Route::get('/evaluasi-plan/show/{id}', [EvaluasiPlanController::class, 'show'])->name('evaluasi_plan.show');
+    Route::get('/evaluasi-plan/get-program-studi/{matakuliahId}', [EvaluasiPlanController::class, 'getProgramStudi']);
 });
+
 
 //login
 Route::get('/login', [LoginController::class, 'index'])->name('login');
