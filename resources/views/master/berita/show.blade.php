@@ -1,3 +1,7 @@
+@php
+    $pathPhoto = public_path('storage/' . $berita->path_photo);
+@endphp
+
 @extends('layouts.app')
 
 @section('title', 'Detail Berita')
@@ -28,21 +32,21 @@
                 </div>
 
                 <div class="mb-3">
-                    <h6 class="mb-1 text-muted">Foto:</h6>
-                    @if($berita->path_photo)
-                        <img src="{{ asset("storage/$berita->path_photo") }}" class="img-fluid rounded border mb-3" alt="Foto Berita" style="max-width: 100%; height: auto;">
+                    <h6 class="mb-1 text-muted">Judul Photo:</h6>
+                    @if ($berita->path_photo && file_exists($pathPhoto))
+                        <img src="{{ asset('storage/' . $berita->path_photo) }}" alt="photo" style="width: 100px;">
                     @else
-                        <p class="text-muted">Tidak ada foto tersedia.</p>
+                        <img src={{ asset('assets/images/others/default-avatar.jpg') }}>
                     @endif
                 </div>
-                
+
                 <div class="mb-3">
                     <h6 class="mb-1 text-muted">Isi Berita:</h6>
-                    <div class="border p-3 rounded" style="background-color: #f8f9fa;">
+                    <div>
                         {!! $berita->isi_berita !!}
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>

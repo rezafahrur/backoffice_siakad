@@ -28,7 +28,7 @@
                                     <th>No.</th>
                                     <th>Judul Berita</th>
                                     <th>Kategori</th>
-                                    <th>Photo</th>
+                                    <th>Judul Photo</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -40,22 +40,27 @@
                                         <td>{{ $brt->kategoriBerita->kategori_berita ?? 'N/A' }}</td>
                                         <td>
                                             @if ($brt->path_photo)
-                                                <img src="{{ asset('storage/' . $brt->path_photo) }}" alt="photo" style="width: 100px;">
+                                                <img src="{{ asset('storage/' . $brt->path_photo) }}" alt="photo"
+                                                    style="width: 50px;">
                                             @else
-                                                <span>No Image</span>
+                                                <img src={{ asset('assets/images/others/default-avatar.jpg') }}>
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ route('berita.edit', $brt->id) }}" class="btn btn-sm btn-primary btn-icon">
-                                                <i class="btn-icon-prepend" data-feather="check-square"></i>
+                                            <a href="{{ route('berita.edit', $brt->id) }}"
+                                                class="btn btn-sm btn-primary btn-icon">
+                                                <i class="btn-icon-prepend" data-feather="edit"></i>
                                             </a>
-                                            <a href="{{ route('berita.show', $brt->id) }}" class="btn btn-sm btn-info btn-icon">
+                                            <a href="{{ route('berita.show', $brt->id) }}"
+                                                class="btn btn-sm btn-info btn-icon">
                                                 <i class="btn-icon-prepend text-white" data-feather="eye"></i>
                                             </a>
-                                            <form action="{{ route('berita.destroy', $brt->id) }}" method="post" class="d-inline">
+                                            <form action="{{ route('berita.destroy', $brt->id) }}" method="post"
+                                                class="d-inline">
                                                 @csrf
                                                 @method('delete')
-                                                <button class="btn btn-sm btn-danger btn-icon" onclick="return confirm('Are you sure you want to delete this item?');">
+                                                <button class="btn btn-sm btn-danger btn-icon"
+                                                    onclick="return confirm('Are you sure you want to delete this item?');">
                                                     <i class="btn-icon-prepend" data-feather="trash-2"></i>
                                                 </button>
                                             </form>

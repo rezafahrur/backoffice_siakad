@@ -1,3 +1,7 @@
+@php
+    $pathPhoto = public_path('storage/' . $berita->path_photo);
+@endphp
+
 @extends('layouts.app')
 
 @section('title', 'Form Edit Berita')
@@ -17,21 +21,25 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Form Edit Berita</h4>
+
             {{-- Display Validation Errors --}}
-            <form id="beritaForm" action="{{ route('berita.update', $berita->id) }}" method="POST" enctype="multipart/form-data">
+            <form id="beritaForm" action="{{ route('berita.update', $berita->id) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
                 <div class="mb-3">
                     <label for="judul_berita" class="form-label">Judul Berita</label>
-                    <input type="text" class="form-control" id="judul_berita" name="judul_berita" value="{{ $berita->judul_berita }}" required>
+                    <input type="text" class="form-control" id="judul_berita" name="judul_berita"
+                        value="{{ $berita->judul_berita }}" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="kategori_berita_id" class="form-label">Kategori Berita</label>
                     <select class="form-control" id="kategori_berita_id" name="kategori_berita_id" required>
                         @foreach ($kategoriBerita as $kategori)
-                            <option value="{{ $kategori->id }}" {{ $berita->kategori_berita_id == $kategori->id ? 'selected' : '' }}>
+                            <option value="{{ $kategori->id }}"
+                                {{ $berita->kategori_berita_id == $kategori->id ? 'selected' : '' }}>
                                 {{ strtoupper($kategori->kategori_berita) }}
                             </option>
                         @endforeach
@@ -41,21 +49,25 @@
                 <div class="mb-3">
                     <label for="path_photo" class="form-label">Judul Photo</label>
                     <input type="file" class="form-control" id="path_photo" name="path_photo">
-                    @if ($berita->path_photo)
-                        <img src="{{ asset('storage/' . $berita->path_photo) }}" alt="photo" style="width: 100px; margin-top: 10px;" />
+                    @if ($berita->path_photo && file_exists($pathPhoto))
+                        <img src="{{ asset('storage/' . $berita->path_photo) }}" alt="photo" style="width: 100px;">
                     @else
-                        <p class="text-muted">Tidak ada foto tersedia.</p>
+                        <img src={{ asset('assets/images/others/default-avatar.jpg') }}>
                     @endif
+                    @error('photo_profile')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
-                
 
                 <div class="mb-3">
                     <label for="isi_berita" class="form-label">Isi Berita</label>
-                    <textarea id="summernote" name="isi_berita">{{ $berita->isi_berita }}</textarea>
+                    <textarea id="summernote" name="isi_berita" required>{{ $berita->isi_berita }}</textarea>
                 </div>
 
-                <a href="{{ route('berita.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('berita.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
             </form>
         </div>
     </div>

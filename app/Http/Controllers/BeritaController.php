@@ -28,53 +28,62 @@ class BeritaController extends Controller
         $request->validate([
             'kategori_berita_id' => 'required',
             'judul_berita' => 'required',
-            'path_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Nullable karena tidak selalu diperlukan
+            'path_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'isi_berita' => 'required',
         ]);
 
-        $description = $request->isi_berita; // Mengambil data dari input form
+        // Mengambil data dari input form
+        $description = $request->isi_berita;
 
         // Mengolah gambar dalam Summernote (jika ada)
         $dom = new \DomDocument();
         @$dom->loadHtml($description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
+        // Mengambil tag img
         $imageFiles = $dom->getElementsByTagName('img');
 
+        // Looping tag img
         foreach ($imageFiles as $item => $image) {
             $data = $image->getAttribute('src');
 
-            // Proses gambar yang di-encode dengan base64
+            // Jika tag img memiliki data:image
             if (strpos($data, 'data:image') !== false) {
                 list($type, $data) = explode(';', $data);
                 list(, $data) = explode(',', $data);
 
+                // Decode base64
                 $imageData = base64_decode($data);
-                $image_name = "/upload/" . time() . $item . '.png';
+                $image_name = "/upload_isi/" . time() . $item . '.png';
                 $path = public_path() . $image_name;
 
+                // Menyimpan gambar
                 file_put_contents($path, $imageData);
 
+                // Menghapus attribute src
                 $image->removeAttribute('src');
+                // Menambahkan attribute src dengan path gambar
                 $image->setAttribute('src', $image_name);
             }
         }
 
         $description = $dom->saveHTML();
 
-        // Inisialisasi filePath sebagai null
+        // Inisialisasi filePath sebagai menampilkan path foto
         $filePath = null;
 
         // Handle file upload
         if ($request->hasFile('path_photo')) {
             $file = $request->file('path_photo');
-            $filePath = $file->store('berita_photos', 'public');
+            $filePath = $file->store('upload', 'public');
         }
+
+        // dd($filePath , $request->all());
 
         // Membuat berita baru
         Berita::create([
             'kategori_berita_id' => $request->kategori_berita_id,
             'judul_berita' => $request->judul_berita,
-            'path_photo' => $filePath, // Gunakan nilai $filePath, meskipun null
+            'path_photo' => $filePath,
             'isi_berita' => $description,
         ]);
 
@@ -93,13 +102,14 @@ class BeritaController extends Controller
         $request->validate([
             'kategori_berita_id' => 'required',
             'judul_berita' => 'required',
-            'path_photo' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'path_photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'isi_berita' => 'required',
         ]);
 
         $berita = Berita::findOrFail($id);
 
         $description = $request->isi_berita;
+
         $dom = new \DomDocument();
         @$dom->loadHtml($description, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
@@ -113,7 +123,7 @@ class BeritaController extends Controller
                 list(, $data) = explode(',', $data);
 
                 $imageData = base64_decode($data);
-                $image_name = "/upload/" . time() . $item . '.png';
+                $image_name = "/upload_isi/" . time() . $item . '.png';
                 $path = public_path() . $image_name;
 
                 file_put_contents($path, $imageData);
@@ -125,15 +135,15 @@ class BeritaController extends Controller
 
         $description = $dom->saveHTML();
 
+        $filePath = $berita->path_photo;
+
         if ($request->hasFile('path_photo')) {
             if ($berita->path_photo && Storage::disk('public')->exists($berita->path_photo)) {
                 Storage::disk('public')->delete($berita->path_photo);
             }
 
             $file = $request->file('path_photo');
-            $filePath = $file->store('berita_photos', 'public');
-        } else {
-            $filePath = $berita->path_photo;
+            $filePath = $file->store('upload', 'public');
         }
 
         $berita->update([
@@ -161,7 +171,7 @@ class BeritaController extends Controller
 
     public function show($id)
     {
-        $berita = Berita::find($id);
+        $berita = Berita::findOrFail($id);
         return view('master.berita.show', compact('berita'));
     }
 }
