@@ -67,7 +67,8 @@
                 </li>
 
                 @can('read_mahasiswa')
-                    <li class="nav-item {{ Route::is('mahasiswa.index') ? 'active' : '' }}">
+                    <li
+                        class="nav-item {{ Route::is('mahasiswa.index', 'mahasiswa.show', 'mahasiswa.create', 'mahasiswa.edit') ? 'active' : '' }}">
                         <a href="{{ route('mahasiswa.index') }}" class="nav-link">
                             <i class="link-icon" data-feather="inbox"></i>
                             <span class="menu-title">Mahasiswa</span>
@@ -102,14 +103,15 @@
                             {{-- rencana evaluasi --}}
                             {{-- @can('read_rencana_evaluasi') --}}
                             <li class="nav-item">
-                                <a class="nav-link" href="">Rencana Evaluasi</a>
+                                <a class="nav-link" href="{{ route('evaluasi_plan.index') }}">Rencana Evaluasi</a>
                             </li>
                             {{-- @endcan --}}
 
                             {{-- rencana pembelajaran --}}
                             {{-- @can('read_rencana_pembelajaran') --}}
-                            <li class="nav-item">
-                                <a class="nav-link" href="">Rencana
+                            <li class="nav-item"
+                                {{ Route::is('pembelajaran_plans.index', 'pembelajaran_plans.show', 'pembelajaran_plans.edit') ? 'active' : '' }}>
+                                <a class="nav-link" href="{{ route('pembelajaran_plans.index') }}">Rencana
                                     Pembelajaran</a>
                             </li>
                             {{-- @endcan --}}
@@ -127,8 +129,8 @@
                     <div class="submenu">
                         <ul class="submenu-item">
                             {{-- @can('read_perkuliahan') --}}
-                            <li class="nav-item {{ Route::is('kelast.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('kelast.index') }}">Kelas</a>
+                            <li class="nav-item {{ Route::is('kelas.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('kelas.index') }}">Kelas</a>
                             </li>
                             {{-- @endcan --}}
 
@@ -149,11 +151,17 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="">Nilai</a>
                             </li>
+
+
+                            <li class="nav-item {{ Route::is('skala-nilai.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('skala-nilai.index') }}">Skala Nilai</a>
+                            </li>
                             {{-- @endcan --}}
 
                             {{-- @can('read_periode') --}}
                             <li class="nav-item {{ Route::is('periode-perkuliahan.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('periode-perkuliahan.index') }}">Periode Perkuliahan</a>
+                                <a class="nav-link" href="{{ route('periode-perkuliahan.index') }}">Periode
+                                    Perkuliahan</a>
                             </li>
                             {{-- @endcan --}}
                         </ul>
@@ -183,8 +191,8 @@
                                     @endcan
 
                                     @can('read_ruang_kelas')
-                                        <li class="nav-item {{ Route::is('kelas.index') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('kelas.index') }}">Ruang Kelas</a>
+                                        <li class="nav-item {{ Route::is('ruang-kelas.index') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('ruang-kelas.index') }}">Ruang Kelas</a>
                                         </li>
                                     @endcan
                                 </ul>

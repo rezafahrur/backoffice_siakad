@@ -18,6 +18,7 @@ class Kelas extends Model
         'semester_id',
         'kurikulum_id',
         'nama_kelas',
+        'kapasitas',
         'tanggal_mulai',
         'tanggal_akhir',
     ];

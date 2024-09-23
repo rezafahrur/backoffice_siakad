@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HrController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\BeritaController;
@@ -16,19 +17,12 @@ use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\RuangKelasController;
+use App\Http\Controllers\SkalaNilaiController;
+use App\Http\Controllers\EvaluasiPlanController;
 use App\Http\Controllers\ProgramStudiController;
 use App\Http\Controllers\PaketMataKuliahController;
-use App\Http\Controllers\KelasController;
+use App\Http\Controllers\PembelajaranPlanController;
 use App\Http\Controllers\PeriodePerkuliahanController;
-
-Route::get('/wizard', function () {
-    return view('wizard');
-});
-
-Route::get('/test', function () {
-    return view('layouts.custom-test');
-});
-
 
 Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
@@ -81,12 +75,12 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/mahasiswa/villages/{districtCode}', [MahasiswaController::class, 'getVillages'])->middleware(['permission:read_mahasiswa']);
 
     // ruang kelas
-    Route::get('/ruang-kelas', [RuangKelasController::class, 'index'])->name('kelas.index')->middleware(['permission:read_ruang_kelas']);
-    Route::get('/ruang-kelas/create', [RuangKelasController::class, 'create'])->name('kelas.create')->middleware(['permission:create_ruang_kelas']);
-    Route::post('/ruang-kelas', [RuangKelasController::class, 'store'])->name('kelas.store')->middleware(['permission:create_ruang_kelas']);
-    Route::get('/ruang-kelas/{kelas}/edit', [RuangKelasController::class, 'edit'])->name('kelas.edit')->middleware(['permission:update_ruang_kelas']);
-    Route::put('/ruang-kelas/{kelas}', [RuangKelasController::class, 'update'])->name('kelas.update')->middleware(['permission:update_ruang_kelas']);
-    Route::delete('/ruang-kelas/{kelas}', [RuangKelasController::class, 'destroy'])->name('kelas.destroy')->middleware(['permission:delete_ruang_kelas']);
+    Route::get('/classroom', [RuangKelasController::class, 'index'])->name('ruang-kelas.index')->middleware(['permission:read_ruang_kelas']);
+    Route::get('/classroom/create', [RuangKelasController::class, 'create'])->name('ruang-kelas.create')->middleware(['permission:create_ruang_kelas']);
+    Route::post('/classroom', [RuangKelasController::class, 'store'])->name('ruang-kelas.store')->middleware(['permission:create_ruang_kelas']);
+    Route::get('/classroom/{kelas}/edit', [RuangKelasController::class, 'edit'])->name('ruang-kelas.edit')->middleware(['permission:update_ruang_kelas']);
+    Route::put('/classroom/{kelas}', [RuangKelasController::class, 'update'])->name('ruang-kelas.update')->middleware(['permission:update_ruang_kelas']);
+    Route::delete('/classroom/{kelas}', [RuangKelasController::class, 'destroy'])->name('ruang-kelas.destroy')->middleware(['permission:delete_ruang_kelas']);
     // Route::get('/ruang-kelas/show/{id}', [RuangKelasController::class, 'show'])->name('kelas.show');
 
     // tahun ajaran
@@ -186,14 +180,14 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/kurikulum/show/{id}', [KurikulumController::class, 'show'])->name('kurikulum.show')->middleware(['permission:read_kurikulum']);
 
     //kelas
-    Route::get('/kelas', [KelasController::class, 'index'])->name('kelast.index')->middleware(['permission:read_kelas']);
-    Route::get('/kelas/create', [KelasController::class, 'create'])->name('kelast.create')->middleware(['permission:create_kelas']);
-    Route::post('/kelas', [KelasController::class, 'store'])->name('kelast.store')->middleware(['permission:create_kelas']);
-    Route::get('/kelas/{kelas}/edit', [KelasController::class, 'edit'])->name('kelast.edit')->middleware(['permission:update_kelas']);
-    Route::put('/kelas/{kelas}', [KelasController::class, 'update'])->name('kelast.update')->middleware(['permission:update_kelas']);
-    Route::delete('/kelas/{kelas}', [KelasController::class, 'destroy'])->name('kelast.destroy')->middleware(['permission:delete_kelas']);
-    Route::get('/kelas/show/{id}', [KelasController::class, 'show'])->name('kelast.show')->middleware(['permission:read_kelas']);
-    Route::get('/kelas/details/{kurikulum}', [KelasController::class, 'getKurikulumDetails'])->name('kelast.details');
+    Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index')->middleware(['permission:read_kelas']);
+    Route::get('/kelas/create', [KelasController::class, 'create'])->name('kelas.create')->middleware(['permission:create_kelas']);
+    Route::post('/kelas', [KelasController::class, 'store'])->name('kelas.store')->middleware(['permission:create_kelas']);
+    Route::get('/kelas/{kelas}/edit', [KelasController::class, 'edit'])->name('kelas.edit')->middleware(['permission:update_kelas']);
+    Route::put('/kelas/{kelas}', [KelasController::class, 'update'])->name('kelas.update')->middleware(['permission:update_kelas']);
+    Route::delete('/kelas/{kelas}', [KelasController::class, 'destroy'])->name('kelas.destroy')->middleware(['permission:delete_kelas']);
+    Route::get('/kelas/show/{id}', [KelasController::class, 'show'])->name('kelas.show')->middleware(['permission:read_kelas']);
+    Route::get('/kelas/details/{kurikulum}', [KelasController::class, 'getKurikulumDetails'])->name('kelas.details');
 
     //periode perkuliahan
     Route::get('/periode-perkuliahan', [PeriodePerkuliahanController::class, 'index'])->name('periode-perkuliahan.index');
@@ -206,11 +200,42 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
     Route::get('/kurikulum/get-matakuliah/{prodi}/{semester}', [KurikulumController::class, 'getMataKuliah'])->name('get-matakuliah');
+    Route::post('/kurikulum/get-matakuliah-details', [KurikulumController::class, 'getMataKuliahDetails']);
 
     // Route::put('/tahun-akademik/{id}', [TahunAkademikController::class, 'update'])->name('tahun-akademik.update');
     Route::get('/config', [ConfigController::class, 'index'])->name('config.index');
     Route::post('/config', [ConfigController::class, 'update'])->name('config.update');
+
+    // skala-nilai
+    Route::get('/skala-nilai', [SkalaNilaiController::class, 'index'])->name('skala-nilai.index');
+    Route::get('/skala-nilai/create', [SkalaNilaiController::class, 'create'])->name('skala-nilai.create');
+    Route::post('/skala-nilai', [SkalaNilaiController::class, 'store'])->name('skala-nilai.store');
+    Route::get('/skala-nilai/{skalaNilai}/edit', [SkalaNilaiController::class, 'edit'])->name('skala-nilai.edit');
+    Route::put('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'update'])->name('skala-nilai.update');
+    Route::delete('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'destroy'])->name('skala-nilai.destroy');
+    Route::get('/skala-nilai/show/{id}', [SkalaNilaiController::class, 'show'])->name('skala-nilai.show');
+
+    // pembelajaran plan
+    Route::get('/rps', [PembelajaranPlanController::class, 'index'])->name('pembelajaran_plans.index');
+    Route::get('/rps/create', [PembelajaranPlanController::class, 'create'])->name('pembelajaran_plans.create');
+    Route::post('/rps', [PembelajaranPlanController::class, 'store'])->name('pembelajaran_plans.store');
+    Route::get('/rps/{pembelajaranPlan}/edit', [PembelajaranPlanController::class, 'edit'])->name('pembelajaran_plans.edit');
+    Route::put('/rps/{pembelajaranPlan}', [PembelajaranPlanController::class, 'update'])->name('pembelajaran_plans.update');
+    Route::delete('/rps/{pembelajaranPlan}', [PembelajaranPlanController::class, 'destroy'])->name('pembelajaran_plans.destroy');
+    Route::get('/rps/show/{id}', [PembelajaranPlanController::class, 'show'])->name('pembelajaran_plans.show');
+    Route::get('/api/get-program-studi/{matakuliahId}', [PembelajaranPlanController::class, 'getProgramStudi']);
+
+    // evaluasi plan
+    Route::get('/evaluasi-plan', [EvaluasiPlanController::class, 'index'])->name('evaluasi_plan.index');
+    Route::get('/evaluasi-plan/create', [EvaluasiPlanController::class, 'create'])->name('evaluasi_plan.create');
+    Route::post('/evaluasi-plan', [EvaluasiPlanController::class, 'store'])->name('evaluasi_plan.store');
+    Route::get('/evaluasi-plan/{evaluasiPlan}/edit', [EvaluasiPlanController::class, 'edit'])->name('evaluasi_plan.edit');
+    Route::put('/evaluasi-plan/{evaluasiPlan}', [EvaluasiPlanController::class, 'update'])->name('evaluasi_plan.update');
+    Route::delete('/evaluasi-plan/{evaluasiPlan}', [EvaluasiPlanController::class, 'destroy'])->name('evaluasi_plan.destroy');
+    Route::get('/evaluasi-plan/show/{id}', [EvaluasiPlanController::class, 'show'])->name('evaluasi_plan.show');
+    Route::get('/evaluasi-plan/get-program-studi/{matakuliahId}', [EvaluasiPlanController::class, 'getProgramStudi']);
 });
+
 
 //login
 Route::get('/login', [LoginController::class, 'index'])->name('login');

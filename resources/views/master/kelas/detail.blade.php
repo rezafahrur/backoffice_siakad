@@ -56,6 +56,14 @@
                 </div>
             </div>
 
+            {{-- kapasitas --}}
+            <div class="row mb-3">
+                <label for="kapasitas" class="col-md-2 col-form-label">Kapasitas</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="kapasitas" value="{{ $kelas->kapasitas }}" readonly>
+                </div>
+            </div>
+
             <div class="row mb-3">
                 <label for="kurikulum" class="col-md-2 col-form-label">Kurikulum</label>
                 <div class="col-md-10">
@@ -174,7 +182,7 @@
                 </div>
             @endif
 
-            <a href="{{ route('kelast.index') }}" class="btn btn-secondary mt-3">Back</a>
+            <a href="{{ route('kelas.index') }}" class="btn btn-secondary mt-3">Back</a>
         </div>
     </div>
 @endsection

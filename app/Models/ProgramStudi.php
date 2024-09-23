@@ -15,6 +15,12 @@ class ProgramStudi extends Model
     protected $table = 'm_program_studi';
     protected $fillable = ['kode_program_studi', 'nama_program_studi', 'kode_prodi'];
 
+    // Relasi one-to-many dengan tabel Matakuliah
+    public function matakuliah()
+    {
+        return $this->hasMany(Matakuliah::class, 'program_studi_id', 'id');
+    }
+
     // Relasi one-to-many dengan tabel Kurikulum
     public function kurikulum()
     {
