@@ -12,7 +12,7 @@
         </ol>
     </nav>
 
-    <div class="card">
+    <div class="card w-20">
         <div class="card-header">
             <h3 class="card-title">Detail Kelas</h3>
         </div>
@@ -116,6 +116,12 @@
                                 <th scope="col">Tatap Muka</th>
                                 <th scope="col">Sks</th>
                                 <th scope="col">Evaluasi</th>
+                                <th scope="col">Aktivitas Partisipatif</th>
+                                <th scope="col">Hasil Proyek</th>
+                                <th scope="col">Tugas</th>
+                                <th scope="col">Quiz</th>
+                                <th scope="col">UTS</th>
+                                <th scope="col">UAS</th>
 
                             </tr>
                         </thead>
@@ -167,6 +173,12 @@
                                                 N/A
                                         @endswitch
                                     </td>
+                                    <td>{{ $detail->aktivitas_partisipatif }}</td>
+                                    <td>{{ $detail->hasil_proyek }}</td>
+                                    <td>{{ $detail->tugas }}</td>
+                                    <td>{{ $detail->quiz }}</td>
+                                    <td>{{ $detail->uts }}</td>
+                                    <td>{{ $detail->uas }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
