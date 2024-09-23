@@ -2,6 +2,11 @@
 
 @section('title', 'Form Tambah Berita')
 
+@push('styles')
+    <!-- Include Summernote CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+@endpush
+
 @section('content')
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
@@ -17,6 +22,7 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">Form Tambah Berita</h4>
+
             {{-- Display Validation Errors --}}
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -58,7 +64,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="path_photo" class="form-label">Upload Photo</label>
+                    <label for="path_photo" class="form-label">Judul Photo</label>
                     <input type="file" class="form-control @error('path_photo') is-invalid @enderror" id="path_photo"
                         name="path_photo">
                     @error('path_photo')
@@ -68,8 +74,7 @@
 
                 <div class="mb-3">
                     <label for="isi_berita" class="form-label">Isi Berita</label>
-                    <div id="editor-container"></div>
-                    <input type="hidden" id="isi_berita" name="isi_berita" value="{{ old('isi_berita') }}">
+                    <textarea id="summernote" name="isi_berita" class="form-control">{{ old('isi_berita') }}</textarea>
                     @error('isi_berita')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -80,81 +85,34 @@
             </form>
         </div>
     </div>
+@endsection
 
+@push('scripts')
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Include Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- Include Summernote JS -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
-    {{-- Quill.js Script --}}
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
-
-    <script>
-        // Initialize Quill editor with full toolbar
-        const quill = new Quill('#editor-container', {
-            theme: 'snow',
-            modules: {
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                placeholder: 'Edit your content here...',
+                tabsize: 2,
+                height: 100,
                 toolbar: [
-                    [{
-                        header: [1, 2, 3, false]
-                    }],
-                    [{
-                        'font': []
-                    }],
-                    [{
-                        'size': ['small', false, 'large', 'huge']
-                    }], // custom dropdown
-                    ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-                    [{
-                        'color': []
-                    }, {
-                        'background': []
-                    }], // dropdown with defaults from theme
-                    [{
-                        'script': 'sub'
-                    }, {
-                        'script': 'super'
-                    }], // superscript/subscript
-                    [{
-                        'header': 1
-                    }, {
-                        'header': 2
-                    }], // custom button values
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    [{
-                        'indent': '-1'
-                    }, {
-                        'indent': '+1'
-                    }], // outdent/indent
-                    [{
-                        'direction': 'rtl'
-                    }], // text direction
-                    [{
-                        'align': []
-                    }],
-                    ['link', 'image', 'video', 'blockquote', 'code-block'],
-                    ['clean'] // remove formatting button
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
                 ]
-            }
-        });
-
-        // Ensure content is correctly captured before form submission
-        document.querySelector('#beritaForm').addEventListener('submit', function(e) {
-            document.querySelector('#isi_berita').value = quill.root.innerHTML;
-
-            // Example SweetAlert usage
-            e.preventDefault(); // Prevent the form from submitting for demo purposes
-            Swal.fire({
-                title: 'Success!',
-                text: 'Your post has been saved successfully.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.submit(); // Submit the form after confirmation
-                }
             });
         });
     </script>
-@endsection
+@endpush
