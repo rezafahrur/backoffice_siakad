@@ -46,6 +46,12 @@ class KelasRequest extends FormRequest
             'details.*.desctiption' => 'nullable',
             'details.*.lingkup_kelas' => 'nullable',
             'details.*.mode_kelas' => 'nullable',
+            'details.*.aktivitas_partisipatif' => 'nullable',
+            'details.*.hasil_proyek' => 'nullable',
+            'details.*.tugas' => 'nullable',
+            'details.*.quiz' => 'nullable',
+            'details.*.uts' => 'nullable',
+            'details.*.uas' => 'nullable',
         ];
     }
 
@@ -67,6 +73,12 @@ class KelasRequest extends FormRequest
             'details.*.desctiption' => 'nullable',
             'details.*.lingkup_kelas' => 'nullable',
             'details.*.mode_kelas' => 'nullable',
+            'details.*.aktivitas_partisipatif' => 'nullable',
+            'details.*.hasil_proyek' => 'nullable',
+            'details.*.tugas' => 'nullable',
+            'details.*.quiz' => 'nullable',
+            'details.*.uts' => 'nullable',
+            'details.*.uas' => 'nullable',
         ];
     }
 }
