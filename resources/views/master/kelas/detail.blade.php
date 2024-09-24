@@ -124,13 +124,12 @@
                                 <th scope="col">Tatap Muka</th>
                                 <th scope="col">Sks</th>
                                 <th scope="col">Evaluasi</th>
-                                <th scope="col">Aktivitas Partisipatif</th>
-                                <th scope="col">Hasil Proyek</th>
-                                <th scope="col">Tugas</th>
-                                <th scope="col">Quiz</th>
-                                <th scope="col">UTS</th>
-                                <th scope="col">UAS</th>
-
+                                <th scope="col">Aktivitas Partisipatif (%)</th>
+                                <th scope="col">Hasil Proyek (%)</th>
+                                <th scope="col">Tugas (%)</th>
+                                <th scope="col">Quiz (%)</th>
+                                <th scope="col">UTS (%)</th>
+                                <th scope="col">UAS (%)</th>
                             </tr>
                         </thead>
                         <tbody>
