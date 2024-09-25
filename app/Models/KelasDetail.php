@@ -23,6 +23,13 @@ class KelasDetail extends Model
         'description',
         'lingkup_kelas',
         'mode_kelas',
+        'aktivitas_partisipatif',
+        'hasil_proyek',
+        'tugas',
+        'quiz',
+        'uts',
+        'uas',
+
     ];
 
     public function kelas()
