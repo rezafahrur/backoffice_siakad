@@ -40,4 +40,14 @@ class Kurikulum extends Model
         return $this->hasMany(KurikulumDetail::class, 'kurikulum_id', 'id');
     }
 
+    public function kelas()
+    {
+        return $this->hasMany(Kelas::class, 'kurikulum_id', 'id');
+    }
+
+    // relasi ke krs
+    public function krs()
+    {
+        return $this->hasMany(Krs::class, 'kurikulum_id', 'id');
+    }
 }

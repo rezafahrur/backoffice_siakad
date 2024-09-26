@@ -15,7 +15,7 @@ class KurikulumController extends Controller
 
     public function index()
     {
-        $kurikulums = Kurikulum::with(['programStudi', 'semesters'])->get();
+        $kurikulums = Kurikulum::with(['programStudi', 'semesters', 'krs'])->get();
 
         return view('master.kurikulum.index', compact('kurikulums'));
     }

@@ -2,100 +2,148 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mahasiswa;
-use App\Models\JadwalDetail;
 use App\Models\Krs;
-use App\Models\PaketMataKuliah;
+use App\Models\Kelas;
+use App\Models\Nilai;
+use App\Models\MataKuliah;
+use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
-use App\Models\PaketMataKuliahDetail;
-use Illuminate\Support\Facades\Session;
+use App\Http\Requests\NilaiRequest;
 
 class NilaiController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $matakuliah = [];
-        $mahasiswa = [];
-        $paketMatkul= [];
+        $nilais = Nilai::with(['programStudi', 'kelas', 'matakuliah'])->get();
 
-        // Mendapatkan data paket jadwal berdasarkan hr_id dari session
-        $paketJadwals = JadwalDetail::where('hr_id', '=', Session::get('hr_id'))->get();
+        return view('master.nilai.index', compact('nilais'));
+    }
 
-        // Mencari data mata kuliah yang terkait dengan setiap paket jadwal
-        foreach($paketJadwals as $paketJadwal) 
-        {
-            $paketMataKuliahDetails = PaketMataKuliahDetail::join('m_matakuliah', 't_paket_matakuliah_detail.matakuliah_id', '=', 'm_matakuliah.id')
-                ->where('t_paket_matakuliah_detail.id', '=', $paketJadwal->paket_matakuliah_detail_id)
-                ->select('t_paket_matakuliah_detail.matakuliah_id', 'm_matakuliah.nama_matakuliah')
-                ->get();
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $programStudi = ProgramStudi::all();
+        // $kelas = Kelas::all();
+        // $matakuliah = collect();
+        return view('master.nilai.create', compact('programStudi'));
+    }
 
-            foreach($paketMataKuliahDetails as $paketMataKuliahDetail) 
-            {
-                array_push($matakuliah, [
-                    'matakuliah_id' => $paketMataKuliahDetail->matakuliah_id,
-                    'nama_matakuliah' => $paketMataKuliahDetail->nama_matakuliah
-                ]);
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(NilaiRequest $request)
+    {
+        try {
+            $nilai = Nilai::create($request->validated());
+
+            foreach ($request->details as $detail) {
+                $nilai->details()->create($detail);
             }
-        }
-
-        // Query untuk mendapatkan data mahasiswa yang join dengan tabel m_krs
-        $mahasiswaKrsDetails = Mahasiswa::join('m_krs', 'm_mahasiswa.id', '=', 'm_krs.mahasiswa_id')
-            ->select('m_mahasiswa.id as mahasiswa_id', 'm_mahasiswa.nama')
-            ->get();
-
-        // Menyimpan mahasiswa_id dan nama ke dalam array $mahasiswa
-        foreach ($mahasiswaKrsDetails as $mahasiswaKrsDetail) 
-        {
-            array_push($mahasiswa, [
-                'mahasiswa_id' => $mahasiswaKrsDetail->mahasiswa_id,
-                'nama' => $mahasiswaKrsDetail->nama
+            return redirect()->route('nilai.index')->with('success', 'Data berhasil disimpan');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with([
+                'error' => $e->getMessage(),
+                'toast_message' => 'Data Gagal Disimpan',
             ]);
         }
+    }
 
-        $paketDetail = PaketMataKuliah::join('m_krs', 'm_paket_matakuliah.id', '=', 'm_krs.paket_matakuliah_id')
-            ->select('m_paket_matakuliah.id as paket_matakuliah_id', 'm_paket_matakuliah.nama_paket_matakuliah', 'm_paket_matakuliah.semester')
-            ->get();
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $nilai = Nilai::with(['programStudi', 'kelas', 'matakuliah', 'details'])->findOrFail($id);
 
-        foreach ($paketDetail as $paket)
-        {
-            array_push($paketMatkul, [
-                'paket_matakuliah_id' => $paket->paket_matakuliah_id,
-                'semester' => $paket->semester,
-                'nama_paket_matakuliah' => $paket->nama_paket_matakuliah
+        return view('master.nilai.detail', compact('nilai'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        $nilai = Nilai::with(['programStudi', 'kelas', 'matakuliah', 'details'])->findOrFail($id);
+
+        return view('master.nilai.edit', compact('nilai'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(NilaiRequest $request, Nilai $nilai)
+    {
+        // dd($request->all());
+        try {
+            $nilai->update($request->validated());
+
+            // update or create nilai detail
+            foreach ($request->details as $detail) {
+                $nilai->details()->updateOrCreate(
+                    ['mahasiswa_id' => $detail['mahasiswa_id']],
+                    $detail
+                );
+            }
+
+            return redirect()->route('nilai.index')->with('success', 'Data berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with([
+                'error' => $e->getMessage(),
+                'toast_message' => 'Data Gagal Diperbarui',
             ]);
         }
-        // Tampilkan hasil ke view
-        return view('nilai.create', [
-            'matakuliahs' => $matakuliah,
-            'mahasiswas' => $mahasiswa,
-            'paketMatkuls' => $paketMatkul
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Nilai $nilai)
+    {
+        try {
+            if ($nilai->details) {
+                foreach ($nilai->details as $detail) {
+                    $detail->delete();
+                }
+            }
+
+            $nilai->delete();
+
+            return redirect()->route('nilai.index')->with('success', 'Data berhasil dihapus.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with([
+                'error', $e->getMessage(),
+                'toast_message' => 'Data Gagal Dihapus',
+            ]);
+        }
+    }
+
+    public function getKelasMataKuliah($programStudiId)
+    {
+        $kelas = Kelas::where('program_studi_id', $programStudiId)->get();
+
+        // get matakuliah from kelas details to kurikulum details to matakuliah
+        $matakuliah = collect();
+        foreach ($kelas as $k) {
+            $matakuliah = $matakuliah->merge($k->details->pluck('kurikulumDetail.matakuliah'));
+        }
+
+        // remove duplicate matakuliah
+        $matakuliah = $matakuliah->unique('id');
+
+        return response()->json([
+            'kelas' => $kelas,
+            'matakuliah' => $matakuliah
         ]);
     }
 
-    public function getMahasiswaByMatakuliah(Request $request)
+    public function getMahasiswaByKelas($kelasId)
     {
-        try {
-    
-            // Query untuk mendapatkan data mahasiswa yang join dengan tabel m_krs berdasarkan matakuliah_id
-            $mahasiswaKrsDetails = Mahasiswa::join('m_krs', 'm_mahasiswa.id', '=', 'm_krs.mahasiswa_id')
-                ->select('m_mahasiswa.nim', 'm_mahasiswa.nama', 'm_mahasiswa.status')
-                ->get();
-    
-      
-            if ($mahasiswaKrsDetails->isEmpty()) {
-                return response()->json([], 200);
-            }
-    
-    
-            return response()->json($mahasiswaKrsDetails, 200);
-            
-        } catch (\Exception $e) {
-            // Tangani error dan kembalikan pesan error sebagai response JSON
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        $mahasiswas = Krs::with('mahasiswa')->where('kelas_id', $kelasId)->get()->pluck('mahasiswa');
+        return response()->json($mahasiswas);
     }
-    
-    
-    
-
 }
