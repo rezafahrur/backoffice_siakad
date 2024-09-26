@@ -21,7 +21,7 @@ class DashboardController extends Controller
         $total_mahasiswa = Mahasiswa::count();
 
         // Menghitung total dosen (hr yang position-nya dosen)
-        $total_dosen = Hr::whereHas('position', function($query) {
+        $total_dosen = Hr::whereHas('position', function ($query) {
             $query->where('posisi', 'dosen');
         })->count();
 
@@ -105,10 +105,14 @@ class DashboardController extends Controller
 
         return redirect()->route('profile');
     }
+    public function getMahasiswaStatus()
+    {
+        $mahasiswaAktif = Mahasiswa::where('status', 1)->count();
+        $mahasiswaNonAktif = Mahasiswa::where('status', 0)->count();
 
-
-
-
-
-
+        return response()->json([
+            'aktif' => $mahasiswaAktif,
+            'non_aktif' => $mahasiswaNonAktif,
+        ]);
+    }
 }
