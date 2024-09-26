@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MahasiswaExport;
 use App\Http\Requests\KtpRequest;
 use App\Http\Requests\MahasiswaRequest;
+use App\Imports\MahasiswaImport;
 use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\Krs;
@@ -25,15 +27,189 @@ use Laravolt\Indonesia\Models\Province;
 use Laravolt\Indonesia\Models\City;
 use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Village;
-use Yajra\DataTables\Facades\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
 {
     public function index(Request $request)
     {
         $mahasiswa = Mahasiswa::all();
+        $prodi = ProgramStudi::all();
+        $jurusan = Jurusan::all();
 
-        return view('master.mahasiswa.index', compact('mahasiswa'));
+        return view('master.mahasiswa.index', compact('mahasiswa', 'prodi', 'jurusan'));
+    }
+
+    public function export(Request $request)
+    {
+        $dataLengkap = $request->input('dataLengkap', 0); // Ambil nilai dataLengkap dari request, default 0
+
+        if ($dataLengkap) {
+            return Excel::download(new MahasiswaExport($dataLengkap), 'mahasiswa.xlsx');
+        } else {
+            return Excel::download(new MahasiswaExport($dataLengkap), 'mahasiswa_cepat.xlsx');
+        }
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,xls',
+        ]);
+
+        Excel::import(new MahasiswaImport, $request->file('file'));
+
+        return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil diimpor.');
+    }
+
+    public function quickAddImport(array $data)
+    {
+        // Proses validasi tetap ada di sini
+        $validator = validator($data, [
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:m_mahasiswa,email',
+            'jurusan' => 'required|exists:m_jurusan,id',
+            'program_studi' => 'required|exists:m_program_studi,id',
+            'registrasi_tanggal' => 'required|date',
+            'semester_berjalan' => 'required|integer',
+            'status' => 'required|integer',
+            'is_filled' => 'required|integer',
+            'telp_rumah' => 'required|string|max:15',
+            'no_hp' => 'required|string|max:15',
+            'alamat_domisili' => 'required|string',
+            'kode_pos' => 'required|string|max:6',
+        ]);
+
+        if ($validator->fails()) {
+            throw new \Illuminate\Validation\ValidationException($validator);
+        }
+
+        // Logika pembuatan NIM tetap sama
+        $year = substr($data['registrasi_tanggal'], 2, 2);
+        $jenjang = '04';
+
+        $jurusan = Jurusan::find($data['jurusan']);
+        $jrs = str_pad($jurusan->kode_jurusan, 2, '0', STR_PAD_LEFT);
+
+        $programStudi = ProgramStudi::find($data['program_studi']);
+        $program = str_pad($programStudi->kode_program_studi, 2, '0', STR_PAD_LEFT);
+
+        $lastStudent = Mahasiswa::where('nim', 'like', $year . $jenjang . $jrs . $program . '%')
+            ->orderBy('nim', 'desc')
+            ->first();
+
+        $newSequence = $lastStudent ? str_pad((int) substr($lastStudent->nim, -4) + 1, 4, '0', STR_PAD_LEFT) : '0001';
+
+        $data['nim'] = $year . $jenjang . $jrs . $program . $newSequence;
+
+        try {
+            // Simpan data mahasiswa
+            $mahasiswa = Mahasiswa::create([
+                'nim' => $data['nim'],
+                'nama' => $data['nama'],
+                'email' => $data['email'],
+                'jurusan_id' => $data['jurusan'],
+                'program_studi_id' => $data['program_studi'],
+                'registrasi_tanggal' => $data['registrasi_tanggal'],
+                'is_filled' => $data['is_filled'],
+                'semester_berjalan' => $data['semester_berjalan'],
+                'status' => $data['status'],
+            ]);
+
+            // Simpan data mahasiswa detail
+            MahasiswaDetail::create([
+                'telp_rumah' => $data['telp_rumah'],
+                'no_hp' => $data['no_hp'],
+                'alamat_domisili' => $data['alamat_domisili'],
+                'kode_pos' => $data['kode_pos'],
+                'mahasiswa_id' => $mahasiswa->id,
+            ]);
+
+            // Kembalikan instance model mahasiswa
+            return $mahasiswa;
+        } catch (\Exception $e) {
+            // Jika ada kesalahan, kembalikan exception agar mudah di-handle di Import
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+
+    public function quickAdd(Request $request)
+    {
+        $data = $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:m_mahasiswa,email',
+            'jurusan' => 'required|exists:m_jurusan,id',
+            'program_studi' => 'required|exists:m_program_studi,id',
+            'registrasi_tanggal' => 'required|date',
+            'semester_berjalan' => 'required|integer',
+            'status' => 'required|integer',
+            'is_filled' => 'required|integer',
+
+            // MahasiswaDetail
+            'telp_rumah' => 'required|string|max:15',
+            'no_hp' => 'required|string|max:15',
+            'alamat_domisili' => 'required|string',
+            'kode_pos' => 'required|string|max:6',
+        ]);
+
+        // Extract values and prepare NIM
+        $year = substr($data['registrasi_tanggal'], 2, 2);
+        $jenjang = '04';
+
+        $jurusan = Jurusan::find($data['jurusan']);
+        $jrs = str_pad($jurusan->kode_jurusan, 2, '0', STR_PAD_LEFT);
+
+        $programStudi = ProgramStudi::find($data['program_studi']);
+        $program = str_pad($programStudi->kode_program_studi, 2, '0', STR_PAD_LEFT);
+
+        $lastStudent = Mahasiswa::where('nim', 'like', $year . $jenjang . $jrs . $program . '%')
+            ->orderBy('nim', 'desc')
+            ->first();
+
+        if ($lastStudent) {
+            $lastSequence = (int) substr($lastStudent->nim, -4);
+            $newSequence = str_pad($lastSequence + 1, 4, '0', STR_PAD_LEFT);
+        } else {
+            $newSequence = '0001';
+        }
+
+        $data['nim'] = $year . $jenjang . $jrs . $program . $newSequence;
+
+        try {
+            // Simpan data mahasiswa
+            $mahasiswa = Mahasiswa::create([
+                'nim' => $data['nim'],
+                'nama' => $data['nama'],
+                'email' => $data['email'],
+                'jurusan_id' => $data['jurusan'],
+                'program_studi_id' => $data['program_studi'],
+                'registrasi_tanggal' => $data['registrasi_tanggal'],
+                'is_filled' => $data['is_filled'],
+                'semester_berjalan' => $data['semester_berjalan'],
+                'status' => $data['status'],
+            ]);
+
+            // Simpan data mahasiswa detail
+            MahasiswaDetail::create([
+                'telp_rumah' => $data['telp_rumah'],
+                'no_hp' => $data['no_hp'],
+                'alamat_domisili' => $data['alamat_domisili'],
+                'kode_pos' => $data['kode_pos'],
+                'mahasiswa_id' => $mahasiswa->id,
+            ]);
+
+            // Redirect with success message
+            $message = $request->has('id') ? 'Data berhasil diperbarui' : 'Data berhasil ditambahkan';
+            return redirect()->route('mahasiswa.index')->with('success', $message);
+        } catch (\Exception $e) {
+            // Handle the exception and redirect back with the error message
+            $message = isset($request) && $request->has('id') ? 'Data gagal diperbarui' : 'Data gagal ditambahkan';
+            return redirect()->back()->withInput()->with([
+                'error' => $e->getMessage(),
+                'toast_message' => $message,
+            ]);
+        }
     }
 
     public function bayar(Request $request)
@@ -142,6 +318,13 @@ class MahasiswaController extends Controller
         // Fetch data mahasiswa by ID
         $mahasiswa = Mahasiswa::findOrFail($id);
 
+        // Check if is_filled is 0
+        if ($mahasiswa->is_filled == 0) {
+            $provinces = Province::all();
+            $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $id)->latest()->first();
+            return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'jurusan', 'mhsDetail', 'provinces'));
+        }
+
         // Fetch data wali by mahasiswa ID
         $wali1 = MahasiswaWali::where('mahasiswa_id', $id)
             ->where('status_kewalian', 'AYAH')
@@ -156,10 +339,19 @@ class MahasiswaController extends Controller
         $wali1Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali1->id)->latest()->first();
         $wali2Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali2->id)->latest()->first();
 
+        // Ambil kebutuhan khusus dari mahasiswa
+        $mahasiswaKebutuhanKhusus = is_array($mahasiswa->kebutuhan_khusus) ? $mahasiswa->kebutuhan_khusus : explode(',', $mahasiswa->kebutuhan_khusus);
+
+        // Ambil kebutuhan khusus dari wali (Ayah)
+        $wali1KebutuhanKhusus = $wali1 && $wali1->kebutuhan_khusus ? (is_array($wali1->kebutuhan_khusus) ? $wali1->kebutuhan_khusus : explode(',', $wali1->kebutuhan_khusus)) : [];
+
+        // Ambil kebutuhan khusus dari wali (Ibu)
+        $wali2KebutuhanKhusus = $wali2 && $wali2->kebutuhan_khusus ? (is_array($wali2->kebutuhan_khusus) ? $wali2->kebutuhan_khusus : explode(',', $wali2->kebutuhan_khusus)) : [];
+
         // Fetch data for the dropdowns and populate with existing data
         $provinces = Province::all();
 
-        return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'wali1', 'wali2', 'jurusan', 'mhsDetail', 'wali1Detail', 'wali2Detail'));
+        return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'wali1', 'wali2', 'jurusan', 'mhsDetail', 'wali1Detail', 'wali2Detail', 'mahasiswaKebutuhanKhusus', 'wali1KebutuhanKhusus', 'wali2KebutuhanKhusus'));
     }
 
     public function storeOrUpdate(MahasiswaRequest $request)
@@ -242,6 +434,7 @@ class MahasiswaController extends Controller
                         'pekerjaan_kontak_darurat' => $data['kd_pekerjaan'],
                         'pendidikan_kontak_darurat' => $data['kd_pendidikan'],
                         'penghasilan_kontak_darurat' => $data['kd_penghasilan'],
+                        'is_filled' => $data['is_filled'],
                         'ktp_id' => $ktpMahasiswa->id,
                     ]
                 );
@@ -385,7 +578,7 @@ class MahasiswaController extends Controller
         $ktp = $mahasiswa->ktp;
         $waliCollection = $mahasiswa->id;
         $krs = Krs::where('mahasiswa_id', $waliCollection)->get();
-        
+
 
         // Mengambil detail mahasiswa jika ada
         $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();

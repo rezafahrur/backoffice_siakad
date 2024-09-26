@@ -62,12 +62,15 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     // CRUD Mahasiswa
     Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index')->middleware(['permission:read_mahasiswa']);
+    Route::get('/mahasiswa/export', [MahasiswaController::class, 'export'])->name('mahasiswa.export')->middleware(['permission:read_mahasiswa']);
     Route::get('/mahasiswa/create', [MahasiswaController::class, 'create'])->name('mahasiswa.create')->middleware(['permission:create_mahasiswa']);
     Route::post('/mahasiswa', [MahasiswaController::class, 'storeOrUpdate'])->name('mahasiswa.store')->middleware(['permission:create_mahasiswa']);
+    Route::post('/mahasiswa/import', [MahasiswaController::class, 'import'])->name('mahasiswa.import')->middleware(['permission:create_mahasiswa']);
     Route::get('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'show'])->name('mahasiswa.show')->middleware(['permission:read_mahasiswa']);
     Route::get('/mahasiswa/{mahasiswa}/edit', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit')->middleware(['permission:update_mahasiswa']);
     Route::put('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'storeOrUpdate'])->name('mahasiswa.update')->middleware(['permission:update_mahasiswa']);
     Route::delete('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy')->middleware(['permission:delete_mahasiswa']);
+    Route::post('/mahasiswa/quickAdd', [MahasiswaController::class, 'quickAdd'])->name('mahasiswa.quickAdd')->middleware(['permission:create_mahasiswa']);
 
     // Bayar
     Route::post('/mahasiswa/bayar', [MahasiswaController::class, 'bayar'])->name('mahasiswa.bayar')->middleware(['permission:update_mahasiswa']);
