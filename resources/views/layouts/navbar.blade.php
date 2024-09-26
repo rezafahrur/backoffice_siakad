@@ -238,6 +238,9 @@
                             <li class="nav-item {{ Route::is('config.index') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('config.index') }}">Config</a>
                             </li>
+                            <li class="nav-item {{ Route::is('feature.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('feature.index') }}">Feature</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

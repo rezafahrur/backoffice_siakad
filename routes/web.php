@@ -23,6 +23,8 @@ use App\Http\Controllers\ProgramStudiController;
 use App\Http\Controllers\PaketMataKuliahController;
 use App\Http\Controllers\PembelajaranPlanController;
 use App\Http\Controllers\PeriodePerkuliahanController;
+use App\Http\Controllers\MasterFeatureController;
+use App\Models\MasterFeature;
 
 Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
@@ -218,8 +220,15 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::delete('/evaluasi-plan/{evaluasiPlan}', [EvaluasiPlanController::class, 'destroy'])->name('evaluasi_plan.destroy');
     Route::get('/evaluasi-plan/show/{id}', [EvaluasiPlanController::class, 'show'])->name('evaluasi_plan.show');
     Route::get('/evaluasi-plan/get-program-studi/{matakuliahId}', [EvaluasiPlanController::class, 'getProgramStudi']);
+  
+    Route::get('/feature', [MasterFeatureController::class, 'index'])->name('feature.index');
+    Route::get('/feature/create', [MasterFeatureController::class, 'create'])->name('feature.create');
+    Route::post('/feature', [MasterFeatureController::class, 'store'])->name('feature.store');
+    Route::get('/feature/{id}/edit', [MasterFeatureController::class, 'edit'])->name('feature.edit');
+    Route::put('/feature/{id}', [MasterFeatureController::class, 'update'])->name('feature.update');
+    Route::delete('/feature/{id}', [MasterFeatureController::class, 'destroy'])->name('feature.destroy');
 
-    // Nilai
+   
     Route::get('/nilai', [NilaiController::class, 'index'])->name('nilai.index');
     Route::get('/nilai/create', [NilaiController::class, 'create'])->name('nilai.create');
     Route::post('/nilai', [NilaiController::class, 'store'])->name('nilai.store');
