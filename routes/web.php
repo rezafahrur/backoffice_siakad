@@ -31,6 +31,9 @@ Route::group(['middleware' => ['auth:hr']], function () {
     })->name('/');
 
     Route::get('/home', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/mahasiswa/status', [DashboardController::class, 'getMahasiswaStatus']);
+    Route::get('/periode-perkuliahan/chart-data', [PeriodePerkuliahanController::class, 'chartData']);
+
 
     // route profile
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');

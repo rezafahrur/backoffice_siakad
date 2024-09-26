@@ -98,7 +98,7 @@ class PeriodePerkuliahanController extends Controller
     {
         $periodePerkuliahan = PeriodePerkuliahan::with('semester', 'programStudi')->findOrFail($id);
         return view('master.periode-perkuliahan.show', compact('periodePerkuliahan'));
-    }    
+    }
 
     // Menghapus periode perkuliahan dari database
     public function destroy($id)
@@ -107,5 +107,22 @@ class PeriodePerkuliahanController extends Controller
         $periodePerkuliahan->delete();
 
         return redirect()->route('periode-perkuliahan.index')->with('success', 'Periode Perkuliahan berhasil dihapus.');
+    }
+
+    public function chartData()
+    {
+        $data = PeriodePerkuliahan::with('semester', 'programStudi')
+            ->select('semester_id', 'program_studi_id', 'jml_target_mhs_baru')
+            ->get();
+
+        $formattedData = $data->map(function ($item) {
+            return [
+                'semester' => $item->semester->nama_semester,
+                'program_studi' => $item->programStudi->nama_program_studi,
+                'jml_target_mhs_baru' => $item->jml_target_mhs_baru,
+            ];
+        });
+
+        return response()->json($formattedData);
     }
 }
