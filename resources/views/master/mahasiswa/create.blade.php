@@ -155,6 +155,9 @@
                             {{-- Semester Berjalan --}}
                             <input type="hidden" name="semester_berjalan" id="semester_berjalan" value="1">
 
+                            {{-- Is Filled --}}
+                            <input type="hidden" name="is_filled" id="is_filled" value="1">
+
                             {{-- Telp Rumah --}}
                             <div class="col-md-4 mb-3">
                                 <label for="telp_rumah" class="form-label">Telp Rumah</label>
@@ -1957,10 +1960,19 @@
         }
 
         .step.active::after {
-            background-color: #e9ecef;
+            background-color: #364b98;
         }
 
         .step.active .step-icon {
+            background-color: #364b98;
+            color: #fff;
+        }
+
+        .step.completed::after {
+            background-color: #364b98;
+        }
+
+        .step.completed .step-icon {
             background-color: #364b98;
             color: #fff;
         }
@@ -2130,6 +2142,32 @@
 
             // Add active class to the current step
             steps[n].classList.add("active");
+
+            // Update progress indicator
+            if (n == 0) {
+                steps[0].classList.remove("completed");
+                steps[1].classList.remove("completed");
+                steps[2].classList.remove("completed");
+                steps[3].classList.remove("completed");
+            }
+
+            if (n == 1) {
+                steps[0].classList.add("completed");
+                steps[2].classList.remove("completed");
+                steps[3].classList.remove("completed");
+            }
+
+            if (n == 2) {
+                steps[0].classList.add("completed");
+                steps[1].classList.add("completed");
+                steps[3].classList.remove("completed");
+            }
+
+            if (n == 3) {
+                steps[0].classList.add("completed");
+                steps[1].classList.add("completed");
+                steps[2].classList.add("completed");
+            }
 
             // Update navigation buttons
             if (n == 0) {

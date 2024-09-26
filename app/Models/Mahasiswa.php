@@ -36,6 +36,8 @@ class Mahasiswa extends Model
         'pekerjaan_kontak_darurat',
         'pendidikan_kontak_darurat',
         'penghasilan_kontak_darurat',
+        'kebutuhan_khusus',
+        'is_filled',
     ];
 
     public function programStudi()
