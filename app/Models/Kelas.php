@@ -42,4 +42,9 @@ class Kelas extends Model
     {
         return $this->hasMany(KelasDetail::class, 'kelas_id', 'id');
     }
+
+    public function krs()
+    {
+        return $this->hasMany(Krs::class, 'kelas_id', 'id');
+    }
 }

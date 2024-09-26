@@ -149,7 +149,7 @@
 
                             {{-- @can('read_nilai') --}}
                             <li class="nav-item">
-                                <a class="nav-link" href="">Nilai</a>
+                                <a class="nav-link" href="{{ route('nilai.index') }}">Nilai</a>
                             </li>
 
 
