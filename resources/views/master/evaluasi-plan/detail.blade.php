@@ -13,11 +13,11 @@
             <h4 class="card-title">Detail Rencana Evaluasi</h4>
 
             <div class="mb-3">
-                <strong>Matakuliah:</strong>
+                <strong class="me-2">Matakuliah:</strong>
                 {{ $evaluasiPlan->matakuliah->nama_matakuliah }}
             </div>
             <div class="mb-3">
-                <strong>Program Studi:</strong>
+                <strong class="me-2">Program Studi:</strong>
                 {{ $evaluasiPlan->programStudi->nama_program_studi }}
             </div>
             <div class="table-responsive mb-3">
