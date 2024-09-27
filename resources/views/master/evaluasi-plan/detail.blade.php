@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Detail Rencana Evaluasi')
+
 @section('content')
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">

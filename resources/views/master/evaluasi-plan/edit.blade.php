@@ -1,10 +1,16 @@
 @extends('layouts.app')
 
+@section('title', 'Edit Rencana Evaluasi')
+
 @section('content')
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('evaluasi_plan.index') }}">Rencana Evaluasi</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+            <li class="breadcrumb-item">
+                <a href="{{ route('evaluasi_plan.index') }}">Rencana Evaluasi</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Edit
+            </li>
         </ol>
     </nav>
 
