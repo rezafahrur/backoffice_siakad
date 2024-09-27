@@ -88,9 +88,13 @@ class MasterFeatureController extends Controller
         return redirect()->route('features.index')->with('success', 'Fitur berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    // create function destroy
+    //destroy
+    public function destroy($id)
+    {
+        $masterFeature = MasterFeature::findOrFail($id);
+        $masterFeature->delete();
+
+        return redirect()->route('feature.index')->with('success', 'Fitur berhasil dihapus');
+    } 
     
 }
