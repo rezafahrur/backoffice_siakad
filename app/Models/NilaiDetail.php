@@ -21,6 +21,10 @@ class NilaiDetail extends Model
         'tugas',
         'uts',
         'uas',
+        'aktivitas_partisipatif',
+        'nilai_huruf',
+        'nilai_indeks',
+        'nilai_angka'
     ];
 
     public function mahasiswa()
