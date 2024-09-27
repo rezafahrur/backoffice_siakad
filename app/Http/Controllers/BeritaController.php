@@ -6,7 +6,6 @@ use App\Models\Berita;
 use Illuminate\Http\Request;
 use App\Models\KategoriBerita;
 use Illuminate\Support\Facades\Storage;
-use Yajra\DataTables\Facades\DataTables;
 
 class BeritaController extends Controller
 {
