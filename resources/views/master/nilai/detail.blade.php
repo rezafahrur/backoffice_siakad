@@ -40,10 +40,14 @@
                         <tr>
                             <th>Nama Mahasiswa</th>
                             <th>Proyek Akhir</th>
-                            <th> Quiz</th>
+                            <th>Aktivitas Partisipatif</th>
+                            <th>Quiz</th>
                             <th>Tugas</th>
                             <th>UTS</th>
                             <th>UAS</th>
+                            <th>Nilai Indeks</th>
+                            <th>Nilai Huruf</th>
+                            <th>Nilai Angka</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,10 +55,14 @@
                             <tr>
                                 <td>{{ $detail->mahasiswa->nama }}</td>
                                 <td>{{ $detail->hasil_proyek }}</td>
+                                <td>{{ $detail->aktivitas_partisipatif }}</td>
                                 <td>{{ $detail->quiz }}</td>
                                 <td>{{ $detail->tugas }}</td>
                                 <td>{{ $detail->uts }}</td>
                                 <td>{{ $detail->uas }}</td>
+                                <td>{{ $detail->nilai_indeks }}</td>
+                                <td>{{ $detail->nilai_huruf }}</td>
+                                <td>{{ $detail->nilai_angka }}</td>
                             </tr>
                         @endforeach
                     </tbody>
