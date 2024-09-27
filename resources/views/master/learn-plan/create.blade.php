@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Create Rencana Pembelajaran')
+
 @section('content')
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
