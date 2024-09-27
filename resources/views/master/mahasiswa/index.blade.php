@@ -21,11 +21,6 @@
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data Ringkas
                             </a>
-                            <a href="{{ route('mahasiswa.export', ['dataLengkap' => 0]) }}"
-                                class="btn btn-success btn-icon-text mb-2 mb-md-0">
-                                <i class="btn-icon-prepend" data-feather="download"></i>
-                                Template
-                            </a>
                             <a href="#" class="btn btn-success btn-icon-text mb-2 mb-md-0" data-bs-toggle="modal"
                                 data-bs-target="#importModal">
                                 <i class="btn-icon-prepend" data-feather="upload"></i>
@@ -69,11 +64,13 @@
                                                 <span class="badge bg-success">
                                                     <i class="col-sm-6 col-md-4 col-lg-3" data-feather="check"
                                                         style="width: 12px; height: 12px;"></i>
+                                                    <span class="d-none">1</span>
                                                 </span>
                                             @else
                                                 <span class="badge bg-danger">
                                                     <i class="col-sm-6 col-md-4 col-lg-3" data-feather="x"
                                                         style="width: 12px; height: 12px;"></i>
+                                                    <span class="d-none">0</span>
                                                 </span>
                                             @endif
                                         </td>
@@ -94,7 +91,7 @@
                                                 <i class="btn-icon-prepend text-white" data-feather="eye"></i>
                                             </a>
                                             <form action="{{ route('mahasiswa.destroy', $mhs->id) }}" method="post"
-                                                class="d-inline">
+                                                class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                 @csrf
                                                 @method('delete')
                                                 <button class="btn btn-sm btn-danger btn-icon">
@@ -429,6 +426,14 @@
                                                 aria-label="Close"></button>
                                         </div>
                                     @endif
+
+                                    <div class="mb-3">
+                                        <a href="{{ route('mahasiswa.export', ['dataLengkap' => 0]) }}"
+                                            class="btn btn-success btn-icon-text mb-2 mb-md-0">
+                                            <i class="btn-icon-prepend" data-feather="download"></i>
+                                            Template
+                                        </a>
+                                    </div>
 
                                     <form action="{{ route('mahasiswa.import') }}" method="POST"
                                         enctype="multipart/form-data">
