@@ -8,7 +8,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Data</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Data Reancana Pembelajaran</li>
+            <li class="breadcrumb-item active" aria-current="page">Reancana Pembelajaran</li>
         </ol>
     </nav>
 

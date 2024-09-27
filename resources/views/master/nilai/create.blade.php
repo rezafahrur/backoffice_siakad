@@ -47,10 +47,10 @@
                     </select>
                 </div>
 
-                <div id="mahasiswa-list mb-3">
+                <div id="mahasiswa-list">
                     {{-- judul --}}
                     <h4 class="card-title">Input Nilai Mahasiswa</h4>
-                    <table class="table table-bordered" id="nilai-table" style="display: none;">
+                    <table class="table table-bordered mb-3" id="nilai-table" style="display: none;">
                         <thead>
                             <tr>
                                 <th>Nama Mahasiswa</th>

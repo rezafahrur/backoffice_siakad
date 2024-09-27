@@ -44,8 +44,7 @@
                                                 class="d-inline">
                                                 @csrf
                                                 @method('delete')
-                                                <button class="btn btn-sm btn-danger btn-icon"
-                                                    onclick="return confirm('Are you sure you want to delete this item?');">
+                                                <button class="btn btn-sm btn-danger btn-icon">
                                                     <i class="btn-icon-prepend" data-feather="trash-2"></i>
                                                 </button>
                                             </form>
@@ -64,3 +63,16 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        @if (session('success'))
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        @endif
+    </script>
+@endpush

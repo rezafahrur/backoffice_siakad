@@ -44,7 +44,7 @@ class BeritaController extends Controller
 
         // Looping tag img
         foreach ($imageFiles as $item => $image) {
-            $data = $image->getAttribute('src');
+            $data = $image instanceof \DOMElement ? $image->getAttribute('src') : '';
 
             // Jika tag img memiliki data:image
             if (strpos($data, 'data:image') !== false) {
@@ -53,16 +53,18 @@ class BeritaController extends Controller
 
                 // Decode base64
                 $imageData = base64_decode($data);
-                $image_name = "/upload_isi/" . time() . $item . '.png';
+                $image_name = "/storage/isi_berita_photos/" . time() . $item . '.png';
                 $path = public_path() . $image_name;
 
                 // Menyimpan gambar
                 file_put_contents($path, $imageData);
 
                 // Menghapus attribute src
-                $image->removeAttribute('src');
-                // Menambahkan attribute src dengan path gambar
-                $image->setAttribute('src', $image_name);
+                if ($image instanceof \DOMElement) {
+                    $image->removeAttribute('src');
+                    // Menambahkan attribute src dengan path gambar
+                    $image->setAttribute('src', $image_name);
+                }
             }
         }
 
@@ -74,7 +76,7 @@ class BeritaController extends Controller
         // Handle file upload
         if ($request->hasFile('path_photo')) {
             $file = $request->file('path_photo');
-            $filePath = $file->store('upload', 'public');
+            $filePath = $file->store('berita_photos', 'public');
         }
 
         // dd($filePath , $request->all());
@@ -116,20 +118,22 @@ class BeritaController extends Controller
         $imageFiles = $dom->getElementsByTagName('img');
 
         foreach ($imageFiles as $item => $image) {
-            $data = $image->getAttribute('src');
+            $data = $image instanceof \DOMElement ? $image->getAttribute('src') : '';
 
             if (strpos($data, 'data:image') !== false) {
                 list($type, $data) = explode(';', $data);
                 list(, $data) = explode(',', $data);
 
                 $imageData = base64_decode($data);
-                $image_name = "/upload_isi/" . time() . $item . '.png';
+                $image_name = "/storage/isi_berita_photos/" . time() . $item . '.png';
                 $path = public_path() . $image_name;
 
                 file_put_contents($path, $imageData);
 
-                $image->removeAttribute('src');
-                $image->setAttribute('src', $image_name);
+                if ($image instanceof \DOMElement) {
+                    $image->removeAttribute('src');
+                    $image->setAttribute('src', $image_name);
+                }
             }
         }
 
@@ -143,7 +147,7 @@ class BeritaController extends Controller
             }
 
             $file = $request->file('path_photo');
-            $filePath = $file->store('upload', 'public');
+            $filePath = $file->store('berita_photos', 'public');
         }
 
         $berita->update([

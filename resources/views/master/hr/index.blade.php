@@ -15,7 +15,30 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Data HR</h6>
-                    <div class="d-flex justify-content-end mb-3">
+                    
+                    <!-- Filter Form -->
+                    <div class="d-flex justify-content-between mb-3">
+                        <!-- Form Filter -->
+                        <div class="d-flex justify-content-end">
+                            <form action="{{ route('hr.index') }}" method="GET" class="d-flex align-items-center">
+                                <div class="form-group mr-2">
+                                    <select class="form-control" name="position_id" id="positionFilter">
+                                        <option value="">-- Pilih Posisi --</option>
+                                        @foreach ($positions as $position)
+                                            <option value="{{ $position->id }}" 
+                                                {{ request('position_id') == $position->id ? 'selected' : '' }}>
+                                                {{ $position->posisi }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </div>
+                            </form>
+                        </div>
+                    
+                        <!-- Button Tambah Data -->
                         <div>
                             <a href="{{ route('hr.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
@@ -23,6 +46,8 @@
                             </a>
                         </div>
                     </div>
+                    
+
                     <div class="table-responsive">
                         <table class="table table-hover" id="dataTableExample">
                             <thead>
@@ -87,102 +112,3 @@
         </div>
     </div>
 @endsection
-{{-- @section('script')
-    <script>
-        $(document).ready(function() {
-            $('#hrTable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: '{{ route('hr.index') }}',
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'nip',
-                        name: 'nip'
-                    },
-                    {
-                        data: 'nama',
-                        name: 'nama'
-                    },
-                    {
-                        data: 'posisi',
-                        name: 'posisi'
-                    },
-                    {
-                        data: 'photo_profile',
-                        name: 'photo_profile',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    }
-                ],
-                language: {
-                    searchPlaceholder: 'Search..',
-                    sSearch: '',
-                    paginate: {
-                        previous: "Prev",
-                        next: "Next"
-                    }
-                }
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const deleteButtons = document.querySelectorAll('.delete-btn');
-
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-
-                    Swal.fire({
-                        title: 'Konfirmasi',
-                        text: "Apakah Anda yakin ingin menghapus data ini?",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Yes',
-                        cancelButtonText: 'No',
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Create a form dynamically
-                            const form = document.createElement('form');
-                            form.method = 'POST';
-                            form.action = `{{ url('master/hr/delete') }}/${id}`;
-                            const csrfToken = document.createElement('input');
-                            csrfToken.type = 'hidden';
-                            csrfToken.name = '_token';
-                            csrfToken.value = '{{ csrf_token() }}';
-                            form.appendChild(csrfToken);
-                            const methodField = document.createElement('input');
-                            methodField.type = 'hidden';
-                            methodField.name = '_method';
-                            methodField.value = 'DELETE';
-                            form.appendChild(methodField);
-                            document.body.appendChild(form);
-                            form.submit();
-                        }
-                    });
-                });
-            });
-        });
-
-        @if (session('success'))
-            Swal.fire({
-                title: 'Berhasil!',
-                text: '{{ session('success') }}',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        @endif
-    </script>
-@endsection --}}
