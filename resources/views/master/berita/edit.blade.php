@@ -1,10 +1,14 @@
+@extends('layouts.app')
+
 @php
     $pathPhoto = public_path('storage/' . $berita->path_photo);
 @endphp
 
-@extends('layouts.app')
+@section('title', 'Edit Berita')
 
-@section('title', 'Form Edit Berita')
+@push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+@endpush
 
 @section('content')
     <nav class="page-breadcrumb">
@@ -20,7 +24,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Form Edit Berita</h4>
+            <h4 class="card-title">Edit Berita</h4>
 
             {{-- Display Validation Errors --}}
             <form id="beritaForm" action="{{ route('berita.update', $berita->id) }}" method="POST"
@@ -66,22 +70,14 @@
                     <textarea id="summernote" name="isi_berita" required>{{ $berita->isi_berita }}</textarea>
                 </div>
 
-                <a href="{{ route('berita.index') }}" class="btn btn-secondary">Kembali</a>
-                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                <a href="{{ route('berita.index') }}" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
 
     @push('scripts')
-        <!-- Include jQuery -->
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <!-- Include Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Include Bootstrap JS -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-        <!-- Include Summernote CSS and JS -->
-        <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
         <script type="text/javascript">
             $(document).ready(function() {

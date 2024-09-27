@@ -64,7 +64,7 @@
                 </div>
 
                 <h4 class="card-title">Input Nilai Mahasiswa</h4>
-                <table class="table table-bordered">
+                <table class="table table-bordered mb-3">
                     <thead>
                         <tr>
                             <th>Nama Mahasiswa</th>
@@ -105,11 +105,8 @@
                         @endforeach
                     </tbody>
                 </table>
-
-                <div class="d-flex justify-content-between">
-                    <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Back</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
+                <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Back</a>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>

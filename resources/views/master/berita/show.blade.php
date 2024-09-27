@@ -9,23 +9,25 @@
 @section('content')
     <div class="container mt-4">
         <!-- Navbar -->
-        <nav class="navbar navbar-light">
-            <div class="container d-flex align-items-center">
-                <a href="{{ route('berita.index') }}" class="btn btn-outline-secondary me-2">
-                    <i class="bi bi-chevron-left"></i> Kembali
-                </a>
-                <a class="navbar-brand ms-4" href="{{ route('berita.index') }}">
-                    <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}" alt="Logo">
-                </a>
-            </div>
+        <nav class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{ route('berita.index') }}">Berita</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Detail
+                </li>
+            </ol>
         </nav>
 
         {{-- Detail Berita --}}
         <div class="card shadow-sm border-light mt-3">
-            <div class="card-header">
-                <h4 class="card-title">{{ $berita->judul_berita }}</h4>
-            </div>
             <div class="card-body">
+                <h4 class="card-title">Detail Berita</h4>
+                <div class="mb-3">
+                    <h6 class="mb-1 text-muted">Judul:</h6>
+                    <p class="fw-bold">{{ $berita->judul_berita }}</p>
+                </div>
                 <div class="mb-3">
                     <h6 class="mb-1 text-muted">Kategori:</h6>
                     <p class="fw-bold text-uppercase">{{ $berita->kategoriBerita->kategori_berita ?? 'N/A' }}</p>
@@ -46,6 +48,7 @@
                         {!! $berita->isi_berita !!}
                     </div>
                 </div>
+                <a href="{{ route('berita.index') }}" class="btn btn-secondary">Back</a>
 
             </div>
         </div>
