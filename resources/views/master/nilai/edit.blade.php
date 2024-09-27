@@ -69,10 +69,14 @@
                         <tr>
                             <th>Nama Mahasiswa</th>
                             <th>Hasil Proyek</th>
+                            <th>Aktivitas Partisipatif</th>
                             <th>Quiz</th>
                             <th>Tugas</th>
                             <th>UTS</th>
                             <th>UAS</th>
+                            <th>Nilai Indeks</th>
+                            <th>Nilai Huruf</th>
+                            <th>Nilai Angka</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,6 +88,10 @@
                                 <td>
                                     <input type="number" name="details[{{ $detail->mahasiswa_id }}][hasil_proyek]"
                                         class="form-control" value="{{ $detail->hasil_proyek }}" min="0" required>
+                                </td>
+                                <td>
+                                    <input type="number" name="details[{{ $detail->mahasiswa_id }}][aktivitas_partisipatif]"
+                                        class="form-control" value="{{ $detail->aktivitas_partisipatif }}" min="0" required>
                                 </td>
                                 <td>
                                     <input type="number" name="details[{{ $detail->mahasiswa_id }}][quiz]"
@@ -100,6 +108,18 @@
                                 <td>
                                     <input type="number" name="details[{{ $detail->mahasiswa_id }}][uas]"
                                         class="form-control" value="{{ $detail->uas }}" min="0" required>
+                                </td>
+                                <td>
+                                    <input type="text" name="details[{{ $detail->mahasiswa_id }}][nilai_indeks]"
+                                        class="form-control" value="{{ $detail->nilai_indeks }}" min="0" required>
+                                </td>
+                                <td>
+                                    <input type="text" name="details[{{ $detail->mahasiswa_id }}][nilai_huruf]"
+                                        class="form-control" value="{{ $detail->nilai_huruf }}" min="0" required>
+                                </td>
+                                <td>
+                                    <input type="number" name="details[{{ $detail->mahasiswa_id }}][nilai_angka]"
+                                        class="form-control" value="{{ $detail->nilai_angka }}" min="0" required>
                                 </td>
                             </tr>
                         @endforeach
