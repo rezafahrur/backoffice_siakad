@@ -23,8 +23,9 @@
                             aria-controls="pills-kontak-darurat" aria-selected="false">Kontak Darurat</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="pills-kebutuhan-tab" data-bs-toggle="pill" data-bs-target="#pills-kebutuhan"
-                            type="button" role="tab" aria-controls="pills-kebutuhan" aria-selected="false">Kebutuhan Khusus</button>
+                        <button class="nav-link" id="pills-kebutuhan-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-kebutuhan" type="button" role="tab" aria-controls="pills-kebutuhan"
+                            aria-selected="false">Kebutuhan Khusus</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="pills-krs-tab" data-bs-toggle="pill" data-bs-target="#pills-krs"
@@ -489,24 +490,75 @@
                     </div>
 
                     <!-- Kebutuhan Khusus -->
-                    <div class="tab-pane fade" id="pills-kebutuhan" role="tabpanel" aria-labelledby="pills-kebutuhan-tab">
-                        <!-- Kolom Kebutuhan Khusus -->
-                        <div class="row">
-                            <h4 class="card-title">Kebutuhan Khusus</h4>
-                            <div class="col-md-6">
-                                <dl class="row">
-                                    {{-- Kebutuhan Khusus --}}
-                                    <dt class="col-sm-4">Kebutuhan Khusus</dt>
-                                    <dd class="col-sm-8">{{ $mahasiswa->kebutuhan_khusus }}</dd>
+                    <div class="tab-pane fade" id="pills-kebutuhan" role="tabpanel"
+                        aria-labelledby="pills-kebutuhan-tab">
+                        <div class="col-md-12 mb-3">
+                            <div class="row">
+                                <!-- Kebutuhan Khusus Mahasiswa -->
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-header bg-primary text-white">
+                                            <i data-feather="user"></i> MAHASISWA
+                                        </div>
+                                        <div class="card-body">
+                                            @foreach (['1' => 'A - Tuna Netra', '2' => 'B - Tuna Rungu', '3' => 'C - Tuna Grahita Ringan', '4' => 'C1 - Tuna Grahita Sedang', '5' => 'D - Tuna Daksa Ringan', '6' => 'D1 - Tuna Daksa Sedang'] as $key => $value)
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="kebutuhan_khusus_mahasiswa"
+                                                        name="kebutuhan_khusus_mahasiswa[]" value="{{ $key }}"
+                                                        {{ in_array($key, $mahasiswaKebutuhanKhusus) ? 'checked' : '' }}
+                                                        disabled>
+                                                    <label class="form-check"
+                                                        for="kebutuhan_khusus_mahasiswa_{{ $key }}">{{ $value }}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
 
-                                    {{-- Alat Bantu --}}
-                                    <dt class="col-sm-4">Alat Bantu</dt>
-                                    <dd class="col-sm-8">{{ $mahasiswa->alat_bantu }}</dd>
+                                <!-- Kebutuhan Khusus Ayah -->
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-header bg-success text-white">
+                                            <i data-feather="user"></i> AYAH
+                                        </div>
+                                        <div class="card-body">
+                                            @foreach (['1' => 'A - Tuna Netra', '2' => 'B - Tuna Rungu', '3' => 'C - Tuna Grahita Ringan', '4' => 'C1 - Tuna Grahita Sedang', '5' => 'D - Tuna Daksa Ringan', '6' => 'D1 - Tuna Daksa Sedang'] as $key => $value)
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="kebutuhan_khusus_ayah" name="kebutuhan_khusus_ayah[]"
+                                                        value="{{ $key }}"
+                                                        {{ in_array($key, $wali1KebutuhanKhusus) ? 'checked' : '' }}
+                                                        disabled>
+                                                    <label class="form-check"
+                                                        for="kebutuhan_khusus_ayah_{{ $key }}">{{ $value }}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
 
-                                    {{-- Kebutuhan Khusus Lainnya --}}
-                                    <dt class="col-sm-4">Kebutuhan Khusus Lainnya</dt>
-                                    <dd class="col-sm-8">{{ $mahasiswa->kebutuhan_khusus_lainnya }}</dd>
-                                </dl>
+                                <!-- Kebutuhan Khusus Ibu -->
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-header bg-secondary text-white">
+                                            <i data-feather="user"></i> IBU
+                                        </div>
+                                        <div class="card-body">
+                                            @foreach (['1' => 'A - Tuna Netra', '2' => 'B - Tuna Rungu', '3' => 'C - Tuna Grahita Ringan', '4' => 'C1 - Tuna Grahita Sedang', '5' => 'D - Tuna Daksa Ringan', '6' => 'D1 - Tuna Daksa Sedang'] as $key => $value)
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="kebutuhan_khusus_ibu" name="kebutuhan_khusus_ibu[]"
+                                                        value="{{ $key }}"
+                                                        {{ in_array($key, $wali2KebutuhanKhusus) ? 'checked' : '' }}
+                                                        disabled>
+                                                    <label class="form-check"
+                                                        for="kebutuhan_khusus_ibu_{{ $key }}">{{ $value }}</label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

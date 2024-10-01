@@ -24,6 +24,7 @@ use App\Http\Controllers\PaketMataKuliahController;
 use App\Http\Controllers\PembelajaranPlanController;
 use App\Http\Controllers\PeriodePerkuliahanController;
 use App\Http\Controllers\MasterFeatureController;
+use App\Http\Controllers\MoodleAuthController;
 use App\Models\MasterFeature;
 
 Route::group(['middleware' => ['auth:hr']], function () {
@@ -242,6 +243,8 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // get mahaasiswa
     Route::get('/nilai/get-mahasiswa/{kelasId}', [NilaiController::class, 'getMahasiswaByKelas']);
 
+    Route::get('/moodle-login', [MoodleAuthController::class, 'showLoginForm'])->name('moodle.login.form');
+    Route::post('/moodle-login', [MoodleAuthController::class, 'loginToMoodle'])->name('moodle.login');
 });
 
 
