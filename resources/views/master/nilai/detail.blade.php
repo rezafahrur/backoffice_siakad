@@ -34,7 +34,7 @@
             </div>
 
             <div class="table-responsive mb-3">
-                <h4 class="card-title">Nilai Mahasiswa</h4>
+                <h4 class="card-title">Detail Nilai Mahasiswa</h4>
                 <table class="table table-bordered">
                     <thead>
                         <tr>

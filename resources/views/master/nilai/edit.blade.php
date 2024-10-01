@@ -63,7 +63,7 @@
                     @enderror
                 </div>
 
-                <h4 class="card-title">Input Nilai Mahasiswa</h4>
+                <h4 class="card-title">Edit Nilai Mahasiswa</h4>
                 <table class="table table-bordered mb-3">
                     <thead>
                         <tr>
