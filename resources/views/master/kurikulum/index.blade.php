@@ -20,6 +20,10 @@
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
+                            <a href="{{ route('kurikulum.export') }}" class="btn btn-success btn-icon">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+
+                            </a>
                         </div>
                     </div>
                     <div class="table-responsive">

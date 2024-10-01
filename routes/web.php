@@ -158,6 +158,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     //kuriukulum
     Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.index')->middleware(['permission:read_kurikulum']);
+    Route::get('/kurikulum/export', [KurikulumController::class, 'export'])->name('kurikulum.export');
     Route::get('/kurikulum/create', [KurikulumController::class, 'create'])->name('kurikulum.create')->middleware(['permission:create_kurikulum']);
     Route::post('/kurikulum', [KurikulumController::class, 'store'])->name('kurikulum.store')->middleware(['permission:create_kurikulum']);
     Route::get('/kurikulum/{kurikulum}/edit', [KurikulumController::class, 'edit'])->name('kurikulum.edit')->middleware(['permission:update_kurikulum']);
@@ -220,7 +221,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::delete('/evaluasi-plan/{evaluasiPlan}', [EvaluasiPlanController::class, 'destroy'])->name('evaluasi_plan.destroy');
     Route::get('/evaluasi-plan/show/{id}', [EvaluasiPlanController::class, 'show'])->name('evaluasi_plan.show');
     Route::get('/evaluasi-plan/get-program-studi/{matakuliahId}', [EvaluasiPlanController::class, 'getProgramStudi']);
-  
+
     Route::get('/feature', [MasterFeatureController::class, 'index'])->name('feature.index');
     Route::get('/feature/create', [MasterFeatureController::class, 'create'])->name('feature.create');
     Route::post('/feature', [MasterFeatureController::class, 'store'])->name('feature.store');
@@ -228,7 +229,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::put('/feature/{id}', [MasterFeatureController::class, 'update'])->name('feature.update');
     Route::delete('/feature/{id}', [MasterFeatureController::class, 'destroy'])->name('feature.destroy');
 
-   
+
     Route::get('/nilai', [NilaiController::class, 'index'])->name('nilai.index');
     Route::get('/nilai/create', [NilaiController::class, 'create'])->name('nilai.create');
     Route::post('/nilai', [NilaiController::class, 'store'])->name('nilai.store');
