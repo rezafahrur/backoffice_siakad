@@ -9,6 +9,7 @@ use App\Models\MataKuliah;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use App\Http\Requests\NilaiRequest;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class NilaiController extends Controller
 {
@@ -245,4 +246,16 @@ class NilaiController extends Controller
         $mahasiswas = Krs::with('mahasiswa')->where('kelas_id', $kelasId)->get()->pluck('mahasiswa');
         return response()->json($mahasiswas);
     }
+
+    public function cetakPdf($id)
+{
+    $nilai = Nilai::with(['programStudi', 'kelas', 'matakuliah', 'details'])->findOrFail($id);
+
+    // Buat PDF menggunakan view yang sama atau view khusus untuk PDF
+    $pdf = PDF::loadView('master.nilai.pdf', compact('nilai'));
+
+    // Kembalikan response untuk download PDF
+    return $pdf->download('nilai-mahasiswa' . $nilai->id . '.pdf');
+}
+
 }
