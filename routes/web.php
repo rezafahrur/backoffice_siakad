@@ -24,6 +24,7 @@ use App\Http\Controllers\PaketMataKuliahController;
 use App\Http\Controllers\PembelajaranPlanController;
 use App\Http\Controllers\PeriodePerkuliahanController;
 use App\Http\Controllers\MasterFeatureController;
+use App\Http\Controllers\MoodleAuthController;
 use App\Models\MasterFeature;
 
 Route::group(['middleware' => ['auth:hr']], function () {
@@ -220,7 +221,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::delete('/evaluasi-plan/{evaluasiPlan}', [EvaluasiPlanController::class, 'destroy'])->name('evaluasi_plan.destroy');
     Route::get('/evaluasi-plan/show/{id}', [EvaluasiPlanController::class, 'show'])->name('evaluasi_plan.show');
     Route::get('/evaluasi-plan/get-program-studi/{matakuliahId}', [EvaluasiPlanController::class, 'getProgramStudi']);
-  
+
     Route::get('/feature', [MasterFeatureController::class, 'index'])->name('feature.index');
     Route::get('/feature/create', [MasterFeatureController::class, 'create'])->name('feature.create');
     Route::post('/feature', [MasterFeatureController::class, 'store'])->name('feature.store');
@@ -228,7 +229,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::put('/feature/{id}', [MasterFeatureController::class, 'update'])->name('feature.update');
     Route::delete('/feature/{id}', [MasterFeatureController::class, 'destroy'])->name('feature.destroy');
 
-   
+
     Route::get('/nilai', [NilaiController::class, 'index'])->name('nilai.index');
     Route::get('/nilai/create', [NilaiController::class, 'create'])->name('nilai.create');
     Route::post('/nilai', [NilaiController::class, 'store'])->name('nilai.store');
@@ -241,6 +242,8 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // get mahaasiswa
     Route::get('/nilai/get-mahasiswa/{kelasId}', [NilaiController::class, 'getMahasiswaByKelas']);
 
+    Route::get('/moodle-login', [MoodleAuthController::class, 'showLoginForm'])->name('moodle.login.form');
+    Route::post('/moodle-login', [MoodleAuthController::class, 'loginToMoodle'])->name('moodle.login');
 });
 
 
