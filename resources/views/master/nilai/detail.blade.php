@@ -45,9 +45,9 @@
                             <th>Tugas</th>
                             <th>UTS</th>
                             <th>UAS</th>
+                            <th>Nilai Angka</th>
                             <th>Nilai Indeks</th>
                             <th>Nilai Huruf</th>
-                            <th>Nilai Angka</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,9 +60,9 @@
                                 <td>{{ $detail->tugas }}</td>
                                 <td>{{ $detail->uts }}</td>
                                 <td>{{ $detail->uas }}</td>
+                                <td>{{ $detail->nilai_angka }}</td>
                                 <td>{{ $detail->nilai_indeks }}</td>
                                 <td>{{ $detail->nilai_huruf }}</td>
-                                <td>{{ $detail->nilai_angka }}</td>
                             </tr>
                         @endforeach
                     </tbody>

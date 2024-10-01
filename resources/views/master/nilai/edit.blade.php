@@ -74,9 +74,9 @@
                             <th>Tugas</th>
                             <th>UTS</th>
                             <th>UAS</th>
+                            <th>Nilai Angka</th>
                             <th>Nilai Indeks</th>
                             <th>Nilai Huruf</th>
-                            <th>Nilai Angka</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -110,16 +110,16 @@
                                         class="form-control" value="{{ $detail->uas }}" min="0" required>
                                 </td>
                                 <td>
+                                    <input type="number" name="details[{{ $detail->mahasiswa_id }}][nilai_angka]"
+                                        class="form-control" value="{{ $detail->nilai_angka }}" min="0" required>
+                                </td>
+                                <td>
                                     <input type="text" name="details[{{ $detail->mahasiswa_id }}][nilai_indeks]"
-                                        class="form-control" value="{{ $detail->nilai_indeks }}" min="0" required>
+                                        class="form-control" value="{{ $detail->nilai_indeks }}" min="0" required disabled>
                                 </td>
                                 <td>
                                     <input type="text" name="details[{{ $detail->mahasiswa_id }}][nilai_huruf]"
-                                        class="form-control" value="{{ $detail->nilai_huruf }}" min="0" required>
-                                </td>
-                                <td>
-                                    <input type="number" name="details[{{ $detail->mahasiswa_id }}][nilai_angka]"
-                                        class="form-control" value="{{ $detail->nilai_angka }}" min="0" required>
+                                        class="form-control" value="{{ $detail->nilai_huruf }}" min="0" required disabled>
                                 </td>
                             </tr>
                         @endforeach
