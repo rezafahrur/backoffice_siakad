@@ -119,7 +119,7 @@ class MahasiswaController extends Controller
             // Simpan data mahasiswa detail
             MahasiswaDetail::create([
                 'telp_rumah' => $data['telp_rumah'],
-                'no_hp' => $data['no_hp'],
+                'hp' => $data['no_hp'],
                 'alamat_domisili' => $data['alamat_domisili'],
                 'kode_pos' => $data['kode_pos'],
                 'mahasiswa_id' => $mahasiswa->id,
@@ -193,7 +193,7 @@ class MahasiswaController extends Controller
             // Simpan data mahasiswa detail
             MahasiswaDetail::create([
                 'telp_rumah' => $data['telp_rumah'],
-                'no_hp' => $data['no_hp'],
+                'hp' => $data['no_hp'],
                 'alamat_domisili' => $data['alamat_domisili'],
                 'kode_pos' => $data['kode_pos'],
                 'mahasiswa_id' => $mahasiswa->id,
@@ -322,7 +322,7 @@ class MahasiswaController extends Controller
         if ($mahasiswa->is_filled == 0) {
             $provinces = Province::all();
             $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $id)->latest()->first();
-            return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'jurusan', 'mhsDetail', 'provinces'));
+            return view('master.mahasiswa.editShort', compact('mahasiswa', 'prodi', 'jurusan', 'mhsDetail', 'provinces'));
         }
 
         // Fetch data wali by mahasiswa ID
@@ -426,7 +426,7 @@ class MahasiswaController extends Controller
                         'alat_transportasi' => $data['alat_transportasi'],
                         'terima_kps' => $data['terima_kps'],
                         'no_kps' => $data['no_kps'],
-                        'kebutuhan_khusus' => implode(',', $data['kebutuhan_khusus_mahasiswa']),
+                        'kebutuhan_khusus' => isset($data['kebutuhan_khusus_mahasiswa']) ? implode(',', $data['kebutuhan_khusus_mahasiswa']) : '0',
                         'nama_kontak_darurat' => $data['kd_nama'],
                         'hubungan_kontak_darurat' => $data['kd_hubungan'],
                         'hp_kontak_darurat' => $data['kd_no_hp'],
@@ -484,7 +484,7 @@ class MahasiswaController extends Controller
                     [
                         'nama' => $data['wali_nama_1'],
                         'status_kewalian' => 'AYAH',
-                        'kebutuhan_khusus' => implode(',', $data['kebutuhan_khusus_ayah']),
+                        'kebutuhan_khusus' => isset($data['kebutuhan_khusus_ayah']) ? implode(',', $data['kebutuhan_khusus_ayah']) : '0',
                     ]
                 );
 
@@ -536,7 +536,7 @@ class MahasiswaController extends Controller
                     [
                         'nama' => $data['wali_nama_2'],
                         'status_kewalian' => 'IBU',
-                        'kebutuhan_khusus' => implode(',', $data['kebutuhan_khusus_ibu']),
+                        'kebutuhan_khusus' => isset($data['kebutuhan_khusus_ibu']) ? implode(',', $data['kebutuhan_khusus_ibu']) : '0',
                     ]
                 );
 
@@ -574,11 +574,21 @@ class MahasiswaController extends Controller
 
     public function show(Mahasiswa $mahasiswa)
     {
-        // Mengambil data KTP dari relasi mahasiswa
-        $ktp = $mahasiswa->ktp;
         $waliCollection = $mahasiswa->id;
         $krs = Krs::where('mahasiswa_id', $waliCollection)->get();
 
+        if ($mahasiswa->is_filled == 0) {
+            $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();
+
+            return view('master.mahasiswa.detailShort', [
+                'mahasiswa' => $mahasiswa,
+                'mhsDetail' => $mhsDetail,
+                'krs' => $krs,
+            ]);
+        }
+
+        // Mengambil data KTP dari relasi mahasiswa
+        $ktp = $mahasiswa->ktp;
 
         // Mengambil detail mahasiswa jika ada
         $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();
@@ -601,6 +611,15 @@ class MahasiswaController extends Controller
         $city = $ktp->city;
         $district = $ktp->district;
         $village = $ktp->village;
+
+        // Ambil kebutuhan khusus dari mahasiswa
+        $mahasiswaKebutuhanKhusus = is_array($mahasiswa->kebutuhan_khusus) ? $mahasiswa->kebutuhan_khusus : explode(',', $mahasiswa->kebutuhan_khusus);
+
+        // Ambil kebutuhan khusus dari wali (Ayah)
+        $wali1KebutuhanKhusus = $wali1 && $wali1->kebutuhan_khusus ? (is_array($wali1->kebutuhan_khusus) ? $wali1->kebutuhan_khusus : explode(',', $wali1->kebutuhan_khusus)) : [];
+
+        // Ambil kebutuhan khusus dari wali (Ibu)
+        $wali2KebutuhanKhusus = $wali2 && $wali2->kebutuhan_khusus ? (is_array($wali2->kebutuhan_khusus) ? $wali2->kebutuhan_khusus : explode(',', $wali2->kebutuhan_khusus)) : [];
 
         if ($wali1) {
             $wali1province = $wali1->ktp->province;
@@ -638,6 +657,9 @@ class MahasiswaController extends Controller
             'wali2Detail' => $wali2Detail ?? null,
             'mhsDetail' => $mhsDetail ?? null,
             'krs' => $krs ?? null,
+            'mahasiswaKebutuhanKhusus' => $mahasiswaKebutuhanKhusus,
+            'wali1KebutuhanKhusus' => $wali1KebutuhanKhusus,
+            'wali2KebutuhanKhusus' => $wali2KebutuhanKhusus,
         ]);
     }
 
@@ -687,10 +709,13 @@ class MahasiswaController extends Controller
             // Hapus Mahasiswa
             $mahasiswa->delete();
 
-            return response()->json(['success' => 'Mahasiswa dan data terkait berhasil dihapus']);
+            return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil dihapus.');
         } catch (\Exception $e) {
-            // Tangani pengecualian dan kembalikan dengan pesan error
-            return response()->json(['error' => 'Terjadi kesalahan. Silahkan coba lagi.'], 500);
+            // Handle the exception and redirect back with the error message
+            return redirect()->back()->withInput()->with([
+                'error' => $e->getMessage(),
+                'toast_message' => 'Data gagal dihapus',
+            ]);
         }
     }
 
