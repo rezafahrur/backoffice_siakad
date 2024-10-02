@@ -68,7 +68,13 @@
                     </tbody>
                 </table>
             </div>
-            <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Back</a>
+
+            <div class="d-flex justify-content-between mb-3">
+                <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('nilai.pdf', $nilai->id) }}" class="btn btn-success btn-icon-text mb-2 mb-md-0">
+                    <i class="btn-icon-prepend" data-feather="download"></i> Download PDF
+                </a>
+            </div>
         </div>
     </div>
 @endsection
