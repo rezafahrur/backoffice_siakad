@@ -22,7 +22,9 @@
                             </a>
                             <a href="{{ route('kurikulum.export') }}" class="btn btn-success btn-icon">
                                 <i class="btn-icon-prepend" data-feather="download"></i>
-
+                            </a>
+                            <a href="{{ route('kurikulum.export',['type' => 'matkul']) }}" class="btn btn-success btn-icon">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
                             </a>
                         </div>
                     </div>

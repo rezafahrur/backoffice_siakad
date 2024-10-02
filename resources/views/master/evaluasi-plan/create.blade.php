@@ -55,7 +55,7 @@
                             <tr class="detail-item">
                                 <!-- Jenis Evaluasi as a Select -->
                                 <td>
-                                    <select name="details[0][jenis_evaluasi]" class="form-control" required>
+                                    <select name="details[0][jenis_evaluasi]" class="form-control jenis-evaluasi" required>
                                         <option value="">Pilih...</option>
                                         <option value="2">Hasil Partisipatif</option>
                                         <option value="3">Hasil Proyek</option>
@@ -63,7 +63,14 @@
                                     </select>
                                 </td>
                                 <!-- Nama Evaluasi -->
-                                <td><input type="text" name="details[0][nama_evaluasi]" class="form-control">
+                                <td>
+                                    <select name="details[0][nama_evaluasi]" class="form-control nama-evaluasi" disabled>
+                                        <option value="">Pilih...</option>
+                                        <option value="TGS">Tugas</option>
+                                        <option value="QIZ">Quiz</option>
+                                        <option value="UTS">UTS</option>
+                                        <option value="UAS">UAS</option>
+                                    </select>
                                 </td>
                                 <!-- Deskripsi Bahasa Indo -->
                                 <td>
@@ -107,7 +114,7 @@
             <tr class="detail-item">
                 <!-- Jenis Evaluasi as a Select -->
                 <td>
-                    <select name="details[${detailIndex}][jenis_evaluasi]" class="form-control" required>
+                    <select name="details[${detailIndex}][jenis_evaluasi]" class="form-control jenis-evaluasi" required>
                         <option value="0">Pilih...</option>
                         <option value="2">Hasil Partisipatif</option>
                         <option value="3">Hasil Proyek</option>
@@ -115,7 +122,15 @@
                     </select>
                 </td>
                 <!-- Nama Evaluasi -->
-                <td><input type="text" name="details[${detailIndex}][nama_evaluasi]" class="form-control"></td>
+                <td>
+                    <select name="details[${detailIndex}][nama_evaluasi]" class="form-control nama-evaluasi" disabled>
+                        <option value="">Pilih...</option>
+                        <option value="TGS">Tugas</option>
+                        <option value="QIZ">Quiz</option>
+                        <option value="UTS">UTS</option>
+                        <option value="UAS">UAS</option>
+                    </select>
+                </td>
                 <!-- Deskripsi Bahasa Indo -->
                 <td><textarea name="details[${detailIndex}][desc_indo]" class="form-control" required></textarea></td>
                 <!-- Deskripsi Bahasa Eng -->
@@ -128,6 +143,20 @@
             `;
             document.getElementById('details-section').insertAdjacentHTML('beforeend', newRow);
             detailIndex++;
+        });
+
+        // Aktifkan dan nonaktifkan Nama Evaluasi tergantung pada Jenis Evaluasi yang dipilih
+        $(document).on('change', '.jenis-evaluasi', function() {
+            console.log('Jenis evaluasi changed'); // Debugging log
+            let jenisEvaluasi = $(this).val();
+            let namaEvaluasiSelect = $(this).closest('tr').find('.nama-evaluasi');
+
+            if (jenisEvaluasi == '4') {
+                namaEvaluasiSelect.prop('disabled', false);
+            } else {
+                namaEvaluasiSelect.prop('disabled', true);
+                namaEvaluasiSelect.val(''); // Reset value when disabled
+            }
         });
 
         // Fetch Program Studi based on selected Matakuliah
@@ -158,16 +187,12 @@
         document.getElementById('evaluasi-form').addEventListener('submit', function(event) {
             let totalBobot = 0;
             document.querySelectorAll('input[name^="details"][name$="[bobot]"]').forEach(function(input) {
-                totalBobot += parseInt(input.value) || 0;
+                totalBobot += parseInt(input.value);
             });
 
             if (totalBobot !== 100) {
                 event.preventDefault(); // Prevent form submission
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Total Bobot Salah',
-                    text: 'Total bobot harus sama dengan 100. Saat ini total bobot adalah ' + totalBobot,
-                });
+                alert('Total bobot harus 100');
             }
         });
     </script>
