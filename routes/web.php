@@ -196,7 +196,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // skala-nilai
     Route::get('/skala-nilai', [SkalaNilaiController::class, 'index'])->name('skala-nilai.index');
     Route::get('/skala-nilai/create', [SkalaNilaiController::class, 'create'])->name('skala-nilai.create');
-    Route::post('/skala-nilai', [SkalaNilaiController::class, 'store'])->name('skala-nilai.store');
+    Route::post('/skala-nilai/store', [SkalaNilaiController::class, 'store'])->name('skala-nilai.store');
     Route::get('/skala-nilai/{skalaNilai}/edit', [SkalaNilaiController::class, 'edit'])->name('skala-nilai.edit');
     Route::put('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'update'])->name('skala-nilai.update');
     Route::delete('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'destroy'])->name('skala-nilai.destroy');
