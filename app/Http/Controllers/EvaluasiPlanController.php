@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EvaluasiPlanExport;
 use App\Models\Matakuliah;
 use App\Models\EvaluasiPlan;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use App\Models\EvaluasiPlanDetail;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EvaluasiPlanController extends Controller
 {
@@ -14,6 +16,11 @@ class EvaluasiPlanController extends Controller
     {
         $evaluasiPlans = EvaluasiPlan::with('matakuliah', 'programStudi')->get();
         return view('master.evaluasi-plan.index', compact('evaluasiPlans'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new EvaluasiPlanExport, 'evaluasi_plan.xlsx');
     }
 
     public function create()
