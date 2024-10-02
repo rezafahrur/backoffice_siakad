@@ -15,10 +15,6 @@ class SkalaNilai extends Model
     protected $fillable = [
         'semester_id',
         'program_studi_id',
-        'nilai_huruf',
-        'nilai_indeks',
-        'bobot_minimum',
-        'bobot_maksimum',
         'tgl_mulai_efektif',
         'tgl_akhir_efektif',
     ];
