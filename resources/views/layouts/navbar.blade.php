@@ -216,6 +216,14 @@
                                             <a class="nav-link" href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
                                         </li>
                                     @endcan
+
+                                    {{-- @can('read_aktivitas_mahasiswa') --}}
+                                    <li class="nav-item {{ Route::is('aktivitas.index') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('aktivitas.index') }}">Aktivitas
+                                            Mahasiswa</a>
+                                    </li>
+
+                                    {{-- @endcan --}}
                                 </ul>
                             </div>
                         </div>
