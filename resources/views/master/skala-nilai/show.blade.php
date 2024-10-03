@@ -21,47 +21,48 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="semester_id" class="form-label">Semester</label>
-                    <p class="form-control-plaintext">{{ $skalaNilai->semester->kode_semester }} - {{ $skalaNilai->semester->nama_semester }}</p>
+                    <input type="text" class="form-control" value="{{ $skalaNilai->semester->kode_semester }} - {{ $skalaNilai->semester->nama_semester }}" readonly>
                 </div>
 
                 <div class="col-md-6">
                     <label for="program_studi_id" class="form-label">Program Studi</label>
-                    <p class="form-control-plaintext">{{ $skalaNilai->programStudi->kode_prodi }} - {{ $skalaNilai->programStudi->nama_program_studi }}</p>
-                </div>
-
-                <div class="col-md-6">
-                    <label for="nilai_huruf" class="form-label">Nilai Huruf</label>
-                    <p class="form-control-plaintext">{{ $skalaNilai->nilai_huruf }}</p>
-                </div>
-
-                <div class="col-md-6">
-                    <label for="nilai_indeks" class="form-label">Nilai Angka</label>
-                    <p class="form-control-plaintext">{{ $skalaNilai->nilai_indeks }}</p>
-                </div>
-
-                <div class="col-md-6">
-                    <label for="bobot_minimum" class="form-label">Bobot Minimum</label>
-                    <p class="form-control-plaintext">{{ $skalaNilai->bobot_minimum }}</p>
-                </div>
-
-                <div class="col-md-6">
-                    <label for="bobot_maksimum" class="form-label">Bobot Maksimum</label>
-                    <p class="form-control-plaintext">{{ $skalaNilai->bobot_maksimum }}</p>
+                    <input type="text" class="form-control" value="{{ $skalaNilai->programStudi->kode_prodi }} - {{ $skalaNilai->programStudi->nama_program_studi }}" readonly>
                 </div>
 
                 <div class="col-md-6">
                     <label for="tgl_mulai_efektif" class="form-label">Tanggal Mulai Efektif</label>
-                    <p class="form-control-plaintext">{{ \Carbon\Carbon::parse($skalaNilai->tgl_mulai_efektif)->format('d-m-Y') }}</p>
+                    <input type="text" class="form-control" value="{{ \Carbon\Carbon::parse($skalaNilai->tgl_mulai_efektif)->format('d-m-Y') }}" readonly>
                 </div>
 
                 <div class="col-md-6">
                     <label for="tgl_akhir_efektif" class="form-label">Tanggal Akhir Efektif</label>
-                    <p class="form-control-plaintext">{{ \Carbon\Carbon::parse($skalaNilai->tgl_akhir_efektif)->format('d-m-Y') }}</p>
+                    <input type="text" class="form-control" value="{{ \Carbon\Carbon::parse($skalaNilai->tgl_akhir_efektif)->format('d-m-Y') }}" readonly>
                 </div>
             </div>
 
+            <!-- Tabel untuk Detail Skala Nilai -->
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 160px;">Bobot Minimum</th>
+                        <th style="width: 160px;">Bobot Maksimum</th>
+                        <th>Nilai Huruf</th>
+                        <th>Nilai Indeks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($skalaNilai->details as $detail)
+                        <tr>
+                            <td>{{ $detail->bobot_minimum }}</td>
+                            <td>{{ $detail->bobot_maksimum }}</td>
+                            <td>{{ $detail->nilai_huruf }}</td>
+                            <td>{{ $detail->nilai_indeks }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
             <a href="{{ route('skala-nilai.index') }}" class="btn btn-secondary">Back</a>
-            
         </div>
     </div>
 @endsection

@@ -11,9 +11,10 @@ use App\Models\SkalaNilaiDetail;
 class SkalaNilaiController extends Controller
 {
     public function index() {
-        $skalaNilai = SkalaNilai::with(['semester', 'programStudi'])->get();
+        $skalaNilai = SkalaNilai::with(['semester', 'programStudi', 'skalaNilaiDetail'])->get();
         return view('master.skala-nilai.index', compact('skalaNilai'));
     }
+    
 
     public function create () {
         $semesters = Semester::all();
@@ -29,7 +30,7 @@ class SkalaNilaiController extends Controller
             'program_studi_id' => 'required',                 // Ensure program_studi_id is provided
             'tgl_mulai_efektif' => 'required|date',           // Validate date for start
             'tgl_akhir_efektif' => 'required|date',           // Validate date for end
-            'details' => 'required|array',                    // Ensure the details array is present
+            'details' => 'nullable|array',                    // Ensure the details array is present
             'details.*.bobot_minimum' => 'required|numeric',   // Each detail's bobot_minimum must be a number
             'details.*.bobot_maksimum' => 'required|numeric',  // Each detail's bobot_maksimum must be a number
             'details.*.nilai_huruf' => 'required|alpha|size:1',// Each detail's nilai_huruf should be a single letter
@@ -84,72 +85,74 @@ class SkalaNilaiController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'semester_id' => 'required',
-            'program_studi_id' => 'required',
-            'tgl_mulai_efektif' => 'required|date',
-            'tgl_akhir_efektif' => 'required|date',
-            'details' => 'required|array',
-            'details.*.id' => 'nullable|exists:t_skala_nilai_detail,id', // Check if the detail exists
-            'details.*.bobot_minimum' => 'required|numeric',
-            'details.*.bobot_maksimum' => 'required|numeric',
-            'details.*.nilai_huruf' => 'required|alpha|size:1',
-            'details.*.nilai_indeks' => 'required|numeric',
-        ], [
-            'nilai_huruf.size' => 'Nilai huruf harus berupa satu huruf.',
-            'nilai_huruf.alpha' => 'Nilai huruf harus berupa huruf alfabet.',
+{
+    // Validate the incoming request data
+    $validatedData = $request->validate([
+        'semester_id' => 'required',
+        'program_studi_id' => 'required',
+        'tgl_mulai_efektif' => 'required|date',
+        'tgl_akhir_efektif' => 'required|date',
+        'details' => 'nullable|array', // Make details nullable
+        'details.*.id' => 'nullable|exists:t_skala_nilai_detail,id',
+        'details.*.bobot_minimum' => 'required_with:details.*|numeric',
+        'details.*.bobot_maksimum' => 'required_with:details.*|numeric',
+        'details.*.nilai_huruf' => 'required_with:details.*|alpha|size:1',
+        'details.*.nilai_indeks' => 'required_with:details.*|numeric',
+    ], [
+        'details.*.nilai_huruf.size' => 'Nilai huruf harus berupa satu huruf.',
+        'details.*.nilai_huruf.alpha' => 'Nilai huruf harus berupa huruf alfabet.',
+    ]);
+
+    try {
+        // Find the SkalaNilai record by its ID
+        $skalaNilai = SkalaNilai::findOrFail($id);
+
+        // Update SkalaNilai data
+        $skalaNilai->update([
+            'semester_id' => $validatedData['semester_id'],
+            'program_studi_id' => $validatedData['program_studi_id'],
+            'tgl_mulai_efektif' => $validatedData['tgl_mulai_efektif'],
+            'tgl_akhir_efektif' => $validatedData['tgl_akhir_efektif'],
         ]);
 
-        try {
-            // Find the SkalaNilai record by its ID
-            $skalaNilai = SkalaNilai::find($id);
+        // Initialize details to an empty array if not set
+        $details = $validatedData['details'] ?? [];
 
-            if (!$skalaNilai) {
-                return redirect()->route('skala-nilai.index')->with('error', 'Data tidak ditemukan');
-            }
+        // Loop through the details and update or create as necessary
+        foreach ($details as $detail) {
+            if (isset($detail['id'])) {
+                // Update existing detail
+                $skalaNilaiDetail = SkalaNilaiDetail::find($detail['id']);
 
-            // Update SkalaNilai data
-            $skalaNilai->update([
-                'semester_id' => $validatedData['semester_id'],
-                'program_studi_id' => $validatedData['program_studi_id'],
-                'tgl_mulai_efektif' => $validatedData['tgl_mulai_efektif'],
-                'tgl_akhir_efektif' => $validatedData['tgl_akhir_efektif'],
-            ]);
-
-            // Update or create SkalaNilaiDetail records
-            foreach ($validatedData['details'] as $detail) {
-                // If the detail has an ID, find it, otherwise create a new record
-                if (isset($detail['id'])) {
-                    $skalaNilaiDetail = SkalaNilaiDetail::find($detail['id']);
-
-                    if ($skalaNilaiDetail) {
-                        // Update the existing detail
-                        $skalaNilaiDetail->update([
-                            'bobot_minimum' => $detail['bobot_minimum'],
-                            'bobot_maksimum' => $detail['bobot_maksimum'],
-                            'nilai_huruf' => $detail['nilai_huruf'],
-                            'nilai_indeks' => $detail['nilai_indeks'],
-                        ]);
-                    }
-                } else {
-                    // Create a new detail record
-                    SkalaNilaiDetail::create([
-                        'skala_nilai_id' => $skalaNilai->id,
+                if ($skalaNilaiDetail) {
+                    $skalaNilaiDetail->update([
                         'bobot_minimum' => $detail['bobot_minimum'],
                         'bobot_maksimum' => $detail['bobot_maksimum'],
                         'nilai_huruf' => $detail['nilai_huruf'],
                         'nilai_indeks' => $detail['nilai_indeks'],
                     ]);
                 }
+            } else {
+                // Create a new detail record
+                SkalaNilaiDetail::create([
+                    'skala_nilai_id' => $skalaNilai->id,
+                    'bobot_minimum' => $detail['bobot_minimum'],
+                    'bobot_maksimum' => $detail['bobot_maksimum'],
+                    'nilai_huruf' => $detail['nilai_huruf'],
+                    'nilai_indeks' => $detail['nilai_indeks'],
+                ]);
             }
-
-            return redirect()->route('skala-nilai.index')->with('success', 'Data berhasil diupdate');
-        } catch (\Exception $e) {
-            return redirect()->route('skala-nilai.index')->with('error', 'Data gagal diupdate: ' . $e->getMessage());
         }
+
+        return redirect()->route('skala-nilai.index')->with('success', 'Data berhasil diupdate');
+    } catch (\Exception $e) {
+        return redirect()->route('skala-nilai.index')->with('error', 'Data gagal diupdate: ' . $e->getMessage());
     }
+}
+
+    
+    
+
 
     
 
