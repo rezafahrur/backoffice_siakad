@@ -16,16 +16,15 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Create Semester</h4>
+            <h4 class="card-title">Create Skala Nilai</h4>
             <form action="{{ route('skala-nilai.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row mb-3">
-
                     <div class="col-md-6">
                         <label for="semester_id" class="form-label">Semester</label>
                         <select class="form-control @error('semester_id') is-invalid @enderror" id="semester_id" name="semester_id">
-                            <option value="">Pilih Semester</option> <!-- Tambahkan ini sebagai default -->
+                            <option value="">Pilih Semester</option>
                             @foreach ($semesters as $semester)
                                 <option value="{{ $semester->id }}" {{ old('semester_id') == $semester->id ? 'selected' : '' }}>
                                     {{ $semester->kode_semester }} - {{ $semester->nama_semester }}
@@ -38,13 +37,11 @@
                             </div>
                         @enderror
                     </div>
-                    
 
-                   
                     <div class="col-md-6">
                         <label for="program_studi_id" class="form-label">Program Studi</label>
                         <select class="form-control @error('program_studi_id') is-invalid @enderror" id="program_studi_id" name="program_studi_id">
-                            <option value="">Pilih Program Studi</option> <!-- Tambahkan ini sebagai default -->
+                            <option value="">Pilih Program Studi</option>
                             @foreach ($programStudis as $program_studi)
                                 <option value="{{ $program_studi->id }}" {{ old('program_studi_id') == $program_studi->id ? 'selected' : '' }}>
                                     {{ $program_studi->kode_prodi }} - {{ $program_studi->nama_program_studi }}
@@ -56,55 +53,8 @@
                                 {{ $message }}
                             </div>
                         @enderror
-                    </div> 
-
-                    <div class="col-md-6">
-                        <label for="nilai_huruf" class="form-label">Nilai Huruf</label>
-                        <input type="text" class="form-control @error('nilai_huruf') is-invalid @enderror" id="nilai_huruf"
-                            name="nilai_huruf" value="{{ old('nilai_huruf') }}">
-                        @error('nilai_huruf')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
                     </div>
 
-                    <div class="col-md-6">
-                        <label for="nilai_indeks" class="form-label">Nilai Angka</label>
-                        <input type="number" class="form-control @error('nilai_indeks') is-invalid @enderror" id="nilai_indeks"
-                            name="nilai_indeks" value="{{ old('nilai_indeks') }}">
-                        @error('nilai_indeks')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-            
-                    <div class="col-md-6">
-                        <label for="bobot_minimum" class="form-label">Bobot Minimum</label>
-                        <input type="number" class="form-control @error('bobot_minimum') is-invalid @enderror" id="bobot_minimum"
-                            name="bobot_minimum" value="{{ old('bobot_minimum') }}">
-                        @error('bobot_minimum')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                   
-                    <div class="col-md-6">
-                        <label for="bobot_maksimum" class="form-label">Bobot Maksimum</label>
-                        <input type="number" class="form-control @error('bobot_maksimum') is-invalid @enderror" id="bobot_maksimum"
-                            name="bobot_maksimum" value="{{ old('bobot_maksimum') }}">
-                        @error('bobot_maksimum')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                   
                     <div class="col-md-6">
                         <label for="tgl_mulai_efektif" class="form-label">Tanggal Mulai Efektif</label>
                         <input type="date" class="form-control @error('tgl_mulai_efektif') is-invalid @enderror" id="tgl_mulai_efektif"
@@ -116,7 +66,6 @@
                         @enderror
                     </div>
 
-                  
                     <div class="col-md-6">
                         <label for="tgl_akhir_efektif" class="form-label">Tanggal Akhir Efektif</label>
                         <input type="date" class="form-control @error('tgl_akhir_efektif') is-invalid @enderror" id="tgl_akhir_efektif"
@@ -127,9 +76,54 @@
                             </div>
                         @enderror
                     </div>
+                </div>
 
-                  
-                     
+                <!-- Button Add Detail -->
+                {{-- <div class="mb-3">
+                    <button type="button" class="btn btn-primary" id="add-detail">Add Detail</button>
+                </div> --}}
+
+                <!-- Tabel untuk Detail Skala Nilai -->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width: 160px;">Bobot Minimum</th>
+                            <th style="width: 160px;">Bobot Maksimum</th>
+                            <th>Nilai Huruf</th>
+                            <th>Nilai Indeks</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="details-table">
+                        <!-- Baris input detail akan ditambahkan di sini oleh JavaScript -->
+                        <tr class="detail-item">
+                            <td>
+                                <input type="number" step="0.01" class="form-control" name="details[0][bobot_minimum]" required>
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" class="form-control" name="details[0][bobot_maksimum]" required>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="details[0][nilai_huruf]" maxlength="1" required>
+                            </td>
+                            <td>
+                                <input type="number" step="0.01" class="form-control" name="details[0][nilai_indeks]" required>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger remove-detail">
+                                    <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
+                                </button>
+                            </td>
+                            
+                            
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="d-flex justify-content-end mb-3">
+                    <button type="button" id="add-detail" class="btn btn-sm btn-success btn-icon">
+                        <i class="btn-icon-prepend" data-feather="plus-circle"></i>
+                    </button>
                 </div>
 
                 <a href="{{ route('skala-nilai.index') }}" class="btn btn-secondary">Back</a>
@@ -137,7 +131,45 @@
             </form>
         </div>
     </div>
+
+    <script>
+let detailIndex = 0;
+
+document.getElementById('add-detail').addEventListener('click', function () {
+    const tableBody = document.getElementById('details-table');
+    const row = document.createElement('tr');
+
+    row.innerHTML = `
+        <td>
+            <input type="number" step="0.01" class="form-control" name="details[${detailIndex}][bobot_minimum]" required>
+        </td>
+        <td>
+            <input type="number" step="0.01" class="form-control" name="details[${detailIndex}][bobot_maksimum]" required>
+        </td>
+        <td>
+            <input type="text" class="form-control" name="details[${detailIndex}][nilai_huruf]" maxlength="1" required>
+        </td>
+        <td>
+            <input type="number" step="0.01" class="form-control" name="details[${detailIndex}][nilai_indeks]" required>
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger remove-detail">
+                <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
+            </button>
+        </td>
+    `;
+
+    tableBody.appendChild(row);
+    detailIndex++;  // Increment index for the next row
+
+    feather.replace();
+
+    row.querySelector('.remove-detail').addEventListener('click', function () {
+        row.remove();
+    });
+});
+
+
+    </script>
 @endsection
-
-
 
