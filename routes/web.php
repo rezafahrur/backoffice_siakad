@@ -25,6 +25,7 @@ use App\Http\Controllers\PembelajaranPlanController;
 use App\Http\Controllers\PeriodePerkuliahanController;
 use App\Http\Controllers\MasterFeatureController;
 use App\Http\Controllers\MoodleAuthController;
+use App\Http\Controllers\AktivitasMahasiswaController;
 use App\Models\MasterFeature;
 
 Route::group(['middleware' => ['auth:hr']], function () {
@@ -202,6 +203,15 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::put('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'update'])->name('skala-nilai.update');
     Route::delete('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'destroy'])->name('skala-nilai.destroy');
     Route::get('/skala-nilai/show/{id}', [SkalaNilaiController::class, 'show'])->name('skala-nilai.show');
+
+    // aktivitas mahasiswa
+    Route::get('/aktivitas', [AktivitasMahasiswaController::class, 'index'])->name('aktivitas.index');
+    Route::get('/aktivitas/create', [AktivitasMahasiswaController::class, 'create'])->name('aktivitas.create');
+    Route::post('/aktivitas/store', [AktivitasMahasiswaController::class, 'store'])->name('aktivitas.store');
+    Route::get('/aktivitas/{id}/edit', [AktivitasMahasiswaController::class, 'edit'])->name('aktivitas.edit');
+    Route::put('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'update'])->name('aktivitas.update');
+    Route::get('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'show'])->name('aktivitas.show');
+    Route::delete('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'destroy'])->name('aktivitas.destroy');
 
     // pembelajaran plan
     Route::get('/rps', [PembelajaranPlanController::class, 'index'])->name('pembelajaran_plans.index');
