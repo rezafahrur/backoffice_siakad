@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\KurikulumDetail;
 use Illuminate\Support\Facades\DB;
 use App\Exports\KurikulumExport;
+use App\Exports\MatkulKurikulumExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class KurikulumController extends Controller
@@ -22,9 +23,13 @@ class KurikulumController extends Controller
         return view('master.kurikulum.index', compact('kurikulums'));
     }
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new KurikulumExport, 'kurikulum.xlsx');
+        if ($request->has('type') && $request->type == 'matkul') {
+            return Excel::download(new MatkulKurikulumExport, 'matkul_kurikulum.xlsx');
+        } else {
+            return Excel::download(new KurikulumExport, 'kurikulum.xlsx');
+        }
     }
 
     public function create()

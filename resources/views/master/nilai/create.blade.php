@@ -55,10 +55,12 @@
                             <tr>
                                 <th>Nama Mahasiswa</th>
                                 <th>Hasil Proyek</th>
+                                <th>Aktivitas Partisipatif</th>
                                 <th>Quiz</th>
                                 <th>Tugas</th>
                                 <th>UTS</th>
                                 <th>UAS</th>
+                                <th>Nilai Angka</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -133,20 +135,27 @@
                                 <input type="hidden" name="details[${mahasiswa.id}][mahasiswa_id]" value="${mahasiswa.id}">
 
                                 <td>
-                                    <input type="text" name="details[${mahasiswa.id}][hasil_proyek]" class="form-control" placeholder="Nilai Proyek Akhir" value="0">
+                                    <input type="number" name="details[${mahasiswa.id}][hasil_proyek]" class="form-control" placeholder="Nilai Proyek Akhir" value="0">
                                 </td>
                                 <td>
-                                    <input type="text" name="details[${mahasiswa.id}][quiz]" class="form-control" placeholder="Nilai Quiz" value="0">
+                                    <input type="number" name="details[${mahasiswa.id}][aktivitas_partisipatif]" class="form-control" placeholder="Nilai Aktivitas Partisipatif" value="0">
                                 </td>
                                 <td>
-                                    <input type="text" name="details[${mahasiswa.id}][tugas]" class="form-control" placeholder="Nilai Tugas" value="0">
+                                    <input type="number" name="details[${mahasiswa.id}][quiz]" class="form-control" placeholder="Nilai Quiz" value="0">
                                 </td>
                                 <td>
-                                    <input type="text" name="details[${mahasiswa.id}][uts]" class="form-control" placeholder="Nilai UTS" value="0">
+                                    <input type="number" name="details[${mahasiswa.id}][tugas]" class="form-control" placeholder="Nilai Tugas" value="0">
                                 </td>
                                 <td>
-                                    <input type="text" name="details[${mahasiswa.id}][uas]" class="form-control" placeholder="Nilai UAS" value="0">
+                                    <input type="number" name="details[${mahasiswa.id}][uts]" class="form-control" placeholder="Nilai UTS" value="0">
                                 </td>
+                                <td>
+                                    <input type="number" name="details[${mahasiswa.id}][uas]" class="form-control" placeholder="Nilai UAS" value="0">
+                                </td>
+                                <td>
+                                    <input type="number" name="details[${mahasiswa.id}][nilai_angka]" class="form-control" placeholder="Nilai Angka" value="0">
+                                </td>
+
                             </tr>
                         `;
 

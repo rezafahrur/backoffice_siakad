@@ -198,7 +198,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // skala-nilai
     Route::get('/skala-nilai', [SkalaNilaiController::class, 'index'])->name('skala-nilai.index');
     Route::get('/skala-nilai/create', [SkalaNilaiController::class, 'create'])->name('skala-nilai.create');
-    Route::post('/skala-nilai', [SkalaNilaiController::class, 'store'])->name('skala-nilai.store');
+    Route::post('/skala-nilai/store', [SkalaNilaiController::class, 'store'])->name('skala-nilai.store');
     Route::get('/skala-nilai/{skalaNilai}/edit', [SkalaNilaiController::class, 'edit'])->name('skala-nilai.edit');
     Route::put('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'update'])->name('skala-nilai.update');
     Route::delete('/skala-nilai/{skalaNilai}', [SkalaNilaiController::class, 'destroy'])->name('skala-nilai.destroy');
@@ -215,6 +215,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     // pembelajaran plan
     Route::get('/rps', [PembelajaranPlanController::class, 'index'])->name('pembelajaran_plans.index');
+    Route::get('/rps/export', [PembelajaranPlanController::class, 'export'])->name('pembelajaran_plans.export');
     Route::get('/rps/create', [PembelajaranPlanController::class, 'create'])->name('pembelajaran_plans.create');
     Route::post('/rps', [PembelajaranPlanController::class, 'store'])->name('pembelajaran_plans.store');
     Route::get('/rps/{pembelajaranPlan}/edit', [PembelajaranPlanController::class, 'edit'])->name('pembelajaran_plans.edit');
@@ -225,6 +226,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     // evaluasi plan
     Route::get('/evaluasi-plan', [EvaluasiPlanController::class, 'index'])->name('evaluasi_plan.index');
+    Route::get('/evaluasi-plan/export', [EvaluasiPlanController::class, 'export'])->name('evaluasi_plan.export');
     Route::get('/evaluasi-plan/create', [EvaluasiPlanController::class, 'create'])->name('evaluasi_plan.create');
     Route::post('/evaluasi-plan', [EvaluasiPlanController::class, 'store'])->name('evaluasi_plan.store');
     Route::get('/evaluasi-plan/{evaluasiPlan}/edit', [EvaluasiPlanController::class, 'edit'])->name('evaluasi_plan.edit');
@@ -252,6 +254,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/nilai/getKelasMataKuliah/{programStudiId}', [NilaiController::class, 'getKelasMataKuliah']);
     // get mahaasiswa
     Route::get('/nilai/get-mahasiswa/{kelasId}', [NilaiController::class, 'getMahasiswaByKelas']);
+    Route::get('/nilai/{id}/pdf', [NilaiController::class, 'cetakPdf'])->name('nilai.pdf');
 
     Route::get('/moodle-login', [MoodleAuthController::class, 'showLoginForm'])->name('moodle.login.form');
     Route::post('/moodle-login', [MoodleAuthController::class, 'loginToMoodle'])->name('moodle.login');

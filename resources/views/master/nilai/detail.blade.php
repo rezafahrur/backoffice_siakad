@@ -34,16 +34,20 @@
             </div>
 
             <div class="table-responsive mb-3">
-                <h4 class="card-title">Nilai Mahasiswa</h4>
+                <h4 class="card-title">Detail Nilai Mahasiswa</h4>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>Nama Mahasiswa</th>
                             <th>Proyek Akhir</th>
-                            <th> Quiz</th>
+                            <th>Aktivitas Partisipatif</th>
+                            <th>Quiz</th>
                             <th>Tugas</th>
                             <th>UTS</th>
                             <th>UAS</th>
+                            <th>Nilai Angka</th>
+                            <th>Nilai Indeks</th>
+                            <th>Nilai Huruf</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,16 +55,26 @@
                             <tr>
                                 <td>{{ $detail->mahasiswa->nama }}</td>
                                 <td>{{ $detail->hasil_proyek }}</td>
+                                <td>{{ $detail->aktivitas_partisipatif }}</td>
                                 <td>{{ $detail->quiz }}</td>
                                 <td>{{ $detail->tugas }}</td>
                                 <td>{{ $detail->uts }}</td>
                                 <td>{{ $detail->uas }}</td>
+                                <td>{{ $detail->nilai_angka }}</td>
+                                <td>{{ $detail->nilai_indeks }}</td>
+                                <td>{{ $detail->nilai_huruf }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Back</a>
+
+            <div class="d-flex justify-content-between mb-3">
+                <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('nilai.pdf', $nilai->id) }}" class="btn btn-success btn-icon-text mb-2 mb-md-0">
+                    <i class="btn-icon-prepend" data-feather="download"></i> Download PDF
+                </a>
+            </div>
         </div>
     </div>
 @endsection

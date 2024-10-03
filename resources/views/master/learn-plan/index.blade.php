@@ -8,7 +8,7 @@
             <li class="breadcrumb-item">
                 <a href="#">Data</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Reancana Pembelajaran</li>
+            <li class="breadcrumb-item active" aria-current="page">Rencana Pembelajaran</li>
         </ol>
     </nav>
 
@@ -16,13 +16,16 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Data Reancana Pembelajaran</h6>
+                    <h6 class="card-title">Data Rencana Pembelajaran</h6>
                     <div class="d-flex justify-content-end mb-3">
                         <div>
                             <a href="{{ route('pembelajaran_plans.create') }}"
                                 class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
+                            </a>
+                            <a href="{{ route('pembelajaran_plans.export') }}" class="btn btn-success btn-icon">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
                             </a>
                         </div>
                     </div>

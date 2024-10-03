@@ -15,10 +15,6 @@ class SkalaNilai extends Model
     protected $fillable = [
         'semester_id',
         'program_studi_id',
-        'nilai_huruf',
-        'nilai_indeks',
-        'bobot_minimum',
-        'bobot_maksimum',
         'tgl_mulai_efektif',
         'tgl_akhir_efektif',
     ];
@@ -34,6 +30,18 @@ class SkalaNilai extends Model
     {
         return $this->belongsTo(ProgramStudi::class, 'program_studi_id');
     }
+
+    // SkalaNilai.php
+    public function skalaNilaiDetail()
+    {
+        return $this->hasMany(SkalaNilaiDetail::class, 'skala_nilai_id');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(SkalaNilaiDetail::class);
+    }
+
 
 
 
