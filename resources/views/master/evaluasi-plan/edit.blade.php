@@ -63,7 +63,7 @@
                             @foreach ($evaluasiPlan->details as $index => $detail)
                                 <tr class="detail-item">
                                     <td>
-                                        <select name="details[{{ $index }}][jenis_evaluasi]" class="form-control"
+                                        <select name="details[{{ $index }}][jenis_evaluasi]" class="form-control jenis-evaluasi"
                                             required>
                                             <option value="">Pilih...</option>
                                             <option value="2" {{ $detail->jenis_evaluasi == 2 ? 'selected' : '' }}>
@@ -74,8 +74,21 @@
                                                 Kognitif/ Pengetahuan</option>
                                         </select>
                                     </td>
-                                    <td><input type="text" name="details[{{ $index }}][nama_evaluasi]"
-                                            class="form-control" value="{{ $detail->nama_evaluasi }}" required></td>
+                                    <td>
+                                        <select name="details[{{ $index }}][nama_evaluasi]"
+                                            class="form-control nama-evaluasi"
+                                            {{ $detail->jenis_evaluasi == 4 ? '' : 'disabled' }}>
+                                            <option value="">Pilih...</option>
+                                            <option value="TGS" {{ $detail->nama_evaluasi == 'TGS' ? 'selected' : '' }}>
+                                                Tugas</option>
+                                            <option value="QIZ" {{ $detail->nama_evaluasi == 'QIZ' ? 'selected' : '' }}>
+                                                Quiz</option>
+                                            <option value="UTS" {{ $detail->nama_evaluasi == 'UTS' ? 'selected' : '' }}>
+                                                UTS</option>
+                                            <option value="UAS" {{ $detail->nama_evaluasi == 'UAS' ? 'selected' : '' }}>
+                                                UAS</option>
+                                        </select>
+                                    </td>
                                     <td>
                                         <textarea name="details[{{ $index }}][desc_indo]" class="form-control" required>{{ $detail->desc_indo }}</textarea>
                                     </td>
@@ -107,7 +120,6 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         let detailIndex = {{ count($evaluasiPlan->details) }};
 
@@ -122,7 +134,15 @@
                         <option value="4">Kognitif atau Pengetahuan</option>
                     </select>
                 </td>
-                <td><input type="text" name="details[${detailIndex}][nama_evaluasi]" class="form-control" required></td>
+                <td>
+                    <select name="details[${detailIndex}][nama_evaluasi]" class="form-control nama-evaluasi" disabled>
+                        <option value="">Pilih...</option>
+                        <option value="TGS">Tugas</option>
+                        <option value="QIZ">Quiz</option>
+                        <option value="UTS">UTS</option>
+                        <option value="UAS">UAS</option>
+                    </select>
+                </td>
                 <td><textarea name="details[${detailIndex}][desc_indo]" class="form-control" required></textarea></td>
                 <td><textarea name="details[${detailIndex}][desc_eng]" class="form-control"></textarea></td>
                 <td><input type="number" name="details[${detailIndex}][bobot]" class="form-control" style="width: 80px;" required></td>
@@ -131,6 +151,35 @@
             `;
             document.getElementById('details-section').insertAdjacentHTML('beforeend', newRow);
             detailIndex++;
+        });
+
+        // Aktifkan dan nonaktifkan Nama Evaluasi tergantung pada Jenis Evaluasi yang dipilih
+        $(document).on('change', '.jenis-evaluasi', function() {
+            let jenisEvaluasi = $(this).val();
+            let namaEvaluasiSelect = $(this).closest('tr').find('.nama-evaluasi');
+
+            if (jenisEvaluasi == '4') {
+                namaEvaluasiSelect.prop('disabled', false);
+            } else {
+                namaEvaluasiSelect.prop('disabled', true);
+                namaEvaluasiSelect.prop('selectedIndex', 0);
+            }
+        });
+
+        $(document).ready(function() {
+            // Pastikan setiap dropdown jenis evaluasi di halaman sudah diperiksa saat halaman dimuat
+            $('.jenis-evaluasi').each(function() {
+                let jenisEvaluasi = $(this).val();
+                let namaEvaluasiSelect = $(this).closest('tr').find('.nama-evaluasi');
+
+                // Jika jenis_evaluasi == 4, aktifkan dropdown nama_evaluasi, selain itu nonaktifkan
+                if (jenisEvaluasi == '4') {
+                    namaEvaluasiSelect.prop('disabled', false);
+                } else {
+                    namaEvaluasiSelect.prop('disabled', true);
+                    namaEvaluasiSelect.prop('selectedIndex', 0);
+                }
+            });
         });
 
         document.getElementById('matakuliah_id').addEventListener('change', function() {

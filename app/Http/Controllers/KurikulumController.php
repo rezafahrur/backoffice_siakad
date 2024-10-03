@@ -9,6 +9,9 @@ use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use App\Models\KurikulumDetail;
 use Illuminate\Support\Facades\DB;
+use App\Exports\KurikulumExport;
+use App\Exports\MatkulKurikulumExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KurikulumController extends Controller
 {
@@ -18,6 +21,15 @@ class KurikulumController extends Controller
         $kurikulums = Kurikulum::with(['programStudi', 'semesters', 'krs'])->get();
 
         return view('master.kurikulum.index', compact('kurikulums'));
+    }
+
+    public function export(Request $request)
+    {
+        if ($request->has('type') && $request->type == 'matkul') {
+            return Excel::download(new MatkulKurikulumExport, 'matkul_kurikulum.xlsx');
+        } else {
+            return Excel::download(new KurikulumExport, 'kurikulum.xlsx');
+        }
     }
 
     public function create()

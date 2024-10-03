@@ -159,6 +159,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     //kuriukulum
     Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.index')->middleware(['permission:read_kurikulum']);
+    Route::get('/kurikulum/export', [KurikulumController::class, 'export'])->name('kurikulum.export');
     Route::get('/kurikulum/create', [KurikulumController::class, 'create'])->name('kurikulum.create')->middleware(['permission:create_kurikulum']);
     Route::post('/kurikulum', [KurikulumController::class, 'store'])->name('kurikulum.store')->middleware(['permission:create_kurikulum']);
     Route::get('/kurikulum/{kurikulum}/edit', [KurikulumController::class, 'edit'])->name('kurikulum.edit')->middleware(['permission:update_kurikulum']);
@@ -204,6 +205,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     // pembelajaran plan
     Route::get('/rps', [PembelajaranPlanController::class, 'index'])->name('pembelajaran_plans.index');
+    Route::get('/rps/export', [PembelajaranPlanController::class, 'export'])->name('pembelajaran_plans.export');
     Route::get('/rps/create', [PembelajaranPlanController::class, 'create'])->name('pembelajaran_plans.create');
     Route::post('/rps', [PembelajaranPlanController::class, 'store'])->name('pembelajaran_plans.store');
     Route::get('/rps/{pembelajaranPlan}/edit', [PembelajaranPlanController::class, 'edit'])->name('pembelajaran_plans.edit');
@@ -214,6 +216,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     // evaluasi plan
     Route::get('/evaluasi-plan', [EvaluasiPlanController::class, 'index'])->name('evaluasi_plan.index');
+    Route::get('/evaluasi-plan/export', [EvaluasiPlanController::class, 'export'])->name('evaluasi_plan.export');
     Route::get('/evaluasi-plan/create', [EvaluasiPlanController::class, 'create'])->name('evaluasi_plan.create');
     Route::post('/evaluasi-plan', [EvaluasiPlanController::class, 'store'])->name('evaluasi_plan.store');
     Route::get('/evaluasi-plan/{evaluasiPlan}/edit', [EvaluasiPlanController::class, 'edit'])->name('evaluasi_plan.edit');

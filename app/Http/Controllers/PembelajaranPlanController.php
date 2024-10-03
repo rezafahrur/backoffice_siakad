@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PembelajaranPlanExport;
 use App\Models\PembelajaranPlan;
 use App\Models\PembelajaranPlanDetail;
 use App\Models\Matakuliah;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PembelajaranPlanController extends Controller
 {
@@ -17,6 +19,11 @@ class PembelajaranPlanController extends Controller
     {
         $plans = PembelajaranPlan::with('matakuliah', 'programStudi')->get();
         return view('master.learn-plan.index', compact('plans'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new PembelajaranPlanExport, 'rencana_pembelajaran.xlsx');
     }
 
     /**
