@@ -168,6 +168,24 @@
                     </div>
                 </li>
 
+                {{-- Aktivitas Mahasiswa --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="link-icon" data-feather="activity"></i>
+                        <span class="menu-title">Aktivitas Mahasiswa</span>
+                        <i class="link-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <ul class="submenu-item">
+                            {{-- @can('read_aktivitas mahasiswa') --}}
+                            <li class="nav-item {{ Route::is('aktivitas.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('aktivitas.index') }}">Aktivitas Mahasiswa</a>
+                            </li>
+                            {{-- @endcan --}}
+                        </ul>
+                    </div>
+                </li>
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="link-icon" data-feather="grid"></i>
@@ -216,14 +234,6 @@
                                             <a class="nav-link" href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
                                         </li>
                                     @endcan
-
-                                    {{-- @can('read_aktivitas_mahasiswa') --}}
-                                    <li class="nav-item {{ Route::is('aktivitas.index') ? 'active' : '' }}">
-                                        <a class="nav-link" href="{{ route('aktivitas.index') }}">Aktivitas
-                                            Mahasiswa</a>
-                                    </li>
-
-                                    {{-- @endcan --}}
                                 </ul>
                             </div>
                         </div>
