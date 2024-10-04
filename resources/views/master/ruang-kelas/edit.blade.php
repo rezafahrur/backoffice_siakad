@@ -9,14 +9,14 @@
                 <a href="{{ route('ruang-kelas.index') }}">Ruang Kelas</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Edit
+                Edit Ruang Kelas
             </li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Form Ruang Kelas</h4>
+            <h4 class="card-title">Form Edit Ruang Kelas</h4>
             <form action="{{ route('ruang-kelas.update', $kelas) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -57,8 +57,8 @@
                         </div>
                     @enderror
                 </div>
-                <a href="{{ route('ruang-kelas.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('ruang-kelas.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

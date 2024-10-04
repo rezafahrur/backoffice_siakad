@@ -30,7 +30,7 @@
                                     <th>Kode</th>
                                     <th>Nama</th>
                                     <th>Kapasitas</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
