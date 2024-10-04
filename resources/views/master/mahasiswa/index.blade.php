@@ -49,7 +49,7 @@
                                     <th>Program Studi</th>
                                     <th>Data Lengkap</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

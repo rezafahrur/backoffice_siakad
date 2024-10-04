@@ -1911,11 +1911,11 @@
             <div class="navigation-buttons mt-4">
                 <button type="button" class="btn btn-secondary" id="backBtn"
                     onclick="window.location.href='{{ route('mahasiswa.index') }}'"
-                    style="display: none;">Back</button>
+                    style="display: none;">Kembali</button>
                 <button type="button" class="btn btn-secondary" id="prevBtn"
-                    onclick="nextPrev(-1)">Previous</button>
-                <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Next</button>
-                <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">Submit</button>
+                    onclick="nextPrev(-1)">Sebelumnya</button>
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Selanjutnya</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">Simpan</button>
             </div>
         </form>
     </div>
