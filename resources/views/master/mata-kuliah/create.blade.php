@@ -9,14 +9,14 @@
                 <a href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Create
+                Tambha Mata Kuliah
             </li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Form Mata Kuliah</h4>
+            <h4 class="card-title">Form Tambah Mata Kuliah</h4>
             <form action="{{ route('mata-kuliah.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
@@ -204,8 +204,8 @@
                     @enderror
                 </div> --}}
 
-                <a href="{{ route('mata-kuliah.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('mata-kuliah.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>
