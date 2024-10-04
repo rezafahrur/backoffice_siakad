@@ -9,14 +9,14 @@
                 <a href="{{ route('skala-nilai.index') }}">Skala Nilai</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Create
+                Tambah Skala Nilai
             </li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Create Skala Nilai</h4>
+            <h4 class="card-title">Tambah Skala Nilai</h4>
             <form action="{{ route('skala-nilai.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
@@ -91,7 +91,7 @@
                             <th style="width: 160px;">Bobot Maksimum</th>
                             <th>Nilai Huruf</th>
                             <th>Nilai Indeks</th>
-                            <th>Action</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="details-table">
@@ -126,8 +126,8 @@
                     </button>
                 </div>
 
-                <a href="{{ route('skala-nilai.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('skala-nilai.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

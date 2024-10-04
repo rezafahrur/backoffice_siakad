@@ -87,7 +87,7 @@
                             <th style="width: 160px;">Bobot Maksimum</th>
                             <th>Nilai Huruf</th>
                             <th>Nilai Indeks</th>
-                            <th>Action</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="details-table">
@@ -121,8 +121,8 @@
                     </button>
                 </div>
 
-                <a href="{{ route('skala-nilai.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{{ route('skala-nilai.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>
