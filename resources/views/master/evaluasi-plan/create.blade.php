@@ -49,6 +49,7 @@
                                 <th>Deskripsi (Eng)</th>
                                 <th style="width: 50px;">Bobot</th>
                                 <th style="width: 50px;">No Urut</th>
+                                <th style="width: 50px;">Action</th>
                             </tr>
                         </thead>
                         <tbody id="details-section">
@@ -88,6 +89,13 @@
                                 <td><input type="text"
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2)"
                                         name="details[0][no_urut]" class="form-control" style="width: 50px;"></td>
+
+                                        <td>
+                                            <button type="button" class="btn btn-danger remove-detail">
+                                                <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
+                                            </button>
+                                        </td>
+
                             </tr>
                         </tbody>
                     </table>
@@ -108,92 +116,104 @@
 
 @push('scripts')
     <script>
-        let detailIndex = 1;
-        document.getElementById('add-detail').addEventListener('click', function() {
-            let newRow = `
-            <tr class="detail-item">
-                <!-- Jenis Evaluasi as a Select -->
-                <td>
-                    <select name="details[${detailIndex}][jenis_evaluasi]" class="form-control jenis-evaluasi" required>
-                        <option value="0">Pilih...</option>
-                        <option value="2">Hasil Partisipatif</option>
-                        <option value="3">Hasil Proyek</option>
-                        <option value="4">Kognitif atau Pengetahuan</option>
-                    </select>
-                </td>
-                <!-- Nama Evaluasi -->
-                <td>
-                    <select name="details[${detailIndex}][nama_evaluasi]" class="form-control nama-evaluasi" disabled>
-                        <option value="">Pilih...</option>
-                        <option value="TGS">Tugas</option>
-                        <option value="QIZ">Quiz</option>
-                        <option value="UTS">UTS</option>
-                        <option value="UAS">UAS</option>
-                    </select>
-                </td>
-                <!-- Deskripsi Bahasa Indo -->
-                <td><textarea name="details[${detailIndex}][desc_indo]" class="form-control" required></textarea></td>
-                <!-- Deskripsi Bahasa Eng -->
-                <td><textarea name="details[${detailIndex}][desc_eng]" class="form-control"></textarea></td>
-                <!-- Bobot (Number Input with Fixed Width) -->
-                <td><input type="number" name="details[${detailIndex}][bobot]" class="form-control" style="width: 80px;" required></td>
-                <!-- No Urut (Number Input with Fixed Width) -->
-                <td><input type="number" name="details[${detailIndex}][no_urut]" class="form-control" style="width: 80px;"></td>
-            </tr>
-            `;
-            document.getElementById('details-section').insertAdjacentHTML('beforeend', newRow);
-            detailIndex++;
-        });
+let detailIndex = 1;
+document.getElementById('add-detail').addEventListener('click', function() {
+    let newRow = `
+    <tr class="detail-item">
+        <!-- Jenis Evaluasi as a Select -->
+        <td>
+            <select name="details[${detailIndex}][jenis_evaluasi]" class="form-control jenis-evaluasi" required>
+                <option value="0">Pilih...</option>
+                <option value="2">Hasil Partisipatif</option>
+                <option value="3">Hasil Proyek</option>
+                <option value="4">Kognitif atau Pengetahuan</option>
+            </select>
+        </td>
+        <!-- Nama Evaluasi -->
+        <td>
+            <select name="details[${detailIndex}][nama_evaluasi]" class="form-control nama-evaluasi" disabled>
+                <option value="">Pilih...</option>
+                <option value="TGS">Tugas</option>
+                <option value="QIZ">Quiz</option>
+                <option value="UTS">UTS</option>
+                <option value="UAS">UAS</option>
+            </select>
+        </td>
+        <!-- Deskripsi Bahasa Indo -->
+        <td><textarea name="details[${detailIndex}][desc_indo]" class="form-control" required></textarea></td>
+        <!-- Deskripsi Bahasa Eng -->
+        <td><textarea name="details[${detailIndex}][desc_eng]" class="form-control"></textarea></td>
+        <!-- Bobot (Number Input with Fixed Width) -->
+        <td><input type="number" name="details[${detailIndex}][bobot]" class="form-control" style="width: 80px;" required></td>
+        <!-- No Urut (Number Input with Fixed Width) -->
+        <td><input type="number" name="details[${detailIndex}][no_urut]" class="form-control" style="width: 80px;"></td>
+        <!-- Button for removing the row -->
+        <td>
+            <button type="button" class="btn btn-danger remove-detail">
+                <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
+            </button>
+        </td>
+    </tr>
+    `;
+    document.getElementById('details-section').insertAdjacentHTML('beforeend', newRow);
+    detailIndex++;
+    feather.replace(); // Re-initialize Feather icons
+});
 
-        // Aktifkan dan nonaktifkan Nama Evaluasi tergantung pada Jenis Evaluasi yang dipilih
-        $(document).on('change', '.jenis-evaluasi', function() {
-            console.log('Jenis evaluasi changed'); // Debugging log
-            let jenisEvaluasi = $(this).val();
-            let namaEvaluasiSelect = $(this).closest('tr').find('.nama-evaluasi');
+// Aktifkan dan nonaktifkan Nama Evaluasi tergantung pada Jenis Evaluasi yang dipilih
+$(document).on('change', '.jenis-evaluasi', function() {
+    let jenisEvaluasi = $(this).val();
+    let namaEvaluasiSelect = $(this).closest('tr').find('.nama-evaluasi');
 
-            if (jenisEvaluasi == '4') {
-                namaEvaluasiSelect.prop('disabled', false);
-            } else {
-                namaEvaluasiSelect.prop('disabled', true);
-                namaEvaluasiSelect.val(''); // Reset value when disabled
-            }
-        });
+    if (jenisEvaluasi == '4') {
+        namaEvaluasiSelect.prop('disabled', false);
+    } else {
+        namaEvaluasiSelect.prop('disabled', true);
+        namaEvaluasiSelect.val(''); // Reset value when disabled
+    }
+});
 
-        // Fetch Program Studi based on selected Matakuliah
-        document.getElementById('matakuliah_id').addEventListener('change', function() {
-            let matakuliahId = this.value;
-            if (matakuliahId) {
-                fetch(`/evaluasi-plan/get-program-studi/${matakuliahId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        let programStudiInput = document.getElementById('program_studi_name');
-                        let programStudiHiddenInput = document.getElementById('program_studi_id');
-                        if (data.length > 0) {
-                            programStudiInput.value = data[0].nama_program_studi;
-                            programStudiHiddenInput.value = data[0].id;
-                        } else {
-                            programStudiInput.value = '';
-                            programStudiHiddenInput.value = '';
-                        }
-                    })
-                    .catch(error => console.error('Error fetching program studi:', error));
-            } else {
-                document.getElementById('program_studi_name').value = '';
-                document.getElementById('program_studi_id').value = '';
-            }
-        });
+// Handle removing detail rows
+$(document).on('click', '.remove-detail', function() {
+    $(this).closest('tr').remove();
+});
 
-        // Validation for total bobot using SweetAlert
-        document.getElementById('evaluasi-form').addEventListener('submit', function(event) {
-            let totalBobot = 0;
-            document.querySelectorAll('input[name^="details"][name$="[bobot]"]').forEach(function(input) {
-                totalBobot += parseInt(input.value);
-            });
+// Fetch Program Studi based on selected Matakuliah
+document.getElementById('matakuliah_id').addEventListener('change', function() {
+    let matakuliahId = this.value;
+    if (matakuliahId) {
+        fetch(`/evaluasi-plan/get-program-studi/${matakuliahId}`)
+            .then(response => response.json())
+            .then(data => {
+                let programStudiInput = document.getElementById('program_studi_name');
+                let programStudiHiddenInput = document.getElementById('program_studi_id');
+                if (data.length > 0) {
+                    programStudiInput.value = data[0].nama_program_studi;
+                    programStudiHiddenInput.value = data[0].id;
+                } else {
+                    programStudiInput.value = '';
+                    programStudiHiddenInput.value = '';
+                }
+            })
+            .catch(error => console.error('Error fetching program studi:', error));
+    } else {
+        document.getElementById('program_studi_name').value = '';
+        document.getElementById('program_studi_id').value = '';
+    }
+});
 
-            if (totalBobot !== 100) {
-                event.preventDefault(); // Prevent form submission
-                alert('Total bobot harus 100');
-            }
-        });
+// Validation for total bobot using SweetAlert
+document.getElementById('evaluasi-form').addEventListener('submit', function(event) {
+    let totalBobot = 0;
+    document.querySelectorAll('input[name^="details"][name$="[bobot]"]').forEach(function(input) {
+        totalBobot += parseInt(input.value);
+    });
+
+    if (totalBobot !== 100) {
+        event.preventDefault(); // Prevent form submission
+        alert('Total bobot harus 100');
+    }
+});
+
     </script>
 @endpush
