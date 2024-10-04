@@ -163,8 +163,8 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('aktivitas.index') }}" class="btn btn-secondary">Kembali</a>
-                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        <a href="{{ route('aktivitas.index') }}" class="btn btn-secondary">Back</a>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
             </div>
