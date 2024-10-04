@@ -108,7 +108,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <a href="{{ route('aktivitas-peserta.index') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ route('aktivitas-peserta.index') }}" class="btn btn-secondary">Kembali</a>
         </div>
     </div>
 @endsection

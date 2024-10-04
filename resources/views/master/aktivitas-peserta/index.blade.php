@@ -29,7 +29,7 @@
                                     <th>Kode Matakuliah</th>
                                     <th>Nama Matakuliah</th>
                                     <th>SKS</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
