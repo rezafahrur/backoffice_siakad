@@ -15,7 +15,7 @@
     </nav>
 
     <div class="card">
-        <div class="card-header mt-2">
+        <div class="card-header bg-secondary text-white">
             <h4>{{ $jadwal->paketMataKuliah->nama_paket_matakuliah ?? 'N/A' }}</h4>
         </div>
         <div class="card-body">
