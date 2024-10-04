@@ -21,9 +21,11 @@
         </nav>
 
         {{-- Detail Berita --}}
-        <div class="card shadow-sm border-light mt-3">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">   
+                <h5 class="card-title mb-0">Detail Berita</h5>
+            </div>
             <div class="card-body">
-                <h4 class="card-title">Detail Berita</h4>
                 <div class="mb-3">
                     <h6 class="mb-1 text-muted">Judul:</h6>
                     <p class="fw-bold">{{ $berita->judul_berita }}</p>
@@ -48,7 +50,7 @@
                         {!! $berita->isi_berita !!}
                     </div>
                 </div>
-                <a href="{{ route('berita.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('berita.index') }}" class="btn btn-secondary">Kembali</a>
 
             </div>
         </div>

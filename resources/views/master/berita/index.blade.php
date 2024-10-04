@@ -29,7 +29,7 @@
                                     <th>Judul Berita</th>
                                     <th>Kategori</th>
                                     <th>Judul Photo</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

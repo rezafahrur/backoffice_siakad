@@ -13,14 +13,14 @@
                 <a href="{{ route('berita.index') }}">Berita</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Create
+                Tambah Berita
             </li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Create Berita</h4>
+            <h4 class="card-title">Form Tambah Berita</h4>
 
             {{-- Display Validation Errors --}}
             @if ($errors->any())
@@ -79,8 +79,8 @@
                     @enderror
                 </div>
 
-                <a href="{{ route('berita.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('berita.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>
