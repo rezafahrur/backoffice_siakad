@@ -34,7 +34,7 @@
 
                     {{-- Back page button --}}
                     <li class="nav-item ms-auto" role="presentation">
-                        <a href="{{ route('mahasiswa.index') }}" class="btn btn-secondary">Back</a>
+                        <a href="{{ route('mahasiswa.index') }}" class="btn btn-secondary">Kembali</a>
                     </li>
                 </ul>
 

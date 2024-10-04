@@ -18,7 +18,7 @@
 
     <!-- Detail Paket Mata Kuliah -->
     <div class="card">
-        <div class="card-header">
+        <div class="card-header bg-secondary text-white">
             <h5 class="mb-0">Detail Kurikulum</h5>
         </div>
         <div class="card-body">
@@ -91,7 +91,7 @@
             @endif
 
             {{-- back --}}
-            <a href="{{ route('kurikulum.index') }}" class="btn btn-secondary mt-3">Back</a>
+            <a href="{{ route('kurikulum.index') }}" class="btn btn-secondary mt-3">Kembali</a>
         </div>
     </div>
 

@@ -14,10 +14,12 @@
         </ol>
     </nav>
     <div class="card">
+        <div class="card-header bg-secondary text-white">   
+            <h5 class="card-title mb-0">Detail Posisi</h5>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">Detail Position</h4>
             <div class="form-group">
-                <label for="posisi">Position Name:</label>
+                <label for="posisi">Nama Posisi:</label>
                 <p class="form-control-plaintext">{{ $position->posisi }}</p>
             </div>
 
@@ -27,7 +29,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Feature</th>
+                                <th>Fitur</th>
                                 <th>Create</th>
                                 <th>Read</th>
                                 <th>Update</th>
@@ -50,7 +52,7 @@
                     </table>
                 </div>
             </div>
-            <a href="{{ route('position.index') }}" class="btn btn-secondary mt-3">Back</a>
+            <a href="{{ route('position.index') }}" class="btn btn-secondary mt-3">Kembali</a>
         </div>
     </div>
 

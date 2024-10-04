@@ -9,13 +9,13 @@
                 <a href="{{ route('prodi.index') }}">Program Studi</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Create
+                Tambah Program Studi
             </li>
         </ol>
     </nav>
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Form Program Studi</h4>
+            <h4 class="card-title">Form Tambah Program Studi</h4>
             <form action="{{ route('prodi.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
@@ -43,8 +43,8 @@
                     @enderror
                 </div>
 
-                <a href="{{ route('prodi.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('prodi.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

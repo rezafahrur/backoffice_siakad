@@ -9,14 +9,14 @@
                 <a href="{{ route('pembelajaran_plans.index') }}">Rencana Pembelajaran</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Create
+                Tambah Rencana Pembelajaran
             </li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Create Rencana Pembelajaran</h4>
+            <h4 class="card-title">Tambah Rencana Pembelajaran</h4>
             <form action="{{ route('pembelajaran_plans.store') }}" method="POST">
                 @csrf
 
@@ -25,7 +25,7 @@
                         <div class="mb-3">
                             <label for="matakuliah_id">Matakuliah</label>
                             <select name="matakuliah_id" id="matakuliah_id" class="form-control" required>
-                                <option value="">Select Matakuliah</option>
+                                <option value="">Pilih Matakuliah</option>
                                 @foreach ($matakuliah as $mk)
                                     <option value="{{ $mk->id }}">{{ $mk->nama_matakuliah }}</option>
                                 @endforeach
@@ -50,7 +50,7 @@
                                 <th class="col-md-2">Pertemuan</th>
                                 <th>Materi (Indo)</th>
                                 <th>Materi (Eng)</th>
-                                <th>Action</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="details-section">
@@ -81,8 +81,8 @@
                     </button>
                 </div>
 
-                <a href="{{ route('pembelajaran_plans.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('pembelajaran_plans.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

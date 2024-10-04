@@ -98,7 +98,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer text-end">
+        <div class="card-footer">
             <a href="{{ route('periode-perkuliahan.index') }}" class="btn btn-secondary">Kembali</a>
         </div>
     </div>

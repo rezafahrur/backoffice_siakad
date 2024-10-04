@@ -66,8 +66,8 @@
                         </select>
                     </div>
 
-                    <a href="{{ route('bimbingUji.index') }}" class="btn btn-secondary">Back</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{{ route('bimbingUji.index') }}" class="btn btn-secondary">Kembali</a>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>
             </div>
         </div>

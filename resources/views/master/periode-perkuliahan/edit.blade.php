@@ -15,7 +15,7 @@
                 <a href="{{ route('periode-perkuliahan.index') }}">Periode Perkuliahan</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Update
+                Edit
             </li>
         </ol>
     </nav>
@@ -128,8 +128,8 @@
                     </div>
                 </div>
 
-                <a href="{{ route('periode-perkuliahan.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{{ route('periode-perkuliahan.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

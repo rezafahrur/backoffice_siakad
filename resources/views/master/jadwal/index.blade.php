@@ -31,7 +31,7 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Nama Kurikulum</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

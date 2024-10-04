@@ -118,8 +118,8 @@
                     </button>
                 </div>
 
-                <a href="{{ route('evaluasi_plan.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{{ route('evaluasi_plan.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

@@ -18,7 +18,7 @@
                     <div class="d-flex justify-content-end mb-3">
                         <a href="{{ route('bimbingUji.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="plus-square"></i>
-                            Tambah Aktivitas
+                            Tambah Data
                         </a>
                     </div>
                     <div class="table-responsive">
@@ -32,7 +32,7 @@
                                     <th>Jenis Peran</th>
                                     <th>Urutan Pembimbing</th>
                                     <th>Kategori Kegiatan</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

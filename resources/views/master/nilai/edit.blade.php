@@ -16,7 +16,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Edit Nilai</h4>
+            <h4 class="card-title">Form Edit Nilai</h4>
             <form action="{{ route('nilai.update', $nilai->id) }}" method="post">
                 @csrf
                 @method('put')
@@ -125,8 +125,8 @@
                         @endforeach
                     </tbody>
                 </table>
-                <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

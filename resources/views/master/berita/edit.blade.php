@@ -17,14 +17,14 @@
                 <a href="{{ route('berita.index') }}">Berita</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Edit
+                Edit Berita
             </li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Edit Berita</h4>
+            <h4 class="card-title">Form Edit Berita</h4>
 
             {{-- Display Validation Errors --}}
             <form id="beritaForm" action="{{ route('berita.update', $berita->id) }}" method="POST"
@@ -70,8 +70,8 @@
                     <textarea id="summernote" name="isi_berita" required>{{ $berita->isi_berita }}</textarea>
                 </div>
 
-                <a href="{{ route('berita.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('berita.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

@@ -15,7 +15,7 @@
     </nav>
 
     <div class="card">
-        <div class="card-header mt-2">
+        <div class="card-header bg-secondary text-white">
             <h4>{{ $jadwal->paketMataKuliah->nama_paket_matakuliah ?? 'N/A' }}</h4>
         </div>
         <div class="card-body">
@@ -64,7 +64,7 @@
                     </table>
                 </div>
             @endif
-            <a href="{{ route('jadwal.index') }}" class="btn btn-secondary mt-3">Back</a>
+            <a href="{{ route('jadwal.index') }}" class="btn btn-secondary mt-3">Kembali</a>
         </div>
     </div>
 @endsection

@@ -15,9 +15,10 @@
     </nav>
 
     <div class="card">
+        <div class="card-header bg-secondary text-white">    
+            <h5 class="mb-0">Detail Nilai</h5>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">Detail Nilai</h4>
-
             <div class="mb-3">
                 <strong class="me-2">Program Studi:</strong>
                 {{ $nilai->programStudi->nama_program_studi }}
@@ -70,9 +71,9 @@
             </div>
 
             <div class="d-flex justify-content-between mb-3">
-                <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Kembali</a>
                 <a href="{{ route('nilai.pdf', $nilai->id) }}" class="btn btn-success btn-icon-text mb-2 mb-md-0">
-                    <i class="btn-icon-prepend" data-feather="download"></i> Download PDF
+                    <i class="btn-icon-prepend" data-feather="download"></i> Unduh PDF
                 </a>
             </div>
         </div>

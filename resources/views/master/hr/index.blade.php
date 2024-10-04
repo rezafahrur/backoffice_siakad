@@ -56,8 +56,8 @@
                                     <th>NIP</th>
                                     <th>Nama</th>
                                     <th>Posisi</th>
-                                    <th>Photo Profile</th>
-                                    <th>Action</th>
+                                    <th>Foto Profil</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

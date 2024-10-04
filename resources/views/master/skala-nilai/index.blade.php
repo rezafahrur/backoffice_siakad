@@ -32,7 +32,7 @@
                                     <th>Program Studi</th>
                                     <th>Tanggal Mulai Efektif</th>
                                     <th>Tanggal Akhir Efektif</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

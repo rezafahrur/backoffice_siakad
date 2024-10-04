@@ -6,13 +6,13 @@
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('evaluasi_plan.index') }}">Rencana Evaluasi</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Create</li>
+            <li class="breadcrumb-item active" aria-current="page">Tambah Rencana Evaluasi</li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Create Rencana Evaluasi</h4>
+            <h4 class="card-title">Tambah Rencana Evaluasi</h4>
             <form id="evaluasi-form" action="{{ route('evaluasi_plan.store') }}" method="POST">
                 @csrf
 
@@ -21,7 +21,7 @@
                         <div class="mb-3">
                             <label for="matakuliah_id">Matakuliah</label>
                             <select name="matakuliah_id" id="matakuliah_id" class="form-control" required>
-                                <option value="">Select Matakuliah</option>
+                                <option value="">Pilih Matakuliah</option>
                                 @foreach ($matakuliah as $mk)
                                     <option value="{{ $mk->id }}">{{ $mk->nama_matakuliah }}</option>
                                 @endforeach
@@ -107,8 +107,8 @@
                     </button>
                 </div>
 
-                <a href="{{ route('evaluasi_plan.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('evaluasi_plan.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

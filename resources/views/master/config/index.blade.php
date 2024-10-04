@@ -39,7 +39,7 @@
                 @endforeach
 
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary me-2">Save</button>
+                    <button type="submit" class="btn btn-primary me-2">Simpan</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>
                 </div>
             </form>

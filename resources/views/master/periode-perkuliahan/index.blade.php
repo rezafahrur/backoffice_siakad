@@ -33,7 +33,7 @@
                                     <th>Jumlah Target Mhs Baru</th>
                                     <th>Jumlah Daftar Ulang</th>
                                     <th>Kode Prodi</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -9,14 +9,14 @@
                 <a href="{{ route('jurusan.index') }}">Jurusan</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Create
+                Tambah Jurusan
             </li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Form Create Jurusan</h4>
+            <h4 class="card-title">Form Tambah Jurusan</h4>
             <form action="{{ route('jurusan.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
@@ -43,8 +43,8 @@
                     @enderror
                 </div>
 
-                <a href="{{ route('jurusan.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('jurusan.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

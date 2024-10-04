@@ -24,8 +24,9 @@
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
-                            <a href="{{ route('pembelajaran_plans.export') }}" class="btn btn-success btn-icon">
+                            <a href="{{ route('pembelajaran_plans.export') }}" class="btn btn-success btn-icon-text">
                                 <i class="btn-icon-prepend" data-feather="download"></i>
+                                Export
                             </a>
                         </div>
                     </div>
@@ -36,7 +37,7 @@
                                     <th>No.</th>
                                     <th>Nama Mata Kuliah</th>
                                     <th>Program Studi</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

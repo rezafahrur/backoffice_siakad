@@ -11,9 +11,10 @@
     </nav>
 
     <div class="card">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Detail Rencana Evaluasi</h5>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">Detail Rencana Evaluasi</h4>
-
             <div class="mb-3">
                 <strong class="me-2">Matakuliah:</strong>
                 {{ $evaluasiPlan->matakuliah->nama_matakuliah }}
@@ -49,8 +50,7 @@
                 </table>
             </div>
 
-            <a href="{{ route('evaluasi_plan.index') }}" class="btn btn-secondary">Back</a>
-            <a href="{{ route('evaluasi_plan.edit', $evaluasiPlan->id) }}" class="btn btn-primary">Edit</a>
+            <a href="{{ route('evaluasi_plan.index') }}" class="btn btn-secondary">Kembali</a>
         </div>
     </div>
 @endsection

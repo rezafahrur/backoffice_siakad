@@ -15,8 +15,10 @@
     </nav>
 
     <div class="card">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Detail Skala Nilai</h5>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">Detail Skala Nilai</h4>
 
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -41,7 +43,7 @@
             </div>
 
             <!-- Tabel untuk Detail Skala Nilai -->
-            <table class="table table-bordered">
+            <table class="table table-bordered mb-3">
                 <thead>
                     <tr>
                         <th style="width: 160px;">Bobot Minimum</th>
@@ -62,7 +64,7 @@
                 </tbody>
             </table>
 
-            <a href="{{ route('skala-nilai.index') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ route('skala-nilai.index') }}" class="btn btn-secondary">Kembali</a>
         </div>
     </div>
 @endsection

@@ -30,7 +30,7 @@
                                     <th>Program Studi</th>
                                     <th>Kode Matkul</th>
                                     <th>Nama Matkul</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

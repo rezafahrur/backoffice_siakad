@@ -32,7 +32,7 @@
                                     <th>Nama Semester</th>
                                     <th>Tahun Akademik</th>
                                     <th>Semester</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

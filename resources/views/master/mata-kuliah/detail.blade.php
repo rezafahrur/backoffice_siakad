@@ -15,8 +15,10 @@
     </nav>
 
     <div class="card">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="card-title mb-0">Detail Mata Kuliah</h4>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">Detail Mata Kuliah</h4>
             <dl class="row">
                 {{-- Nama Program Studi --}}
                 <dt class="col-sm-3">Nama Program Studi</dt>
@@ -54,30 +56,7 @@
                 <dt class="col-sm-3">Tanggal Efektif</dt>
                 <dd class="col-sm-9">{{ $matkul->tgl_mulai_efektif }} - {{ $matkul->tgl_akhir_efektif }}</dd>
             </dl>
-            <a href="{{ route('mata-kuliah.index') }}" class="btn btn-secondary mt-3">Back</a>
+            <a href="{{ route('mata-kuliah.index') }}" class="btn btn-secondary mt-3">Kembali</a>
         </div>
     </div>
-
-
-    {{-- <div class="card-body">
-        <div class="mb-3">
-            <label class="form-label">Nama Program Studi</label>
-            <span class="form-control border-1 border-primary">{{ $matkul->nama_program_studi }}</span>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Kode Mata Kuliah</label>
-            <span class="form-control border-1 border-primary">{{ $matkul->kode_matakuliah }}</span>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Nama Mata Kuliah</label>
-            <span class="form-control border-1 border-primary">{{ $matkul->nama_matakuliah }}</span>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">SKS</label>
-            <span class="form-control border-1 border-primary">{{ $matkul->sks }}</span>
-        </div>
-
-    </div>
-
-    </div> --}}
 @endsection

@@ -94,7 +94,7 @@
                 
             </div>
             <div class="card-footer">
-                <a href="{{ route('bimbingUji.index') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('bimbingUji.index') }}" class="btn btn-secondary">Kembali</a>
             </div>
         </div>
 

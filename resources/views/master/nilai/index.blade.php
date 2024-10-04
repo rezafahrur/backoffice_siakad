@@ -30,7 +30,7 @@
                                     <th>Program Studi</th>
                                     <th>Kelas</th>
                                     <th>Mata Kuliah</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

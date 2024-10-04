@@ -34,7 +34,7 @@
                                     <th>Program Studi</th>
                                     <th>Semester</th>
                                     <th>Kurikulum</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -15,14 +15,14 @@
                 <a href="{{ route('kurikulum.index') }}">Kurikulum</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Create
+                Tambah Kurikulum
             </li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Form Create Kurikulum</h4>
+            <h4 class="card-title">Form Tambah Kurikulum</h4>
             <form action="{{ route('kurikulum.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
@@ -31,7 +31,7 @@
                         <div class="mb-3">
                             <label for="nama_kurikulum" class="form-label">Nama Kurikulum</label>
                             <input type="text" class="form-control @error('nama_kurikulum') is-invalid @enderror"
-                                id="nama_kurikulum" name="nama_kurikulum" placeholder="nama kurikulum"
+                                id="nama_kurikulum" name="nama_kurikulum" placeholder="Nama Kurikulum"
                                 value="{{ old('nama_kurikulum') }}">
                             @error('nama_kurikulum')
                                 <div class="invalid-feedback">
@@ -160,8 +160,8 @@
                     </select>
                 </div>
 
-                <a href="{{ route('kurikulum.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('kurikulum.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>
