@@ -41,7 +41,7 @@ class AktivitasMahasiswaPesertaController extends Controller
             'matakuliah_id' => 'required',
             'sks' => 'required|integer|min:1|max:24',
             'jenis_peran' => 'required|string|max:255',
-            'nilai_huruf' => 'required|string|max:2',
+            'nilai_huruf' => 'required|regex:/^[A-Za-z]+$/|max:2', // Memastikan hanya huruf
             'nilai_indeks' => 'required|numeric',
             'nilai_angka' => 'required|numeric',
         ]);
@@ -49,7 +49,7 @@ class AktivitasMahasiswaPesertaController extends Controller
         // Menyimpan data baru
         AktivitasMahasiswaPeserta::create($request->all());
 
-        return redirect()->route('master.aktivitas-peserta.index')->with('success', 'Data berhasil ditambahkan');
+        return redirect()->route('aktivitas-peserta.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     // Menampilkan form untuk mengedit data
@@ -75,37 +75,28 @@ class AktivitasMahasiswaPesertaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'aktivitas_mahasiswa_id' => 'required|exists:aktivitas_mahasiswa,id',
-            'program_studi_id' => 'required|exists:program_studi,id',
-            'mahasiswa_id' => 'required|exists:mahasiswa,id',
-            'matakuliah_id' => 'required|array',
-            'matakuliah_id.*' => 'exists:m_matakuliah,id',
+            'aktivitas_mahasiswa_id' => 'required|exists:m_aktivitas_mahasiswa,id',
+            'program_studi_id' => 'required|exists:m_program_studi,id',
+            'mahasiswa_id' => 'required|exists:m_mahasiswa,id',
+            'matakuliah_id' => 'required',
             'sks' => 'required|integer|min:1|max:24',
             'jenis_peran' => 'required|string|max:255',
-            'nilai_huruf' => 'required|string|max:2',
+            'nilai_huruf' => 'required|regex:/^[A-Za-z]+$/|max:2', // Memastikan hanya huruf
             'nilai_indeks' => 'required|numeric',
             'nilai_angka' => 'required|numeric',
         ]);
 
         // Mengupdate data
         $peserta = AktivitasMahasiswaPeserta::findOrFail($id);
-        $peserta->update($request->except('matakuliah_id'));
+        $peserta->update($request->all());
 
-        // Update hubungan dengan matakuliah
-        $peserta->matakuliah()->sync($request->matakuliah_id);
-
-        return redirect()->route('master.aktivitas-peserta.index')->with('success', 'Data berhasil diupdate');
+        return redirect()->route('aktivitas-peserta.index')->with('success', 'Data berhasil diupdate');
     }
 
     // Menghapus data
     public function destroy($id)
     {
         $peserta = AktivitasMahasiswaPeserta::findOrFail($id);
-
-        // Hapus hubungan dengan matakuliah sebelum menghapus
-        $peserta->matakuliah()->detach();
-
-        // Hapus data peserta
         $peserta->delete();
 
         return redirect()->route('aktivitas-peserta.index')->with('success', 'Data berhasil dihapus');
