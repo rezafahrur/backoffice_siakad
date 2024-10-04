@@ -103,7 +103,7 @@ class NilaiController extends Controller
     }
 }
 
-    
+
 
     /**
      * Display the specified resource.
@@ -133,7 +133,7 @@ class NilaiController extends Controller
         try {
             // Update data utama
             $nilai->update($request->validated());
-    
+
             // Loop setiap detail nilai yang diinputkan
             foreach ($request->details as $detail) {
                 // Hitung rata-rata dari hasil_proyek, quiz, tugas, uts, uas, dan aktivitas_partisipatif
@@ -145,7 +145,7 @@ class NilaiController extends Controller
                     $detail['uas'] +
                     $detail['aktivitas_partisipatif']
                 ) / 6;
-    
+
                 // Tentukan nilai huruf dan nilai indeks berdasarkan rata-rata
                 if ($average >= 85 && $average <= 100) {
                     $detail['nilai_huruf'] = 'A';
@@ -175,17 +175,17 @@ class NilaiController extends Controller
                     $detail['nilai_huruf'] = 'E';
                     $detail['nilai_indeks'] = 0.00;
                 }
-    
+
                 // Simpan rata-rata sebagai nilai angka
                 // $detail['nilai_angka'] = $average;
-    
+
                 // Update atau buat detail nilai berdasarkan mahasiswa_id
                 $nilai->details()->updateOrCreate(
                     ['mahasiswa_id' => $detail['mahasiswa_id']], // Kondisi untuk update
                     $detail // Data yang akan disimpan
                 );
             }
-    
+
             // Redirect ke halaman index nilai dengan pesan sukses
             return redirect()->route('nilai.index')->with('success', 'Data berhasil diperbarui.');
         } catch (\Exception $e) {
@@ -196,7 +196,7 @@ class NilaiController extends Controller
             ]);
         }
     }
-    
+
 
 
     /**
@@ -246,16 +246,4 @@ class NilaiController extends Controller
         $mahasiswas = Krs::with('mahasiswa')->where('kelas_id', $kelasId)->get()->pluck('mahasiswa');
         return response()->json($mahasiswas);
     }
-
-    public function cetakPdf($id)
-{
-    $nilai = Nilai::with(['programStudi', 'kelas', 'matakuliah', 'details'])->findOrFail($id);
-
-    // Buat PDF menggunakan view yang sama atau view khusus untuk PDF
-    $pdf = PDF::loadView('master.nilai.pdf', compact('nilai'));
-
-    // Kembalikan response untuk download PDF
-    return $pdf->download('nilai-mahasiswa' . $nilai->id . '.pdf');
-}
-
 }
