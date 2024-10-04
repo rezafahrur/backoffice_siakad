@@ -9,14 +9,14 @@
                 <a href="#">Kelas</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Create
+                Tambah Kelas
             </li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Form Create Kelas</h3>
+            <h3 class="card-title">Form Tambah Kelas</h3>
         </div>
         <div class="card-body">
             <form action="{{ route('kelas.store') }}" method="POST" enctype="multipart/form-data">
@@ -170,8 +170,8 @@
                 <div id="kelas-details">
                 </div>
 
-                <a href="{{ route('kelas.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('kelas.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

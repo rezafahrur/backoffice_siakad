@@ -13,8 +13,8 @@
     </nav>
 
     <div class="card w-20">
-        <div class="card-header">
-            <h3 class="card-title">Detail Kelas</h3>
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Detail Kelas</h5>
         </div>
         <div class="card-body">
             <div class="row mb-3">
