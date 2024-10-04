@@ -24,8 +24,9 @@
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
-                            <a href="{{ route('evaluasi_plan.export') }}" class="btn btn-success btn-icon">
+                            <a href="{{ route('evaluasi_plan.export') }}" class="btn btn-success btn-icon-text">
                                 <i class="btn-icon-prepend" data-feather="download"></i>
+                                Export
                             </a>
                         </div>
                     </div>
@@ -34,10 +35,10 @@
                         <table class="table table-bordered" id="dataTableExample">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>No</th>
                                     <th>Matakuliah</th>
                                     <th>Program Studi</th>
-                                    <th>Actions</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
