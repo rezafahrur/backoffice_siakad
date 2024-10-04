@@ -26,6 +26,7 @@ use App\Http\Controllers\PeriodePerkuliahanController;
 use App\Http\Controllers\MasterFeatureController;
 use App\Http\Controllers\MoodleAuthController;
 use App\Http\Controllers\AktivitasMahasiswaController;
+use App\Http\Controllers\AktivitasMahasiswaPesertaController;
 use App\Models\MasterFeature;
 
 Route::group(['middleware' => ['auth:hr']], function () {
@@ -212,6 +213,15 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::put('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'update'])->name('aktivitas.update');
     Route::get('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'show'])->name('aktivitas.show');
     Route::delete('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'destroy'])->name('aktivitas.destroy');
+
+    // aktivitas mahasiswa peserta
+    Route::get('/aktivitas-peserta', [AktivitasMahasiswaPesertaController::class, 'index'])->name('aktivitas-peserta.index');
+    Route::get('/aktivitas-peserta/create', [AktivitasMahasiswaPesertaController::class, 'create'])->name('aktivitas-peserta.create');
+    Route::post('/aktivitas-peserta/store', [AktivitasMahasiswaPesertaController::class, 'store'])->name('aktivitas-peserta.store');
+    Route::get('/aktivitas-peserta/{id}/edit', [AktivitasMahasiswaPesertaController::class, 'edit'])->name('aktivitas-peserta.edit');
+    Route::put('/aktivitas-peserta/{id}', [AktivitasMahasiswaPesertaController::class, 'update'])->name('aktivitas-peserta.update');
+    Route::get('/aktivitas-peserta/{id}', [AktivitasMahasiswaPesertaController::class, 'show'])->name('aktivitas-peserta.show');
+    Route::delete('/aktivitas-peserta/{id}', [AktivitasMahasiswaPesertaController::class, 'destroy'])->name('aktivitas-peserta.destroy');
 
     // pembelajaran plan
     Route::get('/rps', [PembelajaranPlanController::class, 'index'])->name('pembelajaran_plans.index');
