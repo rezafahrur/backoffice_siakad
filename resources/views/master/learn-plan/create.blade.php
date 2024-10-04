@@ -50,7 +50,7 @@
                                 <th class="col-md-2">Pertemuan</th>
                                 <th>Materi (Indo)</th>
                                 <th>Materi (Eng)</th>
-                                <th>Action</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="details-section">
