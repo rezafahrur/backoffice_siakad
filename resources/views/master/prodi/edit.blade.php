@@ -16,7 +16,7 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Form Program Studi</h4>
+            <h4 class="card-title">Form Edit Program Studi</h4>
             <form action="{{ route('prodi.update', $prodi) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -45,8 +45,8 @@
                     @enderror
                 </div>
 
-                <a href="{{ route('prodi.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('prodi.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>
