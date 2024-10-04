@@ -19,6 +19,7 @@
                 <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
+        <a href="{{ route('feature.index') }}" class="btn btn-secondary">Kembali</a>
         <button type="submit" class="btn btn-primary">Buat Fitur</button>
     </form>
 </div>

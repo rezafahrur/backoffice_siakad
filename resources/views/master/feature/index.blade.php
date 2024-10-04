@@ -18,7 +18,7 @@
                     <div class="d-flex justify-content-end mb-3">
                         <a href="{{ route('feature.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="plus-square"></i>
-                            Tambah Feature
+                            Tambah Data
                         </a>
                     </div>
                     <div class="table-responsive">
@@ -27,7 +27,7 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Nama Feature</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
