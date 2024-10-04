@@ -109,7 +109,7 @@
                     <strong>Keterangan Aktivitas:</strong>
                 </div>
                 <div class="col-md-8">
-                    <span>{{ $aktivitas->aktivitas ?? '-' }}</span>
+                    <span>{{ $aktivitas->keterangan_aktivitas ?? '-' }}</span>
                 </div>
             </div>
             <div class="row mb-3">
