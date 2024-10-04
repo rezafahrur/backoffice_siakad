@@ -50,6 +50,7 @@
                                 <th class="col-md-2">Pertemuan</th>
                                 <th>Materi (Indo)</th>
                                 <th>Materi (Eng)</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="details-section">
@@ -63,6 +64,11 @@
                                 </td>
                                 <td>
                                     <textarea type="text" name="details[0][materi_eng]" class="form-control"> </textarea>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger remove-detail">
+                                        <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -100,10 +106,20 @@
                 <td>
                     <textarea type="text" name="details[${detailIndex}][materi_eng]" class="form-control"> </textarea>
                 </td>
+                <td>
+                    <button type="button" class="btn btn-danger remove-detail">
+                        <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </td>
             </tr>
             `;
             document.getElementById('details-section').insertAdjacentHTML('beforeend', detailItem);
             detailIndex++;
+            feather.replace();
+        });
+
+        $(document).on('click', '.remove-detail', function() {
+            $(this).closest('tr').remove();
         });
 
         // Fetch Program Studi based on selected Matakuliah

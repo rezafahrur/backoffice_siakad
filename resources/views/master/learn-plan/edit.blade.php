@@ -71,6 +71,11 @@
                                     <td>
                                         <textarea name="details[{{ $index }}][materi_eng]" class="form-control">{{ $detail->materi_eng }}</textarea>
                                     </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger remove-detail">
+                                            <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -108,10 +113,20 @@
                 <td>
                     <textarea name="details[${detailIndex}][materi_eng]" class="form-control"></textarea>
                 </td>
+                <td>
+                    <button type="button" class="btn btn-danger remove-detail">
+                        <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </td>
             </tr>
             `;
             document.getElementById('details-section').insertAdjacentHTML('beforeend', detailItem);
             detailIndex++;
+            feather.replace();
+        });
+
+        $(document).on('click', '.remove-detail', function() {
+            $(this).closest('tr').remove();
         });
 
         // Fetch Program Studi based on selected Matakuliah
