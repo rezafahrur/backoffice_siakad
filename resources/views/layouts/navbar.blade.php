@@ -183,6 +183,13 @@
                             <li class="nav-item {{ Route::is('aktivitas-peserta.index') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('aktivitas-peserta.index') }}">Aktivitas Mahasiswa Peserta</a>
                             </li>
+                            {{-- @endcan --}}
+
+                            {{-- @can('read_aktivitas mahasiswa bimbimg uji') --}}
+                            <li class="nav-item {{ Route::is('bimbingUji.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('bimbingUji.index') }}">Aktivitas Mahasiswa Bimbing Uji</a>
+                            </li>
+                            {{-- @endcan --}}
                         </ul>
                     </div>
                 </li>
