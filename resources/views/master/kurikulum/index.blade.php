@@ -20,11 +20,13 @@
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
-                            <a href="{{ route('kurikulum.export') }}" class="btn btn-success btn-icon">
+                            <a href="{{ route('kurikulum.export') }}" class="btn btn-success btn-icon-text"> 
                                 <i class="btn-icon-prepend" data-feather="download"></i>
+                                Kurikulum
                             </a>
-                            <a href="{{ route('kurikulum.export',['type' => 'matkul']) }}" class="btn btn-success btn-icon">
+                            <a href="{{ route('kurikulum.export',['type' => 'matkul']) }}" class="btn btn-success  btn-icon-text">
                                 <i class="btn-icon-prepend" data-feather="download"></i>
+                                Mata Kuliah
                             </a>
                         </div>
                     </div>
@@ -37,7 +39,7 @@
                                     <th>Semester</th>
                                     <th>Program Studi</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
