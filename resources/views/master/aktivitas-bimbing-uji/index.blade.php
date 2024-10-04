@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Aktivitas Mahasiswa')
+@section('title', 'Aktivitas Mahasiswa Bimbing Uji')
 
 @section('content')
     <nav class="page-breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Data</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Aktivitas Mahasiswa</li>
+            <li class="breadcrumb-item active" aria-current="page">Aktivitas Mahasiswa Bimbing Uji</li>
         </ol>
     </nav>
 
@@ -14,11 +14,11 @@
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Daftar Aktivitas Mahasiswa</h6>
+                    <h6 class="card-title">Daftar Aktivitas Mahasiswa Bimbing Uji</h6>
                     <div class="d-flex justify-content-end mb-3">
-                        <a href="{{ route('aktivitas.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+                        <a href="{{ route('bimbingUji.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="plus-square"></i>
-                            Tambah Data
+                            Tambah Aktivitas
                         </a>
                     </div>
                     <div class="table-responsive">
@@ -26,35 +26,43 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Program Studi</th>
-                                    <th>Semester</th>
                                     <th>Kode Aktivitas</th>
-                                    <th>Judul</th>
-                                    <th>Tanggal Mulai</th>
-                                    <th>Tanggal Selesai</th>
+                                    <th>NIDN Dosen</th>
+                                    <th>Nama Dosen</th>
+                                    <th>Jenis Peran</th>
+                                    <th>Urutan Pembimbing</th>
+                                    <th>Kategori Kegiatan</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($aktivitas as $key => $item)
+                                @forelse ($bimbingUji as $key => $item)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $item->programStudi->nama_program_studi }}</td>
-                                        <td>{{ $item->semester->nama_semester }}</td>
-                                        <td>{{ $item->kode_aktivitas }}</td>
-                                        <td>{{ $item->judul }}</td>
-                                        <td>{{ date('d-m-Y', strtotime($item->tanggal_mulai)) }}</td>
-                                        <td>{{ date('d-m-Y', strtotime($item->tanggal_selesai)) }}</td>
+                                        <td>{{ $item->aktivitasMahasiswa->kode_aktivitas }}</td>
+                                        <td>{{ $item->nidn_dosen }}</td>
+                                        <td>{{ $item->nama_dosen }}</td>
                                         <td>
-                                            <a href="{{ route('aktivitas.edit', $item->id) }}"
+                                            @if ($item->jenis_peran == 1)
+                                                Pembimbing
+                                            @elseif ($item->jenis_peran == 2)
+                                                Penguji
+                                            @else
+                                                Tidak Diketahui
+                                            @endif
+                                        </td>
+                                        <td>{{ $item->urutan_pembimbing }}</td>
+                                        <td>{{ $item->kategori_kegiatan }}</td>
+                                        <td>
+                                            <a href="{{ route('bimbingUji.edit', $item->id) }}"
                                                 class="btn btn-sm btn-primary btn-icon">
                                                 <i class="btn-icon-prepend" data-feather="edit"></i>
                                             </a>
-                                            <a href="{{ route('aktivitas.show', $item->id) }}"
+                                            <a href="{{ route('bimbingUji.show', $item->id) }}"
                                                 class="btn btn-sm btn-info btn-icon">
                                                 <i class="btn-icon-prepend text-white" data-feather="eye"></i>
                                             </a>
-                                            <form action="{{ route('aktivitas.destroy', $item->id) }}" method="post"
+                                            <form action="{{ route('bimbingUji.destroy', $item->id) }}" method="post"
                                                 class="d-inline">
                                                 @csrf
                                                 @method('delete')

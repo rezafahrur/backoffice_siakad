@@ -109,7 +109,7 @@
                     <strong>Keterangan Aktivitas:</strong>
                 </div>
                 <div class="col-md-8">
-                    <span>{{ $aktivitas->aktivitas ?? '-' }}</span>
+                    <span>{{ $aktivitas->keterangan_aktivitas ?? '-' }}</span>
                 </div>
             </div>
             <div class="row mb-3">
@@ -145,8 +145,8 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer text-end">
-            <a href="{{ route('aktivitas.index') }}" class="btn btn-secondary">Kembali</a>
+        <div class="card-footer">
+            <a href="{{ route('aktivitas.index') }}" class="btn btn-secondary">Back</a>
         </div>
     </div>
 @endsection
