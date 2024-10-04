@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AktivitasMahasiswaBimbingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HrController;
 use App\Http\Controllers\KelasController;
@@ -212,6 +213,16 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::put('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'update'])->name('aktivitas.update');
     Route::get('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'show'])->name('aktivitas.show');
     Route::delete('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'destroy'])->name('aktivitas.destroy');
+
+    // aktivitas mahasiswa bimbing uji
+    Route::get('/bimbingUji', [AktivitasMahasiswaBimbingController::class, 'index'])->name('bimbingUji.index');
+    Route::get('/bimbingUji/create', [AktivitasMahasiswaBimbingController::class, 'create'])->name('bimbingUji.create');
+    Route::post('/bimbingUji/store', [AktivitasMahasiswaBimbingController::class, 'store'])->name('bimbingUji.store');
+    Route::get('/bimbingUji/{id}/edit', [AktivitasMahasiswaBimbingController::class, 'edit'])->name('bimbingUji.edit');
+    Route::put('/bimbingUji/{id}', [AktivitasMahasiswaBimbingController::class, 'update'])->name('bimbingUji.update');
+    Route::get('/bimbingUji/{id}', [AktivitasMahasiswaBimbingController::class, 'show'])->name('bimbingUji.show');
+    Route::delete('/bimbingUji/{id}', [AktivitasMahasiswaBimbingController::class, 'destroy'])->name('bimbingUji.destroy');
+
 
     // pembelajaran plan
     Route::get('/rps', [PembelajaranPlanController::class, 'index'])->name('pembelajaran_plans.index');
