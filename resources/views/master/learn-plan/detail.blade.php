@@ -15,8 +15,10 @@
     </nav>
 
     <div class="card">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Detail Rencana Pembelajaran</h5>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">Detail Rencana Pembelajaran</h4>
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">
@@ -55,7 +57,7 @@
                 </table>
             </div>
 
-            <a href="{{ route('pembelajaran_plans.index') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ route('pembelajaran_plans.index') }}" class="btn btn-secondary">Kembali</a>
         </div>
     </div>
 @endsection
