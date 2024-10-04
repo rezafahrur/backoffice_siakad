@@ -86,7 +86,7 @@
                     </div>
                 </div>
             </div>
-            <a href="{{ route('hr.index') }}" class="btn btn-secondary mt-3">Back</a>
+            <a href="{{ route('hr.index') }}" class="btn btn-secondary mt-3">Kembali</a>
         </div>
 
         {{-- Kartu Pengenal Dosen Politeknik Batu --}}
