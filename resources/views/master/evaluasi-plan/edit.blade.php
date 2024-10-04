@@ -100,6 +100,12 @@
                                             required></td>
                                     <td><input type="number" name="details[{{ $index }}][no_urut]"
                                             class="form-control" value="{{ $detail->no_urut }}" style="width: 80px;"></td>
+
+                                            <td>
+                                            <button type="button" class="btn btn-danger remove-detail">
+                                                <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
+                                            </button>
+                                        </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -147,10 +153,16 @@
                 <td><textarea name="details[${detailIndex}][desc_eng]" class="form-control"></textarea></td>
                 <td><input type="number" name="details[${detailIndex}][bobot]" class="form-control" style="width: 80px;" required></td>
                 <td><input type="number" name="details[${detailIndex}][no_urut]" class="form-control" style="width: 80px;"></td>
+                <td>
+                    <button type="button" class="btn btn-danger remove-detail">
+                        <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
+                    </button>
+                </td>
             </tr>
             `;
             document.getElementById('details-section').insertAdjacentHTML('beforeend', newRow);
             detailIndex++;
+            feather.replace();
         });
 
         // Aktifkan dan nonaktifkan Nama Evaluasi tergantung pada Jenis Evaluasi yang dipilih
@@ -164,6 +176,11 @@
                 namaEvaluasiSelect.prop('disabled', true);
                 namaEvaluasiSelect.prop('selectedIndex', 0);
             }
+        });
+
+        // Handle removing detail rows
+        $(document).on('click', '.remove-detail', function() {
+            $(this).closest('tr').remove();
         });
 
         $(document).ready(function() {
