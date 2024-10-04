@@ -22,7 +22,7 @@
                 @method('PUT')
 
                 <div class="form-group">
-                    <label for="posisi">Position Name:</label>
+                    <label for="posisi">Nama Posisi:</label>
                     <input type="text" class="form-control @error('posisi') is-invalid @enderror" id="posisi"
                         name="posisi" value="{{ old('posisi', $position->posisi) }}" required>
                     @error('posisi')
@@ -38,7 +38,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Feature</th>
+                                    <th>Fitur</th>
                                     <th>Create</th>
                                     <th>Read</th>
                                     <th>Update</th>
@@ -70,8 +70,8 @@
                     </div>
                 </div>
 
-                <a href="{{ route('position.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('position.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

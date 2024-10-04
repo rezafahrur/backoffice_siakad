@@ -9,13 +9,13 @@
                 <a href="{{ route('position.index') }}">Posisi</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Create
+                Tambah Posisi
             </li>
         </ol>
     </nav>
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Form Posisi</h4>
+            <h4 class="card-title">Form Tambah Posisi</h4>
             <form action="{{ route('position.store') }}" method="POST">
                 @csrf
 
@@ -36,7 +36,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Feature</th>
+                                    <th>Fitur</th>
                                     <th>Create</th>
                                     <th>Read</th>
                                     <th>Update</th>
@@ -65,8 +65,8 @@
                     </div>
                 </div>
 
-                <a href="{{ route('position.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('position.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>

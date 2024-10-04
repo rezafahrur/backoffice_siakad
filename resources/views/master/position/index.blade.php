@@ -28,7 +28,7 @@
                                 <tr>
                                     <th>No.</th>
                                     <th>Posisi</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
