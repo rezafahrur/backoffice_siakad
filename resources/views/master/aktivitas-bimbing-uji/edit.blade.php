@@ -19,7 +19,7 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group mb-3">
-                        <label for="aktivitas_mahasiswa_id">Aktivitas Mahasiswa</label>
+                        <label for="aktivitas_mahasiswa_id">Kode Aktivitas Mahasiswa</label>
                         <select name="aktivitas_mahasiswa_id" class="form-control" required>
                             @foreach($aktivitas as $a)
                                 <option value="{{ $a->id }}" {{ $a->id == $bimbingUji->aktivitas_mahasiswa_id ? 'selected' : '' }}>
@@ -67,8 +67,8 @@
                             <option value="111300" {{ $bimbingUji->kategori_kegiatan == '111300' ? 'selected' : '' }}>111300 - Melakukan kegiatan pengembangan diri untuk meningkatkan kompetensi</option>
                         </select>
                     </div>
-                    <a href="{{ route('bimbingUji.index') }}" class="btn btn-secondary">Back</a>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="{{ route('bimbingUji.index') }}" class="btn btn-secondary">Kembali</a>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>
             </div>
         </div>
