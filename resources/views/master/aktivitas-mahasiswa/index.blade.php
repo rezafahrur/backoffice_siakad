@@ -32,7 +32,7 @@
                                     <th>Judul</th>
                                     <th>Tanggal Mulai</th>
                                     <th>Tanggal Selesai</th>
-                                    <th>Action</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>

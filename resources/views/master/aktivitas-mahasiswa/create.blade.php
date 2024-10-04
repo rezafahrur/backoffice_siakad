@@ -8,7 +8,7 @@
             <li class="breadcrumb-item">
                 <a href="{{ route('aktivitas.index') }}">Aktivitas Mahasiswa</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">Tambah</li>
+            <li class="breadcrumb-item active" aria-current="page">Tambah Aktivitas Mahasiswa</li>
         </ol>
     </nav>
     <div class="card">
@@ -163,8 +163,8 @@
                     </div>
                 </div>
 
-                <a href="{{ route('aktivitas.index') }}" class="btn btn-secondary">Back</a>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ route('aktivitas.index') }}" class="btn btn-secondary">Kembali</a>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>
