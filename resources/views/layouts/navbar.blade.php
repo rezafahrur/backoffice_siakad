@@ -177,9 +177,11 @@
                     </a>
                     <div class="submenu">
                         <ul class="submenu-item">
-                            {{-- @can('read_aktivitas mahasiswa') --}}
                             <li class="nav-item {{ Route::is('aktivitas.index') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('aktivitas.index') }}">Aktivitas Mahasiswa</a>
+                            </li>
+                            <li class="nav-item {{ Route::is('aktivitas-peserta.index') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('aktivitas-peserta.index') }}">Aktivitas Mahasiswa Peserta</a>
                             </li>
                             {{-- @endcan --}}
 
