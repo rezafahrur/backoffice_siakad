@@ -15,7 +15,7 @@ class KelasExport implements FromCollection, WithHeadings, WithMapping
     public function collection()
     {
         // Mengambil data Kelas dengan relasi 'details'
-        return Kelas::with(['programStudi', 'semester', 'kurikulum', 'details'])->get();
+        return Kelas::with(['programStudi', 'semester', 'kurikulum', 'details.hr'])->get();
     }
 
     /**
@@ -32,6 +32,7 @@ class KelasExport implements FromCollection, WithHeadings, WithMapping
             optional($kelas->semester)->nama_semester,      // Nama Semester
             optional($kelas->kurikulum)->nama_kurikulum,     // Nama Kurikulum
             $kelas->nama_kelas,
+            optional($detail->hr)->nama ?? 'N/A',            // Nama Dosen
             $kelas->kapasitas,
             $kelas->tanggal_mulai,
             $kelas->tanggal_akhir,
@@ -47,6 +48,7 @@ class KelasExport implements FromCollection, WithHeadings, WithMapping
             $detail ? $detail->quiz : null,                // Quiz
             $detail ? $detail->uts : null,                 // UTS
             $detail ? $detail->uas : null,                 // UAS
+                 
         ];
     }
 
@@ -60,6 +62,7 @@ class KelasExport implements FromCollection, WithHeadings, WithMapping
             'Semester',
             'Kurikulum',
             'Nama Kelas',
+            'Nama Dosen',
             'Kapasitas',
             'Tanggal Mulai',
             'Tanggal Akhir',
@@ -75,6 +78,7 @@ class KelasExport implements FromCollection, WithHeadings, WithMapping
             'Quiz',
             'UTS',
             'UAS',
+            
         ];
     }
 }
