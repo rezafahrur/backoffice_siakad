@@ -58,6 +58,10 @@
                                                 class="btn btn-sm btn-info btn-icon">
                                                 <i class="btn-icon-prepend text-white" data-feather="eye"></i>
                                             </a>
+                                            <a href="{{ route('kelas.exportById', $kl->id) }}"
+                                                class="btn btn-sm btn-success btn-icon">
+                                                <i class="btn-icon-prepend text-white" data-feather="download"></i>
+                                            </a>
                                             <form action="{{ route('kelas.destroy', $kl->id) }}" method="post"
                                                 class="d-inline">
                                                 @csrf

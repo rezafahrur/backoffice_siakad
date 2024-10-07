@@ -180,6 +180,8 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/kelas/show/{id}', [KelasController::class, 'show'])->name('kelas.show')->middleware(['permission:read_kelas']);
     Route::get('/kelas/details/{kurikulum}', [KelasController::class, 'getKurikulumDetails'])->name('kelas.details');
     Route::get('/kelas/export', [KelasController::class, 'export'])->name('kelas.export');
+    //export by id
+    Route::get('/kelas/export/{id}', [KelasController::class, 'exportDetail'])->name('kelas.exportById');
 
     //periode perkuliahan
     Route::get('/periode-perkuliahan', [PeriodePerkuliahanController::class, 'index'])->name('periode-perkuliahan.index');

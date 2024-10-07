@@ -35,20 +35,7 @@ class KelasExport implements FromCollection, WithHeadings, WithMapping
             optional($detail->hr)->nama ?? 'N/A',            // Nama Dosen
             $kelas->kapasitas,
             $kelas->tanggal_mulai,
-            $kelas->tanggal_akhir,
-            $detail ? $detail->tatap_muka : null,          // Tatap Muka
-            $detail ? $detail->sks_ajar : null,            // SKS Ajar
-            $detail ? $detail->jenis_evaluasi : null,      // Jenis Evaluasi
-            $detail ? $detail->description : null,         // Deskripsi
-            $detail ? $detail->lingkup_kelas : null,       // Lingkup Kelas
-            $detail ? $detail->mode_kelas : null,          // Mode Kelas
-            $detail ? $detail->aktivitas_partisipatif : null, // Aktivitas Partisipatif
-            $detail ? $detail->hasil_proyek : null,        // Hasil Proyek
-            $detail ? $detail->tugas : null,               // Tugas
-            $detail ? $detail->quiz : null,                // Quiz
-            $detail ? $detail->uts : null,                 // UTS
-            $detail ? $detail->uas : null,                 // UAS
-                 
+            $kelas->tanggal_akhir,     
         ];
     }
 
@@ -66,19 +53,6 @@ class KelasExport implements FromCollection, WithHeadings, WithMapping
             'Kapasitas',
             'Tanggal Mulai',
             'Tanggal Akhir',
-            'Tatap Muka',
-            'SKS Ajar',
-            'Jenis Evaluasi',
-            'Deskripsi',
-            'Lingkup Kelas',
-            'Mode Kelas',
-            'Aktivitas Partisipatif',
-            'Hasil Proyek',
-            'Tugas',
-            'Quiz',
-            'UTS',
-            'UAS',
-            
         ];
     }
 }
