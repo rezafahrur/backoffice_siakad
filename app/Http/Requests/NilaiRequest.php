@@ -32,10 +32,14 @@ class NilaiRequest extends FormRequest
             'details' => 'required|array',
             'details.*.mahasiswa_id' => 'required|exists:m_mahasiswa,id',
             'details.*.hasil_proyek' => 'nullable|numeric|min:0',
+            'details.*.aktivitas_partisipatif' => 'nullable|numeric|min:0',
             'details.*.quiz' => 'nullable|numeric|min:0',
             'details.*.tugas' => 'nullable|numeric|min:0',
             'details.*.uts' => 'nullable|numeric|min:0',
             'details.*.uas' => 'nullable|numeric|min:0',
+            'details.*.nilai_huruf' => 'nullable|string',
+            'details.*.nilai_indeks' => 'required|numeric|min:0',
+            'details.*.nilai_angka' => 'required|numeric|min:0',
         ];
     }
 
@@ -52,6 +56,9 @@ class NilaiRequest extends FormRequest
             'details.*.tugas' => 'nullable|numeric|min:0',
             'details.*.uts' => 'nullable|numeric|min:0',
             'details.*.uas' => 'nullable|numeric|min:0',
+            'details.*.nilai_huruf' => 'nullable|string',
+            'details.*.nilai_indeks' => 'required|numeric|min:0',
+            'details.*.nilai_angka' => 'required|numeric|min:0',
         ];
     }
 

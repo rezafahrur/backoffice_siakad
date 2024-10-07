@@ -48,9 +48,8 @@
                 </div>
 
                 <div id="mahasiswa-list">
-                    {{-- judul --}}
                     <h4 class="card-title">Input Nilai Mahasiswa</h4>
-                    <table class="table table-bordered mb-3" id="nilai-table" style="display: none;">
+                    <table class="table table-bordered mb-3" id="nilai-table">
                         <thead>
                             <tr>
                                 <th>Nama Mahasiswa</th>
@@ -61,6 +60,8 @@
                                 <th>UTS</th>
                                 <th>UAS</th>
                                 <th>Nilai Angka</th>
+                                <th>Nilai Huruf</th>
+                                <th>Nilai Indeks</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -130,40 +131,57 @@
                             // Loop data mahasiswa dan buat baris tabel untuk input nilai setiap mahasiswa
                             data.forEach((mahasiswa, index) => {
                                 const row = `
-                            <tr>
-                                <td>${mahasiswa.nama}</td>
-                                <input type="hidden" name="details[${mahasiswa.id}][mahasiswa_id]" value="${mahasiswa.id}">
+                                <tr>
+                                    <td>${mahasiswa.nama}</td>
+                                    <input type="hidden" name="details[${mahasiswa.id}][mahasiswa_id]" value="${mahasiswa.id}">
+                                    <td>
+                                        <input type="number" name="details[${mahasiswa.id}][hasil_proyek]" class="form-control nilai-input" placeholder="Nilai Proyek Akhir" value="0" min="0" max="100">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="details[${mahasiswa.id}][aktivitas_partisipatif]" class="form-control nilai-input" placeholder="Nilai Aktivitas Partisipatif" value="0" min="0" max="100">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="details[${mahasiswa.id}][quiz]" class="form-control nilai-input" placeholder="Nilai Quiz" value="0" min="0" max="100">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="details[${mahasiswa.id}][tugas]" class="form-control nilai-input" placeholder="Nilai Tugas" value="0" min="0" max="100">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="details[${mahasiswa.id}][uts]" class="form-control nilai-input" placeholder="Nilai UTS" value="0" min="0" max="100">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="details[${mahasiswa.id}][uas]" class="form-control nilai-input" placeholder="Nilai UAS" value="0" min="0" max="100">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="details[${mahasiswa.id}][nilai_angka]" class="form-control nilai-input" placeholder="Nilai Angka" value="0" min="0" max="100">
+                                    </td>
+                                    <td class="nilai-huruf"></td>
+                                    <td class="nilai-indeks"></td>
 
-                                <td>
-                                    <input type="number" name="details[${mahasiswa.id}][hasil_proyek]" class="form-control" placeholder="Nilai Proyek Akhir" value="0">
-                                </td>
-                                <td>
-                                    <input type="number" name="details[${mahasiswa.id}][aktivitas_partisipatif]" class="form-control" placeholder="Nilai Aktivitas Partisipatif" value="0">
-                                </td>
-                                <td>
-                                    <input type="number" name="details[${mahasiswa.id}][quiz]" class="form-control" placeholder="Nilai Quiz" value="0">
-                                </td>
-                                <td>
-                                    <input type="number" name="details[${mahasiswa.id}][tugas]" class="form-control" placeholder="Nilai Tugas" value="0">
-                                </td>
-                                <td>
-                                    <input type="number" name="details[${mahasiswa.id}][uts]" class="form-control" placeholder="Nilai UTS" value="0">
-                                </td>
-                                <td>
-                                    <input type="number" name="details[${mahasiswa.id}][uas]" class="form-control" placeholder="Nilai UAS" value="0">
-                                </td>
-                                <td>
-                                    <input type="number" name="details[${mahasiswa.id}][nilai_angka]" class="form-control" placeholder="Nilai Angka" value="0">
-                                </td>
+                                    <!-- Tambahkan hidden input untuk nilai_huruf dan nilai_indeks -->
+                                    <input type="hidden" name="details[${mahasiswa.id}][nilai_huruf]" class="nilai-huruf-input">
+                                    <input type="hidden" name="details[${mahasiswa.id}][nilai_indeks]" class="nilai-indeks-input">
+                                </tr>
+                            `;
 
-                            </tr>
-                        `;
 
                                 mahasiswaList.innerHTML += row;
                             });
+
+                            // Tambahkan event listener untuk mencegah input lebih dari 100
+                            const nilaiInputs = document.querySelectorAll('.nilai-input');
+                            nilaiInputs.forEach(input => {
+                                input.addEventListener('input', function() {
+                                    if (parseInt(this.value) > 100) {
+                                        this.value = 100; // Batasi nilai maksimal 100
+                                    }
+                                });
+                            });
                         } else {
                             document.getElementById('nilai-table').style.display =
-                                'none'; // Sembunyikan tabel jika tidak ada data
+                                ''; // Sembunyikan tabel jika tidak ada data
+                            mahasiswaList.innerHTML =
+                                '<tr><td colspan="10" class="text-center">Tidak ada data mahasiswa di kelas ini</td></tr>'; // Tampilkan pesan tidak ada data
                         }
                     });
             } else {
@@ -172,6 +190,60 @@
                 document.getElementById('nilai-table').getElementsByTagName('tbody')[0].innerHTML =
                     ''; // Kosongkan tabel
             }
+        });
+
+        function calculateGradeAndIndex() {
+            const nilaiTables = document.querySelectorAll('#nilai-table tbody tr');
+
+            nilaiTables.forEach(row => {
+                const nilaiAngka = parseFloat(row.querySelector('[name$="[nilai_angka]"]').value) || 0;
+
+                let nilaiHuruf = '';
+                let nilaiIndeks = 0.00;
+
+                // Logika perhitungan nilai huruf dan indeks berdasarkan nilai angka
+                if (nilaiAngka >= 85) {
+                    nilaiHuruf = 'A';
+                    nilaiIndeks = 4.00;
+                } else if (nilaiAngka >= 80 && nilaiAngka < 85) {
+                    nilaiHuruf = 'A-';
+                    nilaiIndeks = 3.70;
+                } else if (nilaiAngka >= 75 && nilaiAngka < 80) {
+                    nilaiHuruf = 'B+';
+                    nilaiIndeks = 3.30;
+                } else if (nilaiAngka >= 70 && nilaiAngka < 75) {
+                    nilaiHuruf = 'B';
+                    nilaiIndeks = 3.00;
+                } else if (nilaiAngka >= 65 && nilaiAngka < 70) {
+                    nilaiHuruf = 'B-';
+                    nilaiIndeks = 2.70;
+                } else if (nilaiAngka >= 60 && nilaiAngka < 65) {
+                    nilaiHuruf = 'C+';
+                    nilaiIndeks = 2.30;
+                } else if (nilaiAngka >= 55 && nilaiAngka < 60) {
+                    nilaiHuruf = 'C';
+                    nilaiIndeks = 2.00;
+                } else if (nilaiAngka >= 50 && nilaiAngka < 55) {
+                    nilaiHuruf = 'D';
+                    nilaiIndeks = 1.00;
+                } else {
+                    nilaiHuruf = 'E';
+                    nilaiIndeks = 0.00;
+                }
+
+                // Update nilai huruf dan indeks di tabel
+                row.querySelector('.nilai-huruf').textContent = nilaiHuruf;
+                row.querySelector('.nilai-indeks').textContent = nilaiIndeks.toFixed(2);
+
+                // Update hidden input nilai_huruf dan nilai_indeks
+                row.querySelector('.nilai-huruf-input').value = nilaiHuruf;
+                row.querySelector('.nilai-indeks-input').value = nilaiIndeks.toFixed(2);
+            });
+        }
+
+        // Event listener untuk semua input nilai
+        document.getElementById('nilai-table').addEventListener('input', function(e) {
+            calculateGradeAndIndex();
         });
     </script>
 @endpush
