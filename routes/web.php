@@ -160,15 +160,39 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/prestasi/show/{id}', [PrestasiController::class, 'show'])->name('prestasi.show')->middleware(['permission:read_prestasi']);
     Route::get('/getMahasiswaByProdi', [PrestasiController::class, 'getMahasiswaByProdi'])->name('getMahasiswaByProdi');
 
-    //kuriukulum
-    Route::get('/kurikulum', [KurikulumController::class, 'index'])->name('kurikulum.index')->middleware(['permission:read_kurikulum']);
-    Route::get('/kurikulum/export', [KurikulumController::class, 'export'])->name('kurikulum.export');
-    Route::get('/kurikulum/create', [KurikulumController::class, 'create'])->name('kurikulum.create')->middleware(['permission:create_kurikulum']);
-    Route::post('/kurikulum', [KurikulumController::class, 'store'])->name('kurikulum.store')->middleware(['permission:create_kurikulum']);
-    Route::get('/kurikulum/{kurikulum}/edit', [KurikulumController::class, 'edit'])->name('kurikulum.edit')->middleware(['permission:update_kurikulum']);
-    Route::put('/kurikulum/{kurikulum}', [KurikulumController::class, 'update'])->name('kurikulum.update')->middleware(['permission:update_kurikulum']);
-    Route::delete('/kurikulum/{kurikulum}', [KurikulumController::class, 'destroy'])->name('kurikulum.destroy')->middleware(['permission:delete_kurikulum']);
-    Route::get('/kurikulum/show/{id}', [KurikulumController::class, 'show'])->name('kurikulum.show')->middleware(['permission:read_kurikulum']);
+    // Kurikulum Routes
+    Route::prefix('kurikulum')->group(function () {
+        Route::get('/matkul', [KurikulumController::class, 'index'])->name('kurikulum.index')->middleware(['permission:read_kurikulum']);
+        Route::get('/matkul/export', [KurikulumController::class, 'export'])->name('kurikulum.export');
+        Route::get('/matkul/create', [KurikulumController::class, 'create'])->name('kurikulum.create')->middleware(['permission:create_kurikulum']);
+        Route::post('/matkul', [KurikulumController::class, 'store'])->name('kurikulum.store')->middleware(['permission:create_kurikulum']);
+        Route::get('/matkul/{kurikulum}/edit', [KurikulumController::class, 'edit'])->name('kurikulum.edit')->middleware(['permission:update_kurikulum']);
+        Route::put('/matkul/{kurikulum}', [KurikulumController::class, 'update'])->name('kurikulum.update')->middleware(['permission:update_kurikulum']);
+        Route::delete('/matkul/{kurikulum}', [KurikulumController::class, 'destroy'])->name('kurikulum.destroy')->middleware(['permission:delete_kurikulum']);
+        Route::get('/matkul/show/{id}', [KurikulumController::class, 'show'])->name('kurikulum.show')->middleware(['permission:read_kurikulum']);
+
+        // Rencana Pembelajaran Routes
+        Route::get('/rencana-pembelajaran', [PembelajaranPlanController::class, 'index'])->name('pembelajaran_plans.index');
+        Route::get('/rencana-pembelajaran/export', [PembelajaranPlanController::class, 'export'])->name('pembelajaran_plans.export');
+        Route::get('/rencana-pembelajaran/create', [PembelajaranPlanController::class, 'create'])->name('pembelajaran_plans.create');
+        Route::post('/rencana-pembelajaran', [PembelajaranPlanController::class, 'store'])->name('pembelajaran_plans.store');
+        Route::get('/rencana-pembelajaran/{pembelajaranPlan}/edit', [PembelajaranPlanController::class, 'edit'])->name('pembelajaran_plans.edit');
+        Route::put('/rencana-pembelajaran/{pembelajaranPlan}', [PembelajaranPlanController::class, 'update'])->name('pembelajaran_plans.update');
+        Route::delete('/rencana-pembelajaran/{pembelajaranPlan}', [PembelajaranPlanController::class, 'destroy'])->name('pembelajaran_plans.destroy');
+        Route::get('/rencana-pembelajaran/show/{id}', [PembelajaranPlanController::class, 'show'])->name('pembelajaran_plans.show');
+        Route::get('/rencana-pembelajaran/get-program-studi/{matakuliahId}', [PembelajaranPlanController::class, 'getProgramStudi']);
+
+        // Rencana Evaluasi Routes
+        Route::get('/rencana-evaluasi', [EvaluasiPlanController::class, 'index'])->name('evaluasi_plan.index');
+        Route::get('/rencana-evaluasi/export', [EvaluasiPlanController::class, 'export'])->name('evaluasi_plan.export');
+        Route::get('/rencana-evaluasi/create', [EvaluasiPlanController::class, 'create'])->name('evaluasi_plan.create');
+        Route::post('/rencana-evaluasi', [EvaluasiPlanController::class, 'store'])->name('evaluasi_plan.store');
+        Route::get('/rencana-evaluasi/{evaluasiPlan}/edit', [EvaluasiPlanController::class, 'edit'])->name('evaluasi_plan.edit');
+        Route::put('/rencana-evaluasi/{evaluasiPlan}', [EvaluasiPlanController::class, 'update'])->name('evaluasi_plan.update');
+        Route::delete('/rencana-evaluasi/{evaluasiPlan}', [EvaluasiPlanController::class, 'destroy'])->name('evaluasi_plan.destroy');
+        Route::get('/rencana-evaluasi/show/{id}', [EvaluasiPlanController::class, 'show'])->name('evaluasi_plan.show');
+        Route::get('/rencana-evaluasi/get-program-studi/{matakuliahId}', [EvaluasiPlanController::class, 'getProgramStudi']);
+    });
 
     //kelas
     Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index')->middleware(['permission:read_kelas']);
@@ -195,6 +219,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // Route untuk mengambil mata kuliah berdasarkan program studi dan semester
     Route::get('/kurikulum/get-matakuliah/{prodi}/{semester}', [KurikulumController::class, 'getMataKuliah'])->name('get-matakuliah');
     Route::post('/kurikulum/get-matakuliah-details', [KurikulumController::class, 'getMataKuliahDetails']);
+
 
     // Route::put('/tahun-akademik/{id}', [TahunAkademikController::class, 'update'])->name('tahun-akademik.update');
     Route::get('/config', [ConfigController::class, 'index'])->name('config.index');
@@ -238,28 +263,6 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::put('/aktivitas-bimbing-uji/{id}', [AktivitasMahasiswaBimbingController::class, 'update'])->name('bimbingUji.update');
     Route::get('/aktivitas-bimbing-uji/{id}', [AktivitasMahasiswaBimbingController::class, 'show'])->name('bimbingUji.show');
     Route::delete('/aktivitas-bimbing-uji/{id}', [AktivitasMahasiswaBimbingController::class, 'destroy'])->name('bimbingUji.destroy');
-
-    // pembelajaran plan
-    Route::get('/rencana-pembelajaran', [PembelajaranPlanController::class, 'index'])->name('pembelajaran_plans.index');
-    Route::get('/rencana-pembelajaran/export', [PembelajaranPlanController::class, 'export'])->name('pembelajaran_plans.export');
-    Route::get('/rencana-pembelajaran/create', [PembelajaranPlanController::class, 'create'])->name('pembelajaran_plans.create');
-    Route::post('/rencana-pembelajaran', [PembelajaranPlanController::class, 'store'])->name('pembelajaran_plans.store');
-    Route::get('/rencana-pembelajaran/{pembelajaranPlan}/edit', [PembelajaranPlanController::class, 'edit'])->name('pembelajaran_plans.edit');
-    Route::put('/rencana-pembelajaran/{pembelajaranPlan}', [PembelajaranPlanController::class, 'update'])->name('pembelajaran_plans.update');
-    Route::delete('/rencana-pembelajaran/{pembelajaranPlan}', [PembelajaranPlanController::class, 'destroy'])->name('pembelajaran_plans.destroy');
-    Route::get('/rencana-pembelajaran/show/{id}', [PembelajaranPlanController::class, 'show'])->name('pembelajaran_plans.show');
-    Route::get('/api/get-program-studi/{matakuliahId}', [PembelajaranPlanController::class, 'getProgramStudi']);
-
-    // evaluasi plan
-    Route::get('/rencana_evaluasi', [EvaluasiPlanController::class, 'index'])->name('evaluasi_plan.index');
-    Route::get('/rencana_evaluasi/export', [EvaluasiPlanController::class, 'export'])->name('evaluasi_plan.export');
-    Route::get('/rencana_evaluasi/create', [EvaluasiPlanController::class, 'create'])->name('evaluasi_plan.create');
-    Route::post('/rencana_evaluasi', [EvaluasiPlanController::class, 'store'])->name('evaluasi_plan.store');
-    Route::get('/rencana_evaluasi/{evaluasiPlan}/edit', [EvaluasiPlanController::class, 'edit'])->name('evaluasi_plan.edit');
-    Route::put('/rencana_evaluasi/{evaluasiPlan}', [EvaluasiPlanController::class, 'update'])->name('evaluasi_plan.update');
-    Route::delete('/rencana_evaluasi/{evaluasiPlan}', [EvaluasiPlanController::class, 'destroy'])->name('evaluasi_plan.destroy');
-    Route::get('/rencana_evaluasi/show/{id}', [EvaluasiPlanController::class, 'show'])->name('evaluasi_plan.show');
-    Route::get('/rencana_evaluasi/get-program-studi/{matakuliahId}', [EvaluasiPlanController::class, 'getProgramStudi']);
 
     Route::get('/feature', [MasterFeatureController::class, 'index'])->name('feature.index');
     Route::get('/feature/create', [MasterFeatureController::class, 'create'])->name('feature.create');
