@@ -208,6 +208,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     // aktivitas mahasiswa
     Route::get('/aktivitas', [AktivitasMahasiswaController::class, 'index'])->name('aktivitas.index');
+    Route::get('/aktivitas/export', [AktivitasMahasiswaController::class, 'export'])->name('aktivitas.export');
     Route::get('/aktivitas/create', [AktivitasMahasiswaController::class, 'create'])->name('aktivitas.create');
     Route::post('/aktivitas/store', [AktivitasMahasiswaController::class, 'store'])->name('aktivitas.store');
     Route::get('/aktivitas/{id}/edit', [AktivitasMahasiswaController::class, 'edit'])->name('aktivitas.edit');
@@ -217,6 +218,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     // aktivitas mahasiswa peserta
     Route::get('/aktivitas-peserta', [AktivitasMahasiswaPesertaController::class, 'index'])->name('aktivitas-peserta.index');
+    Route::get('/aktivitas-peserta/export', [AktivitasMahasiswaPesertaController::class, 'export'])->name('aktivitas-peserta.export');
     Route::get('/aktivitas-peserta/create', [AktivitasMahasiswaPesertaController::class, 'create'])->name('aktivitas-peserta.create');
     Route::post('/aktivitas-peserta/store', [AktivitasMahasiswaPesertaController::class, 'store'])->name('aktivitas-peserta.store');
     Route::get('/aktivitas-peserta/{id}/edit', [AktivitasMahasiswaPesertaController::class, 'edit'])->name('aktivitas-peserta.edit');
@@ -227,6 +229,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // aktivitas mahasiswa bimbing uji
     Route::get('/bimbingUji', [AktivitasMahasiswaBimbingController::class, 'index'])->name('bimbingUji.index');
     Route::get('/bimbingUji/create', [AktivitasMahasiswaBimbingController::class, 'create'])->name('bimbingUji.create');
+    Route::get('/bimbingUji/export', [AktivitasMahasiswaBimbingController::class, 'export'])->name('bimbingUji.export');
     Route::post('/bimbingUji/store', [AktivitasMahasiswaBimbingController::class, 'store'])->name('bimbingUji.store');
     Route::get('/bimbingUji/{id}/edit', [AktivitasMahasiswaBimbingController::class, 'edit'])->name('bimbingUji.edit');
     Route::put('/bimbingUji/{id}', [AktivitasMahasiswaBimbingController::class, 'update'])->name('bimbingUji.update');
