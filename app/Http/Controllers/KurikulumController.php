@@ -20,7 +20,7 @@ class KurikulumController extends Controller
     {
         $kurikulums = Kurikulum::with(['programStudi', 'semesters', 'krs'])->get();
 
-        return view('master.kurikulum.index', compact('kurikulums'));
+        return view('kurikulum.kurikulum-matkul.index', compact('kurikulums'));
     }
 
     public function export(Request $request)
@@ -37,7 +37,7 @@ class KurikulumController extends Controller
         $semesters = Semester::all();
         $programStudis = ProgramStudi::all();
         $matakuliah = MataKuliah::all();
-        return view('master.kurikulum.create', compact('semesters', 'programStudis', 'matakuliah'));
+        return view('kurikulum.kurikulum-matkul.create', compact('semesters', 'programStudis', 'matakuliah'));
     }
 
     public function store(Request $request)
@@ -87,7 +87,7 @@ class KurikulumController extends Controller
                 $query->whereNotNull('matakuliah_id');
             })
         ->findOrFail($id);
-        return view('master.kurikulum.detail', compact('kurikulum'));
+        return view('kurikulum.kurikulum-matkul.detail', compact('kurikulum'));
     }
 
     public function edit($id)
@@ -98,7 +98,7 @@ class KurikulumController extends Controller
         $matakuliah = MataKuliah::all();
         $matakuliahSelected = KurikulumDetail::where('kurikulum_id', $id)->pluck('matakuliah_id')->toArray();
 
-        return view('master.kurikulum.edit', compact('kurikulum', 'semesters', 'programStudis', 'matakuliah', 'matakuliahSelected'));
+        return view('kurikulum.kurikulum-matkul.edit', compact('kurikulum', 'semesters', 'programStudis', 'matakuliah', 'matakuliahSelected'));
     }
 
     public function update(Request $request, $id)

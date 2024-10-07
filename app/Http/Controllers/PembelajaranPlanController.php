@@ -18,7 +18,7 @@ class PembelajaranPlanController extends Controller
     public function index()
     {
         $plans = PembelajaranPlan::with('matakuliah', 'programStudi')->get();
-        return view('master.learn-plan.index', compact('plans'));
+        return view('kurikulum.rencana-pembelajaran.index', compact('plans'));
     }
 
     public function export()
@@ -33,7 +33,7 @@ class PembelajaranPlanController extends Controller
     {
         $matakuliah = Matakuliah::all();
         $programStudi = ProgramStudi::all();
-        return view('master.learn-plan.create', compact('matakuliah', 'programStudi'));
+        return view('kurikulum.rencana-pembelajaran.create', compact('matakuliah', 'programStudi'));
     }
 
     /**
@@ -76,7 +76,7 @@ class PembelajaranPlanController extends Controller
     {
         $matakuliah = Matakuliah::all();
         $programStudi = ProgramStudi::all();
-        return view('master.learn-plan.edit', compact('pembelajaranPlan', 'matakuliah', 'programStudi'));
+        return view('kurikulum.rencana-pembelajaran.edit', compact('pembelajaranPlan', 'matakuliah', 'programStudi'));
     }
 
     /**
@@ -115,7 +115,7 @@ class PembelajaranPlanController extends Controller
     public function show($id)
     {
         $pembelajaranPlan = PembelajaranPlan::with('matakuliah', 'programStudi', 'details')->findOrFail($id);
-        return view('master.learn-plan.detail', compact('pembelajaranPlan'));
+        return view('kurikulum.rencana-pembelajaran.detail', compact('pembelajaranPlan'));
     }
 
     /**

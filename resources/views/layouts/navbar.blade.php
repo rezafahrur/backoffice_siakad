@@ -87,6 +87,60 @@
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
+                        <i class="link-icon" data-feather="grid"></i>
+                        <span class="menu-title">Master</span>
+                        <i class="link-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="submenu-item">
+                                    @can('read_jurusan')
+                                        <li class="nav-item {{ Request::is('jurusan*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('jurusan.index') }}">Jurusan</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('read_program_studi')
+                                        <li class="nav-item {{ Request::is('prodi*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('prodi.index') }}">Program Studi</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('read_ruang_kelas')
+                                        <li class="nav-item {{ Request::is('ruang-kelas*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('ruang-kelas.index') }}">Ruang Kelas</a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="submenu-item">
+                                    @can('read_semester')
+                                        <li class="nav-item {{ Request::is('semester*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('semester.index') }}">Semester</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('read_position')
+                                        <li class="nav-item {{ Request::is('position*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('position.index') }}">Posisi</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('read_mata_kuliah')
+                                        <li class="nav-item {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
                         <i class="link-icon" data-feather="book"></i>
                         <span class="menu-title">Kurikulum</span>
                         <i class="link-arrow"></i>
@@ -94,19 +148,19 @@
                     <div class="submenu">
                         <ul class="submenu-item">
                             @can('read_kurikulum')
-                                <li class="nav-item {{ Request::is('kurikulum*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('kurikulum/matkul*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('kurikulum.index') }}">Kurikulum</a>
                                 </li>
                             @endcan
 
                             @can('read_rencana_evaluasi')
-                                <li class="nav-item {{ Request::is('rencana_evaluasi*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('kurikulum/rencana-evaluasi*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('evaluasi_plan.index') }}">Rencana Evaluasi</a>
                                 </li>
                             @endcan
 
                             @can('read_rencana_pembelajaran')
-                                <li class="nav-item {{ Request::is('rencana_pembelajaran*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('kurikulum/rencana-pembelajaran*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('pembelajaran_plans.index') }}">Rencana
                                         Pembelajaran</a>
                                 </li>
@@ -195,60 +249,6 @@
                                 </li>
                             @endcan
                         </ul>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="link-icon" data-feather="grid"></i>
-                        <span class="menu-title">Master</span>
-                        <i class="link-arrow"></i>
-                    </a>
-                    <div class="submenu">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <ul class="submenu-item">
-                                    @can('read_jurusan')
-                                        <li class="nav-item {{ Request::is('jurusan*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('jurusan.index') }}">Jurusan</a>
-                                        </li>
-                                    @endcan
-
-                                    @can('read_program_studi')
-                                        <li class="nav-item {{ Request::is('prodi*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('prodi.index') }}">Program Studi</a>
-                                        </li>
-                                    @endcan
-
-                                    @can('read_ruang_kelas')
-                                        <li class="nav-item {{ Request::is('ruang-kelas*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('ruang-kelas.index') }}">Ruang Kelas</a>
-                                        </li>
-                                    @endcan
-                                </ul>
-                            </div>
-                            <div class="col-md-6">
-                                <ul class="submenu-item">
-                                    @can('read_semester')
-                                        <li class="nav-item {{ Request::is('semester*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('semester.index') }}">Semester</a>
-                                        </li>
-                                    @endcan
-
-                                    @can('read_position')
-                                        <li class="nav-item {{ Request::is('position*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('position.index') }}">Posisi</a>
-                                        </li>
-                                    @endcan
-
-                                    @can('read_mata_kuliah')
-                                        <li class="nav-item {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
-                                        </li>
-                                    @endcan
-                                </ul>
-                            </div>
-                        </div>
                     </div>
                 </li>
 
