@@ -67,8 +67,7 @@
                 </li>
 
                 @can('read_mahasiswa')
-                    <li
-                        class="nav-item {{ Route::is('mahasiswa.index', 'mahasiswa.show', 'mahasiswa.create', 'mahasiswa.edit') ? 'active' : '' }}">
+                    <li class="nav-item {{ Request::is('mahasiswa*') ? 'active' : '' }}">
                         <a href="{{ route('mahasiswa.index') }}" class="nav-link">
                             <i class="link-icon" data-feather="inbox"></i>
                             <span class="menu-title">Mahasiswa</span>
@@ -78,7 +77,7 @@
 
                 {{-- human resource --}}
                 @can('read_hr')
-                    <li class="nav-item {{ Route::is('hr.index') ? 'active' : '' }}">
+                    <li class="nav-item {{ Request::is('hr*') ? 'active' : '' }}">
                         <a href="{{ route('hr.index') }}" class="nav-link">
                             <i class="link-icon" data-feather="users"></i>
                             <span class="menu-title">Employee</span>
@@ -94,30 +93,28 @@
                     </a>
                     <div class="submenu">
                         <ul class="submenu-item">
-                            {{-- @can('read_kurikulum') --}}
-                            <li class="nav-item {{ Route::is('kurikulum.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('kurikulum.index') }}">Kurikulum</a>
-                            </li>
-                            {{-- @endcan --}}
+                            @can('read_kurikulum')
+                                <li class="nav-item {{ Request::is('kurikulum*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('kurikulum.index') }}">Kurikulum</a>
+                                </li>
+                            @endcan
 
-                            {{-- rencana evaluasi --}}
-                            {{-- @can('read_rencana_evaluasi') --}}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('evaluasi_plan.index') }}">Rencana Evaluasi</a>
-                            </li>
-                            {{-- @endcan --}}
+                            @can('read_rencana_evaluasi')
+                                <li class="nav-item {{ Request::is('rencana_evaluasi*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('evaluasi_plan.index') }}">Rencana Evaluasi</a>
+                                </li>
+                            @endcan
 
-                            {{-- rencana pembelajaran --}}
-                            {{-- @can('read_rencana_pembelajaran') --}}
-                            <li class="nav-item"
-                                {{ Route::is('pembelajaran_plans.index', 'pembelajaran_plans.show', 'pembelajaran_plans.edit') ? 'active' : '' }}>
-                                <a class="nav-link" href="{{ route('pembelajaran_plans.index') }}">Rencana
-                                    Pembelajaran</a>
-                            </li>
-                            {{-- @endcan --}}
+                            @can('read_rencana_pembelajaran')
+                                <li class="nav-item {{ Request::is('rencana_pembelajaran*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('pembelajaran_plans.index') }}">Rencana
+                                        Pembelajaran</a>
+                                </li>
+                            @endcan
                         </ul>
                     </div>
                 </li>
+
 
                 {{-- Perkuliahan --}}
                 <li class="nav-item">
@@ -128,15 +125,15 @@
                     </a>
                     <div class="submenu">
                         <ul class="submenu-item">
-                            {{-- @can('read_perkuliahan') --}}
-                            <li class="nav-item {{ Route::is('kelas.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('kelas.index') }}">Kelas</a>
-                            </li>
-                            {{-- @endcan --}}
+                            @can('read_kelas')
+                                <li class="nav-item {{ Request::is('kelas*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('kelas.index') }}">Kelas</a>
+                                </li>
+                            @endcan
 
                             {{-- jadwal --}}
                             @can('read_jadwal')
-                                <li class="nav-item {{ Route::is('jadwal.index') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('jadwal*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('jadwal.index') }}">Jadwal</a>
                                 </li>
                             @endcan
@@ -151,19 +148,20 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('nilai.index') }}">Nilai</a>
                             </li>
-
-
-                            <li class="nav-item {{ Route::is('skala-nilai.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('skala-nilai.index') }}">Skala Nilai</a>
-                            </li>
                             {{-- @endcan --}}
 
-                            {{-- @can('read_periode') --}}
-                            <li class="nav-item {{ Route::is('periode-perkuliahan.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('periode-perkuliahan.index') }}">Periode
-                                    Perkuliahan</a>
-                            </li>
-                            {{-- @endcan --}}
+                            @can('read_skala_nilai')
+                                <li class="nav-item {{ Request::is('skala-nilai*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('skala-nilai.index') }}">Skala Nilai</a>
+                                </li>
+                            @endcan
+
+                            @can('read_periode_perkuliahan')
+                                <li class="nav-item {{ Request::is('periode-perkuliahan*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('periode-perkuliahan.index') }}">Periode
+                                        Perkuliahan</a>
+                                </li>
+                            @endcan
                         </ul>
                     </div>
                 </li>
@@ -177,19 +175,25 @@
                     </a>
                     <div class="submenu">
                         <ul class="submenu-item">
-                            <li class="nav-item {{ Route::is('aktivitas.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('aktivitas.index') }}">Aktivitas Mahasiswa</a>
-                            </li>
-                            <li class="nav-item {{ Route::is('aktivitas-peserta.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('aktivitas-peserta.index') }}">Aktivitas Mahasiswa Peserta</a>
-                            </li>
-                            {{-- @endcan --}}
+                            @can('read_akm')
+                                <li class="nav-item {{ Request::is('aktivitas*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('aktivitas.index') }}">Aktivitas Mahasiswa</a>
+                                </li>
+                            @endcan
 
-                            {{-- @can('read_aktivitas mahasiswa bimbimg uji') --}}
-                            <li class="nav-item {{ Route::is('bimbingUji.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('bimbingUji.index') }}">Aktivitas Mahasiswa Bimbing Uji</a>
-                            </li>
-                            {{-- @endcan --}}
+                            @can('read_akm_peserta')
+                                <li class="nav-item {{ Request::is('aktivitas-peserta*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('aktivitas-peserta.index') }}">Aktivitas Mahasiswa
+                                        Peserta</a>
+                                </li>
+                            @endcan
+
+                            @can('read_akm_bimbing_uji')
+                                <li class="nav-item {{ Request::is('bimbingUji*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('bimbingUji.index') }}">Aktivitas Mahasiswa
+                                        Bimbing Uji</a>
+                                </li>
+                            @endcan
                         </ul>
                     </div>
                 </li>
@@ -205,19 +209,19 @@
                             <div class="col-md-6">
                                 <ul class="submenu-item">
                                     @can('read_jurusan')
-                                        <li class="nav-item {{ Route::is('jurusan.index') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('jurusan*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('jurusan.index') }}">Jurusan</a>
                                         </li>
                                     @endcan
 
                                     @can('read_program_studi')
-                                        <li class="nav-item {{ Route::is('prodi.index') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('prodi*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('prodi.index') }}">Program Studi</a>
                                         </li>
                                     @endcan
 
                                     @can('read_ruang_kelas')
-                                        <li class="nav-item {{ Route::is('ruang-kelas.index') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('ruang-kelas*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('ruang-kelas.index') }}">Ruang Kelas</a>
                                         </li>
                                     @endcan
@@ -226,19 +230,19 @@
                             <div class="col-md-6">
                                 <ul class="submenu-item">
                                     @can('read_semester')
-                                        <li class="nav-item {{ Route::is('semester.index') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('semester*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('semester.index') }}">Semester</a>
                                         </li>
                                     @endcan
 
                                     @can('read_position')
-                                        <li class="nav-item {{ Route::is('position.index') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('position*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('position.index') }}">Posisi</a>
                                         </li>
                                     @endcan
 
                                     @can('read_mata_kuliah')
-                                        <li class="nav-item {{ Route::is('mata-kuliah.index') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
                                         </li>
                                     @endcan
@@ -257,16 +261,20 @@
                     <div class="submenu">
                         <ul class="submenu-item">
                             @can('read_berita')
-                                <li class="nav-item {{ Route::is('berita.index') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('berita*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('berita.index') }}">Berita</a>
                                 </li>
                             @endcan
-                            <li class="nav-item {{ Route::is('config.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('config.index') }}">Config</a>
-                            </li>
-                            <li class="nav-item {{ Route::is('feature.index') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('feature.index') }}">Feature</a>
-                            </li>
+                            @can('read_config')
+                                <li class="nav-item {{ Request::is('config*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('config.index') }}">Config</a>
+                                </li>
+                            @endcan
+                            @can('read_feature')
+                                <li class="nav-item {{ Request::is('feature*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('feature.index') }}">Feature</a>
+                                </li>
+                            @endcan
                         </ul>
                     </div>
                 </li>
