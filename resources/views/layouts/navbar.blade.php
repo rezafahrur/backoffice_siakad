@@ -189,7 +189,7 @@
                             @endcan
 
                             @can('read_akm_bimbing_uji')
-                                <li class="nav-item {{ Request::is('bimbingUji*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('aktivitas-bimbing-uji*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('bimbingUji.index') }}">Aktivitas Mahasiswa
                                         Bimbing Uji</a>
                                 </li>
