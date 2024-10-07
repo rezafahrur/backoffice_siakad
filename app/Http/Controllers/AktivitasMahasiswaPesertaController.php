@@ -8,6 +8,8 @@ use App\Models\AktivitasMahasiswa;
 use App\Models\ProgramStudi;
 use App\Models\Mahasiswa;
 use App\Models\Matakuliah;
+use App\Exports\AktivitasMahasiswaPesertaExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AktivitasMahasiswaPesertaController extends Controller
 {
@@ -29,6 +31,11 @@ class AktivitasMahasiswaPesertaController extends Controller
         $matakuliah = Matakuliah::all();
 
         return view('master.aktivitas-peserta.create', compact('aktivitasMahasiswa', 'programStudi', 'mahasiswa', 'matakuliah'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new AktivitasMahasiswaPesertaExport, 'aktivitas-mahasiswa-peserta.xlsx');
     }
 
     // Menyimpan data baru ke database

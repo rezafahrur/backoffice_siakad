@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\AktivitasMahasiswa;
 use App\Models\AktivitasMahasiswaBimbing;
 use Illuminate\Http\Request;
+use App\Exports\AktivitasMahasiswaBimbingExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AktivitasMahasiswaBimbingController extends Controller
 {
@@ -18,6 +20,11 @@ class AktivitasMahasiswaBimbingController extends Controller
     {
         $aktivitas = AktivitasMahasiswa::all();
         return view('master.aktivitas-bimbing-uji.create', compact('aktivitas'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new AktivitasMahasiswaBimbingExport, 'aktivitas-mahasiswa-bimbingUji.xlsx');
     }
 
     public function store(Request $request)

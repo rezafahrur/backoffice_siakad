@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\AktivitasMahasiswa;
 use App\Models\ProgramStudi;
 use App\Models\Semester;
+use App\Exports\AktivitasMahasiswaExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AktivitasMahasiswaController extends Controller
 {
@@ -20,6 +22,11 @@ class AktivitasMahasiswaController extends Controller
         $prodi = ProgramStudi::all();
         $semester = Semester::all();
         return view('master.aktivitas-mahasiswa.create', compact('prodi', 'semester'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new AktivitasMahasiswaExport, 'aktivitas-mahasiswa.xlsx');
     }
 
     public function store(Request $request)
