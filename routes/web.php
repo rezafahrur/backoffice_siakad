@@ -276,6 +276,8 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // get mahaasiswa
     Route::get('/nilai/get-mahasiswa/{kelasId}', [NilaiController::class, 'getMahasiswaByKelas']);
     Route::get('/nilai/{id}/pdf', [NilaiController::class, 'cetakPdf'])->name('nilai.pdf');
+    //export
+    Route::get('/nilai/export', [NilaiController::class, 'export'])->name('nilai.export');
 
     Route::get('/moodle-login', [MoodleAuthController::class, 'showLoginForm'])->name('moodle.login.form');
     Route::post('/moodle-login', [MoodleAuthController::class, 'loginToMoodle'])->name('moodle.login');
