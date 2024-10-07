@@ -20,6 +20,10 @@
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
+                            <a href="{{ route('nilai.export') }}" class="btn btn-success btn-icon-text">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+                                Export
+                            </a>
                         </div>
                     </div>
                     <div class="table-responsive">

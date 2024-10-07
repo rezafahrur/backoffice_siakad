@@ -9,7 +9,8 @@ use App\Models\MataKuliah;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use App\Http\Requests\NilaiRequest;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\NilaiExport;
 
 class NilaiController extends Controller
 {
@@ -21,6 +22,12 @@ class NilaiController extends Controller
         $nilais = Nilai::with(['programStudi', 'kelas', 'matakuliah'])->get();
 
         return view('master.nilai.index', compact('nilais'));
+    }
+
+    //export
+    public function export()
+    {
+        return Excel::download(new NilaiExport, 'nilai.xlsx');
     }
 
     /**
