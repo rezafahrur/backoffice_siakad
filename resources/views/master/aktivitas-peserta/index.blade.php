@@ -13,10 +13,16 @@
                 <div class="card-body">
                     <h6 class="card-title">Daftar Aktivitas Mahasiswa Peserta</h6>
                     <div class="d-flex justify-content-end mb-3">
+                        <div>
                         <a href="{{ route('aktivitas-peserta.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="plus-square"></i>
                             Tambah Aktivitas
                         </a>
+                        <a href="{{ route('aktivitas-peserta.export') }}" class="btn btn-success btn-icon-text">
+                            <i class="btn-icon-prepend" data-feather="download"></i>
+                            Aktivitas Mahasiswa Peserta
+                        </a>
+                    </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover" id="dataTableExample">

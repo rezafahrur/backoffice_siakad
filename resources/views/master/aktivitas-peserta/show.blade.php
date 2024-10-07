@@ -18,6 +18,14 @@
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-md-4">
+                    <strong>Kode Program Studi:</strong>
+                </div>
+                <div class="col-md-8">
+                    <span>{{ $peserta->programStudi->kode_prodi }}</span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-4">
                     <strong>Program Studi:</strong>
                 </div>
                 <div class="col-md-8">
