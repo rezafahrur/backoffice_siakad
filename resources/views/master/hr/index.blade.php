@@ -15,29 +15,9 @@
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Data HR</h6>
-                    
+
                     <!-- Filter Form -->
-                    <div class="d-flex justify-content-between mb-3">
-                        <!-- Form Filter -->
-                        <div class="d-flex justify-content-end">
-                            <form action="{{ route('hr.index') }}" method="GET" class="d-flex align-items-center">
-                                <div class="form-group mr-2">
-                                    <select class="form-control" name="position_id" id="positionFilter">
-                                        <option value="">-- Pilih Posisi --</option>
-                                        @foreach ($positions as $position)
-                                            <option value="{{ $position->id }}" 
-                                                {{ request('position_id') == $position->id ? 'selected' : '' }}>
-                                                {{ $position->posisi }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <button type="submit" class="btn btn-primary">Filter</button>
-                                </div>
-                            </form>
-                        </div>
-                    
+                    <div class="d-flex justify-content-end mb-3">
                         <!-- Button Tambah Data -->
                         <div>
                             <a href="{{ route('hr.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
@@ -46,7 +26,7 @@
                             </a>
                         </div>
                     </div>
-                    
+
 
                     <div class="table-responsive">
                         <table class="table table-hover" id="dataTableExample">
