@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KelasExport;
 use App\Http\Requests\KelasRequest;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use App\Models\ProgramStudi;
 use App\Models\Semester;
 use App\Models\Kurikulum;
 use App\Models\HR;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KelasController extends Controller
 {
@@ -21,6 +23,11 @@ class KelasController extends Controller
         $kelas = Kelas::with('programStudi', 'semester', 'kurikulum')->get();
         // dd($kelas);
         return view('master.kelas.index', compact('kelas'));
+    }
+
+    public function export()
+    {
+        return Excel::download(new KelasExport, 'kelas.xlsx');
     }
 
     /**
