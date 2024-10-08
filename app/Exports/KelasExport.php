@@ -5,54 +5,63 @@ namespace App\Exports;
 use App\Models\Kelas;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
 
-class KelasExport implements FromCollection, WithHeadings, WithMapping
+
+class KelasExport implements FromCollection, WithHeadings
 {
     /**
-     * Return the collection of data to export.
-     */
+    * @return \Illuminate\Support\Collection
+    */
     public function collection()
     {
-        // Mengambil data Kelas dengan relasi 'details'
-        return Kelas::with(['programStudi', 'semester', 'kurikulum', 'details.hr'])->get();
+        // Fetching Kelas with the necessary relationships
+        return Kelas::with(['details.kurikulumDetail.matakuliah', 'programStudi', 'semester'])
+            ->get()
+            ->flatMap(function ($kelas) {
+                return $kelas->details->map(function ($detail) use ($kelas) {
+                    return [
+                        //nama_semester
+                        'Semester' => $kelas->semester->nama_semester ?? 'N/A',
+                        'Kode Mata Kuliah' => $detail->kurikulumDetail->matakuliah->kode_matakuliah ?? 'N/A',
+                        'Nama Mata Kuliah' => $detail->kurikulumDetail->matakuliah->nama_matakuliah ?? 'N/A',
+                        'Nama Kelas' => $kelas->nama_kelas ?? 'N/A',
+                        'Tanggal Mulai Efektif' => isset($detail->kurikulumDetail->matakuliah->tgl_mulai_efektif) ? $detail->kurikulumDetail->matakuliah->tgl_mulai_efektif : 'N/A',
+                        'Tanggal Akhir Efektif' => isset($detail->kurikulumDetail->matakuliah->tgl_akhir_efektif) ? $detail->kurikulumDetail->matakuliah->tgl_akhir_efektif : 'N/A',
+                        'Bahasan' => isset($detail->kurikulumDetail->matakuliah->bahasan) ? $detail->kurikulumDetail->matakuliah->bahasan : 'N/A',
+                        'Lingkup Kelas' => $detail->lingkup_kelas ?? 'N/A',
+                        'Mode Kelas' => $detail->mode_kelas ?? 'N/A',
+                        'Kode Prodi' => $kelas->programStudi->id ?? 'N/A',
+                        'Nama Program Studi' => $kelas->programStudi->nama_program_studi ?? 'N/A',
+                        'SKS Tatap Muka' => $detail->kurikulumDetail->matakuliah->sks_tatap_muka ?? 'N/A',
+                        'SKS Praktek' => $detail->kurikulumDetail->matakuliah->sks_praktek ?? 'N/A',
+                        'SKS Praktek Lapangan' => $detail->kurikulumDetail->matakuliah->sks_praktek_lapangan ?? 'N/A',
+                        'SKS Simulasi' => $detail->kurikulumDetail->matakuliah->sks_simulasi ?? 'N/A',
+                    ];
+                });
+            });
     }
 
     /**
-     * Map data untuk setiap row di Excel
-     */
-    public function map($kelas): array
-    {
-        // Mengambil data detail pertama dari kelas untuk export
-        // Asumsi: Satu kelas hanya punya satu detail, jika banyak maka Anda bisa mengadaptasi agar semua detail diexport
-        $detail = $kelas->details->first();
-
-        return [
-            optional($kelas->programStudi)->nama_program_studi,  // Nama Program Studi
-            optional($kelas->semester)->nama_semester,      // Nama Semester
-            optional($kelas->kurikulum)->nama_kurikulum,     // Nama Kurikulum
-            $kelas->nama_kelas,
-            optional($detail->hr)->nama ?? 'N/A',            // Nama Dosen
-            $kelas->kapasitas,
-            $kelas->tanggal_mulai,
-            $kelas->tanggal_akhir,     
-        ];
-    }
-
-    /**
-     * Headings untuk kolom di Excel
+     * Headings for the export file.
      */
     public function headings(): array
     {
         return [
-            'Program Studi',
             'Semester',
-            'Kurikulum',
+            'Kode Mata Kuliah',
+            'Nama Mata Kuliah',
             'Nama Kelas',
-            'Nama Dosen',
-            'Kapasitas',
-            'Tanggal Mulai',
-            'Tanggal Akhir',
+            'Tanggal Mulai Efektif',
+            'Tanggal Akhir Efektif',
+            'Bahasan',
+            'Lingkup Kelas',
+            'Mode Kuliah',
+            'Kode Prodi',
+            'Nama Program Studi',
+            'SKS Tatap Muka',
+            'SKS Praktek',
+            'SKS Praktek Lapangan',
+            'SKS Simulasi',
         ];
     }
 }
