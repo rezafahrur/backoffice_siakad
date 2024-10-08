@@ -15,7 +15,7 @@ class EvaluasiPlanController extends Controller
     public function index()
     {
         $evaluasiPlans = EvaluasiPlan::with('matakuliah', 'programStudi')->get();
-        return view('master.evaluasi-plan.index', compact('evaluasiPlans'));
+        return view('kurikulum.rencana-evaluasi.index', compact('evaluasiPlans'));
     }
 
     public function export()
@@ -27,7 +27,7 @@ class EvaluasiPlanController extends Controller
     {
         $matakuliah = Matakuliah::all();
         $programStudi = ProgramStudi::all();
-        return view('master.evaluasi-plan.create', compact('matakuliah', 'programStudi'));
+        return view('kurikulum.rencana-evaluasi.create', compact('matakuliah', 'programStudi'));
     }
 
     public function store(Request $request)
@@ -69,7 +69,7 @@ class EvaluasiPlanController extends Controller
     {
         $matakuliah = Matakuliah::all();
         $programStudi = ProgramStudi::all();
-        return view('master.evaluasi-plan.edit', compact('evaluasiPlan', 'matakuliah', 'programStudi'));
+        return view('kurikulum.rencana-evaluasi.edit', compact('evaluasiPlan', 'matakuliah', 'programStudi'));
     }
 
     public function update(Request $request, EvaluasiPlan $evaluasiPlan)
@@ -112,7 +112,7 @@ class EvaluasiPlanController extends Controller
     public function show($id)
     {
         $evaluasiPlan = EvaluasiPlan::with('matakuliah', 'programStudi', 'details')->find($id);
-        return view('master.evaluasi-plan.detail', compact('evaluasiPlan'));
+        return view('kurikulum.rencana-evaluasi.detail', compact('evaluasiPlan'));
     }
 
     public function destroy(EvaluasiPlan $evaluasiPlan)

@@ -16,7 +16,7 @@ class MasterFeatureController extends Controller
     {
         $masterFeature = MasterFeature::all();
 
-        return view('master.feature.index', compact('masterFeature'));
+        return view('feature.feature.index', compact('masterFeature'));
     }
 
     /**
@@ -25,7 +25,7 @@ class MasterFeatureController extends Controller
     public function create()
     {
         $masterFeature = MasterFeature::all();
-        return view('master.feature.create', compact('masterFeature'));
+        return view('feature.feature.create', compact('masterFeature'));
     }
 
     /**
@@ -36,12 +36,12 @@ class MasterFeatureController extends Controller
         $request->validate([
             'name' => 'required|unique:m_feature,name',
         ]);
-    
+
         // Menyimpan fitur baru
         $masterFeature = MasterFeature::create([
             'name' => $request->name,
         ]);
-    
+
         // Menambahkan permissions terkait langsung ke tabel permissions
         $permissions = ['create', 'read', 'update', 'delete'];
         foreach ($permissions as $perm) {
@@ -51,7 +51,7 @@ class MasterFeatureController extends Controller
                 'feature_id' => $masterFeature->id, // Menyimpan ID fitur
             ]);
         }
-    
+
         return redirect()->route('feature.index')->with('success', 'Fitur dan permissions berhasil ditambahkan');
     }
 
@@ -69,7 +69,7 @@ class MasterFeatureController extends Controller
     public function edit($id)
     {
         $masterFeature = MasterFeature::findOrFail($id);
-        return view('master.feature.edit', compact('masterFeature'));
+        return view('feature.feature.edit', compact('masterFeature'));
     }
 
     /**
@@ -95,6 +95,6 @@ class MasterFeatureController extends Controller
         $masterFeature->delete();
 
         return redirect()->route('feature.index')->with('success', 'Fitur berhasil dihapus');
-    } 
-    
+    }
+
 }

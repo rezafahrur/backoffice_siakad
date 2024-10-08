@@ -45,8 +45,10 @@
                                 @forelse ($aktivitas as $key => $item)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $item->programStudi->nama_program_studi }}</td>
-                                        <td>{{ $item->semester->nama_semester }}</td>
+                                        <td>{{ $item->programStudi ? $item->programStudi->nama_program_studi : 'Data Tidak Ditemukan' }}
+                                        </td>
+                                        <td>{{ $item->semester ? $item->semester->nama_semester : 'Data Tidak Ditemukan' }}
+                                        </td>
                                         <td>{{ $item->kode_aktivitas }}</td>
                                         <td>{{ $item->judul }}</td>
                                         <td>{{ date('d-m-Y', strtotime($item->tanggal_mulai)) }}</td>

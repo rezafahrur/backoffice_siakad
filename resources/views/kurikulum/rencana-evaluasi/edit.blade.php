@@ -63,8 +63,8 @@
                             @foreach ($evaluasiPlan->details as $index => $detail)
                                 <tr class="detail-item">
                                     <td>
-                                        <select name="details[{{ $index }}][jenis_evaluasi]" class="form-control jenis-evaluasi"
-                                            required>
+                                        <select name="details[{{ $index }}][jenis_evaluasi]"
+                                            class="form-control jenis-evaluasi" required>
                                             <option value="">Pilih...</option>
                                             <option value="2" {{ $detail->jenis_evaluasi == 2 ? 'selected' : '' }}>
                                                 Hasil Partisipatif</option>
@@ -101,11 +101,12 @@
                                     <td><input type="number" name="details[{{ $index }}][no_urut]"
                                             class="form-control" value="{{ $detail->no_urut }}" style="width: 80px;"></td>
 
-                                            <td>
-                                            <button type="button" class="btn btn-danger remove-detail">
-                                                <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
-                                            </button>
-                                        </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger remove-detail">
+                                            <i class="btn-icon-prepend" data-feather="trash-2"
+                                                style="width: 16px; height: 16px;"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -202,7 +203,7 @@
         document.getElementById('matakuliah_id').addEventListener('change', function() {
             let matakuliahId = this.value;
             if (matakuliahId) {
-                fetch(`/evaluasi-plan/get-program-studi/${matakuliahId}`)
+                fetch(`/kurikulum/rencana-evaluasi/get-program-studi/${matakuliahId}`)
                     .then(response => response.json())
                     .then(data => {
                         let programStudiInput = document.getElementById('program_studi_name');

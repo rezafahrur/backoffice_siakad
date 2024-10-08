@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Rencana Pembelajaran')
+@section('title', 'Create Rencana Pembelajaran')
 
 @section('content')
     <nav class="page-breadcrumb">
@@ -9,29 +9,25 @@
                 <a href="{{ route('pembelajaran_plans.index') }}">Rencana Pembelajaran</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Edit
+                Tambah Rencana Pembelajaran
             </li>
         </ol>
     </nav>
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Edit Rencana Pembelajaran</h4>
-            <form action="{{ route('pembelajaran_plans.update', $pembelajaranPlan->id) }}" method="POST">
+            <h4 class="card-title">Tambah Rencana Pembelajaran</h4>
+            <form action="{{ route('pembelajaran_plans.store') }}" method="POST">
                 @csrf
-                @method('PUT')
 
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="matakuliah_id">Matakuliah</label>
                             <select name="matakuliah_id" id="matakuliah_id" class="form-control" required>
-                                <option value="">Select Matakuliah</option>
+                                <option value="">Pilih Matakuliah</option>
                                 @foreach ($matakuliah as $mk)
-                                    <option value="{{ $mk->id }}"
-                                        {{ $pembelajaranPlan->matakuliah_id == $mk->id ? 'selected' : '' }}>
-                                        {{ $mk->nama_matakuliah }}
-                                    </option>
+                                    <option value="{{ $mk->id }}">{{ $mk->nama_matakuliah }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -39,15 +35,13 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="program_studi_name">Program Studi</label>
-                            <input type="text" id="program_studi_name" class="form-control"
-                                value="{{ $pembelajaranPlan->programStudi->nama_program_studi }}" readonly>
+                            <input type="text" id="program_studi_name" class="form-control" readonly>
                         </div>
                     </div>
                 </div>
 
                 <!-- Hidden input for program_studi_id -->
-                <input type="hidden" name="program_studi_id" id="program_studi_id"
-                    value="{{ $pembelajaranPlan->program_studi_id }}">
+                <input type="hidden" name="program_studi_id" id="program_studi_id">
 
                 <div class="table-responsive mb-3">
                     <table class="table table-bordered">
@@ -56,28 +50,28 @@
                                 <th class="col-md-2">Pertemuan</th>
                                 <th>Materi (Indo)</th>
                                 <th>Materi (Eng)</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="details-section">
-                            @foreach ($pembelajaranPlan->details as $index => $detail)
-                                <tr class="detail-item">
-                                    <td>
-                                        <input type="number" name="details[{{ $index }}][pertemuan]"
-                                            class="form-control" value="{{ $detail->pertemuan }}" required>
-                                    </td>
-                                    <td>
-                                        <textarea name="details[{{ $index }}][materi_indo]" class="form-control">{{ $detail->materi_indo }}</textarea>
-                                    </td>
-                                    <td>
-                                        <textarea name="details[{{ $index }}][materi_eng]" class="form-control">{{ $detail->materi_eng }}</textarea>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger remove-detail">
-                                            <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
+                            <tr class="detail-item">
+                                <td>
+                                    <input type="number" name="details[0][pertemuan]" id="pertemuan_0" class="form-control"
+                                        value="1" required>
+                                </td>
+                                <td>
+                                    <textarea type="text" name="details[0][materi_indo]" class="form-control"> </textarea>
+                                </td>
+                                <td>
+                                    <textarea type="text" name="details[0][materi_eng]" class="form-control"> </textarea>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger remove-detail">
+                                        <i class="btn-icon-prepend" data-feather="trash-2"
+                                            style="width: 16px; height: 16px;"></i>
+                                    </button>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -97,7 +91,7 @@
 
 @push('scripts')
     <script>
-        let detailIndex = {{ $pembelajaranPlan->details->count() }};
+        let detailIndex = 1;
 
         // Event listener for dynamically adding new detail rows
         document.getElementById('add-detail').addEventListener('click', function() {
@@ -108,10 +102,10 @@
                     <input type="number" name="details[${detailIndex}][pertemuan]" class="form-control" value="${pertemuanValue}" required>
                 </td>
                 <td>
-                    <textarea name="details[${detailIndex}][materi_indo]" class="form-control"></textarea>
+                    <textarea type="text" name="details[${detailIndex}][materi_indo]" class="form-control"> </textarea>
                 </td>
                 <td>
-                    <textarea name="details[${detailIndex}][materi_eng]" class="form-control"></textarea>
+                    <textarea type="text" name="details[${detailIndex}][materi_eng]" class="form-control"> </textarea>
                 </td>
                 <td>
                     <button type="button" class="btn btn-danger remove-detail">
@@ -133,17 +127,18 @@
         document.getElementById('matakuliah_id').addEventListener('change', function() {
             let matakuliahId = this.value;
             if (matakuliahId) {
-                fetch(`/api/get-program-studi/${matakuliahId}`)
+                fetch(`/kurikulum/rencana-pembelajaran/get-program-studi/${matakuliahId}`)
                     .then(response => response.json())
                     .then(data => {
                         let programStudiInput = document.getElementById('program_studi_name');
                         let programStudiHiddenInput = document.getElementById('program_studi_id');
                         if (data.length > 0) {
                             programStudiInput.value = data[0].nama_program_studi;
-                            programStudiHiddenInput.value = data[0].id;
+                            programStudiHiddenInput.value = data[0]
+                                .id; // Set hidden input value to program_studi_id
                         } else {
                             programStudiInput.value = '';
-                            programStudiHiddenInput.value = '';
+                            programStudiHiddenInput.value = ''; // Reset hidden input if no data
                         }
                     })
                     .catch(error => console.error('Error fetching program studi:', error));

@@ -13,13 +13,13 @@ class BeritaController extends Controller
     {
         $berita = Berita::with('kategoriBerita')->get();
 
-        return view('master.berita.index', compact('berita'));
+        return view('feature.berita.index', compact('berita'));
     }
 
     public function create()
     {
         $kategoriBerita = KategoriBerita::all();
-        return view('master.berita.create', compact('kategoriBerita'));
+        return view('feature.berita.create', compact('kategoriBerita'));
     }
 
     public function store(Request $request)
@@ -95,7 +95,7 @@ class BeritaController extends Controller
     {
         $berita = Berita::findOrFail($id);
         $kategoriBerita = KategoriBerita::all();
-        return view('master.berita.edit', compact('berita', 'kategoriBerita'));
+        return view('feature.berita.edit', compact('berita', 'kategoriBerita'));
     }
 
     public function update(Request $request, $id)
@@ -175,6 +175,6 @@ class BeritaController extends Controller
     public function show($id)
     {
         $berita = Berita::findOrFail($id);
-        return view('master.berita.show', compact('berita'));
+        return view('feature.berita.show', compact('berita'));
     }
 }
