@@ -19,19 +19,14 @@ class HrController extends Controller
     public function index(Request $request)
     {
         $positions = Position::all();
-        
+
         // Jika ada request filter position_id
         $query = Hr::with(['ktp', 'position', 'hrDetail']);
-        
-        if ($request->filled('position_id')) {
-            $query->where('position_id', $request->position_id);
-        }
-    
         $hr = $query->get();
-    
+
         return view('master.hr.index', compact('hr', 'positions'));
     }
-    
+
 
     public function create()
     {

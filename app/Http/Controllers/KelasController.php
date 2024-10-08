@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\KelasExport;
+use App\Exports\KelasExportDetail;
 use App\Http\Requests\KelasRequest;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
@@ -29,6 +30,12 @@ class KelasController extends Controller
     {
         return Excel::download(new KelasExport, 'kelas.xlsx');
     }
+
+        public function exportDetail($id)
+    {
+        return Excel::download(new KelasExportDetail($id), 'kelas_detail.xlsx');
+    }
+
 
     /**
      * Show the form for creating a new resource.

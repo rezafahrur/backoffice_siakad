@@ -16,10 +16,16 @@
                 <div class="card-body">
                     <h6 class="card-title">Daftar Aktivitas Mahasiswa</h6>
                     <div class="d-flex justify-content-end mb-3">
-                        <a href="{{ route('aktivitas.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
-                            <i class="btn-icon-prepend" data-feather="plus-square"></i>
-                            Tambah Data
-                        </a>
+                        <div>
+                            <a href="{{ route('aktivitas.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
+                                <i class="btn-icon-prepend" data-feather="plus-square"></i>
+                                Tambah Data
+                            </a>
+                            <a href="{{ route('aktivitas.export') }}" class="btn btn-success btn-icon-text">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+                                Aktivitas Mahasiswa
+                            </a>
+                        </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover" id="dataTableExample">
@@ -39,8 +45,10 @@
                                 @forelse ($aktivitas as $key => $item)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $item->programStudi->nama_program_studi }}</td>
-                                        <td>{{ $item->semester->nama_semester }}</td>
+                                        <td>{{ $item->programStudi ? $item->programStudi->nama_program_studi : 'Data Tidak Ditemukan' }}
+                                        </td>
+                                        <td>{{ $item->semester ? $item->semester->nama_semester : 'Data Tidak Ditemukan' }}
+                                        </td>
                                         <td>{{ $item->kode_aktivitas }}</td>
                                         <td>{{ $item->judul }}</td>
                                         <td>{{ date('d-m-Y', strtotime($item->tanggal_mulai)) }}</td>

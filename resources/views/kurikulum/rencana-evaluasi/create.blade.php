@@ -90,11 +90,12 @@
                                         oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2)"
                                         name="details[0][no_urut]" class="form-control" style="width: 50px;"></td>
 
-                                        <td>
-                                            <button type="button" class="btn btn-danger remove-detail">
-                                                <i class="btn-icon-prepend" data-feather="trash-2" style="width: 16px; height: 16px;"></i>
-                                            </button>
-                                        </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger remove-detail">
+                                        <i class="btn-icon-prepend" data-feather="trash-2"
+                                            style="width: 16px; height: 16px;"></i>
+                                    </button>
+                                </td>
 
                             </tr>
                         </tbody>
@@ -116,9 +117,9 @@
 
 @push('scripts')
     <script>
-let detailIndex = 1;
-document.getElementById('add-detail').addEventListener('click', function() {
-    let newRow = `
+        let detailIndex = 1;
+        document.getElementById('add-detail').addEventListener('click', function() {
+            let newRow = `
     <tr class="detail-item">
         <!-- Jenis Evaluasi as a Select -->
         <td>
@@ -155,65 +156,64 @@ document.getElementById('add-detail').addEventListener('click', function() {
         </td>
     </tr>
     `;
-    document.getElementById('details-section').insertAdjacentHTML('beforeend', newRow);
-    detailIndex++;
-    feather.replace(); // Re-initialize Feather icons
-});
+            document.getElementById('details-section').insertAdjacentHTML('beforeend', newRow);
+            detailIndex++;
+            feather.replace(); // Re-initialize Feather icons
+        });
 
-// Aktifkan dan nonaktifkan Nama Evaluasi tergantung pada Jenis Evaluasi yang dipilih
-$(document).on('change', '.jenis-evaluasi', function() {
-    let jenisEvaluasi = $(this).val();
-    let namaEvaluasiSelect = $(this).closest('tr').find('.nama-evaluasi');
+        // Aktifkan dan nonaktifkan Nama Evaluasi tergantung pada Jenis Evaluasi yang dipilih
+        $(document).on('change', '.jenis-evaluasi', function() {
+            let jenisEvaluasi = $(this).val();
+            let namaEvaluasiSelect = $(this).closest('tr').find('.nama-evaluasi');
 
-    if (jenisEvaluasi == '4') {
-        namaEvaluasiSelect.prop('disabled', false);
-    } else {
-        namaEvaluasiSelect.prop('disabled', true);
-        namaEvaluasiSelect.val(''); // Reset value when disabled
-    }
-});
+            if (jenisEvaluasi == '4') {
+                namaEvaluasiSelect.prop('disabled', false);
+            } else {
+                namaEvaluasiSelect.prop('disabled', true);
+                namaEvaluasiSelect.val(''); // Reset value when disabled
+            }
+        });
 
-// Handle removing detail rows
-$(document).on('click', '.remove-detail', function() {
-    $(this).closest('tr').remove();
-});
+        // Handle removing detail rows
+        $(document).on('click', '.remove-detail', function() {
+            $(this).closest('tr').remove();
+        });
 
-// Fetch Program Studi based on selected Matakuliah
-document.getElementById('matakuliah_id').addEventListener('change', function() {
-    let matakuliahId = this.value;
-    if (matakuliahId) {
-        fetch(`/evaluasi-plan/get-program-studi/${matakuliahId}`)
-            .then(response => response.json())
-            .then(data => {
-                let programStudiInput = document.getElementById('program_studi_name');
-                let programStudiHiddenInput = document.getElementById('program_studi_id');
-                if (data.length > 0) {
-                    programStudiInput.value = data[0].nama_program_studi;
-                    programStudiHiddenInput.value = data[0].id;
-                } else {
-                    programStudiInput.value = '';
-                    programStudiHiddenInput.value = '';
-                }
-            })
-            .catch(error => console.error('Error fetching program studi:', error));
-    } else {
-        document.getElementById('program_studi_name').value = '';
-        document.getElementById('program_studi_id').value = '';
-    }
-});
+        // Fetch Program Studi based on selected Matakuliah
+        document.getElementById('matakuliah_id').addEventListener('change', function() {
+            let matakuliahId = this.value;
+            if (matakuliahId) {
+                fetch(`/kurikulum/rencana-evaluasi/get-program-studi/${matakuliahId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let programStudiInput = document.getElementById('program_studi_name');
+                        let programStudiHiddenInput = document.getElementById('program_studi_id');
+                        if (data.length > 0) {
+                            programStudiInput.value = data[0].nama_program_studi;
+                            programStudiHiddenInput.value = data[0].id;
+                        } else {
+                            programStudiInput.value = '';
+                            programStudiHiddenInput.value = '';
+                        }
+                    })
+                    .catch(error => console.error('Error fetching program studi:', error));
+            } else {
+                document.getElementById('program_studi_name').value = '';
+                document.getElementById('program_studi_id').value = '';
+            }
+        });
 
-// Validation for total bobot using SweetAlert
-document.getElementById('evaluasi-form').addEventListener('submit', function(event) {
-    let totalBobot = 0;
-    document.querySelectorAll('input[name^="details"][name$="[bobot]"]').forEach(function(input) {
-        totalBobot += parseInt(input.value);
-    });
+        // Validation for total bobot using SweetAlert
+        document.getElementById('evaluasi-form').addEventListener('submit', function(event) {
+            let totalBobot = 0;
+            document.querySelectorAll('input[name^="details"][name$="[bobot]"]').forEach(function(input) {
+                totalBobot += parseInt(input.value);
+            });
 
-    if (totalBobot !== 100) {
-        event.preventDefault(); // Prevent form submission
-        alert('Total bobot harus 100');
-    }
-});
-
+            if (totalBobot !== 100) {
+                event.preventDefault(); // Prevent form submission
+                alert('Total bobot harus 100');
+            }
+        });
     </script>
 @endpush
