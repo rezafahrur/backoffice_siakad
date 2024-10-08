@@ -22,7 +22,11 @@
                             </a>
                             <a href="{{ route('nilai.export') }}" class="btn btn-success btn-icon-text">
                                 <i class="btn-icon-prepend" data-feather="download"></i>
-                                Export
+                                Nilai
+                            </a>
+                            <a href="{{ route('nilai.exportKomponenEvaluasi') }}" class="btn btn-success btn-icon-text">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+                                Nilai Komponen Evaluasi
                             </a>
                         </div>
                     </div>

@@ -278,6 +278,8 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/nilai/{id}/pdf', [NilaiController::class, 'cetakPdf'])->name('nilai.pdf');
     //export
     Route::get('/nilai/export', [NilaiController::class, 'export'])->name('nilai.export');
+    //exportKomponenEvaluasi
+    Route::get('/nilai/exportKomponenEvaluasi', [NilaiController::class, 'exportKomponenEvaluasi'])->name('nilai.exportKomponenEvaluasi');
 
     Route::get('/moodle-login', [MoodleAuthController::class, 'showLoginForm'])->name('moodle.login.form');
     Route::post('/moodle-login', [MoodleAuthController::class, 'loginToMoodle'])->name('moodle.login');
