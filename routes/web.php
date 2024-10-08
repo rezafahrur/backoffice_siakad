@@ -179,9 +179,13 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::delete('/kelas/{kelas}', [KelasController::class, 'destroy'])->name('kelas.destroy')->middleware(['permission:delete_kelas']);
     Route::get('/kelas/show/{id}', [KelasController::class, 'show'])->name('kelas.show')->middleware(['permission:read_kelas']);
     Route::get('/kelas/details/{kurikulum}', [KelasController::class, 'getKurikulumDetails'])->name('kelas.details');
-    Route::get('/kelas/export', [KelasController::class, 'export'])->name('kelas.export');
+    Route::get('/kelas/exportEvaluasi', [KelasController::class, 'exportEvaluasi'])->name('kelas.exportEvaluasi');
     //export by id
     Route::get('/kelas/export/{id}', [KelasController::class, 'exportDetail'])->name('kelas.exportById');
+    //export matakuliah
+    Route::get('/kelas/exportKelas', [KelasController::class, 'exportKelas'])->name('kelas.exportKelas');
+    //export matakuliah
+    Route::get('/kelas/exportMatakuliah', [KelasController::class, 'exportMatakuliah'])->name('kelas.exportMatakuliah');
 
     //periode perkuliahan
     Route::get('/periode-perkuliahan', [PeriodePerkuliahanController::class, 'index'])->name('periode-perkuliahan.index');
