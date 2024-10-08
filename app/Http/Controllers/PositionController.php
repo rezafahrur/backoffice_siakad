@@ -66,7 +66,7 @@ class PositionController extends Controller
             $role->givePermissionTo($request->permissions);
         }
 
-        return redirect()->route('position.index')->with('success', 'Position dan role berhasil ditambahkan');
+        return redirect()->route('position.index')->with('success', 'Posisi berhasil ditambahkan');
     }
 
     // Mengedit posisi dan peran yang terkait
@@ -100,7 +100,7 @@ class PositionController extends Controller
             $role->syncPermissions($request->permissions);
         }
 
-        return redirect()->route('position.index')->with('success', 'Position dan role berhasil diupdate');
+        return redirect()->route('position.index')->with('success', 'Posisi berhasil diupdate');
     }
 
     // Menghapus posisi dan role yang terkait
@@ -115,7 +115,7 @@ class PositionController extends Controller
         }
 
         $position->delete();
-        return redirect()->route('position.index')->with('success', 'Position dan role berhasil dihapus');
+        return redirect()->route('position.index')->with('success', 'Posisi berhasil dihapus');
     }
 
     // Menampilkan detail posisi

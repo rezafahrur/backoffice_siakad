@@ -81,7 +81,7 @@ class SemesterController extends Controller
 
         Semester::create($validateData);
 
-        return redirect()->route('semester.index')->with('success', 'Data berhasil ditambahkan');
+        return redirect()->route('semester.index')->with('success', 'Semester berhasil ditambahkan');
     }
     /**
      * Display the specified resource.
@@ -123,7 +123,7 @@ class SemesterController extends Controller
 
         $semester->update($validateData);
 
-        return redirect()->route('semester.index')->with('success', 'Data berhasil diubah');
+        return redirect()->route('semester.index')->with('success', 'Semester berhasil diubah');
     }
 
     /**
@@ -133,6 +133,6 @@ class SemesterController extends Controller
     {
         $semester->delete();
 
-        return redirect()->route('semester.index')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('semester.index')->with('success', 'Semester berhasil dihapus');
     }
 }
