@@ -105,6 +105,7 @@ class DashboardController extends Controller
 
         return redirect()->route('profile');
     }
+
     public function getMahasiswaStatus()
     {
         $mahasiswaAktif = Mahasiswa::where('status', 1)->count();
