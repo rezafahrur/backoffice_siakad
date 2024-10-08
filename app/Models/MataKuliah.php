@@ -25,6 +25,7 @@ class MataKuliah extends Model
         'metode_belajar',
         'tgl_mulai_efektif',
         'tgl_akhir_efektif',
+        'bahasan',
         'status',
     ];
 
