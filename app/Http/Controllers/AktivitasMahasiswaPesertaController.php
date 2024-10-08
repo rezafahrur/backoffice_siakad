@@ -18,7 +18,7 @@ class AktivitasMahasiswaPesertaController extends Controller
     {
         // Mengambil data lengkap beserta relasinya
         $peserta = AktivitasMahasiswaPeserta::with(['aktivitasMahasiswa', 'programStudi', 'mahasiswa', 'matakuliah'])->get();
-        return view('master.aktivitas-peserta.index', compact('peserta'));
+        return view('aktivitas-mahasiswa.aktivitas-peserta.index', compact('peserta'));
     }
 
     // Menampilkan form untuk menambah data baru
@@ -30,7 +30,7 @@ class AktivitasMahasiswaPesertaController extends Controller
         $mahasiswa = Mahasiswa::all();
         $matakuliah = Matakuliah::all();
 
-        return view('master.aktivitas-peserta.create', compact('aktivitasMahasiswa', 'programStudi', 'mahasiswa', 'matakuliah'));
+        return view('aktivitas-mahasiswa.aktivitas-peserta.create', compact('aktivitasMahasiswa', 'programStudi', 'mahasiswa', 'matakuliah'));
     }
 
     public function export()
@@ -68,13 +68,13 @@ class AktivitasMahasiswaPesertaController extends Controller
         $mahasiswa = Mahasiswa::all();
         $matakuliah = Matakuliah::all();
 
-        return view('master.aktivitas-peserta.edit', compact('peserta', 'aktivitasMahasiswa', 'programStudi', 'mahasiswa', 'matakuliah'));
+        return view('aktivitas-mahasiswa.aktivitas-peserta.edit', compact('peserta', 'aktivitasMahasiswa', 'programStudi', 'mahasiswa', 'matakuliah'));
     }
 
     public function show($id)
     {
         $peserta = AktivitasMahasiswaPeserta::with(['aktivitasMahasiswa', 'mahasiswa', 'programStudi', 'matakuliah'])->findOrFail($id);
-        return view('master.aktivitas-peserta.show', compact('peserta'));
+        return view('aktivitas-mahasiswa.aktivitas-peserta.show', compact('peserta'));
     }
 
 
