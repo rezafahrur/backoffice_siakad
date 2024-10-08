@@ -6,8 +6,10 @@ use App\Models\Nilai;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class NilaiExport implements FromCollection, WithHeadings, WithMapping
+class NilaiExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting
 {
     /**
      * Menyediakan koleksi data Nilai yang akan diekspor.
@@ -15,7 +17,7 @@ class NilaiExport implements FromCollection, WithHeadings, WithMapping
     public function collection()
     {
         // Mengambil semua data Nilai beserta relasinya
-        return Nilai::with('programStudi', 'kelas', 'matakuliah', 'details.mahasiswa')->get();
+        return Nilai::with(['programStudi', 'kelas.semester', 'matakuliah', 'details.mahasiswa'])->get();
     }
 
     /**
@@ -26,42 +28,48 @@ class NilaiExport implements FromCollection, WithHeadings, WithMapping
         // Memetakan data dari Nilai dan NilaiDetail
         return $nilai->details->map(function ($detail) use ($nilai) {
             return [
-                $nilai->programStudi->nama_program_studi ?? 'N/A',
-                $nilai->kelas->nama_kelas ?? 'N/A',
-                $nilai->matakuliah->nama_matakuliah ?? 'N/A',
+                ($detail->mahasiswa->nim ?? 'N/A') . ' ',
                 $detail->mahasiswa->nama ?? 'N/A',
-                $detail->hasil_proyek ?? 0,
-                $detail->quiz ?? 0,
-                $detail->tugas ?? 0,
-                $detail->uts ?? 0,
-                $detail->uas ?? 0,
-                $detail->aktivitas_partisipatif ?? 0,
+                $nilai->matakuliah->kode_matakuliah ?? 'N/A',
+                $nilai->matakuliah->nama_matakuliah ?? 'N/A',
+                $nilai->kelas->nama_kelas ?? 'N/A',
+                $nilai->kelas->semester->nama_semester ?? 'N/A',
                 $detail->nilai_huruf ?? 'N/A',
                 $detail->nilai_indeks ?? 0,
                 $detail->nilai_angka ?? 0,
+                $nilai->programStudi->kode_prodi ?? 'N/A',
+                $nilai->programStudi->nama_program_studi ?? 'N/A',
             ];
         })->toArray();
     }
 
     /**
-     * Menyediakan header untuk file Excel.
+     * Menentukan format kolom.
+     */
+    public function columnFormats(): array
+    {
+        return [
+            'A' => NumberFormat::FORMAT_TEXT,  // Kolom NIM (A) diformat sebagai teks
+        ];
+    }
+
+    /**
+     * Headings untuk file yang diekspor.
      */
     public function headings(): array
     {
         return [
-            'Program Studi',
-            'Kelas',
-            'Mata Kuliah',
-            'Mahasiswa',
-            'Hasil Proyek',
-            'Quiz',
-            'Tugas',
-            'UTS',
-            'UAS',
-            'Aktivitas Partisipatif',
+            'NIM',
+            'Nama Mahasiswa',
+            'Kode Mata Kuliah',
+            'Nama Mata Kuliah',
+            'Semester',
+            'Nama Kelas',
             'Nilai Huruf',
             'Nilai Indeks',
             'Nilai Angka',
+            'Kode Prodi',
+            'Nama Prodi',
         ];
     }
 }
