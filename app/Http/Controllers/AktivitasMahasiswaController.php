@@ -14,14 +14,14 @@ class AktivitasMahasiswaController extends Controller
     public function index()
     {
         $aktivitas = AktivitasMahasiswa::with(['programStudi', 'semester'])->get();
-        return view('aktivitas-mahasiswa.aktivitas-mahasiswa.index', compact('aktivitas'));
+        return view('aktivitas-mahasiswa.aktivitas-master.index', compact('aktivitas'));
     }
 
     public function create()
     {
         $prodi = ProgramStudi::all();
         $semester = Semester::all();
-        return view('aktivitas-mahasiswa.aktivitas-mahasiswa.create', compact('prodi', 'semester'));
+        return view('aktivitas-mahasiswa.aktivitas-master.create', compact('prodi', 'semester'));
     }
 
     public function export()
@@ -56,7 +56,7 @@ class AktivitasMahasiswaController extends Controller
         $aktivitas = AktivitasMahasiswa::findOrFail($id);
         $prodi = ProgramStudi::all();
         $semester = Semester::all();
-        return view('aktivitas-mahasiswa.aktivitas-mahasiswa.edit', compact('aktivitas', 'prodi', 'semester'));
+        return view('aktivitas-mahasiswa.aktivitas-master.edit', compact('aktivitas', 'prodi', 'semester'));
     }
 
     public function update(Request $request, $id)
@@ -84,8 +84,8 @@ class AktivitasMahasiswaController extends Controller
 
     public function show($id)
     {
-        $aktivitas = AktivitasMahasiswa::findOrFail($id);
-        return view('aktivitas-mahasiswa.aktivitas-mahasiswa.show', compact('aktivitas'));
+        $aktivitas = AktivitasMahasiswa::find($id);
+        return view('aktivitas-mahasiswa.aktivitas-master.show', compact('aktivitas'));
     }
 
     public function destroy($id)
