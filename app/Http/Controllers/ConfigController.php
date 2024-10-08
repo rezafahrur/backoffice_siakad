@@ -17,7 +17,7 @@ class ConfigController extends Controller
         // Get all active semesters
         $semesters = Semester::pluck('nama_semester', 'kode_semester');
 
-        return view('master.config.index', compact('configs', 'semesters'));
+        return view('feature.config.index', compact('configs', 'semesters'));
     }
 
     // Update configurations
