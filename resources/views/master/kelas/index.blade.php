@@ -23,9 +23,17 @@
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
-                            <a href="{{ route('kelas.export') }}" class="btn btn-success btn-icon-text">
+                            <a href="{{ route('kelas.exportEvaluasi') }}" class="btn btn-success btn-icon-text">
                                 <i class="btn-icon-prepend" data-feather="download"></i>
-                                Export
+                                Evaluasi Pembelajaran
+                            </a>
+                            <a href="{{ route('kelas.exportKelas') }}" class="btn btn-success btn-icon-text">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+                                Kelas
+                            </a>
+                            <a href="{{ route('kelas.exportMatakuliah') }}" class="btn btn-success btn-icon-text">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+                                Matakuliah
                             </a>
                         </div>
                     </div>
@@ -57,10 +65,6 @@
                                             <a href="{{ route('kelas.show', $kl->id) }}"
                                                 class="btn btn-sm btn-info btn-icon">
                                                 <i class="btn-icon-prepend text-white" data-feather="eye"></i>
-                                            </a>
-                                            <a href="{{ route('kelas.exportById', $kl->id) }}"
-                                                class="btn btn-sm btn-success btn-icon">
-                                                <i class="btn-icon-prepend text-white" data-feather="download"></i>
                                             </a>
                                             <form action="{{ route('kelas.destroy', $kl->id) }}" method="post"
                                                 class="d-inline">

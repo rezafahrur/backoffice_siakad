@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EvaluasiPembelajaranExport;
 use App\Exports\KelasExport;
 use App\Exports\KelasExportDetail;
+use App\Exports\MataKuliahExport;
 use App\Http\Requests\KelasRequest;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
@@ -26,14 +28,25 @@ class KelasController extends Controller
         return view('master.kelas.index', compact('kelas'));
     }
 
-    public function export()
+    public function exportEvaluasi()
     {
-        return Excel::download(new KelasExport, 'kelas.xlsx');
+        return Excel::download(new EvaluasiPembelajaranExport, 'Evaluasi-Pembelajaran.xlsx');
     }
 
         public function exportDetail($id)
     {
         return Excel::download(new KelasExportDetail($id), 'kelas_detail.xlsx');
+    }
+
+    public function exportKelas()
+    {
+        return Excel::download(new KelasExport, 'kelas.xlsx');
+    }
+
+    //exportMatakuliah
+    public function exportMatakuliah()
+    {
+        return Excel::download(new MataKuliahExport, 'matakuliah.xlsx');
     }
 
 
