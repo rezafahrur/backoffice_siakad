@@ -32,7 +32,7 @@
                             </div>
                             <ul class="list-unstyled p-1">
                                 <li class="dropdown-item py-2">
-                                    <a href="pages/general/profile.html" class="text-body ms-0">
+                                    <a href="{{ route('profile') }}" class="text-body ms-0">
                                         <i class="me-2 icon-md" data-feather="user"></i>
                                         <span>Profile</span>
                                     </a>
@@ -85,7 +85,7 @@
                     </li>
                 @endcan
 
-                <li class="nav-item">
+                <li class="nav-item {{ Request::is('master*') ? 'active' : '' }}">
                     <a href="#" class="nav-link">
                         <i class="link-icon" data-feather="grid"></i>
                         <span class="menu-title">Master</span>
@@ -96,19 +96,19 @@
                             <div class="col-md-6">
                                 <ul class="submenu-item">
                                     @can('read_jurusan')
-                                        <li class="nav-item {{ Request::is('jurusan*') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('master/jurusan*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('jurusan.index') }}">Jurusan</a>
                                         </li>
                                     @endcan
 
                                     @can('read_program_studi')
-                                        <li class="nav-item {{ Request::is('prodi*') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('master/prodi*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('prodi.index') }}">Program Studi</a>
                                         </li>
                                     @endcan
 
                                     @can('read_ruang_kelas')
-                                        <li class="nav-item {{ Request::is('ruang-kelas*') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('master/ruang-kelas*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('ruang-kelas.index') }}">Ruang Kelas</a>
                                         </li>
                                     @endcan
@@ -117,19 +117,19 @@
                             <div class="col-md-6">
                                 <ul class="submenu-item">
                                     @can('read_semester')
-                                        <li class="nav-item {{ Request::is('semester*') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('master/semester*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('semester.index') }}">Semester</a>
                                         </li>
                                     @endcan
 
                                     @can('read_position')
-                                        <li class="nav-item {{ Request::is('position*') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('master/position*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('position.index') }}">Posisi</a>
                                         </li>
                                     @endcan
 
                                     @can('read_mata_kuliah')
-                                        <li class="nav-item {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
+                                        <li class="nav-item {{ Request::is('master/mata-kuliah*') ? 'active' : '' }}">
                                             <a class="nav-link" href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
                                         </li>
                                     @endcan
@@ -139,7 +139,7 @@
                     </div>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{ Request::is('kurikulum*') ? 'active' : '' }}">
                     <a href="#" class="nav-link">
                         <i class="link-icon" data-feather="book"></i>
                         <span class="menu-title">Kurikulum</span>
@@ -221,7 +221,7 @@
                 </li>
 
                 {{-- Aktivitas Mahasiswa --}}
-                <li class="nav-item">
+                <li class="nav-item {{ Request::is('akm*') ? 'active' : '' }}">
                     <a href="#" class="nav-link">
                         <i class="link-icon" data-feather="activity"></i>
                         <span class="menu-title">Aktivitas Mahasiswa</span>
@@ -230,20 +230,20 @@
                     <div class="submenu">
                         <ul class="submenu-item">
                             @can('read_akm')
-                                <li class="nav-item {{ Request::is('aktivitas*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('akm/aktivitas-mahasiswa*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('aktivitas.index') }}">Aktivitas Mahasiswa</a>
                                 </li>
                             @endcan
 
                             @can('read_akm_peserta')
-                                <li class="nav-item {{ Request::is('aktivitas-peserta*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('akm/aktivitas-peserta*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('aktivitas-peserta.index') }}">Aktivitas Mahasiswa
                                         Peserta</a>
                                 </li>
                             @endcan
 
                             @can('read_akm_bimbing_uji')
-                                <li class="nav-item {{ Request::is('aktivitas-bimbing-uji*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('akm/aktivitas-bimbing-uji*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('bimbingUji.index') }}">Aktivitas Mahasiswa
                                         Bimbing Uji</a>
                                 </li>
@@ -252,7 +252,7 @@
                     </div>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{ Request::is('feature*') ? 'active' : '' }}">
                     <a href="#" class="nav-link">
                         <i class="link-icon" data-feather="archive"></i>
                         <span class="menu-title">Feature</span>
@@ -261,17 +261,17 @@
                     <div class="submenu">
                         <ul class="submenu-item">
                             @can('read_berita')
-                                <li class="nav-item {{ Request::is('berita*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('feature/berita*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('berita.index') }}">Berita</a>
                                 </li>
                             @endcan
                             @can('read_config')
-                                <li class="nav-item {{ Request::is('config*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('feature/config*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('config.index') }}">Config</a>
                                 </li>
                             @endcan
                             @can('read_feature')
-                                <li class="nav-item {{ Request::is('feature*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('feature/fitur-hak-akses*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('feature.index') }}">Feature</a>
                                 </li>
                             @endcan
