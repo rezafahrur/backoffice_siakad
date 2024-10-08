@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\NilaiRequest;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\NilaiExport;
+use App\Exports\NilaiKomponenEvaluasiExport;
 
 class NilaiController extends Controller
 {
@@ -28,6 +29,12 @@ class NilaiController extends Controller
     public function export()
     {
         return Excel::download(new NilaiExport, 'nilai.xlsx');
+    }
+
+    //NilaiKomponenEvaluasiExport
+    public function exportKomponenEvaluasi()
+    {
+        return Excel::download(new NilaiKomponenEvaluasiExport, 'nilai_komponen_evaluasi.xlsx');
     }
 
     /**

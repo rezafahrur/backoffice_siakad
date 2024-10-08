@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class NilaiExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting
+class NilaiKomponenEvaluasiExport implements FromCollection, WithHeadings, WithMapping, WithColumnFormatting
 {
     /**
      * Menyediakan koleksi data Nilai yang akan diekspor.
@@ -32,11 +32,16 @@ class NilaiExport implements FromCollection, WithHeadings, WithMapping, WithColu
                 $detail->mahasiswa->nama ?? 'N/A',
                 $nilai->matakuliah->kode_matakuliah ?? 'N/A',
                 $nilai->matakuliah->nama_matakuliah ?? 'N/A',
-                $nilai->kelas->nama_kelas ?? 'N/A',
                 $nilai->kelas->semester->nama_semester ?? 'N/A',
-                $detail->nilai_huruf ?? 'N/A',
-                $detail->nilai_indeks ?? 0,
-                $detail->nilai_angka ?? 0,
+                $nilai->kelas->nama_kelas ?? 'N/A',
+                $detail->aktivitas_partisipatif ?? 'N/A',
+                $detail->hasil_proyek ?? 0,
+                $detail->quiz ?? 0,
+                $detail->tugas ?? 0,
+                $detail->uts ?? 0,
+                $detail->uas ?? 0,
+                $nilai->programStudi->kode_prodi ?? 'N/A',
+                $nilai->programStudi->nama_program_studi ?? 'N/A',
                 $nilai->programStudi->kode_prodi ?? 'N/A',
                 $nilai->programStudi->nama_program_studi ?? 'N/A',
             ];
@@ -56,6 +61,7 @@ class NilaiExport implements FromCollection, WithHeadings, WithMapping, WithColu
     /**
      * Headings untuk file yang diekspor.
      */
+
     public function headings(): array
     {
         return [
@@ -64,12 +70,18 @@ class NilaiExport implements FromCollection, WithHeadings, WithMapping, WithColu
             'Kode Mata Kuliah',
             'Nama Mata Kuliah',
             'Semester',
-            'Nama Kelas',
-            'Nilai Huruf',
-            'Nilai Indeks',
-            'Nilai Angka',
-            'Kode Prodi',
-            'Nama Prodi',
+            'Kelas',
+            'Aktivitas Partisipatif (%)',
+            'Hasil Proyek (%)',
+            'Quiz (%)',
+            'Tugas (%)',
+            'UTS (%)',
+            'UAS (%)',
+            'Kode Prodi Mahasiswa',
+            'Nama Prodi Mahasiswa',
+            'Kode Prodi Kelas',
+            'Nama Prodi Kelas',
         ];
     }
+
 }
