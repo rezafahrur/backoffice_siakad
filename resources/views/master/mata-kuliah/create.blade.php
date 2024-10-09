@@ -9,7 +9,7 @@
                 <a href="{{ route('mata-kuliah.index') }}">Mata Kuliah</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">
-                Tambha Mata Kuliah
+                Tambah Mata Kuliah
             </li>
         </ol>
     </nav>
