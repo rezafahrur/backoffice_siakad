@@ -16,7 +16,7 @@
                         <div>
                         <a href="{{ route('aktivitas-peserta.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="plus-square"></i>
-                            Tambah Aktivitas
+                            Tambah Data
                         </a>
                         <a href="{{ route('aktivitas-peserta.export') }}" class="btn btn-success btn-icon-text">
                             <i class="btn-icon-prepend" data-feather="download"></i>
