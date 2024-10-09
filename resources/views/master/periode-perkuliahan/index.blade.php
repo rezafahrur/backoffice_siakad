@@ -43,7 +43,7 @@
                                         <td>{{ $periode->semester->nama_semester }}</td>
                                         <td>{{ $periode->jml_target_mhs_baru }}</td>
                                         <td>{{ $periode->jml_daftar_ulang }}</td>
-                                        <td>{{ $periode->programStudi->nama_program_studi }}</td>
+                                        <td>{{ $periode->programStudi ? $periode->programStudi->nama_program_studi : 'Data Tidak Ditemukan' }}</td>
                                         <td>
                                             <a href="{{ route('periode-perkuliahan.edit', $periode->id) }}"
                                                 class="btn btn-sm btn-primary btn-icon">
