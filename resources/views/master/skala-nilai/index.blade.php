@@ -40,7 +40,7 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $skala->semester->nama_semester }}</td>
-                                        <td>{{ $skala->programStudi->nama_program_studi }}</td>
+                                        <td>{{ $skala->programStudi ? $skala->programStudi->nama_program_studi : 'Data Tidak Ditemukan' }}</td>
                                         <td>{{ $skala->tgl_mulai_efektif }}</td>
                                         <td>{{ $skala->tgl_akhir_efektif }}</td>
 
