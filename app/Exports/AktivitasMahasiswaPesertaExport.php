@@ -25,7 +25,7 @@ class AktivitasMahasiswaPesertaExport implements FromCollection, WithHeadings, W
             ->map(function ($peserta) {
                 return [
                     'kode_aktivitas' => $peserta->aktivitasMahasiswa->kode_aktivitas,
-                    'nim' => $peserta->mahasiswa->nim,
+                    'nim' => $peserta->mahasiswa->nim . ' ',
                     'nama' => $peserta->mahasiswa->nama,
                     'jenis_peran' => $peserta->jenis_peran,
                     'kode_matakuliah' => $peserta->matakuliah->kode_matakuliah,
