@@ -78,4 +78,9 @@ class Mahasiswa extends Model
     {
         return $this->hasMany(Prestasi::class, 'mahasiswa_id', 'id');
     }
+
+    public function mahasiswaKtm()
+    {
+        return $this->hasOne(MahasiswaKtm::class, 'mahasiswa_id', 'id');
+    }
 }
