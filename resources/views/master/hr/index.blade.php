@@ -18,13 +18,26 @@
 
                     <!-- Filter Form -->
                     <div class="d-flex justify-content-end mb-3">
-                        <!-- Button Tambah Data -->
+                        <div class="me-2">
+                            <button type="button" class="btn btn-success btn-icon-text mb-2 mb-md-0" data-bs-toggle="modal" data-bs-target="#importModal">
+                                <i class="btn-icon-prepend" data-feather="upload-cloud"></i>
+                                Import Data
+                            </button>
+                        </div>
                         <div>
                             <a href="{{ route('hr.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
                         </div>
+                        <div class="ms-2">
+                            <a href="{{ route('hr.download-template') }}" class="btn btn-success btn-icon-text mb-2 mb-md-0">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+                                Download Template
+                            </a>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-3">
                     </div>
 
 
@@ -91,4 +104,64 @@
             </div>
         </div>
     </div>
+
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+<!-- Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importModalLabel">Import Data HR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('hr.import') }}" method="POST" enctype="multipart/form-data"> <!-- Add enctype -->
+                    @csrf
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Upload File Excel</label>
+                        <input type="file" class="form-control" id="file" name="file" required>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Import</button> <!-- Moved submit button inside form -->
+            </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const importForm = document.querySelector('#importModal form');
+        const importButton = document.querySelector('#importModal .btn-primary');
+
+        // Listen for the import button click
+        importButton.addEventListener('click', function (e) {
+            const fileInput = document.querySelector('#file');
+
+            // Check if a file is selected
+            if (!fileInput.value) {
+                e.preventDefault(); // Prevent form submission
+                console.log('No file selected for import');
+                alert('Please select a file to import!');
+            } else {
+                console.log('File selected:', fileInput.files[0].name);
+            }
+        });
+    });
+    </script>
+
 @endsection
