@@ -75,7 +75,8 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::delete('hr/{id}', [HrController::class, 'destroy'])->name('hr.destroy')->middleware(['permission:delete_hr']);
     Route::get('/hr/show/{id}', [HrController::class, 'show'])->name('hr.show')->middleware(['permission:read_hr']);
     Route::get('/hr/create', [HrController::class, 'create'])->name('hr.create')->middleware(['permission:create_hr']);
-
+    Route::get('/hr/download-template', [HrController::class, 'downloadTemplate'])->name('hr.download-template');
+    Route::post('/hr/import', [HrController::class, 'import'])->name('hr.import')->middleware(['permission:create_hr']);
     Route::prefix('master')->group(function () {
         // jurusan
         Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index')->middleware(['permission:read_jurusan']);
