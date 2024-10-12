@@ -66,14 +66,17 @@
                     </a>
                 </li>
 
-                {{-- @can('read_mahasiswa')
-                    <li class="nav-item {{ Request::is('mahasiswa*') ? 'active' : '' }}">
-                        <a href="{{ route('mahasiswa.index') }}" class="nav-link">
-                            <i class="link-icon" data-feather="inbox"></i>
-                            <span class="menu-title">Mahasiswa</span>
+                @can('read_hr')
+                    <li class="nav-item {{ Request::is('hr*') ? 'active' : '' }}">
+                        <a href="{{ route('hr.index') }}" class="nav-link">
+                            <i class="link-icon" data-feather="users"></i>
+                            <span class="menu-title">Human Resource</span>
                         </a>
                     </li>
-                @endcan --}}
+                @endcan
+
+                {{-- human resource --}}
+
 
                 {{-- mahasiswa dan ktm validasi --}}
                 <li class="nav-item {{ Request::is('mhs*') ? 'active' : '' }}">
