@@ -38,10 +38,17 @@
                                         <td>{{ $ktm->mahasiswa->nama }}</td>
                                         <td>{{ $ktm->mahasiswa->programStudi->nama_program_studi ?? '-' }}</td>
                                         <td>
-                                            <img src="http://127.0.0.1:9699/{{ $ktm->path_photo }}" alt="KTM Photo"
-                                                style="height: 50px;" data-bs-toggle="modal"
-                                                data-bs-target="#modalShow{{ $ktm->id }}" />
+                                            @if ($ktm->path_photo)
+                                                <img src="{{ $path_file_ktm }}/{{ $ktm->path_photo }}" alt="KTM Photo"
+                                                    data-bs-toggle="modal" data-bs-target="#modalShow{{ $ktm->id }}"
+                                                    onerror="this.onerror=null;this.src='{{ asset('assets/images/others/default-avatar.jpg') }}';" />
+                                            @else
+                                                <img src="{{ asset('assets/images/others/default-avatar.jpg') }}"
+                                                    alt="Default KTM Photo" data-bs-toggle="modal"
+                                                    data-bs-target="#modalShow{{ $ktm->id }}" />
+                                            @endif
                                         </td>
+
                                         <td>
                                             @if ($ktm->status == 2)
                                                 <span class="badge bg-success">Tervalidasi</span>
@@ -105,8 +112,17 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <img src="http://127.0.0.1:9699/{{ $ktm->path_photo }}" alt="KTM Photo"
-                                                        style="width: 100%" />
+                                                    @if ($ktm->path_photo)
+                                                        <img src="{{ $path_file_ktm }}/{{ $ktm->path_photo }}"
+                                                            alt="KTM Photo" style="width: 100%" data-bs-toggle="modal"
+                                                            data-bs-target="#modalShow{{ $ktm->id }}"
+                                                            onerror="this.onerror=null;this.src='{{ asset('assets/images/others/default-avatar.jpg') }}';" />
+                                                    @else
+                                                        <img src="{{ asset('assets/images/others/default-avatar.jpg') }}"
+                                                            alt="Default KTM Photo" style="width: 100%"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#modalShow{{ $ktm->id }}" />
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -129,12 +145,14 @@
                                                     <form action="{{ route('ktm-validasi.validate', $ktm->id) }}"
                                                         method="POST">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-success">Ya, Validasi</button>
+                                                        <button type="submit" class="btn btn-success">Ya,
+                                                            Validasi</button>
                                                     </form>
                                                     <form action="{{ route('ktm-validasi.reject', $ktm->id) }}"
                                                         method="POST">
                                                         @csrf
-                                                        <button type="submit" class="btn btn-danger">Tidak, Tolak</button>
+                                                        <button type="submit" class="btn btn-danger">Tidak,
+                                                            Tolak</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -152,8 +170,20 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <img src="http://127.0.0.1:9699/{{ $ktm->path_photo }}"
-                                                        alt="KTM Photo" style="width: 100%; margin-bottom: 15px;" />
+                                                    <div class="mb-3">
+                                                        @if ($ktm->path_photo)
+                                                            <img src="{{ $path_file_ktm }}/{{ $ktm->path_photo }}"
+                                                                alt="KTM Photo" style="width: 100%"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modalShow{{ $ktm->id }}"
+                                                                onerror="this.onerror=null;this.src='{{ asset('assets/images/others/default-avatar.jpg') }}';" />
+                                                        @else
+                                                            <img src="{{ asset('assets/images/others/default-avatar.jpg') }}"
+                                                                alt="Default KTM Photo" style="width: 100%"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modalShow{{ $ktm->id }}" />
+                                                        @endif
+                                                    </div>
                                                     <form action="{{ route('ktm-validasi.update-status', $ktm->id) }}"
                                                         method="POST">
                                                         @csrf

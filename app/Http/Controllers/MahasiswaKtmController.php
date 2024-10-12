@@ -11,9 +11,10 @@ class MahasiswaKtmController extends Controller
     public function index()
     {
         $mahasiswaKtms = MahasiswaKtm::with('mahasiswa.programStudi')->get();
+        $path_file_ktm = 'http://127.0.0.1:9699';
         // dd($mahasiswaKtms);
 
-        return view('mahasiswa.ktm-validation', compact('mahasiswaKtms'));
+        return view('mahasiswa.ktm-validation', compact('mahasiswaKtms', 'path_file_ktm'));
     }
 
     public function validateKtm($id)

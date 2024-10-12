@@ -93,7 +93,7 @@
 
                             @can('read_ktm_validasi')
                                 <li class="nav-item {{ Request::is('mhs/ktm-validasi*') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ route('ktm-validasi.index') }}">KTM Validasi</a>
+                                    <a class="nav-link" href="{{ route('ktm-validasi.index') }}">Validasi KTM</a>
                                 </li>
                             @endcan
                         </ul>
