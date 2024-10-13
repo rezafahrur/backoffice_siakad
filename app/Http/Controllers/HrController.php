@@ -7,6 +7,7 @@ use App\Models\Hr;
 use App\Models\Ktp;
 use App\Models\Position;
 use App\Models\HrDetail;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Laravolt\Indonesia\Models\City;
 use Laravolt\Indonesia\Models\Village;
@@ -14,7 +15,13 @@ use Laravolt\Indonesia\Models\District;
 use Laravolt\Indonesia\Models\Province;
 use Intervention\Image\Laravel\Facades\Image;
 use Yajra\DataTables\Facades\DataTables;
+use App\Exports\HrTemplateExport;
+use App\Imports\HrImport;
+use Illuminate\Support\Facades\Redirect;
+
+
 class HrController extends Controller
+
 {
     public function index(Request $request)
     {
@@ -36,6 +43,27 @@ class HrController extends Controller
         return view('master.hr.create', compact('provinces', 'positions', 'ktp'));
     }
 
+    //Hr Import
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
+        ]);
+
+        try {
+            Excel::import(new HrImport, $request->file('file'));
+
+            return Redirect::back()->with('success', 'Data imported successfully!');
+        } catch (\Exception $e) {
+            return Redirect::back()->with('error', 'Failed to import data: ' . $e->getMessage());
+        }
+    }
+
+    public function downloadTemplate()
+    {
+        return Excel::download(new HrTemplateExport, 'hr_import_template.xlsx');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -54,7 +82,6 @@ class HrController extends Controller
             'agama' => 'required',
             'golongan_darah' => 'required',
             'kewarganegaraan' => 'required',
-            'position_id' => 'required',
             'nip' => 'required',
             'gelar_depan' => 'nullable',
             'nama' => 'required',
@@ -87,7 +114,6 @@ class HrController extends Controller
 
         // Step 2: Create HR Data with the created KTP ID
         $hrData = $request->only([
-            'position_id',
             'nip',
             'gelar_depan',
             'nama',
