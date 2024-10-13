@@ -75,9 +75,6 @@
                     </li>
                 @endcan
 
-                {{-- human resource --}}
-
-
                 {{-- mahasiswa dan ktm validasi --}}
                 <li class="nav-item {{ Request::is('mhs*') ? 'active' : '' }}">
                     <a href="#" class="nav-link">
