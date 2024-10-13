@@ -41,6 +41,10 @@
                                         <td>{{ $k->nama_ruang_kelas }}</td>
                                         <td>{{ $k->kapasitas }}</td>
                                         <td>
+                                            <a href="{{ route('ruang-kelas.show', $k->id) }}"
+                                                class="btn btn-sm btn-info btn-icon">
+                                                <i class="btn-icon-prepend" data-feather="eye"></i>
+                                            </a>
                                             <a href="{{ route('ruang-kelas.edit', $k->id) }}"
                                                 class="btn btn-sm btn-primary btn-icon">
                                                 <i class="btn-icon-prepend" data-feather="check-square"></i>

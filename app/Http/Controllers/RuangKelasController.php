@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RuangKelas;
+use App\Models\RuangKelasDetail;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -25,14 +26,28 @@ class RuangKelasController extends Controller
     public function store(Request $request)
     {
         $ruleData = [
-            'kode_ruang_kelas' => 'required||max:10',
-            'nama_ruang_kelas' => 'required||max:30',
+            'kode_ruang_kelas' => 'required|max:10',
+            'nama_ruang_kelas' => 'required|max:30',
             'kapasitas' => 'required|numeric',
         ];
 
         $validateData = $request->validate($ruleData);
 
-        RuangKelas::create($validateData);
+        $ruangKelas = RuangKelas::create($validateData);
+
+        if ($request->has('schedules')) {
+            foreach ($request->schedules as $hari => $jadwalHari) {
+                foreach ($jadwalHari as $jamAwal => $detail) {
+                    RuangKelasDetail::create([
+                        'ruang_kelas_id' => $ruangKelas->id,
+                        'hari' => $hari,
+                        'jam_awal' => $detail['jam_awal'],
+                        'jam_akhir' => $detail['jam_akhir'],
+                        'is_available' => '1',
+                    ]);
+                }
+            }
+        }
 
         return redirect()->route('ruang-kelas.index')->with('success', 'Ruang Kelas berhasil ditambahkan');
     }
