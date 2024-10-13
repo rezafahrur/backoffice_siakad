@@ -66,37 +66,33 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                         'alamat_kec_code' => $mahasiswa->ktp->alamat_kec_code ?? '',
                         'kode_pos' => $mahasiswa->mahasiswaDetail->kode_pos,
                         'jenis_tinggal' => $mahasiswa->jenis_tinggal ?? '',
+                        'alat_transportasi' => $mahasiswa->alat_transportasi,
                         'telp_rumah' => $mahasiswa->mahasiswaDetail->telp_rumah,
                         'hp' => $mahasiswa->mahasiswaDetail->hp,
                         'email' => $mahasiswa->email,
                         'terima_kps' => $mahasiswa->terima_kps,
                         'no_kps' => $mahasiswa->no_kps == null ? 'Tidak ada' : $mahasiswa->no_kps,
 
-                        // Wali 1
+                        //Ayah
                         'nik_wali1' => " " . ($mahasiswaWali1 ? $mahasiswaWali1->ktp->nik : ''),
                         'nama_kontak_darurat1' => $mahasiswaWali1 ? $mahasiswaWali1->nama : '',
                         'tgl_lahir_kontak_darurat1' => $mahasiswaWali1 ? $mahasiswaWali1->ktp->lahir_tgl : '',
-                        'hubungan_kontak_darurat1' => $mahasiswaWali1 ? $mahasiswaWali1->status_kewalian : '',
                         'pendidikan_kontak_darurat1' => $wali1Detail ? $wali1Detail->pendidikan : '',
+                        'pendidikan_kontak_darurat1' => $wali1Detail ? $wali1Detail->pekerjaan : '',
                         'penghasilan_kontak_darurat1' => $wali1Detail ? $wali1Detail->penghasilan : '',
 
-                        // Wali 2
+                        //Ibu
                         'nik_wali2' => " " . ($mahasiswaWali2 ? $mahasiswaWali2->ktp->nik : ''),
                         'nama_kontak_darurat2' => $mahasiswaWali2 ? $mahasiswaWali2->nama : '',
                         'tgl_lahir_kontak_darurat2' => $mahasiswaWali2 ? $mahasiswaWali2->ktp->lahir_tgl : '',
-                        'hubungan_kontak_darurat2' => $mahasiswaWali2 ? $mahasiswaWali2->status_kewalian : '',
                         'pendidikan_kontak_darurat2' => $wali2Detail ? $wali2Detail->pendidikan : '',
+                        'pendidikan_kontak_darurat2' => $wali2Detail ? $wali2Detail->pekerjaan : '',
                         'penghasilan_kontak_darurat2' => $wali2Detail ? $wali2Detail->penghasilan : '',
 
+                        //Wali
+
+
                         'kebutuhan_khusus' => $mahasiswa->kebutuhan_khusus,
-                        'jurusan_id' => $mahasiswa->jurusan_id == 1 ? 'DEFAULT' : $mahasiswa->jurusan->nama_jurusan ?? '',
-                        'registrasi_tanggal' => $mahasiswa->registrasi_tanggal,
-                        'status' => $mahasiswa->status == 1 ? 'Aktif' : 'Tidak Aktif',
-                        'semester_berjalan' => $mahasiswa->semester_berjalan ?? '',
-                        'alamat_domisili' => $mahasiswa->mahasiswaDetail->alamat_domisili,
-                        'alamat_prov_code' => $mahasiswa->ktp->alamat_prov_code ?? '',
-                        'alamat_kotakab_code' => $mahasiswa->ktp->alamat_kotakab_code ?? '',
-                        'alat_transportasi' => $mahasiswa->alat_transportasi,
                     ];
                 });
         } else {
@@ -141,32 +137,25 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'Kecamatan',
                 'Kode Pos',
                 'Jenis Tinggal',
+                'Alat Transportasi',
                 'Telepon Rumah',
                 'No HP',
                 'Email',
                 'Terima KPS',
                 'No KPS',
-                'NIK Wali Kesatu',
-                'Nama Wali Kesatu',
-                'Tanggal Lahir Wali Kesatu',
-                'Hubungan Wali Kesatu',
-                'Pendidikan Wali Kesatu',
-                'Penghasilan Wali Kesatu',
-                'NIK Wali Kedua',
-                'Nama Wali Kedua',
-                'Tanggal Lahir Wali Kedua',
-                'Hubungan Wali Kedua',
-                'Pendidikan Wali Kedua',
-                'Penghasilan Wali Kedua',
-                'Kebutuhan Khusus Mahasiswa',
-                'Jurusan Id',
-                'Registrasi Tanggal',
-                'Status',
-                'Semester Berjalan',
-                'Alamat Domisili',
-                'Kode Provinsi',
-                'Kode Kota/Kabupaten',
-                'Alat Transportasi',
+                'NIK Ayah',
+                'Nama Ayah',
+                'Tanggal Lahir Ayah',
+                'Pendidikan Ayah',
+                'Pekerjaan Ayah',
+                'Penghasilan Ayah',
+                'NIK Ibu',
+                'Nama Ibu',
+                'Tanggal Lahir Ibu',
+                'Pendidikan Ibu',
+                'Pekerjaan Ibu',
+                'Penghasilan Ibu',
+                'Id Kebutuhan Mahasiswa',
             ];
         } else {
             return [
@@ -187,64 +176,64 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
     {
         if ($this->dataLengkap) {
             return [
-                'A' => 20,
-                'B' => 20,
+                'A' => 23,
+                'B' => 23,
                 'C' => 30,
                 'D' => 30,
-                'E' => 20,
-                'F' => 20,
-                'G' => 20,
-                'H' => 20,
-                'I' => 20,
-                'J' => 20,
-                'K' => 20,
-                'L' => 20,
-                'M' => 20,
-                'N' => 20,
-                'O' => 20,
-                'P' => 20,
-                'Q' => 20,
-                'R' => 20,
-                'S' => 20,
-                'T' => 20,
-                'U' => 20,
-                'V' => 20,
-                'W' => 20,
-                'X' => 20,
-                'Y' => 20,
-                'Z' => 20,
-                'AA' => 20,
-                'AB' => 20,
-                'AC' => 20,
-                'AD' => 20,
-                'AE' => 20,
-                'AF' => 20,
-                'AG' => 20,
-                'AH' => 20,
-                'AI' => 20,
-                'AJ' => 20,
-                'AK' => 49,
-                'AL' => 20,
-                'AM' => 20,
-                'AN' => 20,
+                'E' => 23,
+                'F' => 23,
+                'G' => 23,
+                'H' => 23,
+                'I' => 23,
+                'J' => 23,
+                'K' => 23,
+                'L' => 23,
+                'M' => 23,
+                'N' => 23,
+                'O' => 23,
+                'P' => 23,
+                'Q' => 23,
+                'R' => 23,
+                'S' => 23,
+                'T' => 23,
+                'U' => 23,
+                'V' => 23,
+                'W' => 23,
+                'X' => 23,
+                'Y' => 23,
+                'Z' => 23,
+                'AA' => 23,
+                'AB' => 23,
+                'AC' => 23,
+                'AD' => 23,
+                'AE' => 23,
+                'AF' => 23,
+                'AG' => 23,
+                'AH' => 23,
+                'AI' => 23,
+                'AJ' => 23,
+                'AK' => 23,
+                'AL' => 23,
+                'AM' => 23,
+                'AN' => 23,
                 'AO' => 30,
-                'AP' => 20,
+                'AP' => 23,
                 'AQ' => 50,
-                'AR' => 20,
-                'AS' => 20,
+                'AR' => 23,
+                'AS' => 30,
                 'AT' => 30,
             ];
         } else {
             return [
                 'A' => 30,
                 'B' => 30,
-                'C' => 20,
+                'C' => 23,
                 'D' => 30,
-                'E' => 20,
-                'F' => 20,
-                'G' => 20,
+                'E' => 23,
+                'F' => 23,
+                'G' => 23,
                 'H' => 49,
-                'I' => 20,
+                'I' => 23,
             ];
         }
     }
@@ -335,7 +324,7 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                     $comment->createTextRun('6 : Konghuchu' . "\n");
                     $comment->createTextRun('99 Lainnya');
 
-                    $comment = $sheet->getComment('T1')->setWidth('200pt')->setHeight('100pt')->getText();
+                    $comment = $sheet->getComment('S1')->setWidth('200pt')->setHeight('100pt')->getText();
                     $comment->createTextRun('1 Bersama Orang Tua' . "\n");
                     $comment->createTextRun('2 Wali' . "\n");
                     $comment->createTextRun('3 Kost' . "\n");
@@ -343,7 +332,7 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                     $comment->createTextRun('5 Rumah Sendiri' . "\n");
                     $comment->createTextRun('99 Lainnya');
 
-                    $comment = $sheet->getComment('AT1')->setWidth('200pt')->setHeight('190pt')->getText();
+                    $comment = $sheet->getComment('T1')->setWidth('200pt')->setHeight('190pt')->getText();
                     $comment->createTextRun('1 Jalan kaki' . "\n");
                     $comment->createTextRun('3 Angkutan umum/bus/pete-pete' . "\n");
                     $comment->createTextRun('4 Mobil/bus antar jemput' . "\n");
@@ -358,13 +347,16 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                     $comment->createTextRun('99 Lainnya');
 
                     // Atur tinggi baris (row height)
-                    $sheet->getRowDimension(1)->setRowHeight(20);
+                    $sheet->getRowDimension(1)->setRowHeight(23);
 
                     // Atur gaya huruf heading
                     $sheet->getStyle('A1:BB1')->applyFromArray([
                         'font' => [
                             'bold' => true,
                             'size' => 12,
+                        ],
+                        'alignment' => [
+                            'horizontal' => 'center',
                         ],
                     ]);
 
@@ -393,7 +385,7 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                     $sheet->getComment('I1')->setWidth('200pt')->getText()->createTextRun('Kode Pos Mahasiswa');
 
                     // Atur tinggi baris (row height)
-                    $sheet->getRowDimension(1)->setRowHeight(20);
+                    $sheet->getRowDimension(1)->setRowHeight(23);
 
                     // Atur gaya huruf heading
                     $sheet->getStyle('A1:BB1')->applyFromArray([
