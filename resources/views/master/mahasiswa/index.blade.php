@@ -26,6 +26,10 @@
                                 <i class="btn-icon-prepend" data-feather="upload"></i>
                                 Import
                             </a>
+                            <a href="{{ route('mahasiswa.export', ['dataLengkap' => 0]) }}" class="btn btn-success btn-icon-text">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+                                Data Pendek
+                            </a>
                         </div>
                         <div>
                             <a href="{{ route('mahasiswa.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
@@ -35,7 +39,7 @@
                             <a href="{{ route('mahasiswa.export', ['dataLengkap' => 1]) }}"
                                 class="btn btn-success btn-icon-text mb-2 mb-md-0">
                                 <i class="btn-icon-prepend" data-feather="download"></i>
-                                Template
+                                Data Lengkap
                             </a>
                         </div>
                     </div>

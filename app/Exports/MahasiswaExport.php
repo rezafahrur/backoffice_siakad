@@ -2,15 +2,15 @@
 
 namespace App\Exports;
 
-use App\Models\Jurusan;
-use App\Models\ProgramStudi;
+use App\Models\Mahasiswa;
+use App\Models\MahasiswaWaliDetail;
+use App\Models\MahasiswaWali;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Concerns\WithEvents;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Events\AfterSheet;
 
 class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths, WithColumnFormatting, WithEvents
@@ -25,15 +25,96 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
     public function collection()
     {
         if ($this->dataLengkap) {
-            // Kembalikan collection dengan data lengkap
-            return collect([
-                // Ganti dengan data mahasiswa lengkap
-            ]);
+            return Mahasiswa::with('mahasiswaDetail', 'programStudi', 'jurusan', 'ktp', 'mahasiswaWali') // Eager load relasi
+                ->where('is_filled', 1)
+                ->get()
+                ->map(function ($mahasiswa) {
+
+                    $walicollect = $mahasiswa->id;
+
+                    $mahasiswaWali1 = MahasiswaWali::where('mahasiswa_id', $walicollect)
+                        ->where('status_kewalian', 'AYAH')
+                        ->first();
+
+                    $mahasiswaWali2 = MahasiswaWali::where('mahasiswa_id', $walicollect)
+                        ->where('status_kewalian', 'IBU')
+                        ->first();
+
+                    // get detail wali jika ada
+                    $wali1Detail = $mahasiswaWali1 ? MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali1->id)->latest()->first() : null;
+                    $wali2Detail = $mahasiswaWali2 ? MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali2->id)->latest()->first() : null;
+                    // $wali2Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali2->id)->latest()->first();
+
+
+                    return [
+                        'nim' => $mahasiswa->nim . ' ',
+                        'kode_prodi' => $mahasiswa->programStudi->kode_program_studi ?? '',
+                        'nama_prodi' => $mahasiswa->programStudi->nama_program_studi ?? '',
+                        'nama' => $mahasiswa->nama,
+                        'lahir_tempat' => $mahasiswa->ktp->lahir_tempat ?? '',
+                        'lahir_tgl' => $mahasiswa->ktp->lahir_tgl ?? '',
+                        'jenis_kelamin' => $mahasiswa->ktp->jenis_kelamin ?? '',
+                        'nik' => " " . ($mahasiswa->ktp->nik ?? ''),
+                        'agama' => $mahasiswa->ktp->agama ?? '',
+                        'nisn' => $mahasiswa->nisn,
+                        'npwp' => $mahasiswa->npwp . ' ',
+                        'kewarganegaraan' => $mahasiswa->ktp->kewarganegaraan ?? '',
+                        'alamat_jalan' => $mahasiswa->ktp->alamat_jalan ?? '',
+                        'alamat_rt' => $mahasiswa->ktp->alamat_rt == '0' ? '' : str_pad($mahasiswa->ktp->alamat_rt ?? '', 1, '0', STR_PAD_LEFT),
+                        'alamat_rw' => $mahasiswa->ktp->alamat_rw == '0' ? '' : str_pad($mahasiswa->ktp->alamat_rw ?? '', 1, '0', STR_PAD_LEFT),
+                        'alamat_kel_code' => $mahasiswa->ktp->village->name ?? '',
+                        'alamat_kec_code' => $mahasiswa->ktp->alamat_kec_code ?? '',
+                        'kode_pos' => $mahasiswa->mahasiswaDetail->kode_pos,
+                        'jenis_tinggal' => $mahasiswa->jenis_tinggal ?? '',
+                        'telp_rumah' => $mahasiswa->mahasiswaDetail->telp_rumah,
+                        'hp' => $mahasiswa->mahasiswaDetail->hp,
+                        'email' => $mahasiswa->email,
+                        'terima_kps' => $mahasiswa->terima_kps,
+                        'no_kps' => $mahasiswa->no_kps == null ? 'Tidak ada' : $mahasiswa->no_kps,
+
+                        // Wali 1
+                        'nik_wali1' => " " . ($mahasiswaWali1 ? $mahasiswaWali1->ktp->nik : ''),
+                        'nama_kontak_darurat1' => $mahasiswaWali1 ? $mahasiswaWali1->nama : '',
+                        'tgl_lahir_kontak_darurat1' => $mahasiswaWali1 ? $mahasiswaWali1->ktp->lahir_tgl : '',
+                        'hubungan_kontak_darurat1' => $mahasiswaWali1 ? $mahasiswaWali1->status_kewalian : '',
+                        'pendidikan_kontak_darurat1' => $wali1Detail ? $wali1Detail->pendidikan : '',
+                        'penghasilan_kontak_darurat1' => $wali1Detail ? $wali1Detail->penghasilan : '',
+
+                        // Wali 2
+                        'nik_wali2' => " " . ($mahasiswaWali2 ? $mahasiswaWali2->ktp->nik : ''),
+                        'nama_kontak_darurat2' => $mahasiswaWali2 ? $mahasiswaWali2->nama : '',
+                        'tgl_lahir_kontak_darurat2' => $mahasiswaWali2 ? $mahasiswaWali2->ktp->lahir_tgl : '',
+                        'hubungan_kontak_darurat2' => $mahasiswaWali2 ? $mahasiswaWali2->status_kewalian : '',
+                        'pendidikan_kontak_darurat2' => $wali2Detail ? $wali2Detail->pendidikan : '',
+                        'penghasilan_kontak_darurat2' => $wali2Detail ? $wali2Detail->penghasilan : '',
+
+                        'kebutuhan_khusus' => $mahasiswa->kebutuhan_khusus,
+                        'jurusan_id' => $mahasiswa->jurusan_id == 1 ? 'DEFAULT' : $mahasiswa->jurusan->nama_jurusan ?? '',
+                        'registrasi_tanggal' => $mahasiswa->registrasi_tanggal,
+                        'status' => $mahasiswa->status == 1 ? 'Aktif' : 'Tidak Aktif',
+                        'semester_berjalan' => $mahasiswa->semester_berjalan ?? '',
+                        'alamat_domisili' => $mahasiswa->mahasiswaDetail->alamat_domisili,
+                        'alamat_prov_code' => $mahasiswa->ktp->alamat_prov_code ?? '',
+                        'alamat_kotakab_code' => $mahasiswa->ktp->alamat_kotakab_code ?? '',
+                        'alat_transportasi' => $mahasiswa->alat_transportasi,
+                    ];
+                });
         } else {
-            // Kembalikan collection dengan data tidak lengkap
-            return collect([
-                // Ganti dengan data mahasiswa tidak lengkap
-            ]);
+            return Mahasiswa::with('mahasiswaDetail', 'programStudi', 'jurusan', 'ktp')
+                ->get()
+                ->map(function ($mahasiswa) {
+                    return [
+                        'nama' => $mahasiswa->nama,
+                        'email' => $mahasiswa->email,
+                        'jurusan_id' => $mahasiswa->jurusan_id == 1 ? 'DEFAULT' : $mahasiswa->jurusan_id,
+                        'program_studi_id' => $mahasiswa->programStudi->nama_program_studi ?? '',
+                        'registrasi_tanggal' => $mahasiswa->registrasi_tanggal,
+                        'telp_rumah' => $mahasiswa->mahasiswaDetail->telp_rumah,
+                        'hp' => $mahasiswa->mahasiswaDetail->hp,
+                        'alamat_domisili' => $mahasiswa->mahasiswaDetail->alamat_domisili,
+                        'kode_pos' => $mahasiswa->mahasiswaDetail->kode_pos,
+                    ];
+                });
         }
     }
 
@@ -42,40 +123,50 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
         if ($this->dataLengkap) {
             return [
                 'NIM',
+                'Kode Prodi',
+                'Nama Prodi',
                 'Nama',
-                'Email',
+                'Tempat Lahir',
+                'Tanggal Lahir',
+                'Jenis Kelamin',
+                'NIK',
+                'Agama',
                 'NISN',
-                'Jurusan',
-                'Program Studi',
-                'Tanggal Registrasi',
-                'Status',
-                'Semester Berjalan',
+                'NPWP',
+                'Kewarganegaraan',
+                'Alamat Jalan',
+                'RT',
+                'RW',
+                'Kelurahan',
+                'Kecamatan',
+                'Kode Pos',
+                'Jenis Tinggal',
                 'Telepon Rumah',
                 'No HP',
-                'Alamat Domisili',
-                'Kode Pos',
-                'NPWP',
-                'Jenis Tinggal',
-                'Alat Transportasi',
+                'Email',
                 'Terima KPS',
                 'No KPS',
+                'NIK Wali Kesatu',
+                'Nama Wali Kesatu',
+                'Tanggal Lahir Wali Kesatu',
+                'Hubungan Wali Kesatu',
+                'Pendidikan Wali Kesatu',
+                'Penghasilan Wali Kesatu',
+                'NIK Wali Kedua',
+                'Nama Wali Kedua',
+                'Tanggal Lahir Wali Kedua',
+                'Hubungan Wali Kedua',
+                'Pendidikan Wali Kedua',
+                'Penghasilan Wali Kedua',
                 'Kebutuhan Khusus Mahasiswa',
-                'Is Filled',
-                'NIK',
-                'Alamat Jalan',
-                'Alamat RT',
-                'Alamat RW',
-                'Alamat Prov Code',
-                'Alamat Kotakab Code',
-                'Alamat Kec Code',
-                'Alamat Kel Code',
-                'Lahir Tempat',
-                'Lahir Tgl',
-                'Jenis Kelamin',
-                'Agama',
-                'Golongan Darah',
-                'Kewarganegaraan',
-                // Lanjutkan untuk kolom lainnya...
+                'Jurusan Id',
+                'Registrasi Tanggal',
+                'Status',
+                'Semester Berjalan',
+                'Alamat Domisili',
+                'Kode Provinsi',
+                'Kode Kota/Kabupaten',
+                'Alat Transportasi',
             ];
         } else {
             return [
@@ -92,30 +183,29 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
         }
     }
 
-    // 1. Mengatur lebar kolom
     public function columnWidths(): array
     {
         if ($this->dataLengkap) {
             return [
                 'A' => 20,
-                'B' => 30,
+                'B' => 20,
                 'C' => 30,
-                'D' => 20,
+                'D' => 30,
                 'E' => 20,
-                'F' => 30,
+                'F' => 20,
                 'G' => 20,
                 'H' => 20,
                 'I' => 20,
                 'J' => 20,
                 'K' => 20,
-                'L' => 30,
+                'L' => 20,
                 'M' => 20,
                 'N' => 20,
                 'O' => 20,
                 'P' => 20,
                 'Q' => 20,
                 'R' => 20,
-                'S' => 30,
+                'S' => 20,
                 'T' => 20,
                 'U' => 20,
                 'V' => 20,
@@ -123,24 +213,42 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'X' => 20,
                 'Y' => 20,
                 'Z' => 20,
-                // Lanjutkan untuk kolom lainnya...
+                'AA' => 20,
+                'AB' => 20,
+                'AC' => 20,
+                'AD' => 20,
+                'AE' => 20,
+                'AF' => 20,
+                'AG' => 20,
+                'AH' => 20,
+                'AI' => 20,
+                'AJ' => 20,
+                'AK' => 49,
+                'AL' => 20,
+                'AM' => 20,
+                'AN' => 20,
+                'AO' => 30,
+                'AP' => 20,
+                'AQ' => 50,
+                'AR' => 20,
+                'AS' => 20,
+                'AT' => 30,
             ];
         } else {
             return [
                 'A' => 30,
                 'B' => 30,
                 'C' => 20,
-                'D' => 20,
+                'D' => 30,
                 'E' => 20,
                 'F' => 20,
                 'G' => 20,
-                'H' => 30,
+                'H' => 49,
                 'I' => 20,
             ];
         }
     }
 
-    // 2. Format kolom tanggal
     public function columnFormats(): array
     {
         if ($this->dataLengkap) {
@@ -150,10 +258,10 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'C' => NumberFormat::FORMAT_TEXT,
                 'D' => NumberFormat::FORMAT_TEXT,
                 'E' => NumberFormat::FORMAT_TEXT,
-                'F' => NumberFormat::FORMAT_TEXT,
-                'G' => NumberFormat::FORMAT_DATE_YYYYMMDD,
+                'F' => NumberFormat::FORMAT_DATE_YYYYMMDD,
+                'G' => NumberFormat::FORMAT_TEXT,
                 'H' => NumberFormat::FORMAT_TEXT,
-                'I' => NumberFormat::FORMAT_TEXT,
+                'I' => NumberFormat::FORMAT_NUMBER,
                 'J' => NumberFormat::FORMAT_TEXT,
                 'K' => NumberFormat::FORMAT_TEXT,
                 'L' => NumberFormat::FORMAT_TEXT,
@@ -171,7 +279,28 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'X' => NumberFormat::FORMAT_TEXT,
                 'Y' => NumberFormat::FORMAT_TEXT,
                 'Z' => NumberFormat::FORMAT_TEXT,
-                // Lanjutkan untuk kolom lainnya...
+                'AA' => NumberFormat::FORMAT_TEXT,
+                'AB' => NumberFormat::FORMAT_TEXT,
+                'AC' => NumberFormat::FORMAT_TEXT,
+                'AD' => NumberFormat::FORMAT_TEXT,
+                'AE' => NumberFormat::FORMAT_TEXT,
+                'AF' => NumberFormat::FORMAT_TEXT,
+                'AG' => NumberFormat::FORMAT_TEXT,
+                'AH' => NumberFormat::FORMAT_TEXT,
+                'AI' => NumberFormat::FORMAT_TEXT,
+                'AJ' => NumberFormat::FORMAT_TEXT,
+                'AK' => NumberFormat::FORMAT_TEXT,
+                'AL' => NumberFormat::FORMAT_TEXT,
+                'AM' => NumberFormat::FORMAT_TEXT,
+                'AN' => NumberFormat::FORMAT_TEXT,
+                'AO' => NumberFormat::FORMAT_TEXT,
+                'AP' => NumberFormat::FORMAT_TEXT,
+                'AQ' => NumberFormat::FORMAT_TEXT,
+                'AR' => NumberFormat::FORMAT_TEXT,
+                'AS' => NumberFormat::FORMAT_TEXT,
+                'AT' => NumberFormat::FORMAT_TEXT,
+                'AU' => NumberFormat::FORMAT_TEXT,
+                'AV' => NumberFormat::FORMAT_TEXT,
             ];
         } else {
             return [
@@ -188,7 +317,7 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
         }
     }
 
-    // 3. Tambahkan catatan menggunakan WithEvents
+
     public function registerEvents(): array
     {
         if ($this->dataLengkap) {
@@ -197,17 +326,52 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                     $sheet = $event->sheet->getDelegate();
 
                     // Tambahkan komentar pada heading
-                    $sheet->getComment('A1')->getText()->createTextRun('NIM Mahasiswa');
-                    $sheet->getComment('B1')->getText()->createTextRun('Nama Lengkap Mahasiswa');
+                    $comment = $sheet->getComment('I1')->setWidth('200pt')->setHeight('100pt')->getText();
+                    $comment->createTextRun('1 : Islam' . "\n");
+                    $comment->createTextRun('2 : Kristen' . "\n");
+                    $comment->createTextRun('3 : Katholik' . "\n");
+                    $comment->createTextRun('4 : Hindu' . "\n");
+                    $comment->createTextRun('5 : Budha' . "\n");
+                    $comment->createTextRun('6 : Konghuchu' . "\n");
+                    $comment->createTextRun('99 Lainnya');
+
+                    $comment = $sheet->getComment('T1')->setWidth('200pt')->setHeight('100pt')->getText();
+                    $comment->createTextRun('1 Bersama Orang Tua' . "\n");
+                    $comment->createTextRun('2 Wali' . "\n");
+                    $comment->createTextRun('3 Kost' . "\n");
+                    $comment->createTextRun('4 Panti Asuhan' . "\n");
+                    $comment->createTextRun('5 Rumah Sendiri' . "\n");
+                    $comment->createTextRun('99 Lainnya');
+
+                    $comment = $sheet->getComment('AT1')->setWidth('200pt')->setHeight('190pt')->getText();
+                    $comment->createTextRun('1 Jalan kaki' . "\n");
+                    $comment->createTextRun('3 Angkutan umum/bus/pete-pete' . "\n");
+                    $comment->createTextRun('4 Mobil/bus antar jemput' . "\n");
+                    $comment->createTextRun('5 Kereta api' . "\n");
+                    $comment->createTextRun('6 Ojek' . "\n");
+                    $comment->createTextRun('7 Andong/bendi/sado/dokar/delman/becak' . "\n");
+                    $comment->createTextRun('8 Perahu penyeberangan/rakit/getek' . "\n");
+                    $comment->createTextRun('11 Kuda' . "\n");
+                    $comment->createTextRun('12 Sepeda' . "\n");
+                    $comment->createTextRun('13 Sepeda motor' . "\n");
+                    $comment->createTextRun('14 Mobil pribadi' . "\n");
+                    $comment->createTextRun('99 Lainnya');
 
                     // Atur tinggi baris (row height)
                     $sheet->getRowDimension(1)->setRowHeight(20);
 
                     // Atur gaya huruf heading
-                    $sheet->getStyle('A1:Z1')->applyFromArray([
+                    $sheet->getStyle('A1:BB1')->applyFromArray([
                         'font' => [
                             'bold' => true,
                             'size' => 12,
+                        ],
+                    ]);
+
+                    // Set the data font style
+                    $sheet->getStyle('A2:BB' . $sheet->getHighestRow())->applyFromArray([
+                        'alignment' => [
+                            'horizontal' => 'left',
                         ],
                     ]);
                 }
@@ -222,20 +386,6 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
 
                     $sheet->getComment('B1')->setWidth('200pt')->getText()->createTextRun('Email Mahasiswa (Tidak boleh sama)');
 
-                    $jurusan = Jurusan::all();
-                    $jurusanDescription = 'Jurusan yang tersedia : ' . "\n";
-                    foreach ($jurusan as $j) {
-                        $jurusanDescription .= $j->id . ' - ' . $j->nama_jurusan . "\n";
-                    }
-                    $sheet->getComment('C1')->setWidth('200pt')->getText()->createTextRun($jurusanDescription);
-
-                    $prodi = ProgramStudi::all();
-                    $prodiDescription = 'Program Studi yang tersedia : ' . "\n";
-                    foreach ($prodi as $p) {
-                        $prodiDescription .= $p->id . ' - ' . $p->nama_program_studi . "\n";
-                    }
-                    $sheet->getComment('D1')->setWidth('200pt')->setHeight('100pt')->getText()->createTextRun($prodiDescription);
-
                     $sheet->getComment('E1')->setWidth('200pt')->getText()->createTextRun('Tanggal Registrasi Mahasiswa (Format : YYYY-MM-DD)');
                     $sheet->getComment('F1')->setWidth('200pt')->getText()->createTextRun('Telepon Rumah Mahasiswa');
                     $sheet->getComment('G1')->setWidth('200pt')->getText()->createTextRun('No HP Mahasiswa');
@@ -246,10 +396,17 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                     $sheet->getRowDimension(1)->setRowHeight(20);
 
                     // Atur gaya huruf heading
-                    $sheet->getStyle('A1:I1')->applyFromArray([
+                    $sheet->getStyle('A1:BB1')->applyFromArray([
                         'font' => [
                             'bold' => true,
                             'size' => 12,
+                        ],
+                    ]);
+
+                    // Set the data font style
+                    $sheet->getStyle('A2:BB' . $sheet->getHighestRow())->applyFromArray([
+                        'alignment' => [
+                            'horizontal' => 'left',
                         ],
                     ]);
                 }
