@@ -82,6 +82,7 @@ class HrController extends Controller
             'agama' => 'required',
             'golongan_darah' => 'required',
             'kewarganegaraan' => 'required',
+            'position_id' => 'required',
             'nip' => 'required',
             'gelar_depan' => 'nullable',
             'nama' => 'required',
@@ -114,6 +115,7 @@ class HrController extends Controller
 
         // Step 2: Create HR Data with the created KTP ID
         $hrData = $request->only([
+            'position_id',
             'nip',
             'gelar_depan',
             'nama',
