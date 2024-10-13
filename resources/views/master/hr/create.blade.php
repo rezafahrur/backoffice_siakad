@@ -234,13 +234,17 @@
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="alamat_kel_code" class="form-label">Kelurahan/Desa</label>
-                                <select class="form-select @error('alamat_kel_code') is-invalid @enderror"
-                                    id="alamat_kel_code" name="alamat_kel_code">
-                                    <option value="" disabled selected>Pilih Kelurahan/Desa</option>
-                                    {{-- Populated dynamically --}}
+                                <label for="alamat_prov_code" class="form-label">Provinsi</label>
+                                <select class="form-select @error('alamat_prov_code') is-invalid @enderror"
+                                    id="alamat_prov_code" name="alamat_prov_code">
+                                    <option value="" disabled selected>Pilih Provinsi</option>
+                                    @foreach ($provinces as $province)
+                                        <option value="{{ $province->code }}"
+                                            {{ old('alamat_prov_code', $data['alamat_prov_code'] ?? '') == $province->code ? 'selected' : '' }}>
+                                            {{ $province->name }}</option>
+                                    @endforeach
                                 </select>
-                                @error('alamat_kel_code')
+                                @error('alamat_prov_code')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -251,21 +255,6 @@
 
                     {{-- Baris 6 --}}
                     <div class="row">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="alamat_kec_code" class="form-label">Kecamatan</label>
-                                <select class="form-select @error('alamat_kec_code') is-invalid @enderror"
-                                    id="alamat_kec_code" name="alamat_kec_code">
-                                    <option value="" disabled selected>Pilih Kecamatan</option>
-                                    {{-- Populated dynamically --}}
-                                </select>
-                                @error('alamat_kec_code')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        </div>
                         <div class="col-md-4">
                             <div class="mb-3">
                                 <label for="alamat_kotakab_code" class="form-label">Kota/Kabupaten</label>
@@ -283,13 +272,28 @@
                         </div>
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="alamat_prov_code" class="form-label">Provinsi</label>
-                                <select class="form-select @error('alamat_prov_code') is-invalid @enderror"
-                                    id="alamat_prov_code" name="alamat_prov_code">
-                                    <option value="" disabled selected>Pilih Provinsi</option>
+                                <label for="alamat_kec_code" class="form-label">Kecamatan</label>
+                                <select class="form-select @error('alamat_kec_code') is-invalid @enderror"
+                                    id="alamat_kec_code" name="alamat_kec_code">
+                                    <option value="" disabled selected>Pilih Kecamatan</option>
                                     {{-- Populated dynamically --}}
                                 </select>
-                                @error('alamat_prov_code')
+                                @error('alamat_kec_code')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="alamat_kel_code" class="form-label">Kelurahan/Desa</label>
+                                <select class="form-select @error('alamat_kel_code') is-invalid @enderror"
+                                    id="alamat_kel_code" name="alamat_kel_code">
+                                    <option value="" disabled selected>Pilih Kelurahan/Desa</option>
+                                    {{-- Populated dynamically --}}
+                                </select>
+                                @error('alamat_kel_code')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -372,8 +376,6 @@
             </form>
         </div>
     </div>
-
-
 @endsection
 
 @push('scripts')
