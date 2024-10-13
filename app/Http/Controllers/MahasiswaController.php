@@ -92,7 +92,7 @@ class MahasiswaController extends Controller
         $jrs = str_pad($jurusan->kode_jurusan, 2, '0', STR_PAD_LEFT);
 
         $programStudi = ProgramStudi::find($data['program_studi']);
-        $program = str_pad($programStudi->kode_program_studi, 2, '0', STR_PAD_LEFT);
+        $program = str_pad($programStudi->kode_prodi, 2, '0', STR_PAD_LEFT);
 
         $lastStudent = Mahasiswa::where('nim', 'like', $year . $jenjang . $jrs . $program . '%')
             ->orderBy('nim', 'desc')
@@ -161,7 +161,7 @@ class MahasiswaController extends Controller
         $jrs = str_pad($jurusan->kode_jurusan, 2, '0', STR_PAD_LEFT);
 
         $programStudi = ProgramStudi::find($data['program_studi']);
-        $program = str_pad($programStudi->kode_program_studi, 2, '0', STR_PAD_LEFT);
+        $program = str_pad($programStudi->kode_prodi, 2, '0', STR_PAD_LEFT);
 
         $lastStudent = Mahasiswa::where('nim', 'like', $year . $jenjang . $jrs . $program . '%')
             ->orderBy('nim', 'desc')
@@ -368,7 +368,7 @@ class MahasiswaController extends Controller
             $jrs = str_pad($jurusan->kode_jurusan, 2, '0', STR_PAD_LEFT);
 
             $programStudi = ProgramStudi::find($data['program_studi']);
-            $program = str_pad($programStudi->kode_program_studi, 2, '0', STR_PAD_LEFT);
+            $program = str_pad($programStudi->kode_prodi, 2, '0', STR_PAD_LEFT);
 
             $lastStudent = Mahasiswa::where('nim', 'like', $year . $jenjang . $jrs . $program . '%')
                 ->orderBy('nim', 'desc')

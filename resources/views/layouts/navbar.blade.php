@@ -66,24 +66,39 @@
                     </a>
                 </li>
 
-                @can('read_mahasiswa')
-                    <li class="nav-item {{ Request::is('mahasiswa*') ? 'active' : '' }}">
-                        <a href="{{ route('mahasiswa.index') }}" class="nav-link">
-                            <i class="link-icon" data-feather="inbox"></i>
-                            <span class="menu-title">Mahasiswa</span>
-                        </a>
-                    </li>
-                @endcan
-
-                {{-- human resource --}}
                 @can('read_hr')
                     <li class="nav-item {{ Request::is('hr*') ? 'active' : '' }}">
                         <a href="{{ route('hr.index') }}" class="nav-link">
                             <i class="link-icon" data-feather="users"></i>
-                            <span class="menu-title">Employee</span>
+                            <span class="menu-title">Human Resource</span>
                         </a>
                     </li>
                 @endcan
+
+                {{-- mahasiswa dan ktm validasi --}}
+                <li class="nav-item {{ Request::is('mhs*') ? 'active' : '' }}">
+                    <a href="#" class="nav-link">
+                        <i class="link-icon" data-feather="inbox"></i>
+                        <span class="menu-title">Mahasiswa</span>
+                        <i class="link-arrow
+                            "></i>
+                    </a>
+                    <div class="submenu">
+                        <ul class="submenu-item">
+                            @can('read_mahasiswa')
+                                <li class="nav-item {{ Request::is('mhs/mahasiswa*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
+                                </li>
+                            @endcan
+
+                            @can('read_ktm_validasi')
+                                <li class="nav-item {{ Request::is('mhs/ktm-validasi*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('ktm-validasi.index') }}">Validasi KTM</a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </li>
 
                 <li class="nav-item {{ Request::is('master*') ? 'active' : '' }}">
                     <a href="#" class="nav-link">

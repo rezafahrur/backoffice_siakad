@@ -95,7 +95,8 @@
                                                 <i class="btn-icon-prepend text-white" data-feather="eye"></i>
                                             </a>
                                             <form action="{{ route('mahasiswa.destroy', $mhs->id) }}" method="post"
-                                                class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                                class="d-inline"
+                                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                                 @csrf
                                                 @method('delete')
                                                 <button class="btn btn-delete btn-sm btn-danger btn-icon">
@@ -117,7 +118,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center">Data tidak ditemukan</td>
+                                        <td colspan="7" class="text-center">Data tidak ditemukan</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -132,7 +133,8 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="bayarModalTitle">Pilih Kurikulum dan Pembayaran : <br>
-                                        {{ $mhs->nama }}</h5>
+                                        {{ isset($mahasiswa) && $mahasiswa->isNotEmpty() ? $mahasiswa->first()->nama : 'Nama Mahasiswa' }}
+                                    </h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
