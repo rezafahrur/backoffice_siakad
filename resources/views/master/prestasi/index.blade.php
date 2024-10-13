@@ -41,7 +41,7 @@
                                             <th>NIM</th>
                                             <th>Nama Mahasiswa</th>
                                             <th>Nama Prestasi</th>
-                                            <th>Action</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>

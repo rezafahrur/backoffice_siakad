@@ -16,7 +16,7 @@
                         <div>
                         <a href="{{ route('aktivitas-peserta.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                             <i class="btn-icon-prepend" data-feather="plus-square"></i>
-                            Tambah Aktivitas
+                            Tambah Data
                         </a>
                         <a href="{{ route('aktivitas-peserta.export') }}" class="btn btn-success btn-icon-text">
                             <i class="btn-icon-prepend" data-feather="download"></i>
@@ -61,8 +61,7 @@
                                                 method="post" class="d-inline">
                                                 @csrf
                                                 @method('delete')
-                                                <button class="btn btn-sm btn-danger btn-icon" type="submit"
-                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                                <button class="btn btn-delete btn-sm btn-danger btn-icon">
                                                     <i class="btn-icon-prepend" data-feather="trash-2"></i>
                                                 </button>
                                             </form>

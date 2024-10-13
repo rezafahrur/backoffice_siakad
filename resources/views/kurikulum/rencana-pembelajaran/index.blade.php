@@ -59,7 +59,7 @@
                                                 class="d-inline">
                                                 @csrf
                                                 @method('delete')
-                                                <button type="submit" class="btn btn-sm btn-danger btn-icon">
+                                                <button type="submit" class="btn btn-delete btn-sm btn-danger btn-icon">
                                                     <i class="btn-icon-prepend" data-feather="trash-2"></i>
                                                 </button>
                                             </form>
