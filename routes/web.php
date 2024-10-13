@@ -28,6 +28,7 @@ use App\Http\Controllers\MasterFeatureController;
 use App\Http\Controllers\MoodleAuthController;
 use App\Http\Controllers\AktivitasMahasiswaController;
 use App\Http\Controllers\AktivitasMahasiswaPesertaController;
+use App\Http\Controllers\MahasiswaKtmController;
 use App\Models\MasterFeature;
 
 Route::group(['middleware' => ['auth:hr']], function () {
@@ -45,20 +46,29 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::put('/profile', [DashboardController::class, 'updateProfile'])->name('profile.update');
 
-    // CRUD Mahasiswa
-    Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index')->middleware(['permission:read_mahasiswa']);
-    Route::get('/mahasiswa/export', [MahasiswaController::class, 'export'])->name('mahasiswa.export')->middleware(['permission:read_mahasiswa']);
-    Route::get('/mahasiswa/create', [MahasiswaController::class, 'create'])->name('mahasiswa.create')->middleware(['permission:create_mahasiswa']);
-    Route::post('/mahasiswa', [MahasiswaController::class, 'storeOrUpdate'])->name('mahasiswa.store')->middleware(['permission:create_mahasiswa']);
-    Route::post('/mahasiswa/import', [MahasiswaController::class, 'import'])->name('mahasiswa.import')->middleware(['permission:create_mahasiswa']);
-    Route::get('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'show'])->name('mahasiswa.show')->middleware(['permission:read_mahasiswa']);
-    Route::get('/mahasiswa/{mahasiswa}/edit', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit')->middleware(['permission:update_mahasiswa']);
-    Route::put('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'storeOrUpdate'])->name('mahasiswa.update')->middleware(['permission:update_mahasiswa']);
-    Route::delete('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy')->middleware(['permission:delete_mahasiswa']);
-    Route::post('/mahasiswa/quickAdd', [MahasiswaController::class, 'quickAdd'])->name('mahasiswa.quickAdd')->middleware(['permission:create_mahasiswa']);
+    // route prefix mahasiswa
+    Route::prefix('mhs')->group(function () {
+        // CRUD Mahasiswa
+        Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
+        Route::get('/mahasiswa/export', [MahasiswaController::class, 'export'])->name('mahasiswa.export');
+        Route::get('/mahasiswa/create', [MahasiswaController::class, 'create'])->name('mahasiswa.create');
+        Route::post('/mahasiswa', [MahasiswaController::class, 'storeOrUpdate'])->name('mahasiswa.store');
+        Route::post('/mahasiswa/import', [MahasiswaController::class, 'import'])->name('mahasiswa.import');
+        Route::get('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'show'])->name('mahasiswa.show');
+        Route::get('/mahasiswa/{mahasiswa}/edit', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
+        Route::put('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'storeOrUpdate'])->name('mahasiswa.update');
+        Route::delete('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
+        Route::post('/mahasiswa/quickAdd', [MahasiswaController::class, 'quickAdd'])->name('mahasiswa.quickAdd');
+        Route::post('/mahasiswa/bayar', [MahasiswaController::class, 'bayar'])->name('mahasiswa.bayar');
 
-    // Bayar
-    Route::post('/mahasiswa/bayar', [MahasiswaController::class, 'bayar'])->name('mahasiswa.bayar')->middleware(['permission:update_mahasiswa']);
+        // CRUD Mahasiswa KTM
+        Route::get('/ktm-validasi', [MahasiswaKtmController::class, 'index'])->name('ktm-validasi.index');
+        Route::post('/ktm-validasi/update-status/{id}', [MahasiswaKtmController::class, 'updateStatus'])->name('ktm-validasi.update-status');
+        Route::post('/ktm-validasi/validate/{id}', [MahasiswaKtmController::class, 'validateKtm'])->name('ktm-validasi.validate');
+        Route::post('/ktm-validasi/reject/{id}', [MahasiswaKtmController::class, 'rejectKtm'])->name('ktm-validasi.reject');
+        Route::delete('/ktm-validasi/{id}', [MahasiswaKtmController::class, 'deleteKtm'])->name('ktm-validasi.delete');
+    });
+
     Route::get('/get-kurikulum-details/{id}', [MahasiswaController::class, 'getKurikulumDetails'])->middleware(['permission:update_mahasiswa']);
     Route::get('/get-kurikulum-by-semester', [MahasiswaController::class, 'getKurikulumBySemester'])->middleware(['permission:update_mahasiswa']);
 
@@ -220,6 +230,8 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::get('/aktivitas-bimbing-uji/show/{id}', [AktivitasMahasiswaBimbingController::class, 'show'])->name('bimbingUji.show');
         Route::delete('/aktivitas-bimbing-uji/{id}', [AktivitasMahasiswaBimbingController::class, 'destroy'])->name('bimbingUji.destroy');
     });
+
+
 
     // paket jadwal
     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index')->middleware(['permission:read_jadwal']);
