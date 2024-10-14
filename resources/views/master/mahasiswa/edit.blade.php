@@ -63,6 +63,9 @@
                             {{-- Semester Berjalan --}}
                             <input type="hidden" name="semester_berjalan" id="semester_berjalan" value="1">
 
+                            {{-- Is Filled --}}
+                            <input type="hidden" name="is_filled" id="is_filled" value="1">
+
                             {{-- Status Mahasiswa --}}
                             <input type="hidden" name="status" id="status" value="{{ $mahasiswa->status }}">
 
@@ -2186,7 +2189,7 @@
                                             </div>
                                         </div>
                                     </div>
-                            
+
                                     <!-- Kebutuhan Khusus Ayah -->
                                     <div class="col-md-4">
                                         <div class="card">
@@ -2207,7 +2210,7 @@
                                             </div>
                                         </div>
                                     </div>
-                            
+
                                     <!-- Kebutuhan Khusus Ibu -->
                                     <div class="col-md-4">
                                         <div class="card">
@@ -2376,7 +2379,7 @@
                 }
             }
 
-            // Load data for existing values if available 
+            // Load data for existing values if available
             @if (old('alamat_prov_code') ?? $mahasiswa->ktp->alamat_prov_code)
                 var provCode = '{{ old('alamat_prov_code') ?? $mahasiswa->ktp->alamat_prov_code }}';
                 var cityCode = '{{ old('alamat_kotakab_code') ?? $mahasiswa->ktp->alamat_kotakab_code }}';
