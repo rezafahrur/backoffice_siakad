@@ -23,4 +23,9 @@ class RuangKelas extends Model
     {
         return $this->hasMany(JadwalDetail::class, 'ruang_kelas_id');
     }
+
+    public function ruangKelasDetail()
+    {
+        return $this->hasMany(RuangKelasDetail::class, 'ruang_kelas_id', 'id');
+    }
 }

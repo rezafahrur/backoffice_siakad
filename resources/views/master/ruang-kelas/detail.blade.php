@@ -1,34 +1,59 @@
-@extends('layouts.custom')
+@extends('layouts.app')
 
 @section('title', 'Detail Ruang Kelas')
 
 @section('content')
-    {{-- start logo and back --}}
-    <nav class="navbar navbar-light">
-        <div class="container d-block">
-            <a href="{{ route($kelas_route['index']) }}"><i class="bi bi-chevron-left"></i></a>
-            <a class="navbar-brand ms-4" href="{{ route($kelas_route['index']) }}">
-                <img style="height: 50px" src="{{ asset('assets/images/logo/logo.png') }}">
-            </a>
-        </div>
+    <nav class="page-breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ route('ruang-kelas.index') }}">Ruang Kelas</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Detail Ruang Kelas
+            </li>
+        </ol>
     </nav>
-    {{-- end logo and back --}}
-    <div class="card-header">
-        <h4 class="card-title">Detail Ruang Kelas</h4>
-    </div>
 
-    <div class="card-body">
-        <div class="mb-3">
-            <label class="form-label">Kode</label>
-            <span class="form-control border-1 border-primary">{{ $kelas->kode_ruang_kelas }}</span>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Nama</label>
-            <span class="form-control border-1 border-primary">{{ $kelas->nama_ruang_kelas }}</span>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Kapasitas</label>
-            <span class="form-control border-1 border-primary">{{ $kelas->kapasitas }}</span>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Detail Ruang Kelas</h4>
+
+            <!-- Detail Informasi Ruang Kelas -->
+            <dl class="row col-md-6">
+                <dt class="col-sm-4">Kode Ruang Kelas</dt>
+                <dd class="col-sm-8">{{ $ruangKelas->kode_ruang_kelas }}</dd>
+                <dt class="col-sm-4">Nama Ruang Kelas</dt>
+                <dd class="col-sm-8">{{ $ruangKelas->nama_ruang_kelas }}</dd>
+                <dt class="col-sm-4">Kapasitas</dt>
+                <dd class="col-sm-8">{{ $ruangKelas->kapasitas }} orang</dd>
+            </dl>
+
+            <!-- Tabel Jadwal Ruang Kelas -->
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            @foreach ($schedules as $hari => $jadwal)
+                                <th>{{ $hari }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @foreach ($schedules as $hari => $jadwal)
+                                <td>
+                                    @foreach ($jadwal as $detail)
+                                        <p>{{ $detail->jam_awal }} - {{ $detail->jam_akhir }}</p>
+                                    @endforeach
+                                </td>
+                            @endforeach
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tombol Kembali -->
+            <a href="{{ route('ruang-kelas.index') }}" class="btn btn-secondary mt-3">Kembali</a>
         </div>
     </div>
 @endsection

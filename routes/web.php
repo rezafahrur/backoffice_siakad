@@ -113,7 +113,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::get('/ruang-kelas/{kelas}/edit', [RuangKelasController::class, 'edit'])->name('ruang-kelas.edit')->middleware(['permission:update_ruang_kelas']);
         Route::put('/ruang-kelas/{kelas}', [RuangKelasController::class, 'update'])->name('ruang-kelas.update')->middleware(['permission:update_ruang_kelas']);
         Route::delete('/ruang-kelas/{kelas}', [RuangKelasController::class, 'destroy'])->name('ruang-kelas.destroy')->middleware(['permission:delete_ruang_kelas']);
-        // Route::get('/ruang-kelas/show/{id}', [RuangKelasController::class, 'show'])->name('kelas.show');
+        Route::get('/ruang-kelas/show/{id}', [RuangKelasController::class, 'show'])->name('ruang-kelas.show')->middleware(['permission:read_ruang_kelas']);
 
         // semester
         Route::get('/semester', [SemesterController::class, 'index'])->name('semester.index')->middleware(['permission:read_semester']);
