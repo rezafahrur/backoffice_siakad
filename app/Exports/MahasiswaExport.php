@@ -24,6 +24,7 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
 
     public function collection()
     {
+
         if ($this->dataLengkap) {
             return Mahasiswa::with('mahasiswaDetail', 'programStudi', 'jurusan', 'ktp', 'mahasiswaWali') // Eager load relasi
                 ->where('is_filled', 1)
@@ -45,6 +46,12 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                     $wali2Detail = $mahasiswaWali2 ? MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali2->id)->latest()->first() : null;
                     // $wali2Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali2->id)->latest()->first();
 
+                    $formatRT_RW = function ($value) {
+                        if (is_null($value) || $value === '' || $value == '0') {
+                            return '';
+                        }
+                        return ltrim($value, '0');
+                    };
 
                     return [
                         'nim' => $mahasiswa->nim . ' ',
@@ -60,8 +67,8 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                         'npwp' => $mahasiswa->npwp . ' ',
                         'kewarganegaraan' => $mahasiswa->ktp->kewarganegaraan ?? '',
                         'alamat_jalan' => $mahasiswa->ktp->alamat_jalan ?? '',
-                        'alamat_rt' => $mahasiswa->ktp->alamat_rt == '0' ? '' : str_pad($mahasiswa->ktp->alamat_rt ?? '', 1, '0', STR_PAD_LEFT),
-                        'alamat_rw' => $mahasiswa->ktp->alamat_rw == '0' ? '' : str_pad($mahasiswa->ktp->alamat_rw ?? '', 1, '0', STR_PAD_LEFT),
+                        'alamat_rt' => $formatRT_RW($mahasiswa->ktp->alamat_rt),
+                        'alamat_rw' => $formatRT_RW($mahasiswa->ktp->alamat_rw),
                         'alamat_kel_code' => $mahasiswa->ktp->village->name ?? '',
                         'alamat_kec_code' => $mahasiswa->ktp->alamat_kec_code ?? '',
                         'kode_pos' => $mahasiswa->mahasiswaDetail->kode_pos,
@@ -73,24 +80,30 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                         'terima_kps' => $mahasiswa->terima_kps,
                         'no_kps' => $mahasiswa->no_kps == null ? 'Tidak ada' : $mahasiswa->no_kps,
 
-                        //Ayah
-                        'nik_wali1' => " " . ($mahasiswaWali1 ? $mahasiswaWali1->ktp->nik : ''),
-                        'nama_kontak_darurat1' => $mahasiswaWali1 ? $mahasiswaWali1->nama : '',
-                        'tgl_lahir_kontak_darurat1' => $mahasiswaWali1 ? $mahasiswaWali1->ktp->lahir_tgl : '',
-                        'pendidikan_kontak_darurat1' => $wali1Detail ? $wali1Detail->pendidikan : '',
-                        'pendidikan_kontak_darurat1' => $wali1Detail ? $wali1Detail->pekerjaan : '',
-                        'penghasilan_kontak_darurat1' => $wali1Detail ? $wali1Detail->penghasilan : '',
+                        // Ayah
+                        'nik_wali1' => " " . ($mahasiswaWali1->ktp->nik ?? ''),
+                        'nama_kontak_darurat1' => $mahasiswaWali1->nama ?? '',
+                        'tgl_lahir_kontak_darurat1' => $mahasiswaWali1->ktp->lahir_tgl ?? '',
+                        'pendidikan_kontak_darurat1' => $wali1Detail->pendidikan ?? '',
+                        'pekerjaan_kontak_darurat1' => $wali1Detail->pekerjaan ?? '',
+                        'penghasilan_kontak_darurat1' => $wali1Detail->penghasilan ?? '',
+                        'kebutuhan_khusus_ayah' => $mahasiswaWali1->kebutuhan_khusus ?? '',
 
-                        //Ibu
-                        'nik_wali2' => " " . ($mahasiswaWali2 ? $mahasiswaWali2->ktp->nik : ''),
-                        'nama_kontak_darurat2' => $mahasiswaWali2 ? $mahasiswaWali2->nama : '',
-                        'tgl_lahir_kontak_darurat2' => $mahasiswaWali2 ? $mahasiswaWali2->ktp->lahir_tgl : '',
-                        'pendidikan_kontak_darurat2' => $wali2Detail ? $wali2Detail->pendidikan : '',
-                        'pendidikan_kontak_darurat2' => $wali2Detail ? $wali2Detail->pekerjaan : '',
-                        'penghasilan_kontak_darurat2' => $wali2Detail ? $wali2Detail->penghasilan : '',
+                        // Ibu
+                        'nik_wali2' => " " . ($mahasiswaWali2->ktp->nik ?? ''),
+                        'nama_kontak_darurat2' => $mahasiswaWali2->nama ?? '',
+                        'tgl_lahir_kontak_darurat2' => $mahasiswaWali2->ktp->lahir_tgl ?? '',
+                        'pendidikan_kontak_darurat2' => $wali2Detail->pendidikan ?? '',
+                        'pekerjaan_kontak_darurat2' => $wali2Detail->pekerjaan ?? '',
+                        'penghasilan_kontak_darurat2' => $wali2Detail->penghasilan ?? '',
+                        'kebutuhan_khusus_ibu' => $mahasiswaWali2->kebutuhan_khusus ?? '',
 
                         //Wali
-
+                        'nama_kontak_darurat' => $mahasiswa->nama_kontak_darurat ?? '',
+                        'tgl_lahir_kontak_darurat' => $mahasiswa->tgl_lahir_kontak_darurat ?? '',
+                        'pendidikan_kontak_darurat' => $mahasiswa->pendidikan_kontak_darurat ?? '',
+                        'pekerjaan_kontak_darurat' => $mahasiswa->pekerjaan_kontak_darurat ?? '',
+                        'penghasilan_kontak_darurat' => $mahasiswa->penghasilan_kontak_darurat ?? '',
 
                         'kebutuhan_khusus' => $mahasiswa->kebutuhan_khusus,
                     ];
@@ -149,12 +162,19 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'Pendidikan Ayah',
                 'Pekerjaan Ayah',
                 'Penghasilan Ayah',
+                'Id Kebutuhan Ayah',
                 'NIK Ibu',
                 'Nama Ibu',
                 'Tanggal Lahir Ibu',
                 'Pendidikan Ibu',
                 'Pekerjaan Ibu',
                 'Penghasilan Ibu',
+                'Id Kebutuhan Ibu',
+                'Nama Wali',
+                'Tanggal Lahir wali',
+                'Pendidikan Wali',
+                'Pekerjaan Wali',
+                'Penghasilan Wali',
                 'Id Kebutuhan Mahasiswa',
             ];
         } else {
@@ -188,7 +208,7 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'J' => 23,
                 'K' => 23,
                 'L' => 23,
-                'M' => 23,
+                'M' => 60,
                 'N' => 23,
                 'O' => 23,
                 'P' => 23,
@@ -269,12 +289,12 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'Y' => NumberFormat::FORMAT_TEXT,
                 'Z' => NumberFormat::FORMAT_TEXT,
                 'AA' => NumberFormat::FORMAT_TEXT,
-                'AB' => NumberFormat::FORMAT_TEXT,
+                'AB' => NumberFormat::FORMAT_DATE_YYYYMMDD,
                 'AC' => NumberFormat::FORMAT_TEXT,
                 'AD' => NumberFormat::FORMAT_TEXT,
                 'AE' => NumberFormat::FORMAT_TEXT,
                 'AF' => NumberFormat::FORMAT_TEXT,
-                'AG' => NumberFormat::FORMAT_TEXT,
+                'AG' => NumberFormat::FORMAT_DATE_YYYYMMDD,
                 'AH' => NumberFormat::FORMAT_TEXT,
                 'AI' => NumberFormat::FORMAT_TEXT,
                 'AJ' => NumberFormat::FORMAT_TEXT,
@@ -345,6 +365,177 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                     $comment->createTextRun('13 Sepeda motor' . "\n");
                     $comment->createTextRun('14 Mobil pribadi' . "\n");
                     $comment->createTextRun('99 Lainnya');
+
+                    $comment = $sheet->getComment('AC1')->setWidth('200pt')->setHeight('370pt')->getText();
+                    $comment->createTextRun('0 Tidak sekolah' . "\n");
+                    $comment->createTextRun('1 PAUD' . "\n");
+                    $comment->createTextRun('2 TK / sederajat' . "\n");
+                    $comment->createTextRun('3 Putus SD' . "\n");
+                    $comment->createTextRun('4 SD / sederajat' . "\n");
+                    $comment->createTextRun('5 SMP / sederajat' . "\n");
+                    $comment->createTextRun('6 SMA / sederajat' . "\n");
+                    $comment->createTextRun('7 Paket A' . "\n");
+                    $comment->createTextRun('8 Paket B' . "\n");
+                    $comment->createTextRun('9 Paket C' . "\n");
+                    $comment->createTextRun('20 D1' . "\n");
+                    $comment->createTextRun('21 D2' . "\n");
+                    $comment->createTextRun('22 D3' . "\n");
+                    $comment->createTextRun('23 D4' . "\n");
+                    $comment->createTextRun('30 S1' . "\n");
+                    $comment->createTextRun('31 Profesi' . "\n");
+                    $comment->createTextRun('32 Sp-1' . "\n");
+                    $comment->createTextRun('35 S2' . "\n");
+                    $comment->createTextRun('36 S2 Terapan' . "\n");
+                    $comment->createTextRun('37 Sp-2' . "\n");
+                    $comment->createTextRun('40 S3' . "\n");
+                    $comment->createTextRun('41 S3 Terapan' . "\n");
+                    $comment->createTextRun('90 Non formal' . "\n");
+                    $comment->createTextRun('91 Informal' . "\n");
+                    $comment->createTextRun('99 Lainnya');
+
+                    $comment = $sheet->getComment('AD1')->setWidth('200pt')->setHeight('290pt')->getText();
+                    $comment->createTextRun('1 Tidak bekerja' . "\n");
+                    $comment->createTextRun('2 Nelayan' . "\n");
+                    $comment->createTextRun('3 Petani' . "\n");
+                    $comment->createTextRun('4 Peternak' . "\n");
+                    $comment->createTextRun('5 PNS/TNI/Polri' . "\n");
+                    $comment->createTextRun('6 Karyawan Swasta' . "\n");
+                    $comment->createTextRun('7 Pedagang Kecil' . "\n");
+                    $comment->createTextRun('8 Pedagang Besar' . "\n");
+                    $comment->createTextRun('9 Wiraswasta' . "\n");
+                    $comment->createTextRun('10 Wirausaha' . "\n");
+                    $comment->createTextRun('11 Buruh' . "\n");
+                    $comment->createTextRun('12 Pensiunan' . "\n");
+                    $comment->createTextRun('13 Peneliti' . "\n");
+                    $comment->createTextRun('14 Tim Ahli / Konsultan' . "\n");
+                    $comment->createTextRun('15 Magang' . "\n");
+                    $comment->createTextRun('16 Tenaga Pengajar /Instruktur / Fasilitator' . "\n");
+                    $comment->createTextRun('17 Pimpinan / Manajerial' . "\n");
+                    $comment->createTextRun('90 Non formal' . "\n");
+                    $comment->createTextRun('98 Sudah Meninggal' . "\n");
+                    $comment->createTextRun('99 Lainnya');
+
+                    $comment = $sheet->getComment('AE1')->setWidth('200pt')->setHeight('100pt')->getText();
+                    $comment->createTextRun('11 Kurang dari Rp. 500,000' . "\n");
+                    $comment->createTextRun('12 Rp. 500,000 - Rp. 999,999' . "\n");
+                    $comment->createTextRun('13 Rp. 1,000,000 - Rp. 1,999,999' . "\n");
+                    $comment->createTextRun('14 Rp. 2,000,000 - Rp. 4,999,999' . "\n");
+                    $comment->createTextRun('15 Rp. 5,000,000 - Rp. 20,000,000' . "\n");
+                    $comment->createTextRun('16 Lebih dari Rp. 20,000,000');
+
+                    $comment = $sheet->getComment('AJ1')->setWidth('200pt')->setHeight('370pt')->getText();
+                    $comment->createTextRun('0 Tidak sekolah' . "\n");
+                    $comment->createTextRun('1 PAUD' . "\n");
+                    $comment->createTextRun('2 TK / sederajat' . "\n");
+                    $comment->createTextRun('3 Putus SD' . "\n");
+                    $comment->createTextRun('4 SD / sederajat' . "\n");
+                    $comment->createTextRun('5 SMP / sederajat' . "\n");
+                    $comment->createTextRun('6 SMA / sederajat' . "\n");
+                    $comment->createTextRun('7 Paket A' . "\n");
+                    $comment->createTextRun('8 Paket B' . "\n");
+                    $comment->createTextRun('9 Paket C' . "\n");
+                    $comment->createTextRun('20 D1' . "\n");
+                    $comment->createTextRun('21 D2' . "\n");
+                    $comment->createTextRun('22 D3' . "\n");
+                    $comment->createTextRun('23 D4' . "\n");
+                    $comment->createTextRun('30 S1' . "\n");
+                    $comment->createTextRun('31 Profesi' . "\n");
+                    $comment->createTextRun('32 Sp-1' . "\n");
+                    $comment->createTextRun('35 S2' . "\n");
+                    $comment->createTextRun('36 S2 Terapan' . "\n");
+                    $comment->createTextRun('37 Sp-2' . "\n");
+                    $comment->createTextRun('40 S3' . "\n");
+                    $comment->createTextRun('41 S3 Terapan' . "\n");
+                    $comment->createTextRun('90 Non formal' . "\n");
+                    $comment->createTextRun('91 Informal' . "\n");
+                    $comment->createTextRun('99 Lainnya');
+
+                    $comment = $sheet->getComment('AK1')->setWidth('200pt')->setHeight('290pt')->getText();
+                    $comment->createTextRun('1 Tidak bekerja' . "\n");
+                    $comment->createTextRun('2 Nelayan' . "\n");
+                    $comment->createTextRun('3 Petani' . "\n");
+                    $comment->createTextRun('4 Peternak' . "\n");
+                    $comment->createTextRun('5 PNS/TNI/Polri' . "\n");
+                    $comment->createTextRun('6 Karyawan Swasta' . "\n");
+                    $comment->createTextRun('7 Pedagang Kecil' . "\n");
+                    $comment->createTextRun('8 Pedagang Besar' . "\n");
+                    $comment->createTextRun('9 Wiraswasta' . "\n");
+                    $comment->createTextRun('10 Wirausaha' . "\n");
+                    $comment->createTextRun('11 Buruh' . "\n");
+                    $comment->createTextRun('12 Pensiunan' . "\n");
+                    $comment->createTextRun('13 Peneliti' . "\n");
+                    $comment->createTextRun('14 Tim Ahli / Konsultan' . "\n");
+                    $comment->createTextRun('15 Magang' . "\n");
+                    $comment->createTextRun('16 Tenaga Pengajar /Instruktur / Fasilitator' . "\n");
+                    $comment->createTextRun('17 Pimpinan / Manajerial' . "\n");
+                    $comment->createTextRun('90 Non formal' . "\n");
+                    $comment->createTextRun('98 Sudah Meninggal' . "\n");
+                    $comment->createTextRun('99 Lainnya');
+
+                    $comment = $sheet->getComment('AL1')->setWidth('200pt')->setHeight('100pt')->getText();
+                    $comment->createTextRun('11 Kurang dari Rp. 500,000' . "\n");
+                    $comment->createTextRun('12 Rp. 500,000 - Rp. 999,999' . "\n");
+                    $comment->createTextRun('13 Rp. 1,000,000 - Rp. 1,999,999' . "\n");
+                    $comment->createTextRun('14 Rp. 2,000,000 - Rp. 4,999,999' . "\n");
+                    $comment->createTextRun('15 Rp. 5,000,000 - Rp. 20,000,000' . "\n");
+                    $comment->createTextRun('16 Lebih dari Rp. 20,000,000');
+
+                    $comment = $sheet->getComment('AP1')->setWidth('200pt')->setHeight('370pt')->getText();
+                    $comment->createTextRun('0 Tidak sekolah' . "\n");
+                    $comment->createTextRun('1 PAUD' . "\n");
+                    $comment->createTextRun('2 TK / sederajat' . "\n");
+                    $comment->createTextRun('3 Putus SD' . "\n");
+                    $comment->createTextRun('4 SD / sederajat' . "\n");
+                    $comment->createTextRun('5 SMP / sederajat' . "\n");
+                    $comment->createTextRun('6 SMA / sederajat' . "\n");
+                    $comment->createTextRun('7 Paket A' . "\n");
+                    $comment->createTextRun('8 Paket B' . "\n");
+                    $comment->createTextRun('9 Paket C' . "\n");
+                    $comment->createTextRun('20 D1' . "\n");
+                    $comment->createTextRun('21 D2' . "\n");
+                    $comment->createTextRun('22 D3' . "\n");
+                    $comment->createTextRun('23 D4' . "\n");
+                    $comment->createTextRun('30 S1' . "\n");
+                    $comment->createTextRun('31 Profesi' . "\n");
+                    $comment->createTextRun('32 Sp-1' . "\n");
+                    $comment->createTextRun('35 S2' . "\n");
+                    $comment->createTextRun('36 S2 Terapan' . "\n");
+                    $comment->createTextRun('37 Sp-2' . "\n");
+                    $comment->createTextRun('40 S3' . "\n");
+                    $comment->createTextRun('41 S3 Terapan' . "\n");
+                    $comment->createTextRun('90 Non formal' . "\n");
+                    $comment->createTextRun('91 Informal' . "\n");
+                    $comment->createTextRun('99 Lainnya');
+
+                    $comment = $sheet->getComment('AQ1')->setWidth('200pt')->setHeight('290pt')->getText();
+                    $comment->createTextRun('1 Tidak bekerja' . "\n");
+                    $comment->createTextRun('2 Nelayan' . "\n");
+                    $comment->createTextRun('3 Petani' . "\n");
+                    $comment->createTextRun('4 Peternak' . "\n");
+                    $comment->createTextRun('5 PNS/TNI/Polri' . "\n");
+                    $comment->createTextRun('6 Karyawan Swasta' . "\n");
+                    $comment->createTextRun('7 Pedagang Kecil' . "\n");
+                    $comment->createTextRun('8 Pedagang Besar' . "\n");
+                    $comment->createTextRun('9 Wiraswasta' . "\n");
+                    $comment->createTextRun('10 Wirausaha' . "\n");
+                    $comment->createTextRun('11 Buruh' . "\n");
+                    $comment->createTextRun('12 Pensiunan' . "\n");
+                    $comment->createTextRun('13 Peneliti' . "\n");
+                    $comment->createTextRun('14 Tim Ahli / Konsultan' . "\n");
+                    $comment->createTextRun('15 Magang' . "\n");
+                    $comment->createTextRun('16 Tenaga Pengajar /Instruktur / Fasilitator' . "\n");
+                    $comment->createTextRun('17 Pimpinan / Manajerial' . "\n");
+                    $comment->createTextRun('90 Non formal' . "\n");
+                    $comment->createTextRun('98 Sudah Meninggal' . "\n");
+                    $comment->createTextRun('99 Lainnya');
+
+                    $comment = $sheet->getComment('AR1')->setWidth('200pt')->setHeight('100pt')->getText();
+                    $comment->createTextRun('11 Kurang dari Rp. 500,000' . "\n");
+                    $comment->createTextRun('12 Rp. 500,000 - Rp. 999,999' . "\n");
+                    $comment->createTextRun('13 Rp. 1,000,000 - Rp. 1,999,999' . "\n");
+                    $comment->createTextRun('14 Rp. 2,000,000 - Rp. 4,999,999' . "\n");
+                    $comment->createTextRun('15 Rp. 5,000,000 - Rp. 20,000,000' . "\n");
+                    $comment->createTextRun('16 Lebih dari Rp. 20,000,000');
 
                     // Atur tinggi baris (row height)
                     $sheet->getRowDimension(1)->setRowHeight(23);
