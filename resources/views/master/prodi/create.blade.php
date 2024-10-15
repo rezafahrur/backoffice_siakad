@@ -32,11 +32,33 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="kode_prodi" class="form-label">Kode Prodi</label>
+                    <input type="text" class="form-control @error('kode_prodi') is-invalid @enderror" id="kode_prodi"
+                        name="kode_prodi" placeholder="Kode Prodi" value="{{ old('kode_prodi') }}">
+                    @error('kode_prodi')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
                     <label for="nama_program_studi" class="form-label">Nama Program Studi</label>
                     <input type="text" name="nama_program_studi"
                         class="form-control @error('nama_program_studi') is-invalid @enderror" id="nama_program_studi"
-                        value="{{ old('nama_program_studi') }}">
+                        placeholder="Nama Program Studi" value="{{ old('nama_program_studi') }}">
                     @error('nama_program_studi')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label for="nama_singkat" class="form-label">Nama Singkat</label>
+                    <input type="text" name="nama_singkat" class="form-control" id="nama_singkat"
+                        placeholder="Nama Singkat" value="{{ old('nama_singkat') }}">
+                    @error('nama_singkat')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
