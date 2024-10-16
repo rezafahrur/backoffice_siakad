@@ -30,7 +30,8 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Nama Kurikulum</th>
+                                    <th>Ruang Kelas</th>
+                                    <th>Semester</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>

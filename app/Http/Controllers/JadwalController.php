@@ -7,6 +7,7 @@ use App\Models\HR;
 use App\Models\Jadwal;
 use App\Models\RuangKelas;
 use App\Models\PaketMataKuliah;
+use App\Models\Semester;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -17,41 +18,9 @@ class JadwalController extends Controller
      */
     public function index(Request $request)
     {
-        // if($request->ajax()) {
-        //     $jadwals = Jadwal::with(['paketMataKuliah:id,nama_paket_matakuliah'])->get();
+        $jadwal = Jadwal::get()->all();
 
-        //     return DataTables::of($jadwals)
-        //         ->addIndexColumn()
-        //         ->addColumn('nama_paket_matakuliah', function($row) {
-        //             return $row->paketMataKuliah ? $row->paketMataKuliah->nama_paket_matakuliah : 'N/A';
-        //         })
-        //         ->addColumn('action', function($row) {
-        //             $user = auth()->user();
-
-        //             $editBtn = '';
-        //             $deleteBtn = '';
-        //             $showBtn = '<a href="' . route('jadwal.show', $row->id) . '" class="btn icon btn-info btn-sm" title="Show"><i class="bi bi-eye"></i></a>';
-
-        //             if ($user->can('update_jadwal')) {
-        //                 $editBtn = '<a href="' . route('jadwal.edit', $row->id) . '" class="btn icon btn-warning btn-sm" title="Edit"><i class="bi bi-pencil-square"></i></a>';
-        //             }
-
-        //             if ($user->can('delete_jadwal')) {
-        //                 $deleteBtn = '<form action="' . route('jadwal.destroy', $row->id) . '" method="post" class="d-inline">
-        //                                 ' . csrf_field() . method_field('DELETE') . '
-        //                                 <button onclick="return confirm(\'Konfirmasi hapus data ?\')" class="btn icon btn-danger btn-sm" title="Delete"><i class="bi bi-trash"></i></button>
-        //                               </form>';
-        //             }
-
-        //             return $showBtn . ' ' . $editBtn . ' ' . $deleteBtn;
-        //         })
-        //         ->rawColumns(['action'])
-        //         ->make(true);
-        // }
-
-        $jadwals = Jadwal::with(['paketMataKuliah:id,nama_paket_matakuliah'])->get();
-
-        return view('master.jadwal.index', compact('jadwals'));
+        return view('master.jadwal.index', compact('jadwal'));
     }
 
 
@@ -60,10 +29,9 @@ class JadwalController extends Controller
      */
     public function create()
     {
-        $paketMataKuliahs = PaketMataKuliah::where('status', 1)
-            ->whereDoesntHave('jadwal')
-            ->get();
-        return view('master.jadwal.create', compact('paketMataKuliahs'));
+        $semester = Semester::all();
+        $ruangKelas = RuangKelas::all();
+        return view('master.jadwal.create', compact('semester', 'ruangKelas'));
     }
 
     /**
