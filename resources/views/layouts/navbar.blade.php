@@ -290,6 +290,12 @@
                                     <a class="nav-link" href="{{ route('feature.index') }}">Feature</a>
                                 </li>
                             @endcan
+                            {{-- jadwal --}}
+                            {{-- @can('read_jadwal_sementara') --}}
+                            <li class="nav-item {{ Request::is('feature/file-jadwal*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('jadwal-sementara.index') }}">Jadwal Sementara</a>
+                            </li>
+                            {{-- @endcan --}}
                         </ul>
                     </div>
                 </li>

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AktivitasMahasiswaBimbingController;
+use App\Models\MasterFeature;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HrController;
 use App\Http\Controllers\KelasController;
@@ -17,19 +17,20 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
+use App\Http\Controllers\MoodleAuthController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\SkalaNilaiController;
 use App\Http\Controllers\EvaluasiPlanController;
+use App\Http\Controllers\MahasiswaKtmController;
 use App\Http\Controllers\ProgramStudiController;
+use App\Http\Controllers\MasterFeatureController;
+use App\Http\Controllers\JadwalSementaraController;
 use App\Http\Controllers\PaketMataKuliahController;
 use App\Http\Controllers\PembelajaranPlanController;
-use App\Http\Controllers\PeriodePerkuliahanController;
-use App\Http\Controllers\MasterFeatureController;
-use App\Http\Controllers\MoodleAuthController;
 use App\Http\Controllers\AktivitasMahasiswaController;
+use App\Http\Controllers\PeriodePerkuliahanController;
+use App\Http\Controllers\AktivitasMahasiswaBimbingController;
 use App\Http\Controllers\AktivitasMahasiswaPesertaController;
-use App\Http\Controllers\MahasiswaKtmController;
-use App\Models\MasterFeature;
 
 Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
@@ -197,6 +198,14 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::get('/fitur-hak-akses/{id}/edit', [MasterFeatureController::class, 'edit'])->name('feature.edit');
         Route::put('/fitur-hak-akses/{id}', [MasterFeatureController::class, 'update'])->name('feature.update');
         Route::delete('/fitur-hak-akses/{id}', [MasterFeatureController::class, 'destroy'])->name('feature.destroy');
+
+        // jadwal sementara
+        Route::get('/file-jadwal', [JadwalSementaraController::class, 'index'])->name('jadwal-sementara.index');
+        Route::get('/file-jadwal/create', [JadwalSementaraController::class, 'create'])->name('jadwal-sementara.create');
+        Route::post('/file-jadwal', [JadwalSementaraController::class, 'store'])->name('jadwal-sementara.store');
+        Route::get('/file-jadwal/{jadwalSementara}/edit', [JadwalSementaraController::class, 'edit'])->name('jadwal-sementara.edit');
+        Route::put('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'update'])->name('jadwal-sementara.update');
+        Route::delete('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'destroy'])->name('jadwal-sementara.destroy');
     });
 
     Route::prefix('akm')->group(function (){
@@ -230,8 +239,6 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::get('/aktivitas-bimbing-uji/show/{id}', [AktivitasMahasiswaBimbingController::class, 'show'])->name('bimbingUji.show');
         Route::delete('/aktivitas-bimbing-uji/{id}', [AktivitasMahasiswaBimbingController::class, 'destroy'])->name('bimbingUji.destroy');
     });
-
-
 
     // paket jadwal
     Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index')->middleware(['permission:read_jadwal']);
