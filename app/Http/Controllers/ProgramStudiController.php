@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +29,9 @@ class ProgramStudiController extends Controller
     {
         $rulesData = [
             'kode_program_studi' => 'required|max:5',
-            'nama_program_studi' => 'required|max:40'
+            'kode_prodi' => 'nullable',
+            'nama_program_studi' => 'required|max:40',
+            'nama_singkat' => 'nullable'
         ];
 
         $validateData = $request->validate($rulesData);
@@ -38,7 +41,7 @@ class ProgramStudiController extends Controller
         return redirect()->route('prodi.index')->with('success', 'Program Studi berhasil ditambahkan');
     }
 
-        //show
+    //show
     public function show($id)
     {
         $prodi = ProgramStudi::find($id);
@@ -56,7 +59,9 @@ class ProgramStudiController extends Controller
     {
         $rulesData = [
             'kode_program_studi' => 'required|max:5',
-            'nama_program_studi' => 'required|max:40'
+            'kode_prodi' => 'nullable',
+            'nama_program_studi' => 'required|max:40',
+            'nama_singkat' => 'nullable'
         ];
 
         $validateData = $request->validate($rulesData);

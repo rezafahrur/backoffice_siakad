@@ -27,8 +27,10 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Kode</th>
-                                    <th>Nama</th>
+                                    <th>Kode Dikti</th>
+                                    <th>Kode Prodi</th>
+                                    <th>Inisial Prodi</th>
+                                    <th>Nama Prodi</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -37,6 +39,8 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $p->kode_program_studi }}</td>
+                                        <td>{{ $p->kode_prodi }}</td>
+                                        <td>{{ $p->nama_singkat}}</td>
                                         <td>{{ $p->nama_program_studi }}</td>
                                         <td>
                                             <a href="{{ route('prodi.edit', $p->id) }}"

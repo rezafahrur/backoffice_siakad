@@ -42,7 +42,7 @@ class MahasiswaController extends Controller
 
     public function export(Request $request)
     {
-        $dataLengkap = $request->input('dataLengkap', 0); // Ambil nilai dataLengkap dari request, default 0
+        $dataLengkap = $request->input('dataLengkap', 0);
 
         if ($dataLengkap) {
             return Excel::download(new MahasiswaExport($dataLengkap), 'mahasiswa.xlsx');

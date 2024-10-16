@@ -25,7 +25,7 @@ class KelasController extends Controller
         //
         $kelas = Kelas::with('programStudi', 'semester', 'kurikulum')->get();
         // dd($kelas);
-        return view('master.kelas.index', compact('kelas'));
+        return view('perkuliahan.kelas.index', compact('kelas'));
     }
 
     public function exportEvaluasi()
@@ -61,7 +61,7 @@ class KelasController extends Controller
         // get HR where role position_id = 6, which is dosen
         $dosen = HR::where('position_id', 6)->get();
 
-        return view('master.kelas.create', compact('programStudi', 'semester', 'kurikulum', 'dosen'));
+        return view('perkuliahan.kelas.create', compact('programStudi', 'semester', 'kurikulum', 'dosen'));
     }
 
     /**
@@ -95,7 +95,7 @@ class KelasController extends Controller
         $kelas = Kelas::with('programStudi', 'semester', 'kurikulum', 'details')->findOrFail($id);
         // dd($kelas);
 
-        return view('master.kelas.detail', compact('kelas'));
+        return view('perkuliahan.kelas.detail', compact('kelas'));
     }
 
     /**
@@ -109,7 +109,7 @@ class KelasController extends Controller
         $kurikulum = Kurikulum::all();
         $dosen = HR::where('position_id', 6)->get(); // Dosen
 
-        return view('master.kelas.edit', compact('kelas', 'programStudi', 'semester', 'kurikulum', 'dosen'));
+        return view('perkuliahan.kelas.edit', compact('kelas', 'programStudi', 'semester', 'kurikulum', 'dosen'));
     }
 
     /**
