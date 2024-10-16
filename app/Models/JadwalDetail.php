@@ -15,27 +15,20 @@ class JadwalDetail extends Model
 
     protected $fillable = [
         'jadwal_id',
-        'paket_matakuliah_detail_id',
-        'hr_id',
-        'ruang_kelas_id',
-        'jadwal_hari',
-        'jadwal_jam_mulai',
-        'jadwal_jam_akhir',
+        'ruang_kelas_detail_id',
+        'kelas_id',
+        'kode_hr',
+        'nama_matakuliah'
     ];
 
-    public function paketMataKuliahDetail()
+    public function ruangKelasDetail()
     {
-        return $this->belongsTo(PaketMataKuliahDetail::class, 'paket_matakuliah_detail_id', 'id');
+        return $this->belongsTo(RuangKelasDetail::class, 'ruang_kelas_detail_id', 'id');
     }
 
-    public function hr()
+    public function kelas()
     {
-        return $this->belongsTo(Hr::class, 'hr_id', 'id');
-    }
-
-    public function ruangKelas()
-    {
-        return $this->belongsTo(RuangKelas::class, 'ruang_kelas_id', 'id');
+        return $this->belongsTo(Kelas::class, 'kelas_id', 'id');
     }
 
     public function jadwal()
