@@ -20,7 +20,7 @@
                 @csrf
 
                 <div class="mb-3">
-                    <label for="kode_program_studi" class="form-label">Kode Program Studi</label>
+                    <label for="kode_program_studi" class="form-label">Kode Program Studi Dikti</label>
                     <input type="text" class="form-control @error('kode_program_studi') is-invalid @enderror"
                         id="kode_program_studi" name="kode_program_studi" placeholder="Kode Program Studi"
                         value="{{ old('kode_program_studi') }}">
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="kode_prodi" class="form-label">Kode Prodi</label>
+                    <label for="kode_prodi" class="form-label">Kode Program Studi Nim</label>
                     <input type="text" class="form-control @error('kode_prodi') is-invalid @enderror" id="kode_prodi"
                         name="kode_prodi" placeholder="Kode Prodi" value="{{ old('kode_prodi') }}">
                     @error('kode_prodi')
