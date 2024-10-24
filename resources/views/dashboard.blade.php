@@ -33,43 +33,19 @@
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-baseline">
                                 <h6 class="card-title mb-2">Mahasiswa</h6>
-                                {{-- <div class="dropdown mb-2">
-                                    <button class="btn p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="eye" class="icon-sm me-2"></i> <span
-                                                class="">View</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="edit-2" class="icon-sm me-2"></i> <span
-                                                class="">Edit</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="trash" class="icon-sm me-2"></i> <span
-                                                class="">Delete</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="printer" class="icon-sm me-2"></i> <span
-                                                class="">Print</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="download" class="icon-sm me-2"></i> <span
-                                                class="">Download</span></a>
-                                    </div>
-                                </div> --}}
                             </div>
                             <div class="row">
                                 <div class="col-6 col-md-12 col-xl-5">
                                     <h3 class="mb-2">{{ $total_mahasiswa }}</h3>
                                     <div class="d-flex align-items-baseline">
-                                        <p class="text-success">
-                                            <span>+3.3%</span>
-                                            <i data-feather="arrow-up" class="icon-sm mb-1"></i>
+                                        <p class="text-secondary">
+                                            <span>{{ $bulan_tahun }}</span>
                                         </p>
                                     </div>
                                 </div>
-                                <div class="col-6 col-md-12 col-xl-7">
+                                {{-- <div class="col-6 col-md-12 col-xl-7">
                                     <div id="customersChart" class="mt-md-3 mt-xl-0"></div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -78,30 +54,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">Dosen</h6>
-                                <div class="dropdown mb-2">
-                                    <button class="btn p-0" type="button" id="dropdownMenuButton1"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="eye" class="icon-sm me-2"></i> <span
-                                                class="">View</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="edit-2" class="icon-sm me-2"></i> <span
-                                                class="">Edit</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="trash" class="icon-sm me-2"></i> <span
-                                                class="">Delete</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="printer" class="icon-sm me-2"></i> <span
-                                                class="">Print</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="download" class="icon-sm me-2"></i> <span
-                                                class="">Download</span></a>
-                                    </div>
-                                </div>
+                                <h6 class="card-title mb-2">Dosen</h6>
                             </div>
                             <div class="row">
                                 <div class="col-6 col-md-12 col-xl-5">
@@ -109,14 +62,14 @@
                                     <div class="d-flex align-items-baseline">
                                         <div class="d-flex align-items-baseline">
                                             <p class="text-secondary">
-                                                <span>Agustus 2024</span>
+                                                <span>{{ $bulan_tahun }}</span>
                                             </p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-6 col-md-12 col-xl-7">
+                                {{-- <div class="col-6 col-md-12 col-xl-7">
                                     <div id="ordersChart" class="mt-md-3 mt-xl-0"></div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -125,43 +78,20 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">Human Resource</h6>
-                                <div class="dropdown mb-2">
-                                    <button class="btn p-0" type="button" id="dropdownMenuButton2"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="eye" class="icon-sm me-2"></i> <span
-                                                class="">View</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="edit-2" class="icon-sm me-2"></i> <span
-                                                class="">Edit</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="trash" class="icon-sm me-2"></i> <span
-                                                class="">Delete</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="printer" class="icon-sm me-2"></i> <span
-                                                class="">Print</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="download" class="icon-sm me-2"></i> <span
-                                                class="">Download</span></a>
-                                    </div>
-                                </div>
+                                <h6 class="card-title mb-2">Human Resource</h6>
                             </div>
                             <div class="row">
                                 <div class="col-6 col-md-12 col-xl-5">
                                     <h3 class="mb-2">{{ $total_hr }}</h3>
                                     <div class="d-flex align-items-baseline">
                                         <p class="text-secondary">
-                                            <span>Agustus 2024</span>
+                                            <span>{{ $bulan_tahun }}</span>
                                         </p>
                                     </div>
                                 </div>
-                                <div class="col-6 col-md-12 col-xl-7">
+                                {{-- <div class="col-6 col-md-12 col-xl-7">
                                     <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -170,43 +100,114 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-baseline">
-                                <h6 class="card-title mb-0">Program Studi</h6>
-                                <div class="dropdown mb-2">
-                                    <button class="btn p-0" type="button" id="dropdownMenuButton2"
-                                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="icon-lg text-muted pb-3px" data-feather="more-horizontal"></i>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="eye" class="icon-sm me-2"></i> <span
-                                                class="">View</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="edit-2" class="icon-sm me-2"></i> <span
-                                                class="">Edit</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="trash" class="icon-sm me-2"></i> <span
-                                                class="">Delete</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="printer" class="icon-sm me-2"></i> <span
-                                                class="">Print</span></a>
-                                        <a class="dropdown-item d-flex align-items-center" href="javascript:;"><i
-                                                data-feather="download" class="icon-sm me-2"></i> <span
-                                                class="">Download</span></a>
-                                    </div>
-                                </div>
+                                <h6 class="card-title mb-2">Program Studi</h6>
                             </div>
                             <div class="row">
                                 <div class="col-6 col-md-12 col-xl-5">
                                     <h3 class="mb-2">{{ $total_prodi }}</h3>
                                     <div class="d-flex align-items-baseline">
                                         <p class="text-secondary">
-                                            <span>Agustus 2024</span>
+                                            <span>{{ $bulan_tahun }}</span>
                                         </p>
                                     </div>
                                 </div>
-                                <div class="col-6 col-md-12 col-xl-7">
+                                {{-- <div class="col-6 col-md-12 col-xl-7">
                                     <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
+                                </div> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-12 stretch-card">
+            <div class="row flex-grow-1">
+                <div class="col-md-3 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <h6 class="card-title mb-2">Mata Kuliah</h6>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-md-12 col-xl-5">
+                                    <h3 class="mb-2">{{ $total_mata_kuliah }}</h3>
+                                    <div class="d-flex align-items-baseline">
+                                        <p class="text-secondary">
+                                            <span>{{ $bulan_tahun }}</span>
+                                        </p>
+                                    </div>
                                 </div>
+                                {{-- <div class="col-6 col-md-12 col-xl-7">
+                                    <div id="customersChart" class="mt-md-3 mt-xl-0"></div>
+                                </div> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <h6 class="card-title mb-2">Ruang Kelas</h6>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-md-12 col-xl-5">
+                                    <h3 class="mb-2">{{ $total_ruang_kelas }}</h3>
+                                    <div class="d-flex align-items-baseline">
+                                        <div class="d-flex align-items-baseline">
+                                            <p class="text-secondary">
+                                                <span>{{ $bulan_tahun }}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- <div class="col-6 col-md-12 col-xl-7">
+                                    <div id="ordersChart" class="mt-md-3 mt-xl-0"></div>
+                                </div> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <h6 class="card-title mb-2">Kelas</h6>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-md-12 col-xl-5">
+                                    <h3 class="mb-2">{{ $total_kelas }}</h3>
+                                    <div class="d-flex align-items-baseline">
+                                        <p class="text-secondary">
+                                            <span>{{ $bulan_tahun }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                {{-- <div class="col-6 col-md-12 col-xl-7">
+                                    <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
+                                </div> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-baseline">
+                                <h6 class="card-title mb-2">Kurikulum</h6>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 col-md-12 col-xl-5">
+                                    <h3 class="mb-2">{{ $total_kurikulum }}</h3>
+                                    <div class="d-flex align-items-baseline">
+                                        <p class="text-secondary">
+                                            <span>{{ $bulan_tahun }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                {{-- <div class="col-6 col-md-12 col-xl-7">
+                                    <div id="growthChart" class="mt-md-3 mt-xl-0"></div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -267,7 +268,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-baseline mb-2">
-                        <h6 class="card-title mb-0">Periode Perkuliahan</h6>
+                        <h6 class="card-title mb-0">Jumlah Target Mahasiswa Baru</h6>
                         <div class="dropdown mb-2">
                             <button class="btn p-0" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
@@ -338,77 +339,74 @@
                     </div>
                 </form>
             </div>
-        </div>
-    </div> --}}
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                fetch('/dashboard/mahasiswa/status')
-                    .then(response => response.json())
-                    .then(data => {
-                        var options = {
-                            chart: {
-                                type: 'donut',
-                            },
-                            series: [data.aktif, data.non_aktif],
-                            labels: ['Mahasiswa Aktif', 'Mahasiswa Non-Aktif'],
-                            colors: ['#4caf50', '#f44336'],
-                            legend: {
-                                position: 'bottom',
-                            },
-                            dataLabels: {
-                                enabled: true,
-                            },
-                        };
+        </div> --}}
+    </div>
+@endsection
 
-                        var chart = new ApexCharts(document.querySelector("#storageCharts"), options);
-                        chart.render();
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/dashboard/mahasiswa/status')
+                .then(response => response.json())
+                .then(data => {
+                    var options = {
+                        chart: {
+                            type: 'donut',
+                        },
+                        series: [data.aktif, data.non_aktif],
+                        labels: ['Mahasiswa Aktif', 'Mahasiswa Non-Aktif'],
+                        colors: ['#4caf50', '#f44336'],
+                        legend: {
+                            position: 'bottom',
+                        },
+                        dataLabels: {
+                            enabled: true,
+                        },
+                    };
 
-                        document.getElementById('mahasiswaAktifCount').innerText = data.aktif;
-                        document.getElementById('mahasiswaNonAktifCount').innerText = data.non_aktif;
-                    })
-                    .catch(error => console.error('Error:', error));
-            });
-        </script>
+                    var chart = new ApexCharts(document.querySelector("#storageCharts"), options);
+                    chart.render();
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                fetch('/periode-perkuliahan/chart-data')
-                    .then(response => response.json())
-                    .then(data => {
-                        const categories = data.map(item => item.program_studi);
-                        const seriesData = data.map(item => item.jml_target_mhs_baru);
-                        const tooltipData = data.map(item => `${item.semester} - ${item.program_studi}`);
+                    document.getElementById('mahasiswaAktifCount').innerText = data.aktif;
+                    document.getElementById('mahasiswaNonAktifCount').innerText = data.non_aktif;
+                })
+                .catch(error => console.error('Error:', error));
+        });
 
-                        var options = {
-                            chart: {
-                                type: 'bar',
-                                height: 350
-                            },
-                            series: [{
-                                name: 'Jumlah Target Mahasiswa Baru',
-                                data: seriesData
-                            }],
-                            xaxis: {
-                                categories: categories
-                            },
-                            title: {
-                                text: 'Jumlah Target Mahasiswa Baru per Program Studi'
-                            },
-                            tooltip: {
-                                y: {
-                                    formatter: function(value, {
-                                        dataPointIndex
-                                    }) {
-                                        return tooltipData[dataPointIndex] + ': ' + value;
-                                    }
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/periode-perkuliahan/chart-data')
+                .then(response => response.json())
+                .then(data => {
+                    const categories = data.map(item => item.program_studi);
+                    const seriesData = data.map(item => item.jml_target_mhs_baru);
+                    const tooltipData = data.map(item => `${item.semester} - ${item.program_studi}`);
+
+                    var options = {
+                        chart: {
+                            type: 'bar',
+                            height: 350
+                        },
+                        series: [{
+                            name: 'Jumlah Target Mahasiswa Baru',
+                            data: seriesData
+                        }],
+                        xaxis: {
+                            categories: categories
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: function(value, {
+                                    dataPointIndex
+                                }) {
+                                    return tooltipData[dataPointIndex] + ': ' + value;
                                 }
                             }
-                        };
+                        }
+                    };
 
-                        var chart = new ApexCharts(document.querySelector("#periodePerkuliahanChart"), options);
-                        chart.render();
-                    });
-            });
-        </script>
-    @endsection
+                    var chart = new ApexCharts(document.querySelector("#periodePerkuliahanChart"), options);
+                    chart.render();
+                });
+        });
+    </script>
+@endpush

@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hr;
+use App\Models\Config;
+use App\Models\Semester;
 use App\Models\Mahasiswa;
+use App\Models\MataKuliah;
 use App\Models\RuangKelas;
 use App\Models\ProgramStudi;
-use App\Models\Semester;
-use App\Models\TahunAkademik;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Kurikulum;
+use App\Models\Kelas;
 use Illuminate\Support\Facades\Session;
-use App\Models\Config;
 
 class DashboardController extends Controller
 {
@@ -34,6 +35,14 @@ class DashboardController extends Controller
         // get program studi
         $total_prodi = ProgramStudi::count();
 
+        // mata kuliah
+        $total_mata_kuliah = MataKuliah::count();
+
+        // kurikulum
+        $total_kurikulum = Kurikulum::count();
+
+        $kelas = Kelas::count();
+
         // get mahasiswa dengan status 1 dan 0
         $mahasiswa = Mahasiswa::where('status', 1)->orWhere('status', 0)->get();
 
@@ -43,6 +52,9 @@ class DashboardController extends Controller
         // Get the active semester name using the kode_semester from the config
         $semester_aktif = Semester::where('kode_semester', $config->value)->first();
 
+        // get bulan dan tahun saat ini, dengan format seperti ini "Agustus 2021"
+        $bulan_tahun = date('F Y');
+
         return view('dashboard', [
             'total_prodi' => $total_prodi,
             'total_ruang_kelas' => $total_ruang_kelas,
@@ -51,6 +63,10 @@ class DashboardController extends Controller
             'total_hr' => $total_hr,
             'total_dosen' => $total_dosen,
             'semester_aktif' => $semester_aktif,
+            'bulan_tahun' => $bulan_tahun,
+            'total_mata_kuliah' => $total_mata_kuliah,
+            'total_kurikulum' => $total_kurikulum,
+            'total_kelas' => $kelas,
         ]);
     }
 
