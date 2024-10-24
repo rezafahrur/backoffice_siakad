@@ -12,14 +12,14 @@ class SkalaNilaiController extends Controller
 {
     public function index() {
         $skalaNilai = SkalaNilai::with(['semester', 'programStudi', 'skalaNilaiDetail'])->get();
-        return view('master.skala-nilai.index', compact('skalaNilai'));
+        return view('perkuliahan.skala-nilai.index', compact('skalaNilai'));
     }
     
 
     public function create () {
         $semesters = Semester::all();
         $programStudis = ProgramStudi::all();
-        return view('master.skala-nilai.create', compact('semesters', 'programStudis'));
+        return view('perkuliahan.skala-nilai.create', compact('semesters', 'programStudis'));
     }
 
     public function store(Request $request)
@@ -74,14 +74,14 @@ class SkalaNilaiController extends Controller
 
     public function show ($id) {
         $skalaNilai = SkalaNilai::with('semester', 'programStudi')->find($id);
-        return view('master.skala-nilai.show', compact('skalaNilai'));
+        return view('perkuliahan.skala-nilai.show', compact('skalaNilai'));
     }
 
     public function edit ($id) {
         $semesters = Semester::all();
         $programStudis = ProgramStudi::all();
         $skalaNilai = SkalaNilai::find($id);
-        return view('master.skala-nilai.edit', compact('semesters', 'programStudis', 'skalaNilai'));
+        return view('perkuliahan.skala-nilai.edit', compact('semesters', 'programStudis', 'skalaNilai'));
     }
 
     public function update(Request $request, $id)
