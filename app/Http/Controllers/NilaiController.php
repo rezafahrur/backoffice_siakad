@@ -22,7 +22,7 @@ class NilaiController extends Controller
     {
         $nilais = Nilai::with(['programStudi', 'kelas', 'matakuliah'])->get();
 
-        return view('master.nilai.index', compact('nilais'));
+        return view('perkuliahan.nilai.index', compact('nilais'));
     }
 
     //export
@@ -45,7 +45,7 @@ class NilaiController extends Controller
         $programStudi = ProgramStudi::all();
         // $kelas = Kelas::all();
         // $matakuliah = collect();
-        return view('master.nilai.create', compact('programStudi'));
+        return view('perkuliahan.nilai.create', compact('programStudi'));
     }
 
     /**
@@ -83,7 +83,7 @@ class NilaiController extends Controller
     {
         $nilai = Nilai::with(['programStudi', 'kelas', 'matakuliah', 'details'])->findOrFail($id);
 
-        return view('master.nilai.detail', compact('nilai'));
+        return view('perkuliahan.nilai.detail', compact('nilai'));
     }
 
     /**
@@ -93,7 +93,7 @@ class NilaiController extends Controller
     {
         $nilai = Nilai::with(['programStudi', 'kelas', 'matakuliah', 'details'])->findOrFail($id);
 
-        return view('master.nilai.edit', compact('nilai'));
+        return view('perkuliahan.nilai.edit', compact('nilai'));
     }
 
     /**

@@ -21,7 +21,8 @@
                                     <img src="{{ $user->photo_profile && Storage::exists('public/' . $user->photo_profile)
                                         ? asset('storage/' . $user->photo_profile)
                                         : asset('assets\images\others\default-avatar.jpg') }}"
-                                        alt="Avatar" id="profileAvatar" style="cursor: pointer;" />
+                                        alt="Avatar" id="profileAvatar"
+                                        style="cursor: pointer; width: 200px; height: 200px;" />
                                 </div>
 
 

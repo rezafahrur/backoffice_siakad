@@ -211,14 +211,14 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     Route::prefix('akm')->group(function (){
         // aktivitas mahasiswa
-        Route::get('/aktivitas-mahasiswa', [AktivitasMahasiswaController::class, 'index'])->name('aktivitas.index');
-        Route::get('/aktivitas-mahasiswa/export', [AktivitasMahasiswaController::class, 'export'])->name('aktivitas.export');
-        Route::get('/aktivitas-mahasiswa/create', [AktivitasMahasiswaController::class, 'create'])->name('aktivitas.create');
-        Route::post('/aktivitas-mahasiswa/store', [AktivitasMahasiswaController::class, 'store'])->name('aktivitas.store');
-        Route::get('/aktivitas-mahasiswa/{id}/edit', [AktivitasMahasiswaController::class, 'edit'])->name('aktivitas.edit');
-        Route::put('/aktivitas-mahasiswa/{id}', [AktivitasMahasiswaController::class, 'update'])->name('aktivitas.update');
-        Route::get('/aktivitas-mahasiswa/{id}/show', [AktivitasMahasiswaController::class, 'show'])->name('aktivitas.show');
-        Route::delete('/aktivitas-mahasiswa/{id}', [AktivitasMahasiswaController::class, 'destroy'])->name('aktivitas.destroy');
+        Route::get('/aktivitas', [AktivitasMahasiswaController::class, 'index'])->name('aktivitas.index');
+        Route::get('/aktivitas/export', [AktivitasMahasiswaController::class, 'export'])->name('aktivitas.export');
+        Route::get('/aktivitas/create', [AktivitasMahasiswaController::class, 'create'])->name('aktivitas.create');
+        Route::post('/aktivitas/store', [AktivitasMahasiswaController::class, 'store'])->name('aktivitas.store');
+        Route::get('/aktivitas/{id}/edit', [AktivitasMahasiswaController::class, 'edit'])->name('aktivitas.edit');
+        Route::put('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'update'])->name('aktivitas.update');
+        Route::get('/aktivitas/{id}/show', [AktivitasMahasiswaController::class, 'show'])->name('aktivitas.show');
+        Route::delete('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'destroy'])->name('aktivitas.destroy');
 
         // aktivitas mahasiswa peserta
         Route::get('/aktivitas-peserta', [AktivitasMahasiswaPesertaController::class, 'index'])->name('aktivitas-peserta.index');
