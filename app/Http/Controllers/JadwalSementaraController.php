@@ -17,7 +17,7 @@ class JadwalSementaraController extends Controller
 
     public function create()
     {
-        $kelas = Kelas::all();
+        $kelas = Kelas::whereDoesntHave('jadwalSementara')->get();
         return view('feature.jadwal_sementara.create', compact('kelas'));
     }
 

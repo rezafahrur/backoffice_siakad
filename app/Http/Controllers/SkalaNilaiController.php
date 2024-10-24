@@ -14,7 +14,7 @@ class SkalaNilaiController extends Controller
         $skalaNilai = SkalaNilai::with(['semester', 'programStudi', 'skalaNilaiDetail'])->get();
         return view('perkuliahan.skala-nilai.index', compact('skalaNilai'));
     }
-    
+
 
     public function create () {
         $semesters = Semester::all();
@@ -68,9 +68,9 @@ class SkalaNilaiController extends Controller
         }
     }
 
-    
-    
-    
+
+
+
 
     public function show ($id) {
         $skalaNilai = SkalaNilai::with('semester', 'programStudi')->find($id);
@@ -150,11 +150,11 @@ class SkalaNilaiController extends Controller
     }
 }
 
-    
-    
 
 
-    
+
+
+
 
     public function destroy ($id) {
         try {
