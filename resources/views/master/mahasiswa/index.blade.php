@@ -28,7 +28,7 @@
                             </a>
                             <a href="{{ route('mahasiswa.export', ['dataLengkap' => 0]) }}" class="btn btn-success btn-icon-text">
                                 <i class="btn-icon-prepend" data-feather="download"></i>
-                                Data Pendek
+                                Biodata Tidak Lengkap
                             </a>
                         </div>
                         <div>
@@ -36,10 +36,15 @@
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
+                            <a href="{{ route('mahasiswa.export', ['mahasiswaData' => 1]) }}"
+                                class="btn btn-success btn-icon-text mb-2 mb-md-0">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+                                Mahasiswa
+                            </a>
                             <a href="{{ route('mahasiswa.export', ['dataLengkap' => 1]) }}"
                                 class="btn btn-success btn-icon-text mb-2 mb-md-0">
                                 <i class="btn-icon-prepend" data-feather="download"></i>
-                                Data Lengkap
+                                Biodata Lengkap
                             </a>
                         </div>
                     </div>
