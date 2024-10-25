@@ -43,12 +43,18 @@ class MahasiswaController extends Controller
     public function export(Request $request)
     {
         $dataLengkap = $request->input('dataLengkap', 0);
-
+        $mahasiswaData = $request->input('mahasiswaData', 0);
+    
         if ($dataLengkap) {
-            return Excel::download(new MahasiswaExport($dataLengkap), 'mahasiswa.xlsx');
-        } else {
-            return Excel::download(new MahasiswaExport($dataLengkap), 'mahasiswa_cepat.xlsx');
+            return Excel::download(new MahasiswaExport($dataLengkap, ''), 'mahasiswa_biodata.xlsx');
+        } 
+    
+        if ($mahasiswaData) {
+            return Excel::download(new MahasiswaExport('', $mahasiswaData), 'mahasiswa.xlsx');
         }
+    
+        // Default export jika tidak ada input
+        return Excel::download(new MahasiswaExport([], 'biodata_cepat'), 'mahasiswa_biodata_cepat.xlsx');
     }
 
     public function import(Request $request)
