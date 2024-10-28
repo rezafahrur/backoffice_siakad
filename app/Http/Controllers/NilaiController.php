@@ -156,13 +156,20 @@ class NilaiController extends Controller
     {
         $kelas = Kelas::where('program_studi_id', $programStudiId)->get();
 
-        // get matakuliah from kelas details to kurikulum details to matakuliah
+        // Ambil semua id mata kuliah yang sudah ada di m_nilai
+        $existingMatakuliahIds = Nilai::whereIn('kelas_id', $kelas->pluck('id'))
+            ->pluck('matakuliah_id')
+            ->toArray();
+
+        // Ambil mata kuliah yang belum ada di m_nilai berdasarkan kelas yang dipilih
         $matakuliah = collect();
         foreach ($kelas as $k) {
-            $matakuliah = $matakuliah->merge($k->details->pluck('kurikulumDetail.matakuliah'));
+            $filteredMataKuliah = $k->details->pluck('kurikulumDetail.matakuliah')
+                ->whereNotIn('id', $existingMatakuliahIds);
+            $matakuliah = $matakuliah->merge($filteredMataKuliah);
         }
 
-        // remove duplicate matakuliah
+        // Hapus duplikasi pada mata kuliah
         $matakuliah = $matakuliah->unique('id');
 
         return response()->json([
@@ -170,6 +177,7 @@ class NilaiController extends Controller
             'matakuliah' => $matakuliah
         ]);
     }
+
 
     public function getMahasiswaByKelas($kelasId)
     {
