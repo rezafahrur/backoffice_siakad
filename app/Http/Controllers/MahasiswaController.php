@@ -336,8 +336,8 @@ class MahasiswaController extends Controller
 
         // Fetch data latest mahasiswa detail by mahasiswa ID
         $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $id)->latest()->first();
-        $wali1Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali1->id)->latest()->first();
-        $wali2Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali2->id)->latest()->first();
+        $wali1Detail = $wali1 ? MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali1->id)->latest()->first() : null;
+        $wali2Detail = $wali2 ? MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali2->id)->latest()->first() : null;
 
         // Ambil kebutuhan khusus dari mahasiswa
         $mahasiswaKebutuhanKhusus = is_array($mahasiswa->kebutuhan_khusus) ? $mahasiswa->kebutuhan_khusus : explode(',', $mahasiswa->kebutuhan_khusus);
