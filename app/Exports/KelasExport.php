@@ -21,13 +21,13 @@ class KelasExport implements FromCollection, WithHeadings
                 return $kelas->details->map(function ($detail) use ($kelas) {
                     return [
                         //nama_semester
-                        'Semester' => $kelas->semester->nama_semester ?? 'N/A',
+                        'Semester' => $kelas->semester->kode_semester ?? 'N/A',
                         'Kode Mata Kuliah' => $detail->kurikulumDetail->matakuliah->kode_matakuliah ?? 'N/A',
                         'Nama Mata Kuliah' => $detail->kurikulumDetail->matakuliah->nama_matakuliah ?? 'N/A',
                         'Nama Kelas' => $kelas->nama_kelas ?? 'N/A',
-                        'Tanggal Mulai Efektif' => isset($detail->kurikulumDetail->matakuliah->tgl_mulai_efektif) ? $detail->kurikulumDetail->matakuliah->tgl_mulai_efektif : 'N/A',
-                        'Tanggal Akhir Efektif' => isset($detail->kurikulumDetail->matakuliah->tgl_akhir_efektif) ? $detail->kurikulumDetail->matakuliah->tgl_akhir_efektif : 'N/A',
-                        'Bahasan' => isset($detail->kurikulumDetail->matakuliah->bahasan) ? $detail->kurikulumDetail->matakuliah->bahasan : 'N/A',
+                        'Tanggal Mulai Efektif' => $kelas->tanggal_mulai ?? 'N/A',
+                        'Tanggal Akhir Efektif' => $kelas->tanggal_akhir ?? 'N/A',
+                        'Bahasan' => isset($detail->kurikulumDetail->matakuliah->bahasan) ? $detail->kurikulumDetail->matakuliah->bahasan : '',
                         'Lingkup Kelas' => $detail->lingkup_kelas ?? 'N/A',
                         'Mode Kelas' => $detail->mode_kelas ?? 'N/A',
                         'Kode Prodi' => $kelas->programStudi->id ?? 'N/A',
