@@ -185,7 +185,7 @@
                                     <label class="form-label">Deskripsi</label>
                                     <input type="text" name="details[{{ $detail->id }}][description]"
                                         class="form-control"
-                                        value="{{ old('details.' . $detail->id . '.description', $detail->description) }}">
+                                        value="{{ old('details.' . $detail->id . '.description', $detail->description ?? '') }}">
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Lingkup Kelas</label>
@@ -253,32 +253,34 @@
                                     <label class="form-label">Aktivitas Partisipatif (%)</label>
                                     <input type="text" name="details[{{ $detail->id }}][aktivitas_partisipatif]"
                                         class="form-control"
-                                        value="{{ old('details.' . $detail->id . '.aktivitas_partisipatif', $detail->aktivitas_partisipatif) }}">
+                                        value="{{ old('details.' . $detail->id . '.aktivitas_partisipatif', $detail->aktivitas_partisipatif ?? '') }}">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">Hasil Proyek (%)</label>
-                                    <input type="text" name="details[{{ $detail->id }}][hasil_proyek]" class="form-control"
-                                        value="{{ old('details.' . $detail->id . '.hasil_proyek', $detail->hasil_proyek) }}">
+                                    <input type="text" name="details[{{ $detail->id }}][hasil_proyek]"
+                                        class="form-control"
+                                        value="{{ old('details.' . $detail->id . '.hasil_proyek', $detail->hasil_proyek ?? '') }}">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">Tugas (%)</label>
-                                    <input type="text" name="details[{{ $detail->id }}][tugas]" class="form-control"
-                                        value="{{ old('details.' . $detail->id . '.tugas', $detail->tugas) }}">
+                                    <input type="text" name="details[{{ $detail->id }}][tugas]"
+                                        class="form-control"
+                                        value="{{ old('details.' . $detail->id . '.tugas', $detail->tugas ?? '') }}">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">Quiz (%)</label>
                                     <input type="text" name="details[{{ $detail->id }}][quiz]" class="form-control"
-                                        value="{{ old('details.' . $detail->id . '.quiz', $detail->quiz) }}">
+                                        value="{{ old('details.' . $detail->id . '.quiz', $detail->quiz ?? '') }}">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">UTS (%)</label>
                                     <input type="text" name="details[{{ $detail->id }}][uts]" class="form-control"
-                                        value="{{ old('details.' . $detail->id . '.uts', $detail->uts) }}">
+                                        value="{{ old('details.' . $detail->id . '.uts', $detail->uts ?? '') }}">
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">UAS (%)</label>
                                     <input type="text" name="details[{{ $detail->id }}][uas]" class="form-control"
-                                        value="{{ old('details.' . $detail->id . '.uas', $detail->uas) }}">
+                                        value="{{ old('details.' . $detail->id . '.uas', $detail->uas ?? '') }}">
                                 </div>
                             </div>
                         </div>

@@ -120,10 +120,29 @@ class KelasController extends Controller
         try {
             $kelas->update($request->validated());
 
-            $kelas->details()->delete();
+            $detailIds = collect($request->details)->pluck('id')->filter();
+            $kelas->details()->whereNotIn('id', $detailIds)->delete();
 
             foreach ($request->details as $detail) {
-                $kelas->details()->create($detail);
+                $kelas->details()->updateOrCreate(
+                    ['id' => $detail['id'] ?? null],
+                    [
+                        'kurikulum_detail_id' => $detail['kurikulum_detail_id'],
+                        'hr_id' => $detail['hr_id'],
+                        'tatap_muka' => $detail['tatap_muka'],
+                        'sks_ajar' => $detail['sks_ajar'],
+                        'description' => $detail['description'],
+                        'lingkup_kelas' => $detail['lingkup_kelas'],
+                        'mode_kelas' => $detail['mode_kelas'],
+                        'jenis_evaluasi' => $detail['jenis_evaluasi'],
+                        'aktivitas_partisipatif' => $detail['aktivitas_partisipatif'],
+                        'hasil_proyek' => $detail['hasil_proyek'],
+                        'tugas' => $detail['tugas'],
+                        'quiz' => $detail['quiz'],
+                        'uts' => $detail['uts'],
+                        'uas' => $detail['uas'],
+                    ]
+                );
             }
 
             return redirect()->route('kelas.index')->with('success', 'Data berhasil diperbarui');
@@ -134,6 +153,7 @@ class KelasController extends Controller
             ]);
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
