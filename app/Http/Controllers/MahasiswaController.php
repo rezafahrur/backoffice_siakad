@@ -42,13 +42,19 @@ class MahasiswaController extends Controller
 
     public function export(Request $request)
     {
-        $dataLengkap = $request->input('dataLengkap', 0); // Ambil nilai dataLengkap dari request, default 0
-
+        $dataLengkap = $request->input('dataLengkap', 0);
+        $mahasiswaData = $request->input('mahasiswaData', 0);
+    
         if ($dataLengkap) {
-            return Excel::download(new MahasiswaExport($dataLengkap), 'mahasiswa.xlsx');
-        } else {
-            return Excel::download(new MahasiswaExport($dataLengkap), 'mahasiswa_cepat.xlsx');
+            return Excel::download(new MahasiswaExport($dataLengkap, ''), 'mahasiswa_biodata.xlsx');
+        } 
+    
+        if ($mahasiswaData) {
+            return Excel::download(new MahasiswaExport('', $mahasiswaData), 'mahasiswa.xlsx');
         }
+    
+        // Default export jika tidak ada input
+        return Excel::download(new MahasiswaExport([], 'biodata_cepat'), 'mahasiswa_biodata_cepat.xlsx');
     }
 
     public function import(Request $request)
@@ -454,108 +460,124 @@ class MahasiswaController extends Controller
                     );
                 }
 
-                // Handle KTP Wali 1
-                $ktpWali1 = Ktp::updateOrCreate(
-                    ['nik' => $data['wali_nik_1']],
-                    [
-                        'nama' => $data['wali_nama_1'],
-                        'alamat_jalan' => $data['wali_alamat_jalan_1'],
-                        'alamat_rt' => $data['wali_alamat_rt_1'],
-                        'alamat_rw' => $data['wali_alamat_rw_1'],
-                        'alamat_prov_code' => $data['wali_alamat_prov_code_1'],
-                        'alamat_kotakab_code' => $data['wali_alamat_kotakab_code_1'],
-                        'alamat_kec_code' => $data['wali_alamat_kec_code_1'],
-                        'alamat_kel_code' => $data['wali_alamat_kel_code_1'],
-                        'lahir_tempat' => $data['wali_lahir_tempat_1'],
-                        'lahir_tgl' => $data['wali_lahir_tgl_1'],
-                        'jenis_kelamin' => $data['wali_jenis_kelamin_1'],
-                        'agama' => $data['wali_agama_1'],
-                        'golongan_darah' => $data['wali_golongan_darah_1'],
-                        'kewarganegaraan' => $data['wali_kewarganegaraan_1'],
-                    ]
-                );
-
-                // Handle MahasiswaWali 1
-                $mahasiswaWali1 = MahasiswaWali::updateOrCreate(
-                    [
-                        'mahasiswa_id' => $mahasiswa->id,
-                        'ktp_id' => $ktpWali1->id,
-                    ],
-                    [
-                        'nama' => $data['wali_nama_1'],
-                        'status_kewalian' => 'AYAH',
-                        'kebutuhan_khusus' => isset($data['kebutuhan_khusus_ayah']) ? implode(',', $data['kebutuhan_khusus_ayah']) : '0',
-                    ]
-                );
-
-                // Handle MahasiswaWaliDetail 1
-                $existingMahasiswaWaliDetail1 = MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali1->id)->first();
-                $newMahasiswaWaliDetail1 = [
-                    'hp' => $data['wali_no_hp_1'],
-                    'alamat_domisili' => $data['wali_alamat_domisili_1'],
-                    'pekerjaan' => $data['wali_pekerjaan_1'],
-                    'penghasilan' => $data['wali_penghasilan_1'],
-                    'pendidikan' => $data['pendidikan_terakhir_1'],
-                ];
-
-                if (!$existingMahasiswaWaliDetail1 || $existingMahasiswaWaliDetail1->hp != $newMahasiswaWaliDetail1['hp'] || $existingMahasiswaWaliDetail1->alamat_domisili != $newMahasiswaWaliDetail1['alamat_domisili']) {
-                    MahasiswaWaliDetail::create(
-                        ['mahasiswa_wali_id' => $mahasiswaWali1->id] + $newMahasiswaWaliDetail1
+                if (!is_null($data['wali_nik_1'])) {
+                    // Handle KTP Wali 1
+                    $ktpWali1 = Ktp::updateOrCreate(
+                        ['nik' => $data['wali_nik_1']],
+                        [
+                            'nama' => $data['wali_nama_1'],
+                            'alamat_jalan' => $data['wali_alamat_jalan_1'],
+                            'alamat_rt' => $data['wali_alamat_rt_1'],
+                            'alamat_rw' => $data['wali_alamat_rw_1'],
+                            'alamat_prov_code' => $data['wali_alamat_prov_code_1'],
+                            'alamat_kotakab_code' => $data['wali_alamat_kotakab_code_1'],
+                            'alamat_kec_code' => $data['wali_alamat_kec_code_1'],
+                            'alamat_kel_code' => $data['wali_alamat_kel_code_1'],
+                            'lahir_tempat' => $data['wali_lahir_tempat_1'],
+                            'lahir_tgl' => $data['wali_lahir_tgl_1'],
+                            'jenis_kelamin' => $data['wali_jenis_kelamin_1'],
+                            'agama' => $data['wali_agama_1'],
+                            'golongan_darah' => $data['wali_golongan_darah_1'],
+                            'kewarganegaraan' => $data['wali_kewarganegaraan_1'],
+                        ]
                     );
-                } else {
-                    $existingMahasiswaWaliDetail1->update($newMahasiswaWaliDetail1);
+
+                    // Handle MahasiswaWali 1
+                    $mahasiswaWali1 = MahasiswaWali::updateOrCreate(
+                        [
+                            'mahasiswa_id' => $mahasiswa->id,
+                            'ktp_id' => $ktpWali1->id,
+                        ],
+                        [
+                            'nama' => $data['wali_nama_1'],
+                            'status_kewalian' => 'AYAH',
+                            'kebutuhan_khusus' => isset($data['kebutuhan_khusus_ayah']) ? implode(',', $data['kebutuhan_khusus_ayah']) : '0',
+                        ]
+                    );
+
+                    // Handle MahasiswaWaliDetail 1
+                    $existingMahasiswaWaliDetail1 = MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali1->id)->first();
+                    $newMahasiswaWaliDetail1 = [
+                        'hp' => $data['wali_no_hp_1'],
+                        'alamat_domisili' => $data['wali_alamat_domisili_1'],
+                        'pekerjaan' => $data['wali_pekerjaan_1'],
+                        'penghasilan' => $data['wali_penghasilan_1'],
+                        'pendidikan' => $data['pendidikan_terakhir_1'],
+                    ];
+
+                    if (!$existingMahasiswaWaliDetail1 || $existingMahasiswaWaliDetail1->hp != $newMahasiswaWaliDetail1['hp'] || $existingMahasiswaWaliDetail1->alamat_domisili != $newMahasiswaWaliDetail1['alamat_domisili']) {
+                        MahasiswaWaliDetail::create(
+                            ['mahasiswa_wali_id' => $mahasiswaWali1->id] + $newMahasiswaWaliDetail1
+                        );
+                    } else {
+                        $existingMahasiswaWaliDetail1->update($newMahasiswaWaliDetail1);
+                    }
                 }
 
-                // Handle KTP Wali 2
-                $ktpWali2 = Ktp::updateOrCreate(
-                    ['nik' => $data['wali_nik_2']],
-                    [
-                        'nama' => $data['wali_nama_2'],
-                        'alamat_jalan' => $data['wali_alamat_jalan_2'],
-                        'alamat_rt' => $data['wali_alamat_rt_2'],
-                        'alamat_rw' => $data['wali_alamat_rw_2'],
-                        'alamat_prov_code' => $data['wali_alamat_prov_code_2'],
-                        'alamat_kotakab_code' => $data['wali_alamat_kotakab_code_2'],
-                        'alamat_kec_code' => $data['wali_alamat_kec_code_2'],
-                        'alamat_kel_code' => $data['wali_alamat_kel_code_2'],
-                        'lahir_tempat' => $data['wali_lahir_tempat_2'],
-                        'lahir_tgl' => $data['wali_lahir_tgl_2'],
-                        'jenis_kelamin' => $data['wali_jenis_kelamin_2'],
-                        'agama' => $data['wali_agama_2'],
-                        'golongan_darah' => $data['wali_golongan_darah_2'],
-                        'kewarganegaraan' => $data['wali_kewarganegaraan_2'],
-                    ]
-                );
-
-                // Handle MahasiswaWali
-                $mahasiswaWali2 = MahasiswaWali::updateOrCreate(
-                    [
-                        'mahasiswa_id' => $mahasiswa->id,
-                        'ktp_id' => $ktpWali2->id
-                    ],
-                    [
-                        'nama' => $data['wali_nama_2'],
-                        'status_kewalian' => 'IBU',
-                        'kebutuhan_khusus' => isset($data['kebutuhan_khusus_ibu']) ? implode(',', $data['kebutuhan_khusus_ibu']) : '0',
-                    ]
-                );
-
-                // Handle MahasiswaWaliDetail
-                $existingMahasiswaWaliDetail2 = MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali2->id)->first();
-                $newMahasiswaWaliDetail2 = [
-                    'hp' => $data['wali_no_hp_2'],
-                    'alamat_domisili' => $data['wali_alamat_domisili_2'],
-                    'pekerjaan' => $data['wali_pekerjaan_2'],
-                    'penghasilan' => $data['wali_penghasilan_2'],
-                    'pendidikan' => $data['pendidikan_terakhir_2'],
-                ];
-
-                if (!$existingMahasiswaWaliDetail2 || $existingMahasiswaWaliDetail2->hp != $newMahasiswaWaliDetail2['hp'] || $existingMahasiswaWaliDetail2->alamat_domisili != $newMahasiswaWaliDetail2['alamat_domisili']) {
-                    MahasiswaWaliDetail::create(
-                        ['mahasiswa_wali_id' => $mahasiswaWali2->id] + $newMahasiswaWaliDetail2
+                if (!is_null($data['wali_nik_2'])) {
+                    // Handle KTP Wali 2
+                    $ktpWali2 = Ktp::updateOrCreate(
+                        ['nik' => $data['wali_nik_2']],
+                        [
+                            'nama' => $data['wali_nama_2'],
+                            'alamat_jalan' => $data['wali_alamat_jalan_2'],
+                            'alamat_rt' => $data['wali_alamat_rt_2'],
+                            'alamat_rw' => $data['wali_alamat_rw_2'],
+                            'alamat_prov_code' => $data['wali_alamat_prov_code_2'],
+                            'alamat_kotakab_code' => $data['wali_alamat_kotakab_code_2'],
+                            'alamat_kec_code' => $data['wali_alamat_kec_code_2'],
+                            'alamat_kel_code' => $data['wali_alamat_kel_code_2'],
+                            'lahir_tempat' => $data['wali_lahir_tempat_2'],
+                            'lahir_tgl' => $data['wali_lahir_tgl_2'],
+                            'jenis_kelamin' => $data['wali_jenis_kelamin_2'],
+                            'agama' => $data['wali_agama_2'],
+                            'golongan_darah' => $data['wali_golongan_darah_2'],
+                            'kewarganegaraan' => $data['wali_kewarganegaraan_2'],
+                        ]
                     );
-                } else {
-                    $existingMahasiswaWaliDetail2->update($newMahasiswaWaliDetail2);
+
+                    // Handle MahasiswaWali
+                    $mahasiswaWali2 = MahasiswaWali::updateOrCreate(
+                        [
+                            'mahasiswa_id' => $mahasiswa->id,
+                            'ktp_id' => $ktpWali2->id
+                        ],
+                        [
+                            'nama' => $data['wali_nama_2'],
+                            'status_kewalian' => 'IBU',
+                            'kebutuhan_khusus' => isset($data['kebutuhan_khusus_ibu']) ? implode(',', $data['kebutuhan_khusus_ibu']) : '0',
+                        ]
+                    );
+
+                    // Handle MahasiswaWaliDetail
+                    $existingMahasiswaWaliDetail2 = MahasiswaWaliDetail::where('mahasiswa_wali_id', $mahasiswaWali2->id)->first();
+                    $newMahasiswaWaliDetail2 = [
+                        'hp' => $data['wali_no_hp_2'],
+                        'alamat_domisili' => $data['wali_alamat_domisili_2'],
+                        'pekerjaan' => $data['wali_pekerjaan_2'],
+                        'penghasilan' => $data['wali_penghasilan_2'],
+                        'pendidikan' => $data['pendidikan_terakhir_2'],
+                    ];
+
+                    if (!$existingMahasiswaWaliDetail2 || $existingMahasiswaWaliDetail2->hp != $newMahasiswaWaliDetail2['hp'] || $existingMahasiswaWaliDetail2->alamat_domisili != $newMahasiswaWaliDetail2['alamat_domisili']) {
+                        MahasiswaWaliDetail::create(
+                            ['mahasiswa_wali_id' => $mahasiswaWali2->id] + $newMahasiswaWaliDetail2
+                        );
+                    } else {
+                        $existingMahasiswaWaliDetail2->update($newMahasiswaWaliDetail2);
+                    }
+                } else if ($data['wali_nama_2'] && ($data['wali_nik_2']) == null) {
+                    // Handle MahasiswaWali
+                    $mahasiswaWali2 = MahasiswaWali::updateOrCreate(
+                        [
+                            'mahasiswa_id' => $mahasiswa->id,
+                            'status_kewalian' => 'IBU',
+                        ],
+                        [
+                            'nama' => $data['wali_nama_2'],
+                            'kebutuhan_khusus' => isset($data['kebutuhan_khusus_ibu']) ? implode(',', $data['kebutuhan_khusus_ibu']) : '0',
+                        ]
+                    );
                 }
             });
 
@@ -603,8 +625,8 @@ class MahasiswaController extends Controller
             ->first();
 
         // mengambil detail wali jika ada
-        $wali1Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali1->id)->latest()->get();
-        $wali2Detail = MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali2->id)->latest()->get();
+        $wali1Detail = $wali1 ? MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali1->id)->latest()->get() : null;
+        $wali2Detail = $wali2 ? MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali2->id)->latest()->get() : null;
 
         // Mendapatkan data provinsi, kota/kabupaten, kecamatan, dan kelurahan/desa dari relasi KTP
         $province = $ktp->province;
@@ -621,14 +643,14 @@ class MahasiswaController extends Controller
         // Ambil kebutuhan khusus dari wali (Ibu)
         $wali2KebutuhanKhusus = $wali2 && $wali2->kebutuhan_khusus ? (is_array($wali2->kebutuhan_khusus) ? $wali2->kebutuhan_khusus : explode(',', $wali2->kebutuhan_khusus)) : [];
 
-        if ($wali1) {
+        if ($wali1 != null) {
             $wali1province = $wali1->ktp->province;
             $wali1city = $wali1->ktp->city;
             $wali1district = $wali1->ktp->district;
             $wali1village = $wali1->ktp->village;
         }
 
-        if ($wali2) {
+        if ($wali2 != null && $wali2->ktp_id != null) {
             $wali2province = $wali2->ktp->province;
             $wali2city = $wali2->ktp->city;
             $wali2district = $wali2->ktp->district;

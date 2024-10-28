@@ -14,12 +14,18 @@ class Jadwal extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'paket_matakuliah_id',
+        'semester_id',
+        'ruang_kelas_id',
     ];
 
-    public function paketMataKuliah()
+    public function semester()
     {
-        return $this->belongsTo(PaketMataKuliah::class, 'paket_matakuliah_id', 'id');
+        return $this->belongsTo(Semester::class, 'semester_id', 'id');
+    }
+
+    public function ruangKelas()
+    {
+        return $this->belongsTo(RuangKelas::class, 'ruang_kelas_id', 'id');
     }
 
     public function details()

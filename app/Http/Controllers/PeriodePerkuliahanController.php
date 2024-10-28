@@ -15,7 +15,7 @@ class PeriodePerkuliahanController extends Controller
     {
         $periodePerkuliahans = PeriodePerkuliahan::all();
 
-        return view('master.periode-perkuliahan.index', compact('periodePerkuliahans'));
+        return view('perkuliahan.periode-perkuliahan.index', compact('periodePerkuliahans'));
     }
 
     // Menampilkan form untuk membuat periode perkuliahan baru
@@ -23,7 +23,7 @@ class PeriodePerkuliahanController extends Controller
     {
         $programStudi = ProgramStudi::all();
         $semesters = Semester::all();
-        return view('master.periode-perkuliahan.create', compact('programStudi', 'semesters'));
+        return view('perkuliahan.periode-perkuliahan.create', compact('programStudi', 'semesters'));
     }
 
     // Menyimpan periode perkuliahan baru ke dalam database
@@ -60,7 +60,7 @@ class PeriodePerkuliahanController extends Controller
         $periodePerkuliahan = PeriodePerkuliahan::findOrFail($id);
         $programStudi = ProgramStudi::all();
         $semesters = Semester::all();
-        return view('master.periode-perkuliahan.edit', compact('periodePerkuliahan', 'programStudi', 'semesters'));
+        return view('perkuliahan.periode-perkuliahan.edit', compact('periodePerkuliahan', 'programStudi', 'semesters'));
     }
 
     // Memperbarui periode perkuliahan di dalam database
@@ -97,7 +97,7 @@ class PeriodePerkuliahanController extends Controller
     public function show($id)
     {
         $periodePerkuliahan = PeriodePerkuliahan::with('semester', 'programStudi')->findOrFail($id);
-        return view('master.periode-perkuliahan.show', compact('periodePerkuliahan'));
+        return view('perkuliahan.periode-perkuliahan.show', compact('periodePerkuliahan'));
     }
 
     // Menghapus periode perkuliahan dari database

@@ -47,4 +47,9 @@ class Kelas extends Model
     {
         return $this->hasMany(Krs::class, 'kelas_id', 'id');
     }
+
+    public function jadwalSementara()
+    {
+        return $this->hasOne(JadwalSementara::class, 'kelas_id', 'id');
+    }
 }

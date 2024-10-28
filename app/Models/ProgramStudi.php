@@ -13,7 +13,7 @@ class ProgramStudi extends Model
 
     // Tentukan nama tabel yang sesuai di database
     protected $table = 'm_program_studi';
-    protected $fillable = ['kode_program_studi', 'nama_program_studi', 'kode_prodi'];
+    protected $fillable = ['kode_program_studi', 'nama_program_studi', 'kode_prodi', 'nama_singkat'];
 
     // Relasi one-to-many dengan tabel Matakuliah
     public function matakuliah()
@@ -33,4 +33,3 @@ class ProgramStudi extends Model
         return $this->hasMany(PeriodePerkuliahan::class, 'program_studi_id', 'id');
     }
 }
-

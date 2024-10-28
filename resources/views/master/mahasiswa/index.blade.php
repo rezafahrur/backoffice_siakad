@@ -26,16 +26,25 @@
                                 <i class="btn-icon-prepend" data-feather="upload"></i>
                                 Import
                             </a>
+                            <a href="{{ route('mahasiswa.export', ['dataLengkap' => 0]) }}" class="btn btn-success btn-icon-text">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+                                Biodata Tidak Lengkap
+                            </a>
                         </div>
                         <div>
                             <a href="{{ route('mahasiswa.create') }}" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
+                            <a href="{{ route('mahasiswa.export', ['mahasiswaData' => 1]) }}"
+                                class="btn btn-success btn-icon-text mb-2 mb-md-0">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+                                Mahasiswa
+                            </a>
                             <a href="{{ route('mahasiswa.export', ['dataLengkap' => 1]) }}"
                                 class="btn btn-success btn-icon-text mb-2 mb-md-0">
                                 <i class="btn-icon-prepend" data-feather="download"></i>
-                                Template
+                                Biodata Lengkap
                             </a>
                         </div>
                     </div>
