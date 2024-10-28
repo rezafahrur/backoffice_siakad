@@ -114,8 +114,8 @@
                             <div class="col-md-4 mb-3">
                                 <label for="jurusan" class="form-label">Jurusan</label>
                                 <select class="form-select @error('jurusan') is-invalid @enderror" id="jurusan"
-                                    name="jurusan" disabled>
-                                    <option value="" disabled selected>Pilih Jurusan</option>
+                                    name="jurusan" required disabled>
+                                    <option value="" disabled>Pilih Jurusan</option>
                                     @foreach ($jurusan as $js)
                                         <option value="{{ $js->id }}"
                                             {{ old('jurusan', $mahasiswa->jurusan_id) == $js->id ? 'selected' : '' }}>
@@ -123,6 +123,8 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <input type="hidden" name="jurusan"
+                                    value="{{ old('jurusan', $mahasiswa->jurusan_id) }}">
                                 @error('jurusan')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -133,9 +135,9 @@
                             {{-- Program Studi --}}
                             <div class="col-md-4 mb-3">
                                 <label for="program_studi" class="form-label">Program Studi</label>
-                                <select class="form-select @error('program_studi') is-invalid @enderror" id="program_studi"
-                                    name="program_studi" disabled>
-                                    <option value="" disabled selected>Pilih Program Studi</option>
+                                <select class="form-select @error('program_studi') is-invalid @enderror"
+                                    id="program_studi" name="program_studi" required disabled>
+                                    <option value="" disabled>Pilih Program Studi</option>
                                     @foreach ($prodi as $ps)
                                         <option value="{{ $ps->id }}"
                                             {{ old('program_studi', $mahasiswa->program_studi_id) == $ps->id ? 'selected' : '' }}>
@@ -143,6 +145,8 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <input type="hidden" name="program_studi"
+                                    value="{{ old('program_studi', $mahasiswa->program_studi_id) }}">
                                 @error('program_studi')
                                     <div class="invalid-feedback">
                                         {{ $message }}
