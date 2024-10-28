@@ -20,19 +20,19 @@ class MataKuliahExport implements FromCollection, WithHeadings
                 return [
                     'Kode Mata Kuliah' => $detail->kurikulumDetail->matakuliah->kode_matakuliah ?? 'N/A',
                     'Nama Mata Kuliah' => $detail->kurikulumDetail->matakuliah->nama_matakuliah ?? 'N/A',
-                    'Jenis Mata Kuliah' => isset($detail->kurikulumDetail->matakuliah->jenis_matakuliah) 
-                        ? strtoupper($detail->kurikulumDetail->matakuliah->jenis_matakuliah) 
+                    'Jenis Mata Kuliah' => isset($detail->kurikulumDetail->matakuliah->jenis_matakuliah)
+                        ? strtoupper($detail->kurikulumDetail->matakuliah->jenis_matakuliah)
                         : 'N/A',
                     'SKS Tatap Muka' => $detail->kurikulumDetail->matakuliah->sks_tatap_muka ?? 'N/A',
                     'SKS Praktek' => $detail->kurikulumDetail->matakuliah->sks_praktek ?? 'N/A',
                     'SKS Praktek Lapangan' => $detail->kurikulumDetail->matakuliah->sks_praktek_lapangan ?? 'N/A',
                     'SKS Simulasi' => $detail->kurikulumDetail->matakuliah->sks_simulasi ?? 'N/A',
-                    'Metode Belajar' => $detail->kurikulumDetail->matakuliah->metode_belajar ?? 'N/A',
-                    'Tanggal Mulai Efektif' => isset($detail->kurikulumDetail->matakuliah->tgl_mulai_efektif) ? $detail->kurikulumDetail->matakuliah->tgl_mulai_efektif : 'N/A',
-                    'Tanggal Akhir Efektif' => isset($detail->kurikulumDetail->matakuliah->tgl_akhir_efektif) ? $detail->kurikulumDetail->matakuliah->tgl_akhir_efektif : 'N/A',
-                    'Kode Program Studi' => $kelas->programStudi->kode_prodi ?? 'N/A',
+                    'Metode Belajar' => $detail->kurikulumDetail->matakuliah->metode_belajar ?? '',
+                    'Tanggal Mulai Efektif' => $kelas->tanggal_mulai ?? 'N/A',
+                    'Tanggal Akhir Efektif' => $kelas->tanggal_akhir ?? 'N/A',
+                    'Kode Program Studi' => $kelas->programStudi->kode_program_studi ?? 'N/A',
                     'Nama Program Studi' => $kelas->programStudi->nama_program_studi ?? 'N/A',
-                    
+
                 ];
             });
         });
