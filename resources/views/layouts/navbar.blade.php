@@ -245,7 +245,7 @@
                     <div class="submenu">
                         <ul class="submenu-item">
                             @can('read_akm')
-                                <li class="nav-item {{ Request::is('akm/aktivitas*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('akm/aktivitas-mahasiswa*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('aktivitas.index') }}">Aktivitas Mahasiswa</a>
                                 </li>
                             @endcan
