@@ -71,7 +71,7 @@
                 </div>
 
                 <a href="{{ route('nilai.index') }}" class="btn btn-secondary">Kembali</a>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button id="saveButton" type="submit" class="btn btn-primary">Simpan</button>
             </form>
         </div>
     </div>
@@ -79,6 +79,20 @@
 
 @push('scripts')
     <script>
+        document.getElementById('saveButton').addEventListener('click', function(event) {
+            var matakuliahDropdown = document.getElementById('matakuliah');
+
+            // Cek apakah mata kuliah sudah dipilih
+            if (matakuliahDropdown.value === "") {
+                event.preventDefault(); // Hentikan pengiriman formulir
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: 'Silakan pilih mata kuliah terlebih dahulu sebelum menyimpan nilai.',
+                });
+            }
+        });
+
         document.getElementById('program_studi').addEventListener('change', function() {
             const programStudiId = this.value;
 
