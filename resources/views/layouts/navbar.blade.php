@@ -86,7 +86,7 @@
                     <div class="submenu">
                         <ul class="submenu-item">
                             @can('read_mahasiswa')
-                                <li class="nav-item {{ Request::is('mhs/mahasiswa*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('mhs/data*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
                                 </li>
                             @endcan
