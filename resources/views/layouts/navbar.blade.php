@@ -75,13 +75,12 @@
                     </li>
                 @endcan
 
-                {{-- mahasiswa dan ktm validasi --}}
+                {{-- mahasiswa, ktm validasi dan request surat --}}
                 <li class="nav-item {{ Request::is('mhs*') ? 'active' : '' }}">
                     <a href="#" class="nav-link">
                         <i class="link-icon" data-feather="inbox"></i>
                         <span class="menu-title">Mahasiswa</span>
-                        <i class="link-arrow
-                            "></i>
+                        <i class="link-arrow"></i>
                     </a>
                     <div class="submenu">
                         <ul class="submenu-item">
@@ -231,6 +230,24 @@
                                         Perkuliahan</a>
                                 </li>
                             @endcan
+                        </ul>
+                    </div>
+                </li>
+
+                {{-- Surat & Kuisioner --}}
+                <li class="nav-item {{ Request::is('surat*') ? 'active' : '' }}">
+                    <a href="#" class="nav-link">
+                        <i class="link-icon" data-feather="mail"></i>
+                        <span class="menu-title">Surat & Kuisioner</span>
+                        <i class="link-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <ul class="submenu-item">
+                            {{-- @can('read_request_surat') --}}
+                            <li class="nav-item {{ Request::is('surat/permintaan-surat*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('permintaan-surat.index') }}">Request Surat</a>
+                            </li>
+                            {{-- @endcan --}}
                         </ul>
                     </div>
                 </li>
