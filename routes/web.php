@@ -31,6 +31,7 @@ use App\Http\Controllers\AktivitasMahasiswaController;
 use App\Http\Controllers\PeriodePerkuliahanController;
 use App\Http\Controllers\AktivitasMahasiswaBimbingController;
 use App\Http\Controllers\AktivitasMahasiswaPesertaController;
+use App\Http\Controllers\MahasiswaRequestSuratController;
 
 Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
@@ -209,7 +210,17 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::delete('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'destroy'])->name('jadwal-sementara.destroy');
     });
 
-    Route::prefix('akm')->group(function (){
+    // buatkan saya route prefix untuk surat & kuisioner
+    Route::prefix('surat')->group(function () {
+
+        // CRUD Mahasiswa Request Surat 
+        Route::get('/permintaan-surat', [MahasiswaRequestSuratController::class, 'index'])->name('permintaan-surat.index');
+        Route::get('/permintaan-surat/{id}', [MahasiswaRequestSuratController::class, 'show'])->name('permintaan-surat.show');
+        Route::post('/permintaan-surat/{id}/proses', [MahasiswaRequestSuratController::class, 'proses'])->name('permintaan-surat.proses');
+        Route::delete('/permintaan-surat/{id}', [MahasiswaRequestSuratController::class, 'destroy'])->name('permintaan-surat.destroy');
+    });
+
+    Route::prefix('akm')->group(function () {
         // aktivitas mahasiswa
         Route::get('/aktivitas-mahasiswa', [AktivitasMahasiswaController::class, 'index'])->name('aktivitas.index');
         Route::get('/aktivitas-mahasiswa/export', [AktivitasMahasiswaController::class, 'export'])->name('aktivitas.export');
@@ -242,7 +253,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     });
 
     // prefix Perkuliahan
-    Route::prefix('kuliah')->group(function (){
+    Route::prefix('kuliah')->group(function () {
         // paket jadwal
         Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index')->middleware(['permission:read_jadwal']);
         Route::get('/jadwal/create', [JadwalController::class, 'create'])->name('jadwal.create')->middleware(['permission:create_jadwal']);
