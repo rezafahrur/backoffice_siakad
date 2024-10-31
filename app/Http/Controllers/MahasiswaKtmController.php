@@ -14,7 +14,7 @@ class MahasiswaKtmController extends Controller
         $path_file_ktm = 'https://siakad.poltekbatu.ac.id';
         // dd($mahasiswaKtms);
 
-        return view('mahasiswa.ktm-validation', compact('mahasiswaKtms', 'path_file_ktm'));
+        return view('mahasiswa.ktm.ktm-validation', compact('mahasiswaKtms', 'path_file_ktm'));
     }
 
     public function validateKtm($id)
