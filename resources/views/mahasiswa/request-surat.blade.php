@@ -205,8 +205,9 @@
                     var catatan = button.getAttribute('data-catatan');
                     var status = button.getAttribute('data-status');
 
+                    // Set action URL untuk form sesuai ID
                     var form = document.getElementById('statusForm');
-                    form.action = `/surat/permintaan-surat/${id}/proses`; 
+                    form.action = `/surat/permintaan-surat/${id}/proses`;
 
                     document.getElementById('catatan').value = catatan || '';
                     document.getElementById('status').value = status;
