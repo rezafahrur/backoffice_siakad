@@ -25,10 +25,14 @@ class MahasiswaRequestSurat extends Model
     {
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id', 'id');
     }
-
-    // ambil semester
+    
     public function semester()
     {
         return $this->belongsTo(Semester::class, 'semester_id', 'id');
+    }
+    // relasikan dengan tabel t_request_surat_detail
+    public function requestSuratDetail()
+    {
+        return $this->hasMany(MahasiswaRequestSuratDetail::class, 'request_surat_id');
     }
 }
