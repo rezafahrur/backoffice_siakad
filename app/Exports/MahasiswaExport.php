@@ -210,25 +210,28 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 });
         } elseif ($this->krs) {
             return Krs::with('mahasiswa', 'kurikulum.programStudi', 'kelas.details.kurikulumDetail.matakuliah')
+                ->join('m_mahasiswa', 'm_krs.mahasiswa_id', '=', 'm_mahasiswa.id')
                 ->where('kurikulum_id', '!=', 4)
+                ->orderBy('m_mahasiswa.nim')
                 ->get()
                 ->map(function ($krs) {
-                    $detail = $krs->kelas->details->first();
-                    $kurikulumDetail = $detail->kurikulumDetail;
+                    return $krs->kelas->details->map(function ($detail) use ($krs) {
+                        $kurikulumDetail = optional($detail->kurikulumDetail);
 
-                    return [
-                        'nim' => $krs->mahasiswa->nim . ' ',
-                        'nama' => $krs->mahasiswa->nama,
-                        'semester' => $krs->kurikulum->semester,
-                        'kode_matakuliah' => $kurikulumDetail->matakuliah->kode_matakuliah ?? '',
-                        'nama_matakuliah' => $kurikulumDetail->matakuliah->nama_matakuliah ?? '',
-                        'nama_kelas' => $krs->kelas->nama_kelas,
-                        'kode_prodi' => $krs->kurikulum->programStudi->kode_program_studi ?? '',
-                        'nama_program_studi' => $krs->kurikulum->programStudi->nama_program_studi ?? '',
-                        'nilai_huruf' => '',
-                        'nilai_angka' => '',
-                        'nilai_indeks' => '',
-                    ];
+                        return [
+                            'nim' => $krs->mahasiswa->nim . ' ',
+                            'nama' => $krs->mahasiswa->nama,
+                            'semester' => $krs->kurikulum->semester,
+                            'kode_matakuliah' => $kurikulumDetail->matakuliah->kode_matakuliah ?? '',
+                            'nama_matakuliah' => $kurikulumDetail->matakuliah->nama_matakuliah ?? '',
+                            'nama_kelas' => $krs->kelas->nama_kelas,
+                            'kode_prodi' => $krs->kurikulum->programStudi->kode_program_studi ?? '',
+                            'nama_program_studi' => $krs->kurikulum->programStudi->nama_program_studi ?? '',
+                            'nilai_huruf' => '',
+                            'nilai_angka' => '',
+                            'nilai_indeks' => '',
+                        ];
+                    });
                 });
         } else {
             return Mahasiswa::with('mahasiswaDetail', 'programStudi', 'jurusan', 'ktp')
