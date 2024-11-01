@@ -10,7 +10,7 @@ class MahasiswaRequestSuratController extends Controller
     public function index()
     {
         // Ambil semua permintaan surat beserta relasinya
-        $permintaanSurat = MahasiswaRequestSurat::with('mahasiswa.programStudi')->get();
+        $permintaanSurat = MahasiswaRequestSurat::with(['mahasiswa.programStudi', 'requestSuratDetail'])->get();
         // Tampilkan view request-surat
         return view('mahasiswa.request-surat', compact('permintaanSurat'));
     }
@@ -40,6 +40,27 @@ class MahasiswaRequestSuratController extends Controller
         $permintaan = MahasiswaRequestSurat::with('mahasiswa')->findOrFail($id);
         // Pastikan untuk merujuk ke view detail yang sesuai
         return view('mahasiswa.request-surat-detail', compact('permintaan')); // Ganti 'request-surat-detail' dengan nama view yang sesuai
+    }
+
+    public function showDetail($id)
+    {
+        $permintaan = MahasiswaRequestSurat::with(['mahasiswa', 'semester', 'requestSuratDetail'])
+            ->where('id', $id)
+            ->first();
+
+        if ($permintaan) {
+            return response()->json([
+                'mahasiswa' => $permintaan->mahasiswa,
+                'semester' => $permintaan->semester,
+                'jenis_surat' => $permintaan->jenis_surat,
+                'status' => $permintaan->status,
+                'catatan' => $permintaan->catatan,
+                'request_detail' => $permintaan->requestSuratDetail
+            ]);
+        } else {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
+        dd($permintaan);
     }
 
     public function destroy($id)
