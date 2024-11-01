@@ -16,7 +16,6 @@
                 <div class="card-body">
                     <h6 class="card-title">Data Permintaan Surat</h6>
 
-                    <!-- Flash Message for Success -->
                     @if (session('success'))
                         <div class="alert alert-success">
                             {{ session('success') }}
@@ -28,7 +27,6 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>NIM</th>
                                     <th>Nama Mahasiswa</th>
                                     <th>Tahun Akademik</th>
                                     <th>Jenis Surat</th>
@@ -40,7 +38,6 @@
                                 @forelse ($permintaanSurat as $index => $permintaan)
                                     <tr>
                                         <td>{{ $index + 1 }}</td>
-                                        <td>{{ $permintaan->mahasiswa->nim }}</td>
                                         <td>{{ $permintaan->mahasiswa->nama }}</td>
                                         <td>{{ $permintaan->semester->nama_semester }}</td>
                                         <td>
@@ -71,7 +68,14 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <!-- Button to Open Modal -->
+                                            <!-- Button to Open Detail Modal -->
+                                            <button type="button" class="btn btn-sm btn-info btn-icon"
+                                                data-bs-toggle="modal" data-bs-target="#detailModal"
+                                                data-id="{{ $permintaan->id }}">
+                                                <i class="btn-icon-prepend text-white" data-feather="eye"></i>
+                                            </button>
+
+                                            <!-- Button to Open Proses/Edit Modal -->
                                             <button type="button" class="btn btn-sm btn-primary btn-icon"
                                                 data-bs-toggle="modal" data-bs-target="#prosesModal"
                                                 data-id="{{ $permintaan->id }}" data-status="{{ $permintaan->status }}"
@@ -96,11 +100,40 @@
                                         </tr>
                                     @endforelse
                                 </tbody>
-
                             </table>
                         </div>
 
-                        <!-- Modal for Updating Status -->
+                        <!-- Detail Modal -->
+                        <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="detailModalLabel">Detail Permintaan Surat</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Detail content from t_request_surat_detail will be loaded here -->
+                                        <p><strong>NIM:</strong> <span id="detailNim"></span></p>
+                                        <p><strong>Nama Mahasiswa:</strong> <span id="detailNama"></span></p>
+                                        <p><strong>Semester:</strong> <span id="detailSemester"></span></p>
+                                        <p><strong>Jenis Surat:</strong> <span id="detailJenisSurat"></span></p>
+                                        <p><strong>Nama Orang Tua:</strong> <span id="detailNamaOrangTua"></span></p>
+                                        <p><strong>NIP:</strong> <span id="detailNip"></span></p>
+                                        <p><strong>Pangkat:</strong> <span id="detailPangkat"></span></p>
+                                        <p><strong>Instansi:</strong> <span id="detailInstansi"></span></p>
+                                        <p><strong>Status:</strong> <span id="detailStatus"></span></p>
+                                        <p><strong>Catatan:</strong> <span id="detailCatatan"></span></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Proses/Edit Modal -->
                         <div class="modal fade" id="prosesModal" tabindex="-1" aria-labelledby="prosesModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog">
@@ -145,6 +178,26 @@
         <!-- Script to Populate Modal Form Action Dynamically -->
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                // Detail Modal population
+                var detailModal = document.getElementById('detailModal');
+                detailModal.addEventListener('show.bs.modal', function(event) {
+                    var button = event.relatedTarget;
+                    var id = button.getAttribute('data-id');
+
+                    // Fetch data and populate the modal with AJAX
+                    fetch(`/surat/permintaan-surat/${id}/detail`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('detailNim').textContent = data.mahasiswa.nim;
+                            document.getElementById('detailNama').textContent = data.mahasiswa.nama;
+                            document.getElementById('detailJenisSurat').textContent = data.jenis_surat;
+                            document.getElementById('detailStatus').textContent = data.status;
+                            document.getElementById('detailCatatan').textContent = data.catatan ||
+                                'Tidak ada catatan';
+                        });
+                });
+
+                // Proses Modal population
                 var prosesModal = document.getElementById('prosesModal');
                 prosesModal.addEventListener('show.bs.modal', function(event) {
                     var button = event.relatedTarget;
@@ -152,16 +205,14 @@
                     var catatan = button.getAttribute('data-catatan');
                     var status = button.getAttribute('data-status');
 
+                    // Set action URL untuk form sesuai ID
                     var form = document.getElementById('statusForm');
-                    form.action = "/mhs/permintaan-surat/" + id + "/proses";
+                    form.action = `/surat/permintaan-surat/${id}/proses`;
 
-                    var catatanTextarea = document.getElementById('catatan');
-                    catatanTextarea.value = catatan ? catatan :
-                        '';
-
-                    var statusSelect = document.getElementById('status');
-                    statusSelect.value = status;
+                    document.getElementById('catatan').value = catatan || '';
+                    document.getElementById('status').value = status;
                 });
             });
         </script>
+
     @endsection
