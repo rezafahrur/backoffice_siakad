@@ -248,6 +248,12 @@
                                 <a class="nav-link" href="{{ route('permintaan-surat.index') }}">Request Surat</a>
                             </li>
                             {{-- @endcan --}}
+
+                            {{-- @can('read_kuisioner_akademik') --}}
+                            <li class="nav-item {{ Request::is('kuisioner/kuisioner-akademik*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('kuisioner-akademik.index') }}">Kuisioner Akademik</a>
+                            </li>
+                            {{-- @endcan --}}
                         </ul>
                     </div>
                 </li>

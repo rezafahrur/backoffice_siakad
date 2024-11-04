@@ -31,6 +31,7 @@ use App\Http\Controllers\AktivitasMahasiswaController;
 use App\Http\Controllers\PeriodePerkuliahanController;
 use App\Http\Controllers\AktivitasMahasiswaBimbingController;
 use App\Http\Controllers\AktivitasMahasiswaPesertaController;
+use App\Http\Controllers\KuisionerAkademikController;
 use App\Http\Controllers\MahasiswaRequestSuratController;
 
 Route::group(['middleware' => ['auth:hr']], function () {
@@ -210,7 +211,6 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::delete('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'destroy'])->name('jadwal-sementara.destroy');
     });
 
-    // buatkan saya route prefix untuk surat & kuisioner
     Route::prefix('surat')->group(function () {
 
         // CRUD Mahasiswa Request Surat 
@@ -218,6 +218,14 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::get('/permintaan-surat/{id}', [MahasiswaRequestSuratController::class, 'show'])->name('permintaan-surat.show');
         Route::post('/permintaan-surat/{id}/proses', [MahasiswaRequestSuratController::class, 'proses'])->name('permintaan-surat.proses');
         Route::delete('/permintaan-surat/{id}', [MahasiswaRequestSuratController::class, 'destroy'])->name('permintaan-surat.destroy');
+    });
+
+    // buatkan saya route prefix untuk kuisioner
+    Route::prefix('kuisioner')->group(function () {
+        Route::get('/kuisioner-akademik', [KuisionerAkademikController::class, 'index'])->name('kuisioner-akademik.index');
+        Route::post('/kuisioner-akademik', [KuisionerAkademikController::class, 'store'])->name('kuisioner-akademik.store');
+        Route::put('/kuisioner-akademik/{id}', [KuisionerAkademikController::class, 'update'])->name('kuisioner-akademik.update');
+        Route::delete('/kuisioner-akademik/{id}', [KuisionerAkademikController::class, 'destroy'])->name('kuisioner-akademik.destroy');
     });
 
     Route::prefix('akm')->group(function () {
@@ -325,8 +333,6 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // get mahaasiswa
     Route::get('/nilai/get-mahasiswa/{kelasId}', [NilaiController::class, 'getMahasiswaByKelas']);
 
-
-
     // prestasi
     Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index')->middleware(['permission:read_prestasi']);
     Route::get('/prestasi/create', [PrestasiController::class, 'create'])->name('prestasi.create')->middleware(['permission:create_prestasi']);
@@ -340,8 +346,6 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/moodle-login', [MoodleAuthController::class, 'showLoginForm'])->name('moodle.login.form');
     Route::post('/moodle-login', [MoodleAuthController::class, 'loginToMoodle'])->name('moodle.login');
 });
-
-
 
 //login
 Route::get('/login', [LoginController::class, 'index'])->name('login');

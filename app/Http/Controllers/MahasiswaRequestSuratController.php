@@ -12,7 +12,7 @@ class MahasiswaRequestSuratController extends Controller
         // Ambil semua permintaan surat beserta relasinya
         $permintaanSurat = MahasiswaRequestSurat::with(['mahasiswa.programStudi', 'requestSuratDetail'])->get();
         // Tampilkan view request-surat
-        return view('mahasiswa.request-surat', compact('permintaanSurat'));
+        return view('surat-kuisioner.request-surat', compact('permintaanSurat'));
     }
 
     public function proses(Request $request, $id)
