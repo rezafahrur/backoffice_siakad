@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\Krs;
 use App\Models\Mahasiswa;
 use App\Models\MahasiswaWaliDetail;
 use App\Models\MahasiswaWali;
@@ -17,11 +18,13 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
 {
     protected $dataLengkap;
     protected $mahasiswaData;
+    protected $krs;
 
-    public function __construct($dataLengkap, $mahasiswaData)
+    public function __construct($dataLengkap, $mahasiswaData, $krs)
     {
         $this->dataLengkap = $dataLengkap;
         $this->mahasiswaData = $mahasiswaData;
+        $this->krs = $krs;
     }
 
     public function collection()
@@ -202,8 +205,33 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                         'kode_prodi_asal' => '',
                         'nama_prodi_asal' => '',
                         'jenis_pembiayaan' => '1',
-                        'jumlah_biaya_masuk'=> '250000000',
+                        'jumlah_biaya_masuk' => '250000000',
                     ];
+                });
+        } elseif ($this->krs) {
+            return Krs::with('mahasiswa', 'kurikulum.programStudi', 'kelas.details.kurikulumDetail.matakuliah')
+                ->join('m_mahasiswa', 'm_krs.mahasiswa_id', '=', 'm_mahasiswa.id')
+                ->where('kurikulum_id', '!=', 4)
+                ->orderBy('m_mahasiswa.nim')
+                ->get()
+                ->map(function ($krs) {
+                    return $krs->kelas->details->map(function ($detail) use ($krs) {
+                        $kurikulumDetail = optional($detail->kurikulumDetail);
+
+                        return [
+                            'nim' => $krs->mahasiswa->nim . ' ',
+                            'nama' => $krs->mahasiswa->nama,
+                            'semester' => $krs->kurikulum->semester,
+                            'kode_matakuliah' => $kurikulumDetail->matakuliah->kode_matakuliah ?? '',
+                            'nama_matakuliah' => $kurikulumDetail->matakuliah->nama_matakuliah ?? '',
+                            'nama_kelas' => $krs->kelas->nama_kelas,
+                            'kode_prodi' => $krs->kurikulum->programStudi->kode_program_studi ?? '',
+                            'nama_program_studi' => $krs->kurikulum->programStudi->nama_program_studi ?? '',
+                            'nilai_huruf' => '',
+                            'nilai_angka' => '',
+                            'nilai_indeks' => '',
+                        ];
+                    });
                 });
         } else {
             return Mahasiswa::with('mahasiswaDetail', 'programStudi', 'jurusan', 'ktp')
@@ -274,8 +302,7 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'Penghasilan Wali',
                 'Id Kebutuhan Mahasiswa',
             ];
-        }
-        elseif ($this->mahasiswaData) {
+        } elseif ($this->mahasiswaData) {
             return [
                 'NIM',
                 'Nama',
@@ -331,6 +358,20 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'Nama Prodi Asal',
                 'Jenis Pembiayaan',
                 'Jumlah Biaya Masuk',
+            ];
+        } elseif ($this->krs) {
+            return [
+                'NIM',
+                'Nama',
+                'Semester',
+                'Kode Matakuliah',
+                'Nama Matakuliah',
+                'Nama Kelas',
+                'Kode Prodi',
+                'Nama Program Studi',
+                'Nilai Huruf',
+                'Nilai Angka',
+                'Nilai Indeks',
             ];
         } else {
             return [
@@ -446,7 +487,7 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'AR' => 23,
                 'AS' => 23,
                 'AT' => 30,
-                'AU' => 23,
+                'AU' => 30,
                 'AV' => 23,
                 'AW' => 23,
                 'AX' => 23,
@@ -454,6 +495,20 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'AZ' => 23,
                 'BA' => 23,
                 'BB' => 23,
+            ];
+        } elseif ($this->krs) {
+            return [
+                'A' => 23,
+                'B' => 30,
+                'C' => 30,
+                'D' => 23,
+                'E' => 23,
+                'F' => 23,
+                'G' => 23,
+                'H' => 30,
+                'I' => 23,
+                'J' => 23,
+                'K' => 23,
             ];
         } else {
             return [
@@ -579,6 +634,20 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
                 'AZ' => NumberFormat::FORMAT_TEXT,
                 'BA' => NumberFormat::FORMAT_TEXT,
                 'BB' => NumberFormat::FORMAT_TEXT,
+            ];
+        } elseif ($this->krs) {
+            return [
+                'A' => NumberFormat::FORMAT_TEXT,
+                'B' => NumberFormat::FORMAT_TEXT,
+                'C' => NumberFormat::FORMAT_TEXT,
+                'D' => NumberFormat::FORMAT_TEXT,
+                'E' => NumberFormat::FORMAT_TEXT,
+                'F' => NumberFormat::FORMAT_TEXT,
+                'G' => NumberFormat::FORMAT_TEXT,
+                'H' => NumberFormat::FORMAT_TEXT,
+                'I' => NumberFormat::FORMAT_TEXT,
+                'J' => NumberFormat::FORMAT_TEXT,
+                'K' => NumberFormat::FORMAT_TEXT,
             ];
         } else {
             return [
@@ -1077,6 +1146,33 @@ class MahasiswaExport implements FromCollection, WithHeadings, WithColumnWidths,
 
                     // Set the data font style
                     $sheet->getStyle('A2:BB' . $sheet->getHighestRow())->applyFromArray([
+                        'alignment' => [
+                            'horizontal' => 'left',
+                        ],
+                    ]);
+                }
+            ];
+        } elseif ($this->krs) {
+            return [
+                AfterSheet::class => function (AfterSheet $event) {
+                    $sheet = $event->sheet->getDelegate();
+
+                    // Atur tinggi baris (row height)
+                    $sheet->getRowDimension(1)->setRowHeight(23);
+
+                    // Atur gaya huruf heading
+                    $sheet->getStyle('A1:K1')->applyFromArray([
+                        'font' => [
+                            'bold' => true,
+                            'size' => 12,
+                        ],
+                        'alignment' => [
+                            'horizontal' => 'center',
+                        ],
+                    ]);
+
+                    // Set the data font style
+                    $sheet->getStyle('A2:K' . $sheet->getHighestRow())->applyFromArray([
                         'alignment' => [
                             'horizontal' => 'left',
                         ],
