@@ -17,7 +17,7 @@ class KuisionerAkademikController extends Controller
     {
         $request->validate([
             'pertanyaan_kuisioner' => 'required|string|max:255',
-            'jawaban_kuisioner' => 'required|string|max:255',
+            'jawaban_kuisioner' => 'nullable|string|max:255',
         ]);
 
         KuisionerAkademik::create($request->all());
@@ -30,7 +30,7 @@ class KuisionerAkademikController extends Controller
 
         $request->validate([
             'pertanyaan_kuisioner' => 'required|string|max:255',
-            'jawaban_kuisioner' => 'required|string|max:255',
+            'jawaban_kuisioner' => 'nullable|string|max:255',
         ]);
 
         $kuisioner->update($request->all());
