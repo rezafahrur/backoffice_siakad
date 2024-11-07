@@ -87,8 +87,7 @@
                                                             <label for="jawaban_kuisioner" class="form-label">Jawaban
                                                                 Kuisioner</label>
                                                             <input type="text" name="jawaban_kuisioner"
-                                                                class="form-control" value="{{ $item->jawaban_kuisioner }}"
-                                                                required>
+                                                                class="form-control" value="{{ $item->jawaban_kuisioner }}">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -116,7 +115,7 @@
     <!-- Modal Add -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content">  
                 <form action="{{ route('kuisioner-akademik.store') }}" method="POST">
                     @csrf
                     <div class="modal-header">
@@ -130,7 +129,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="jawaban_kuisioner" class="form-label">Jawaban Kuisioner</label>
-                            <input type="text" name="jawaban_kuisioner" class="form-control" required>
+                            <input type="text" name="jawaban_kuisioner" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">
