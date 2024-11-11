@@ -8,13 +8,13 @@
             <li class="breadcrumb-item"><a href="#">Data</a></li>
             <li class="breadcrumb-item active" aria-current="page">Kuisioner Akademik</li>
         </ol>
-    </nav>
+    </nav>`     `
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Kuisioner Akademik</h6>
-                    @if (session('success'))
+                      @if (session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>
                     @endif
                     <div class="d-flex justify-content-end mb-3">
