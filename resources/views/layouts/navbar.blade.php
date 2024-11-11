@@ -192,45 +192,53 @@
                         <i class="link-arrow"></i>
                     </a>
                     <div class="submenu">
-                        <ul class="submenu-item">
-                            @can('read_kelas')
-                                <li class="nav-item {{ Request::is('kuliah/kelas-data*') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ route('kelas.index') }}">Kelas</a>
-                                </li>
-                            @endcan
+                        <div class="row">
+                            <div class="col-md-4">
+                                <ul class="submenu-item">
+                                    @can('read_kelas')
+                                        <li class="nav-item {{ Request::is('kuliah/kelas-data*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('kelas.index') }}">Kelas</a>
+                                        </li>
+                                    @endcan
 
-                            {{-- jadwal --}}
-                            @can('read_jadwal')
-                                <li class="nav-item {{ Request::is('kuliah/jadwal*') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ route('jadwal.index') }}">Jadwal</a>
-                                </li>
-                            @endcan
+                                    {{-- jadwal --}}
+                                    @can('read_jadwal')
+                                        <li class="nav-item {{ Request::is('kuliah/jadwal*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('jadwal.index') }}">Jadwal</a>
+                                        </li>
+                                    @endcan
 
-                            {{-- @can('read_absensi') --}}
-                            <li class="nav-item">
-                                <a class="nav-link" href="">Absensi</a>
-                            </li>
-                            {{-- @endcan --}}
+                                    {{-- @can('read_absensi') --}}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="">Absensi</a>
+                                    </li>
+                                    {{-- @endcan --}}
+                                </ul>
+                            </div>
+                            <div class="col-md-8">
+                                <ul class="submenu-item">
+                                    {{-- @can('read_nilai') --}}
+                                    <li class="nav-item {{ Request::is('kuliah/nilai*') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('nilai.index') }}">Nilai</a>
+                                    </li>
+                                    {{-- @endcan --}}
 
-                            {{-- @can('read_nilai') --}}
-                            <li class="nav-item {{ Request::is('kuliah/nilai*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('nilai.index') }}">Nilai</a>
-                            </li>
-                            {{-- @endcan --}}
+                                    @can('read_skala_nilai')
+                                        <li class="nav-item {{ Request::is('kuliah/skala-nilai*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('skala-nilai.index') }}">Skala Nilai</a>
+                                        </li>
+                                    @endcan
 
-                            @can('read_skala_nilai')
-                                <li class="nav-item {{ Request::is('kuliah/skala-nilai*') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ route('skala-nilai.index') }}">Skala Nilai</a>
-                                </li>
-                            @endcan
-
-                            @can('read_periode_perkuliahan')
-                                <li class="nav-item {{ Request::is('kuliah/periode-perkuliahan*') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ route('periode-perkuliahan.index') }}">Periode
-                                        Perkuliahan</a>
-                                </li>
-                            @endcan
-                        </ul>
+                                    @can('read_periode_perkuliahan')
+                                        <li
+                                            class="nav-item {{ Request::is('kuliah/periode-perkuliahan*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('periode-perkuliahan.index') }}">Periode
+                                                Perkuliahan</a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </li>
 
