@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Config;
 use App\Models\Hr;
 use App\Models\HrDetail;
 use App\Models\ShortenerURL;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
 
@@ -72,7 +75,7 @@ class LoginController extends Controller
             $hr_detail->save();
 
             //null kan model has role
-            $user->roles()->detach(); 
+            $user->roles()->detach();
 
             //logout session lama
             $new_session_id = Session::getId();
@@ -97,7 +100,7 @@ class LoginController extends Controller
             Auth::guard('hr')->loginUsingId($user->master_hr_id);
 
             $user = Auth::guard('hr')->user();
-            
+
             // Pastikan role ada dan assign ke user
             $roleName = $user->position->posisi; // Ambil nama role dari posisi
             $role = Role::where('name', $roleName)->first();
@@ -109,10 +112,7 @@ class LoginController extends Controller
             }
 
             return redirect()->route('/');
-
-        }
-        else
-        {
+        } else {
             $hr_detail->otp = null;
             $hr_detail->session_id = null;
             $hr_detail->save();

@@ -31,6 +31,7 @@ use App\Http\Controllers\AktivitasMahasiswaController;
 use App\Http\Controllers\PeriodePerkuliahanController;
 use App\Http\Controllers\AktivitasMahasiswaBimbingController;
 use App\Http\Controllers\AktivitasMahasiswaPesertaController;
+use App\Http\Controllers\ApiController;
 
 Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
@@ -42,6 +43,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/dashboard/mahasiswa/status', [DashboardController::class, 'getMahasiswaStatus']);
     Route::get('/periode-perkuliahan/chart-data', [PeriodePerkuliahanController::class, 'chartData']);
 
+    Route::post('/getToken', [ApiController::class, 'getToken'])->name('getToken');
 
     // route profile
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
@@ -209,7 +211,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::delete('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'destroy'])->name('jadwal-sementara.destroy');
     });
 
-    Route::prefix('akm')->group(function (){
+    Route::prefix('akm')->group(function () {
         // aktivitas mahasiswa
         Route::get('/aktivitas', [AktivitasMahasiswaController::class, 'index'])->name('aktivitas.index');
         Route::get('/aktivitas/export', [AktivitasMahasiswaController::class, 'export'])->name('aktivitas.export');
@@ -242,7 +244,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     });
 
     // prefix Perkuliahan
-    Route::prefix('kuliah')->group(function (){
+    Route::prefix('kuliah')->group(function () {
         // paket jadwal
         Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index')->middleware(['permission:read_jadwal']);
         Route::get('/jadwal/create', [JadwalController::class, 'create'])->name('jadwal.create')->middleware(['permission:create_jadwal']);

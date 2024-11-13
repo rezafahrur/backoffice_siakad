@@ -229,24 +229,12 @@
                                 <select class="form-select @error('jenis_tinggal') is-invalid @enderror"
                                     id="jenis_tinggal" name="jenis_tinggal">
                                     <option value="" disabled selected>Pilih Jenis Tinggal</option>
-                                    <option value="1" {{ old('jenis_tinggal') == '1' ? 'selected' : '' }}>
-                                        Bersama Orang Tua
-                                    </option>
-                                    <option value="2" {{ old('jenis_tinggal') == '2' ? 'selected' : '' }}>
-                                        Wali
-                                    </option>
-                                    <option value="3" {{ old('jenis_tinggal') == '3' ? 'selected' : '' }}>
-                                        Kost
-                                    </option>
-                                    <option value="4" {{ old('jenis_tinggal') == '4' ? 'selected' : '' }}>
-                                        Panti Asuhan
-                                    </option>
-                                    <option value="5" {{ old('jenis_tinggal') == '5' ? 'selected' : '' }}>
-                                        Rumah Sendiri
-                                    </option>
-                                    <option value="99" {{ old('jenis_tinggal') == '99' ? 'selected' : '' }}>
-                                        LAINNYA
-                                    </option>
+                                    @foreach ($jenisTinggal['data'] as $jt)
+                                        <option value="{{ $jt['id_jenis_tinggal'] }}"
+                                            {{ old('jenis_tinggal') == $jt['id_jenis_tinggal'] ? 'selected' : '' }}>
+                                            {{ $jt['nama_jenis_tinggal'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('jenis_tinggal')
                                     <div class="invalid-feedback">
@@ -261,42 +249,17 @@
                                 <select class="form-select @error('alat_transportasi') is-invalid @enderror"
                                     id="alat_transportasi" name="alat_transportasi">
                                     <option value="" disabled selected>Pilih Alat Transportasi</option>
-                                    <option value="1" {{ old('alat_transportasi') == '1' ? 'selected' : '' }}>
-                                        Jalan Kaki
-                                    </option>
-                                    <option value="3" {{ old('alat_transportasi') == '3' ? 'selected' : '' }}>
-                                        Angkutan umum/bus/pete-pete
-                                    </option>
-                                    <option value="4" {{ old('alat_transportasi') == '4' ? 'selected' : '' }}>
-                                        Mobil/bus antar jemput
-                                    </option>
-                                    <option value="5" {{ old('alat_transportasi') == '5' ? 'selected' : '' }}>
-                                        Kereta Api
-                                    </option>
-                                    <option value="6" {{ old('alat_transportasi') == '6' ? 'selected' : '' }}>
-                                        Ojek
-                                    </option>
-                                    <option value="7" {{ old('alat_transportasi') == '7' ? 'selected' : '' }}>
-                                        Andong/Bendi/Sado/Dokar/Delman/Becak
-                                    </option>
-                                    <option value="8" {{ old('alat_transportasi') == '8' ? 'selected' : '' }}>
-                                        Perahu Penyeberangan/Rakit/Getek
-                                    </option>
-                                    <option value="11" {{ old('alat_transportasi') == '11' ? 'selected' : '' }}>
-                                        Kuda
-                                    </option>
-                                    <option value="12" {{ old('alat_transportasi') == '12' ? 'selected' : '' }}>
-                                        Sepeda
-                                    </option>
-                                    <option value="13" {{ old('alat_transportasi') == '13' ? 'selected' : '' }}>
-                                        Sepeda Motor
-                                    </option>
-                                    <option value="14" {{ old('alat_transportasi') == '14' ? 'selected' : '' }}>
-                                        Mobil Pribadi
-                                    </option>
-                                    <option value="99" {{ old('alat_transportasi') == '99' ? 'selected' : '' }}>
-                                        LAINNYA
-                                    </option>
+                                    @foreach ($alatTransportasi['data'] as $transportasi)
+                                        <option value="{{ $transportasi['id_alat_transportasi'] }}">
+                                            {{ $transportasi['nama_alat_transportasi'] }}
+                                        </option>
+                                    @endforeach
+                                    @foreach ($alatTransportasi['data'] as $at)
+                                        <option value="{{ $at['id_alat_transportasi'] }}"
+                                            {{ old('alat_transportasi') == $at['id_alat_transportasi'] ? 'selected' : '' }}>
+                                            {{ $at['nama_alat_transportasi'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('alat_transportasi')
                                     <div class="invalid-feedback">
@@ -370,7 +333,7 @@
                             </div>
 
                             {{-- RT RW --}}
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="alamat_rt" class="form-label">RT</label>
@@ -402,7 +365,7 @@
                             </div>
 
                             {{-- Alamat Provinsi --}}
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="alamat_prov_code" class="form-label">Provinsi</label>
                                 <select class="form-select @error('alamat_prov_code') is-invalid @enderror"
                                     id="alamat_prov_code" name="alamat_prov_code">
@@ -465,6 +428,19 @@
                                 @enderror
                             </div>
 
+                            {{-- Dusun --}}
+                            <div class="col-md-4 mb-3">
+                                <label for="alamat_dusun" class="form-label">Dusun</label>
+                                <input type="text" class="form-control @error('alamat_dusun') is-invalid @enderror"
+                                    id="alamat_dusun" name="alamat_dusun" placeholder="Nama Dusun"
+                                    value="{{ old('alamat_dusun') }}" oninput="this.value = this.value.toUpperCase()">
+                                @error('alamat_dusun')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
                             {{-- Tempat Lahir --}}
                             <div class="col-md-4 mb-3">
                                 <label for="lahir_tempat" class="form-label">Tempat Lahir</label>
@@ -516,13 +492,12 @@
                                 <select class="form-select @error('agama') is-invalid @enderror" id="agama"
                                     name="agama">
                                     <option value="" disabled selected>Pilih Agama</option>
-                                    <option value="1" {{ old('agama') == '1' ? 'selected' : '' }}>Islam</option>
-                                    <option value="2" {{ old('agama') == '2' ? 'selected' : '' }}>Kristen</option>
-                                    <option value="3" {{ old('agama') == '3' ? 'selected' : '' }}>Katholik</option>
-                                    <option value="4" {{ old('agama') == '4' ? 'selected' : '' }}>Hindu</option>
-                                    <option value="5" {{ old('agama') == '5' ? 'selected' : '' }}>Budha</option>
-                                    <option value="6" {{ old('agama') == '6' ? 'selected' : '' }}>Konghuchu</option>
-                                    <option value="99" {{ old('agama') == '99' ? 'selected' : '' }}>Lainnya</option>
+                                    @foreach ($agama['data'] as $ag)
+                                        <option value="{{ $ag['id_agama'] }}"
+                                            {{ old('agama') == $ag['id_agama'] ? 'selected' : '' }}>
+                                            {{ $ag['nama_agama'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('agama')
                                     <div class="invalid-feedback">
@@ -572,25 +547,16 @@
                             {{-- Kewarganegaraan --}}
                             <div class="col-md-4 mb-3">
                                 <label for="kewarganegaraan" class="form-label">Kewarganegaraan</label>
-                                <select class="form-select @error('kewarganegaraan') is-invalid @enderror"
-                                    id="kewarganegaraan" name="kewarganegaraan">
+                                <select
+                                    class="js-example-basic-single form-select @error('kewarganegaraan') is-invalid @enderror"
+                                    id="kewarganegaraan" name="kewarganegaraan" data-width="100%">
                                     <option value="" disabled selected>Pilih Kewarganegaraan</option>
-                                    <option value="ID" {{ old('kewarganegaraan') == 'ID' ? 'selected' : '' }}>
-                                        Indonesia</option>
-                                    <option value="AS" {{ old('kewarganegaraan') == 'AS' ? 'selected' : '' }}>Amerika
-                                        Serikat</option>
-                                    <option value="AU" {{ old('kewarganegaraan') == 'AU' ? 'selected' : '' }}>
-                                        Australia</option>
-                                    <option value="CA" {{ old('kewarganegaraan') == 'CA' ? 'selected' : '' }}>Canada
-                                    </option>
-                                    <option value="CN" {{ old('kewarganegaraan') == 'CN' ? 'selected' : '' }}>China
-                                    </option>
-                                    <option value="JP" {{ old('kewarganegaraan') == 'JP' ? 'selected' : '' }}>Jepang
-                                    </option>
-                                    <option value="MY" {{ old('kewarganegaraan') == 'MY' ? 'selected' : '' }}>
-                                        Malaysia</option>
-                                    <option value="SG" {{ old('kewarganegaraan') == 'SG' ? 'selected' : '' }}>
-                                        Singapura</option>
+                                    @foreach ($negara['data'] as $ng)
+                                        <option value="{{ $ng['id_negara'] }}"
+                                            {{ old('kewarganegaraan') == $ng['id_negara'] ? 'selected' : '' }}>
+                                            {{ $ng['nama_negara'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('kewarganegaraan')
                                     <div class="invalid-feedback">
@@ -612,10 +578,15 @@
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label class="form-label" for="status_kehidupan_ayah">Status Kehidupan Ayah</label>
-                                <select class="form-select @error('status_kehidupan_ayah') is-invalid @enderror" id="status_kehidupan_ayah" name="status_kehidupan_ayah" onchange="toggleFormsAyah()">
+                                <select class="form-select @error('status_kehidupan_ayah') is-invalid @enderror"
+                                    id="status_kehidupan_ayah" name="status_kehidupan_ayah" onchange="toggleFormsAyah()">
                                     <option value="" selected disabled>Pilih Status</option>
-                                    <option value="hidup" {{ old('status_kehidupan_ayah') == 'hidup' ? 'selected' : '' }}>Masih Hidup</option>
-                                    <option value="meninggal" {{ old('status_kehidupan_ayah') == 'meninggal' ? 'selected' : '' }}>Sudah Meninggal</option>
+                                    <option value="hidup"
+                                        {{ old('status_kehidupan_ayah') == 'hidup' ? 'selected' : '' }}>Masih Hidup
+                                    </option>
+                                    <option value="meninggal"
+                                        {{ old('status_kehidupan_ayah') == 'meninggal' ? 'selected' : '' }}>Sudah
+                                        Meninggal</option>
                                 </select>
                                 @error('status_kehidupan_ayah')
                                     <div class="invalid-feedback">
@@ -625,10 +596,15 @@
                             </div>
                             <div class="form-group col-sm-6">
                                 <label class="form-label" for="status_kehidupan_ibu">Status Kehidupan Ibu</label>
-                                <select class="form-select @error('status_kehidupan_ibu') is-invalid @enderror" id="status_kehidupan_ibu" name="status_kehidupan_ibu" onchange="toggleFormsIbu()">
+                                <select class="form-select @error('status_kehidupan_ibu') is-invalid @enderror"
+                                    id="status_kehidupan_ibu" name="status_kehidupan_ibu" onchange="toggleFormsIbu()">
                                     <option value="" selected disabled>Pilih Status</option>
-                                    <option value="hidup" {{ old('status_kehidupan_ibu') == 'hidup' ? 'selected' : '' }}>Masih Hidup</option>
-                                    <option value="meninggal" {{ old('status_kehidupan_ibu') == 'meninggal' ? 'selected' : '' }}>Sudah Meninggal</option>
+                                    <option value="hidup" {{ old('status_kehidupan_ibu') == 'hidup' ? 'selected' : '' }}>
+                                        Masih Hidup
+                                    </option>
+                                    <option value="meninggal"
+                                        {{ old('status_kehidupan_ibu') == 'meninggal' ? 'selected' : '' }}>Sudah Meninggal
+                                    </option>
                                 </select>
                                 @error('status_kehidupan_ibu')
                                     <div class="invalid-feedback">
@@ -706,44 +682,12 @@
                                 <select class="form-select @error('wali_pekerjaan_1') is-invalid @enderror"
                                     id="wali_pekerjaan_1" name="wali_pekerjaan_1">
                                     <option value="" disabled selected>Pilih Pekerjaan</option>
-                                    <option value="1" {{ old('wali_pekerjaan_1') == '1' ? 'selected' : '' }}>Tidak
-                                        bekerja</option>
-                                    <option value="2" {{ old('wali_pekerjaan_1') == '2' ? 'selected' : '' }}>Nelayan
-                                    </option>
-                                    <option value="3" {{ old('wali_pekerjaan_1') == '3' ? 'selected' : '' }}>Petani
-                                    </option>
-                                    <option value="4" {{ old('wali_pekerjaan_1') == '4' ? 'selected' : '' }}>
-                                        Peternak</option>
-                                    <option value="5" {{ old('wali_pekerjaan_1') == '5' ? 'selected' : '' }}>
-                                        PNS/TNI/Polri</option>
-                                    <option value="6" {{ old('wali_pekerjaan_1') == '6' ? 'selected' : '' }}>
-                                        Karyawan Swasta</option>
-                                    <option value="7" {{ old('wali_pekerjaan_1') == '7' ? 'selected' : '' }}>
-                                        Pedagang Kecil</option>
-                                    <option value="8" {{ old('wali_pekerjaan_1') == '8' ? 'selected' : '' }}>
-                                        Pedagang Besar</option>
-                                    <option value="9" {{ old('wali_pekerjaan_1') == '9' ? 'selected' : '' }}>
-                                        Wiraswasta</option>
-                                    <option value="10" {{ old('wali_pekerjaan_1') == '10' ? 'selected' : '' }}>
-                                        Wirausaha</option>
-                                    <option value="11" {{ old('wali_pekerjaan_1') == '11' ? 'selected' : '' }}>Buruh
-                                    </option>
-                                    <option value="12" {{ old('wali_pekerjaan_1') == '12' ? 'selected' : '' }}>
-                                        Pensiunan</option>
-                                    <option value="13" {{ old('wali_pekerjaan_1') == '13' ? 'selected' : '' }}>
-                                        Peneliti</option>
-                                    <option value="14" {{ old('wali_pekerjaan_1') == '14' ? 'selected' : '' }}>Tim
-                                        Ahli / Konsultan</option>
-                                    <option value="15" {{ old('wali_pekerjaan_1') == '15' ? 'selected' : '' }}>Magang
-                                    </option>
-                                    <option value="16" {{ old('wali_pekerjaan_1') == '16' ? 'selected' : '' }}>Tenaga
-                                        Pengajar / Instruktur / Fasilitator</option>
-                                    <option value="17" {{ old('wali_pekerjaan_1') == '17' ? 'selected' : '' }}>
-                                        Pimpinan / Manajerial</option>
-                                    <option value="98" {{ old('wali_pekerjaan_1') == '98' ? 'selected' : '' }}>Sudah
-                                        Meninggal</option>
-                                    <option value="99" {{ old('wali_pekerjaan_1') == '99' ? 'selected' : '' }}>
-                                        Lainnya</option>
+                                    @foreach ($pekerjaan['data'] as $pk)
+                                        <option value="{{ $pk['id_pekerjaan'] }}"
+                                            {{ old('wali_pekerjaan_1') == $pk['id_pekerjaan'] ? 'selected' : '' }}>
+                                            {{ $pk['nama_pekerjaan'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('wali_pekerjaan_1')
                                     <div class="invalid-feedback">
@@ -757,24 +701,13 @@
                                 <label for="wali_penghasilan_1" class="form-label">Penghasilan</label>
                                 <select class="form-select @error('wali_penghasilan_1') is-invalid @enderror"
                                     id="wali_penghasilan_1" name="wali_penghasilan_1">
-                                    <option value="">Pilih Penghasilan</option>
-                                    <option value="11" {{ old('wali_penghasilan_1') == '11' ? 'selected' : '' }}>
-                                        Kurang dari Rp. 500,000</option>
-                                    <option value="12" {{ old('wali_penghasilan_1') == '12' ? 'selected' : '' }}>
-                                        Rp. 500,000 - Rp. 999,999
-                                    </option>
-                                    <option value="13" {{ old('wali_penghasilan_1') == '13' ? 'selected' : '' }}>
-                                        Rp. 1,000,000 - Rp. 1,999,999
-                                    </option>
-                                    <option value="14" {{ old('wali_penghasilan_1') == '14' ? 'selected' : '' }}>
-                                        Rp. 2,000,000 - Rp. 4,999,999
-                                    </option>
-                                    <option value="15" {{ old('wali_penghasilan_1') == '15' ? 'selected' : '' }}>
-                                        Rp. 5,000,000 - Rp. 20,000,000
-                                    </option>
-                                    <option value="16" {{ old('wali_penghasilan_1') == '16' ? 'selected' : '' }}>
-                                        Lebih dari Rp. 20,000,000
-                                    </option>
+                                    <option value="" disabled selected>Pilih Penghasilan</option>
+                                    @foreach ($penghasilan['data'] as $ph)
+                                        <option value="{{ $ph['id_penghasilan'] }}"
+                                            {{ old('wali_penghasilan_1') == $ph['id_penghasilan'] ? 'selected' : '' }}>
+                                            {{ $ph['nama_penghasilan'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('wali_penghasilan_1')
                                     <div class="invalid-feedback">
@@ -786,59 +719,16 @@
                             {{-- Pendidikan Terakhir --}}
                             <div class="col-md-4 mb-3">
                                 <label for="pendidikan_terakhir_1" class="form-label">Pendidikan Terakhir</label>
-                                <select class="form-select @error('pendidikan_terakhir_1') is-invalid @enderror"
-                                    id="pendidikan_terakhir_1" name="pendidikan_terakhir_1">
+                                <select
+                                    class="js-example-basic-single form-select @error('pendidikan_terakhir_1') is-invalid @enderror"
+                                    id="pendidikan_terakhir_1" name="pendidikan_terakhir_1" data-width="100%">
                                     <option value="" disabled selected>Pilih Pendidikan Terakhir</option>
-                                    <option value="0" {{ old('pendidikan_terakhir_1') == '0' ? 'selected' : '' }}>
-                                        Tidak sekolah</option>
-                                    <option value="1" {{ old('pendidikan_terakhir_1') == '1' ? 'selected' : '' }}>
-                                        PAUD</option>
-                                    <option value="2" {{ old('pendidikan_terakhir_1') == '2' ? 'selected' : '' }}>
-                                        TK/ sederajat</option>
-                                    <option value="3" {{ old('pendidikan_terakhir_1') == '3' ? 'selected' : '' }}>
-                                        Putus SD</option>
-                                    <option value="4" {{ old('pendidikan_terakhir_1') == '4' ? 'selected' : '' }}>SD
-                                        / sederajat</option>
-                                    <option value="5" {{ old('pendidikan_terakhir_1') == '5' ? 'selected' : '' }}>
-                                        SMP / sederajat</option>
-                                    <option value="6" {{ old('pendidikan_terakhir_1') == '6' ? 'selected' : '' }}>
-                                        SMA / sederajat</option>
-                                    <option value="7" {{ old('pendidikan_terakhir_1') == '7' ? 'selected' : '' }}>
-                                        Paket A</option>
-                                    <option value="8" {{ old('pendidikan_terakhir_1') == '8' ? 'selected' : '' }}>
-                                        Paket B</option>
-                                    <option value="9" {{ old('pendidikan_terakhir_1') == '9' ? 'selected' : '' }}>
-                                        Paket C</option>
-                                    <option value="20" {{ old('pendidikan_terakhir_1') == '20' ? 'selected' : '' }}>
-                                        D1</option>
-                                    <option value="21" {{ old('pendidikan_terakhir_1') == '21' ? 'selected' : '' }}>
-                                        D2</option>
-                                    <option value="22" {{ old('pendidikan_terakhir_1') == '22' ? 'selected' : '' }}>
-                                        D3</option>
-                                    <option value="23" {{ old('pendidikan_terakhir_1') == '23' ? 'selected' : '' }}>
-                                        D4</option>
-                                    <option value="30" {{ old('pendidikan_terakhir_1') == '30' ? 'selected' : '' }}>
-                                        S1</option>
-                                    <option value="31" {{ old('pendidikan_terakhir_1') == '31' ? 'selected' : '' }}>
-                                        Profesi</option>
-                                    <option value="32" {{ old('pendidikan_terakhir_1') == '32' ? 'selected' : '' }}>
-                                        Sp-1</option>
-                                    <option value="35" {{ old('pendidikan_terakhir_1') == '35' ? 'selected' : '' }}>
-                                        S2</option>
-                                    <option value="36" {{ old('pendidikan_terakhir_1') == '36' ? 'selected' : '' }}>
-                                        S2 Terapan</option>
-                                    <option value="37" {{ old('pendidikan_terakhir_1') == '37' ? 'selected' : '' }}>
-                                        Sp-2</option>
-                                    <option value="40" {{ old('pendidikan_terakhir_1') == '40' ? 'selected' : '' }}>
-                                        S3</option>
-                                    <option value="41" {{ old('pendidikan_terakhir_1') == '41' ? 'selected' : '' }}>
-                                        S3 Terapan</option>
-                                    <option value="90" {{ old('pendidikan_terakhir_1') == '90' ? 'selected' : '' }}>
-                                        Non formal</option>
-                                    <option value="91" {{ old('pendidikan_terakhir_1') == '91' ? 'selected' : '' }}>
-                                        Informal</option>
-                                    <option value="99" {{ old('pendidikan_terakhir_1') == '99' ? 'selected' : '' }}>
-                                        Lainnya</option>
+                                    @foreach ($jenjangPendidikan['data'] as $jp)
+                                        <option value="{{ $jp['id_jenjang_didik'] }}"
+                                            {{ old('pendidikan_terakhir_1') == $jp['id_jenjang_didik'] ? 'selected' : '' }}>
+                                            {{ $jp['nama_jenjang_didik'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('pendidikan_terakhir_1')
                                     <div class="invalid-feedback">
@@ -919,7 +809,7 @@
 
                             {{-- Wali 1 Alamat Provinsi --}}
                             <div class="col-md-6 mb-3">
-                                <label for="wali_alamat_prov_code_1" class="form-label">Provinsi (Wali 1)</label>
+                                <label for="wali_alamat_prov_code_1" class="form-label">Provinsi</label>
                                 <select class="form-select @error('wali_alamat_prov_code_1') is-invalid @enderror"
                                     id="wali_alamat_prov_code_1" name="wali_alamat_prov_code_1">
                                     <option value="" disabled selected>Pilih Provinsi</option>
@@ -938,7 +828,7 @@
 
                             {{-- Wali 1 Alamat Kota/Kabupaten --}}
                             <div class="col-md-4 mb-3">
-                                <label for="wali_alamat_kotakab_code_1" class="form-label">Kota/Kabupaten (Wali 1)</label>
+                                <label for="wali_alamat_kotakab_code_1" class="form-label">Kota/Kabupaten</label>
                                 <select class="form-select @error('wali_alamat_kotakab_code_1') is-invalid @enderror"
                                     id="wali_alamat_kotakab_code_1" name="wali_alamat_kotakab_code_1">
                                     <option value="" disabled selected>Pilih Kota/Kabupaten</option>
@@ -953,7 +843,7 @@
 
                             {{-- Wali 1 Alamat Kecamatan --}}
                             <div class="col-md-4 mb-3">
-                                <label for="wali_alamat_kec_code_1" class="form-label">Kecamatan (Wali 1)</label>
+                                <label for="wali_alamat_kec_code_1" class="form-label">Kecamatan</label>
                                 <select class="form-select @error('wali_alamat_kec_code_1') is-invalid @enderror"
                                     id="wali_alamat_kec_code_1" name="wali_alamat_kec_code_1">
                                     <option value="" disabled selected>Pilih Kecamatan</option>
@@ -968,7 +858,7 @@
 
                             {{-- Wali 1 Alamat Kelurahan/Desa --}}
                             <div class="col-md-4 mb-3">
-                                <label for="wali_alamat_kel_code_1" class="form-label">Kelurahan/Desa (Wali 1)</label>
+                                <label for="wali_alamat_kel_code_1" class="form-label">Kelurahan/Desa</label>
                                 <select class="form-select @error('wali_alamat_kel_code_1') is-invalid @enderror"
                                     id="wali_alamat_kel_code_1" name="wali_alamat_kel_code_1">
                                     <option value="" disabled selected>Pilih Kelurahan/Desa</option>
@@ -1033,20 +923,12 @@
                                 <select class="form-select @error('wali_agama_1') is-invalid @enderror" id="wali_agama_1"
                                     name="wali_agama_1">
                                     <option value="" disabled selected>Pilih Agama</option>
-                                    <option value="1" {{ old('wali_agama_1') == '1' ? 'selected' : '' }}>Islam
-                                    </option>
-                                    <option value="2" {{ old('wali_agama_1') == '2' ? 'selected' : '' }}>Kristen
-                                    </option>
-                                    <option value="3" {{ old('wali_agama_1') == '3' ? 'selected' : '' }}>Katholik
-                                    </option>
-                                    <option value="4" {{ old('wali_agama_1') == '4' ? 'selected' : '' }}>Hindu
-                                    </option>
-                                    <option value="5" {{ old('wali_agama_1') == '5' ? 'selected' : '' }}>Buddha
-                                    </option>
-                                    <option value="6" {{ old('wali_agama_1') == '6' ? 'selected' : '' }}>Konghuchu
-                                    </option>
-                                    <option value="99" {{ old('wali_agama_1') == '99' ? 'selected' : '' }}>Lainnya
-                                    </option>
+                                    @foreach ($agama['data'] as $ag)
+                                        <option value="{{ $ag['id_agama'] }}"
+                                            {{ old('wali_agama_1') == $ag['id_agama'] ? 'selected' : '' }}>
+                                            {{ $ag['nama_agama'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('wali_agama_1')
                                     <div class="invalid-feedback">
@@ -1105,29 +987,16 @@
                             {{-- Kewarganegaraan --}}
                             <div class="col-md-4 mb-3">
                                 <label for="wali_kewarganegaraan_1" class="form-label">Kewarganegaraan</label>
-                                <select class="form-select @error('wali_kewarganegaraan_1') is-invalid @enderror"
-                                    id="wali_kewarganegaraan_1" name="wali_kewarganegaraan_1">
+                                <select
+                                    class="js-example-basic-single form-select @error('wali_kewarganegaraan_1') is-invalid @enderror"
+                                    id="wali_kewarganegaraan_1" name="wali_kewarganegaraan_1" data-width="100%">
                                     <option value="" disabled selected>Pilih Kewarganegaraan</option>
-                                    <option value="ID" {{ old('wali_kewarganegaraan_1') == 'ID' ? 'selected' : '' }}>
-                                        Indonesia</option>
-                                    <option value="AS" {{ old('wali_kewarganegaraan_1') == 'AS' ? 'selected' : '' }}>
-                                        Amerika
-                                        Serikat</option>
-                                    <option value="AU" {{ old('wali_kewarganegaraan_1') == 'AU' ? 'selected' : '' }}>
-                                        Australia</option>
-                                    <option value="CA" {{ old('wali_kewarganegaraan_1') == 'CA' ? 'selected' : '' }}>
-                                        Canada
-                                    </option>
-                                    <option value="CN" {{ old('wali_kewarganegaraan_1') == 'CN' ? 'selected' : '' }}>
-                                        China
-                                    </option>
-                                    <option value="JP" {{ old('wali_kewarganegaraan_1') == 'JP' ? 'selected' : '' }}>
-                                        Jepang
-                                    </option>
-                                    <option value="MY" {{ old('wali_kewarganegaraan_1') == 'MY' ? 'selected' : '' }}>
-                                        Malaysia</option>
-                                    <option value="SG" {{ old('wali_kewarganegaraan_1') == 'SG' ? 'selected' : '' }}>
-                                        Singapura</option>
+                                    @foreach ($negara['data'] as $ng)
+                                        <option value="{{ $ng['id_negara'] }}"
+                                            {{ old('wali_kewarganegaraan_1') == $ng['id_negara'] ? 'selected' : '' }}>
+                                            {{ $ng['nama_negara'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('wali_kewarganegaraan_1')
                                     <div class="invalid-feedback">
@@ -1205,44 +1074,12 @@
                                 <select class="form-select @error('wali_pekerjaan_2') is-invalid @enderror"
                                     id="wali_pekerjaan_2" name="wali_pekerjaan_2">
                                     <option value="" disabled selected>Pilih Pekerjaan</option>
-                                    <option value="1" {{ old('wali_pekerjaan_2') == '1' ? 'selected' : '' }}>Tidak
-                                        bekerja</option>
-                                    <option value="2" {{ old('wali_pekerjaan_2') == '2' ? 'selected' : '' }}>Nelayan
-                                    </option>
-                                    <option value="3" {{ old('wali_pekerjaan_2') == '3' ? 'selected' : '' }}>Petani
-                                    </option>
-                                    <option value="4" {{ old('wali_pekerjaan_2') == '4' ? 'selected' : '' }}>
-                                        Peternak</option>
-                                    <option value="5" {{ old('wali_pekerjaan_2') == '5' ? 'selected' : '' }}>
-                                        PNS/TNI/Polri</option>
-                                    <option value="6" {{ old('wali_pekerjaan_2') == '6' ? 'selected' : '' }}>
-                                        Karyawan Swasta</option>
-                                    <option value="7" {{ old('wali_pekerjaan_2') == '7' ? 'selected' : '' }}>
-                                        Pedagang Kecil</option>
-                                    <option value="8" {{ old('wali_pekerjaan_2') == '8' ? 'selected' : '' }}>
-                                        Pedagang Besar</option>
-                                    <option value="9" {{ old('wali_pekerjaan_2') == '9' ? 'selected' : '' }}>
-                                        Wiraswasta</option>
-                                    <option value="10" {{ old('wali_pekerjaan_2') == '10' ? 'selected' : '' }}>
-                                        Wirausaha</option>
-                                    <option value="11" {{ old('wali_pekerjaan_2') == '11' ? 'selected' : '' }}>Buruh
-                                    </option>
-                                    <option value="12" {{ old('wali_pekerjaan_2') == '12' ? 'selected' : '' }}>
-                                        Pensiunan</option>
-                                    <option value="13" {{ old('wali_pekerjaan_2') == '13' ? 'selected' : '' }}>
-                                        Peneliti</option>
-                                    <option value="14" {{ old('wali_pekerjaan_2') == '14' ? 'selected' : '' }}>Tim
-                                        Ahli / Konsultan</option>
-                                    <option value="15" {{ old('wali_pekerjaan_2') == '15' ? 'selected' : '' }}>Magang
-                                    </option>
-                                    <option value="16" {{ old('wali_pekerjaan_2') == '16' ? 'selected' : '' }}>Tenaga
-                                        Pengajar / Instruktur / Fasilitator</option>
-                                    <option value="17" {{ old('wali_pekerjaan_2') == '17' ? 'selected' : '' }}>
-                                        Pimpinan / Manajerial</option>
-                                    <option value="98" {{ old('wali_pekerjaan_2') == '98' ? 'selected' : '' }}>Sudah
-                                        Meninggal</option>
-                                    <option value="99" {{ old('wali_pekerjaan_2') == '99' ? 'selected' : '' }}>
-                                        Lainnya</option>
+                                    @foreach ($pekerjaan['data'] as $pk)
+                                        <option value="{{ $pk['id_pekerjaan'] }}"
+                                            {{ old('wali_pekerjaan_2') == $pk['id_pekerjaan'] ? 'selected' : '' }}>
+                                            {{ $pk['nama_pekerjaan'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('wali_pekerjaan_2')
                                     <div class="invalid-feedback">
@@ -1257,23 +1094,12 @@
                                 <select class="form-select @error('wali_penghasilan_2') is-invalid @enderror"
                                     id="wali_penghasilan_2" name="wali_penghasilan_2">
                                     <option value="">Pilih Penghasilan</option>
-                                    <option value="11" {{ old('wali_penghasilan_2') == '11' ? 'selected' : '' }}>
-                                        Kurang dari Rp. 500,000</option>
-                                    <option value="12" {{ old('wali_penghasilan_2') == '12' ? 'selected' : '' }}>
-                                        Rp. 500,000 - Rp. 999,999
-                                    </option>
-                                    <option value="13" {{ old('wali_penghasilan_2') == '13' ? 'selected' : '' }}>
-                                        Rp. 1,000,000 - Rp. 1,999,999
-                                    </option>
-                                    <option value="14" {{ old('wali_penghasilan_2') == '14' ? 'selected' : '' }}>
-                                        Rp. 2,000,000 - Rp. 4,999,999
-                                    </option>
-                                    <option value="15" {{ old('wali_penghasilan_2') == '15' ? 'selected' : '' }}>
-                                        Rp. 5,000,000 - Rp. 20,000,000
-                                    </option>
-                                    <option value="16" {{ old('wali_penghasilan_2') == '16' ? 'selected' : '' }}>
-                                        Lebih dari Rp. 20,000,000
-                                    </option>
+                                    @foreach ($penghasilan['data'] as $ph)
+                                        <option value="{{ $ph['id_penghasilan'] }}"
+                                            {{ old('wali_penghasilan_2') == $ph['id_penghasilan'] ? 'selected' : '' }}>
+                                            {{ $ph['nama_penghasilan'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('wali_penghasilan_2')
                                     <div class="invalid-feedback">
@@ -1285,59 +1111,15 @@
                             {{-- Pendidikan Terakhir --}}
                             <div class="col-md-4 mb-3">
                                 <label for="pendidikan_terakhir_2" class="form-label">Pendidikan Terakhir</label>
-                                <select class="form-select @error('pendidikan_terakhir_2') is-invalid @enderror"
-                                    id="pendidikan_terakhir_2" name="pendidikan_terakhir_2">
+                                <select class="js-example-basic-single form-select @error('pendidikan_terakhir_2') is-invalid @enderror"
+                                    id="pendidikan_terakhir_2" name="pendidikan_terakhir_2" data-width="100%">
                                     <option value="">Pilih Pendidikan Terakhir</option>
-                                    <option value="0" {{ old('pendidikan_terakhir_2') == '0' ? 'selected' : '' }}>
-                                        Tidak sekolah</option>
-                                    <option value="1" {{ old('pendidikan_terakhir_2') == '1' ? 'selected' : '' }}>
-                                        PAUD</option>
-                                    <option value="2" {{ old('pendidikan_terakhir_2') == '2' ? 'selected' : '' }}>
-                                        TK/ sederajat</option>
-                                    <option value="3" {{ old('pendidikan_terakhir_2') == '3' ? 'selected' : '' }}>
-                                        Putus SD</option>
-                                    <option value="4" {{ old('pendidikan_terakhir_2') == '4' ? 'selected' : '' }}>SD
-                                        / sederajat</option>
-                                    <option value="5" {{ old('pendidikan_terakhir_2') == '5' ? 'selected' : '' }}>
-                                        SMP / sederajat</option>
-                                    <option value="6" {{ old('pendidikan_terakhir_2') == '6' ? 'selected' : '' }}>
-                                        SMA / sederajat</option>
-                                    <option value="7" {{ old('pendidikan_terakhir_2') == '7' ? 'selected' : '' }}>
-                                        Paket A</option>
-                                    <option value="8" {{ old('pendidikan_terakhir_2') == '8' ? 'selected' : '' }}>
-                                        Paket B</option>
-                                    <option value="9" {{ old('pendidikan_terakhir_2') == '9' ? 'selected' : '' }}>
-                                        Paket C</option>
-                                    <option value="20" {{ old('pendidikan_terakhir_2') == '20' ? 'selected' : '' }}>
-                                        D1</option>
-                                    <option value="21" {{ old('pendidikan_terakhir_2') == '21' ? 'selected' : '' }}>
-                                        D2</option>
-                                    <option value="22" {{ old('pendidikan_terakhir_2') == '22' ? 'selected' : '' }}>
-                                        D3</option>
-                                    <option value="23" {{ old('pendidikan_terakhir_2') == '23' ? 'selected' : '' }}>
-                                        D4</option>
-                                    <option value="30" {{ old('pendidikan_terakhir_2') == '30' ? 'selected' : '' }}>
-                                        S1</option>
-                                    <option value="31" {{ old('pendidikan_terakhir_2') == '31' ? 'selected' : '' }}>
-                                        Profesi</option>
-                                    <option value="32" {{ old('pendidikan_terakhir_2') == '32' ? 'selected' : '' }}>
-                                        Sp-1</option>
-                                    <option value="35" {{ old('pendidikan_terakhir_2') == '35' ? 'selected' : '' }}>
-                                        S2</option>
-                                    <option value="36" {{ old('pendidikan_terakhir_2') == '36' ? 'selected' : '' }}>
-                                        S2 Terapan</option>
-                                    <option value="37" {{ old('pendidikan_terakhir_2') == '37' ? 'selected' : '' }}>
-                                        Sp-2</option>
-                                    <option value="40" {{ old('pendidikan_terakhir_2') == '40' ? 'selected' : '' }}>
-                                        S3</option>
-                                    <option value="41" {{ old('pendidikan_terakhir_2') == '41' ? 'selected' : '' }}>
-                                        S3 Terapan</option>
-                                    <option value="90" {{ old('pendidikan_terakhir_2') == '90' ? 'selected' : '' }}>
-                                        Non formal</option>
-                                    <option value="91" {{ old('pendidikan_terakhir_2') == '91' ? 'selected' : '' }}>
-                                        Informal</option>
-                                    <option value="99" {{ old('pendidikan_terakhir_2') == '99' ? 'selected' : '' }}>
-                                        Lainnya</option>
+                                    @foreach ($jenjangPendidikan['data'] as $jp)
+                                    <option value="{{ $jp['id_jenjang_didik'] }}"
+                                        {{ old('pendidikan_terakhir_2') == $jp['id_jenjang_didik'] ? 'selected' : '' }}>
+                                        {{ $jp['nama_jenjang_didik'] }}
+                                    </option>
+                                @endforeach
                                 </select>
                                 @error('pendidikan_terakhir_2')
                                     <div class="invalid-feedback">
@@ -1453,7 +1235,7 @@
 
                             {{-- Wali 2 Alamat Provinsi --}}
                             <div class="col-md-6 mb-3">
-                                <label for="wali_alamat_prov_code_2" class="form-label">Provinsi (Wali 2)</label>
+                                <label for="wali_alamat_prov_code_2" class="form-label">Provinsi</label>
                                 <select class="form-select @error('wali_alamat_prov_code_2') is-invalid @enderror"
                                     id="wali_alamat_prov_code_2" name="wali_alamat_prov_code_2">
                                     <option value="" disabled selected>Pilih Provinsi</option>
@@ -1472,7 +1254,7 @@
 
                             {{-- Wali 2 Alamat Kota/Kabupaten --}}
                             <div class="col-md-4 mb-3">
-                                <label for="wali_alamat_kotakab_code_2" class="form-label">Kota/Kabupaten (Wali 2)</label>
+                                <label for="wali_alamat_kotakab_code_2" class="form-label">Kota/Kabupaten</label>
                                 <select class="form-select @error('wali_alamat_kotakab_code_2') is-invalid @enderror"
                                     id="wali_alamat_kotakab_code_2" name="wali_alamat_kotakab_code_2">
                                     <option value="" disabled selected>Pilih Kota/Kabupaten</option>
@@ -1487,7 +1269,7 @@
 
                             {{-- Wali 2 Alamat Kecamatan --}}
                             <div class="col-md-4 mb-3">
-                                <label for="wali_alamat_kec_code_2" class="form-label">Kecamatan (Wali 2)</label>
+                                <label for="wali_alamat_kec_code_2" class="form-label">Kecamatan</label>
                                 <select class="form-select @error('wali_alamat_kec_code_2') is-invalid @enderror"
                                     id="wali_alamat_kec_code_2" name="wali_alamat_kec_code_2">
                                     <option value="" disabled selected>Pilih Kecamatan</option>
@@ -1502,7 +1284,7 @@
 
                             {{-- Wali 2 Alamat Kelurahan/Desa --}}
                             <div class="col-md-4 mb-3">
-                                <label for="wali_alamat_kel_code_2" class="form-label">Kelurahan/Desa (Wali 2)</label>
+                                <label for="wali_alamat_kel_code_2" class="form-label">Kelurahan/Desa</label>
                                 <select class="form-select @error('wali_alamat_kel_code_2') is-invalid @enderror"
                                     id="wali_alamat_kel_code_2" name="wali_alamat_kel_code_2">
                                     <option value="" disabled selected>Pilih Kelurahan/Desa</option>
@@ -1567,20 +1349,12 @@
                                 <select class="form-select @error('wali_agama_2') is-invalid @enderror" id="wali_agama_2"
                                     name="wali_agama_2">
                                     <option value="" disabled selected>Pilih Agama</option>
-                                    <option value="1" {{ old('wali_agama_2') == '1' ? 'selected' : '' }}>Islam
-                                    </option>
-                                    <option value="2" {{ old('wali_agama_2') == '2' ? 'selected' : '' }}>Kristen
-                                    </option>
-                                    <option value="3" {{ old('wali_agama_2') == '3' ? 'selected' : '' }}>Katholik
-                                    </option>
-                                    <option value="4" {{ old('wali_agama_2') == '4' ? 'selected' : '' }}>Hindu
-                                    </option>
-                                    <option value="5" {{ old('wali_agama_2') == '5' ? 'selected' : '' }}>Buddha
-                                    </option>
-                                    <option value="6" {{ old('wali_agama_2') == '6' ? 'selected' : '' }}>Konghuchu
-                                    </option>
-                                    <option value="99" {{ old('wali_agama_2') == '99' ? 'selected' : '' }}>LAINNYA
-                                    </option>
+                                    @foreach ($agama['data'] as $ag)
+                                        <option value="{{ $ag['id_agama'] }}"
+                                            {{ old('wali_agama_2') == $ag['id_agama'] ? 'selected' : '' }}>
+                                            {{ $ag['nama_agama'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('wali_agama_2')
                                     <div class="invalid-feedback">
@@ -1639,29 +1413,15 @@
                             {{-- Kewarganegaraan --}}
                             <div class="col-md-4 mb-3">
                                 <label for="wali_kewarganegaraan_2" class="form-label">Kewarganegaraan</label>
-                                <select class="form-select @error('wali_kewarganegaraan_2') is-invalid @enderror"
-                                    id="wali_kewarganegaraan_2" name="wali_kewarganegaraan_2">
+                                <select class="js-example-basic-single form-select @error('wali_kewarganegaraan_2') is-invalid @enderror"
+                                    id="wali_kewarganegaraan_2" name="wali_kewarganegaraan_2" data-width="100%">
                                     <option value="" disabled selected>Pilih Kewarganegaraan</option>
-                                    <option value="ID" {{ old('wali_kewarganegaraan_2') == 'ID' ? 'selected' : '' }}>
-                                        Indonesia</option>
-                                    <option value="AS" {{ old('wali_kewarganegaraan_2') == 'AS' ? 'selected' : '' }}>
-                                        Amerika
-                                        Serikat</option>
-                                    <option value="AU" {{ old('wali_kewarganegaraan_2') == 'AU' ? 'selected' : '' }}>
-                                        Australia</option>
-                                    <option value="CA" {{ old('wali_kewarganegaraan_2') == 'CA' ? 'selected' : '' }}>
-                                        Canada
-                                    </option>
-                                    <option value="CN" {{ old('wali_kewarganegaraan_2') == 'CN' ? 'selected' : '' }}>
-                                        China
-                                    </option>
-                                    <option value="JP" {{ old('wali_kewarganegaraan_2') == 'JP' ? 'selected' : '' }}>
-                                        Jepang
-                                    </option>
-                                    <option value="MY" {{ old('wali_kewarganegaraan_2') == 'MY' ? 'selected' : '' }}>
-                                        Malaysia</option>
-                                    <option value="SG" {{ old('wali_kewarganegaraan_2') == 'SG' ? 'selected' : '' }}>
-                                        Singapura</option>
+                                    @foreach ($negara['data'] as $ng)
+                                        <option value="{{ $ng['id_negara'] }}"
+                                            {{ old('wali_kewarganegaraan_2') == $ng['id_negara'] ? 'selected' : '' }}>
+                                            {{ $ng['nama_negara'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('wali_kewarganegaraan_2')
                                     <div class="invalid-feedback">
@@ -1741,44 +1501,12 @@
                                 <select class="form-select @error('kd_pekerjaan') is-invalid @enderror"
                                     id="kd_pekerjaan" name="kd_pekerjaan">
                                     <option value="" disabled selected>Pilih Pekerjaan</option>
-                                    <option value="1" {{ old('kd_pekerjaan') == '1' ? 'selected' : '' }}>Tidak
-                                        bekerja</option>
-                                    <option value="2" {{ old('kd_pekerjaan') == '2' ? 'selected' : '' }}>Nelayan
-                                    </option>
-                                    <option value="3" {{ old('kd_pekerjaan') == '3' ? 'selected' : '' }}>Petani
-                                    </option>
-                                    <option value="4" {{ old('kd_pekerjaan') == '4' ? 'selected' : '' }}>
-                                        Peternak</option>
-                                    <option value="5" {{ old('kd_pekerjaan') == '5' ? 'selected' : '' }}>
-                                        PNS/TNI/Polri</option>
-                                    <option value="6" {{ old('kd_pekerjaan') == '6' ? 'selected' : '' }}>
-                                        Karyawan Swasta</option>
-                                    <option value="7" {{ old('kd_pekerjaan') == '7' ? 'selected' : '' }}>
-                                        Pedagang Kecil</option>
-                                    <option value="8" {{ old('kd_pekerjaan') == '8' ? 'selected' : '' }}>
-                                        Pedagang Besar</option>
-                                    <option value="9" {{ old('kd_pekerjaan') == '9' ? 'selected' : '' }}>
-                                        Wiraswasta</option>
-                                    <option value="10" {{ old('kd_pekerjaan') == '10' ? 'selected' : '' }}>
-                                        Wirausaha</option>
-                                    <option value="11" {{ old('kd_pekerjaan') == '11' ? 'selected' : '' }}>Buruh
-                                    </option>
-                                    <option value="12" {{ old('kd_pekerjaan') == '12' ? 'selected' : '' }}>
-                                        Pensiunan</option>
-                                    <option value="13" {{ old('kd_pekerjaan') == '13' ? 'selected' : '' }}>
-                                        Peneliti</option>
-                                    <option value="14" {{ old('kd_pekerjaan') == '14' ? 'selected' : '' }}>Tim
-                                        Ahli / Konsultan</option>
-                                    <option value="15" {{ old('kd_pekerjaan') == '15' ? 'selected' : '' }}>Magang
-                                    </option>
-                                    <option value="16" {{ old('kd_pekerjaan') == '16' ? 'selected' : '' }}>Tenaga
-                                        Pengajar / Instruktur / Fasilitator</option>
-                                    <option value="17" {{ old('kd_pekerjaan') == '17' ? 'selected' : '' }}>
-                                        Pimpinan / Manajerial</option>
-                                    <option value="98" {{ old('kd_pekerjaan') == '98' ? 'selected' : '' }}>Sudah
-                                        Meninggal</option>
-                                    <option value="99" {{ old('kd_pekerjaan') == '99' ? 'selected' : '' }}>
-                                        Lainnya</option>
+                                    @foreach ($pekerjaan['data'] as $pk)
+                                        <option value="{{ $pk['id_pekerjaan'] }}"
+                                            {{ old('kd_pekerjaan') == $pk['id_pekerjaan'] ? 'selected' : '' }}>
+                                            {{ $pk['nama_pekerjaan'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('kd_pekerjaan')
                                     <div class="invalid-feedback">
@@ -1793,23 +1521,12 @@
                                 <select class="form-select @error('kd_penghasilan') is-invalid @enderror"
                                     id="kd_penghasilan" name="kd_penghasilan">
                                     <option value="">Pilih Penghasilan</option>
-                                    <option value="11" {{ old('kd_penghasilan') == '11' ? 'selected' : '' }}>
-                                        Kurang dari Rp. 500,000</option>
-                                    <option value="12" {{ old('kd_penghasilan') == '12' ? 'selected' : '' }}>
-                                        Rp. 500,000 - Rp. 999,999
-                                    </option>
-                                    <option value="13" {{ old('kd_penghasilan') == '13' ? 'selected' : '' }}>
-                                        Rp. 1,000,000 - Rp. 1,999,999
-                                    </option>
-                                    <option value="14" {{ old('kd_penghasilan') == '14' ? 'selected' : '' }}>
-                                        Rp. 2,000,000 - Rp. 4,999,999
-                                    </option>
-                                    <option value="15" {{ old('kd_penghasilan') == '15' ? 'selected' : '' }}>
-                                        Rp. 5,000,000 - Rp. 20,000,000
-                                    </option>
-                                    <option value="16" {{ old('kd_penghasilan') == '16' ? 'selected' : '' }}>
-                                        Lebih dari Rp. 20,000,000
-                                    </option>
+                                    @foreach ($penghasilan['data'] as $ph)
+                                        <option value="{{ $ph['id_penghasilan'] }}"
+                                            {{ old('kd_penghasilan') == $ph['id_penghasilan'] ? 'selected' : '' }}>
+                                            {{ $ph['nama_penghasilan'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('kd_penghasilan')
                                     <div class="invalid-feedback">
@@ -1821,59 +1538,15 @@
                             {{-- Pendidikan Terakhir --}}
                             <div class="col-md-4 mb-3">
                                 <label for="kd_pendidikan" class="form-label">Pendidikan Terakhir</label>
-                                <select class="form-select @error('kd_pendidikan') is-invalid @enderror"
-                                    id="kd_pendidikan" name="kd_pendidikan">
+                                <select class="js-example-basic-single form-select @error('kd_pendidikan') is-invalid @enderror"
+                                    id="kd_pendidikan" name="kd_pendidikan" data-width="100%">
                                     <option value="" disabled selected>Pilih Pendidikan Terakhir</option>
-                                    <option value="0" {{ old('kd_pendidikan') == '0' ? 'selected' : '' }}>
-                                        Tidak sekolah</option>
-                                    <option value="1" {{ old('kd_pendidikan') == '1' ? 'selected' : '' }}>
-                                        PAUD</option>
-                                    <option value="2" {{ old('kd_pendidikan') == '2' ? 'selected' : '' }}>
-                                        TK/ sederajat</option>
-                                    <option value="3" {{ old('kd_pendidikan') == '3' ? 'selected' : '' }}>
-                                        Putus SD</option>
-                                    <option value="4" {{ old('kd_pendidikan') == '4' ? 'selected' : '' }}>SD
-                                        / sederajat</option>
-                                    <option value="5" {{ old('kd_pendidikan') == '5' ? 'selected' : '' }}>
-                                        SMP / sederajat</option>
-                                    <option value="6" {{ old('kd_pendidikan') == '6' ? 'selected' : '' }}>
-                                        SMA / sederajat</option>
-                                    <option value="7" {{ old('kd_pendidikan') == '7' ? 'selected' : '' }}>
-                                        Paket A</option>
-                                    <option value="8" {{ old('kd_pendidikan') == '8' ? 'selected' : '' }}>
-                                        Paket B</option>
-                                    <option value="9" {{ old('kd_pendidikan') == '9' ? 'selected' : '' }}>
-                                        Paket C</option>
-                                    <option value="20" {{ old('kd_pendidikan') == '20' ? 'selected' : '' }}>
-                                        D1</option>
-                                    <option value="21" {{ old('kd_pendidikan') == '21' ? 'selected' : '' }}>
-                                        D2</option>
-                                    <option value="22" {{ old('kd_pendidikan') == '22' ? 'selected' : '' }}>
-                                        D3</option>
-                                    <option value="23" {{ old('kd_pendidikan') == '23' ? 'selected' : '' }}>
-                                        D4</option>
-                                    <option value="30" {{ old('kd_pendidikan') == '30' ? 'selected' : '' }}>
-                                        S1</option>
-                                    <option value="31" {{ old('kd_pendidikan') == '31' ? 'selected' : '' }}>
-                                        Profesi</option>
-                                    <option value="32" {{ old('kd_pendidikan') == '32' ? 'selected' : '' }}>
-                                        Sp-1</option>
-                                    <option value="35" {{ old('kd_pendidikan') == '35' ? 'selected' : '' }}>
-                                        S2</option>
-                                    <option value="36" {{ old('kd_pendidikan') == '36' ? 'selected' : '' }}>
-                                        S2 Terapan</option>
-                                    <option value="37" {{ old('kd_pendidikan') == '37' ? 'selected' : '' }}>
-                                        Sp-2</option>
-                                    <option value="40" {{ old('kd_pendidikan') == '40' ? 'selected' : '' }}>
-                                        S3</option>
-                                    <option value="41" {{ old('kd_pendidikan') == '41' ? 'selected' : '' }}>
-                                        S3 Terapan</option>
-                                    <option value="90" {{ old('kd_pendidikan') == '90' ? 'selected' : '' }}>
-                                        Non formal</option>
-                                    <option value="91" {{ old('kd_pendidikan') == '91' ? 'selected' : '' }}>
-                                        Informal</option>
-                                    <option value="99" {{ old('kd_pendidikan') == '99' ? 'selected' : '' }}>
-                                        Lainnya</option>
+                                    @foreach ($jenjangPendidikan['data'] as $jp)
+                                        <option value="{{ $jp['id_jenjang_didik'] }}"
+                                            {{ old('kd_pendidikan') == $jp['id_jenjang_didik'] ? 'selected' : '' }}>
+                                            {{ $jp['nama_jenjang_didik'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('kd_pendidikan')
                                     <div class="invalid-feedback">
@@ -1911,69 +1584,29 @@
 
                             <div id="kebutuhan_khusus_section" style="display:none;" class="col-md-12 mb-3">
                                 <div class="row">
-                                    <!-- Kebutuhan Khusus Mahasiswa -->
-                                    <div class="col-md-4">
-                                        <div class="card">
-                                            <div class="card-header bg-primary text-white">
-                                                <i data-feather="user"></i> MAHASISWA
-                                            </div>
-                                            <div class="card-body">
-                                                @foreach (['1' => 'A - Tuna Netra', '2' => 'B - Tuna Rungu', '3' => 'C - Tuna Grahita Ringan', '4' => 'C1 - Tuna Grahita Sedang', '5' => 'D - Tuna Daksa Ringan', '6' => 'D1 - Tuna Daksa Sedang'] as $key => $value)
-                                                    <div class="form-check mb-2">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            id="kebutuhan_khusus_mahasiswa"
-                                                            name="kebutuhan_khusus_mahasiswa[]"
-                                                            value="{{ $key }}"
-                                                            {{ in_array($key, old('kebutuhan_khusus_mahasiswa', [])) ? 'checked' : '' }}>
-                                                        <label class="form-check-label"
-                                                            for="kebutuhan_khusus_mahasiswa_{{ $key }}">{{ $value }}</label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Kebutuhan Khusus Ayah -->
-                                    <div class="col-md-4">
-                                        <div class="card">
-                                            <div class="card-header bg-success text-white">
-                                                <i data-feather="user"></i> AYAH
-                                            </div>
-                                            <div class="card-body">
-                                                @foreach (['1' => 'A - Tuna Netra', '2' => 'B - Tuna Rungu', '3' => 'C - Tuna Grahita Ringan', '4' => 'C1 - Tuna Grahita Sedang', '5' => 'D - Tuna Daksa Ringan', '6' => 'D1 - Tuna Daksa Sedang'] as $key => $value)
-                                                    <div class="form-check mb-2">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            id="kebutuhan_khusus_ayah" name="kebutuhan_khusus_ayah[]"
-                                                            value="{{ $key }}"
-                                                            {{ in_array($key, old('kebutuhan_khusus_ayah', [])) ? 'checked' : '' }}>
-                                                        <label class="form-check-label"
-                                                            for="kebutuhan_khusus_ayah_{{ $key }}">{{ $value }}</label>
-                                                    </div>
-                                                @endforeach
+                                    <!-- Loop untuk setiap kategori kebutuhan khusus -->
+                                    @foreach (['mahasiswa' => 'MAHASISWA', 'ayah' => 'AYAH', 'ibu' => 'IBU'] as $key => $label)
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-header bg-{{ $key == 'mahasiswa' ? 'primary' : ($key == 'ayah' ? 'success' : 'secondary') }} text-white">
+                                                    <i data-feather="user"></i> {{ strtoupper($label) }}
+                                                </div>
+                                                <div class="card-body">
+                                                    @foreach ($kebutuhanKhususOptions as $optionKey => $optionValue)
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input kebutuhan-khusus" 
+                                                                   type="checkbox" 
+                                                                   id="kebutuhan_khusus_{{ $key }}_{{ $optionKey }}" 
+                                                                   name="kebutuhan_khusus_{{ $key }}[]" 
+                                                                   value="{{ $optionValue }}" 
+                                                                   {{ in_array($optionValue, old("kebutuhan_khusus_$key", [])) ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="kebutuhan_khusus_{{ $key }}_{{ $optionKey }}">{{ $optionValue }}</label>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-
-                                    <!-- Kebutuhan Khusus Ibu -->
-                                    <div class="col-md-4">
-                                        <div class="card">
-                                            <div class="card-header bg-secondary text-white">
-                                                <i data-feather="user"></i> IBU
-                                            </div>
-                                            <div class="card-body">
-                                                @foreach (['1' => 'A - Tuna Netra', '2' => 'B - Tuna Rungu', '3' => 'C - Tuna Grahita Ringan', '4' => 'C1 - Tuna Grahita Sedang', '5' => 'D - Tuna Daksa Ringan', '6' => 'D1 - Tuna Daksa Sedang'] as $key => $value)
-                                                    <div class="form-check mb-2">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            id="kebutuhan_khusus_ibu" name="kebutuhan_khusus_ibu[]"
-                                                            value="{{ $key }}"
-                                                            {{ in_array($key, old('kebutuhan_khusus_ibu', [])) ? 'checked' : '' }}>
-                                                        <label class="form-check-label"
-                                                            for="kebutuhan_khusus_ibu_{{ $key }}">{{ $value }}</label>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -2191,6 +1824,8 @@
                 var districtCode = $(this).val();
                 loadVillages(districtCode, '', '#wali_alamat_kel_code_2');
             });
+
+            $('.js-example-basic-single').select2();
         });
     </script>
 

@@ -31,6 +31,14 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
 {
+    protected $apiController;
+
+    // Injeksi ApiController melalui konstruktor
+    public function __construct(ApiController $apiController)
+    {
+        $this->apiController = $apiController;
+    }
+
     public function index(Request $request)
     {
         $mahasiswa = Mahasiswa::all();
@@ -44,15 +52,15 @@ class MahasiswaController extends Controller
     {
         $dataLengkap = $request->input('dataLengkap', 0);
         $mahasiswaData = $request->input('mahasiswaData', 0);
-    
+
         if ($dataLengkap) {
             return Excel::download(new MahasiswaExport($dataLengkap, ''), 'mahasiswa_biodata.xlsx');
-        } 
-    
+        }
+
         if ($mahasiswaData) {
             return Excel::download(new MahasiswaExport('', $mahasiswaData), 'mahasiswa.xlsx');
         }
-    
+
         // Default export jika tidak ada input
         return Excel::download(new MahasiswaExport([], 'biodata_cepat'), 'mahasiswa_biodata_cepat.xlsx');
     }
@@ -311,8 +319,33 @@ class MahasiswaController extends Controller
         $provinces = Province::all();
         $prodi = ProgramStudi::all();
         $jurusan = Jurusan::all();
+        $jenisTinggal = $this->apiController->getJenisTinggal();
+        $alatTransportasi = $this->apiController->getAlatTransportasi();
+        $agama = $this->apiController->getAgama();
+        $negara = $this->apiController->getNegara();
+        $pekerjaan = $this->apiController->getPekerjaan();
+        $penghasilan = $this->apiController->getPenghasilan();
+        $jenjangPendidikan = $this->apiController->getJenjangPendidikan();
+        $kebutuhanKhususOptions = [
+            '1' => 'A - Tuna netra',
+            '2' => 'B - Tuna rungu',
+            '3' => 'C - Tuna grahita ringan',
+            '4' => 'C1 - Tuna grahita ringan',
+            '5' => 'D - Tuna daksa ringan',
+            '6' => 'D1 - Tuna daksa sedang',
+            '7' => 'E - Tuna laras',
+            '8' => 'F - Tuna wicara',
+            '9' => 'H - Hiperaktif',
+            '10' => 'I - Cerdas Istimewa',
+            '11' => 'J - Bakat Istimewa',
+            '12' => 'K - Kesulitan Belajar',
+            '13' => 'N - Narkoba',
+            '14' => 'O - Indigo',
+            '15' => 'P - Down Syndrome',
+            '16' => 'Q - Autis',
+        ];
 
-        return view('master.mahasiswa.create', compact('provinces', 'prodi', 'jurusan'));
+        return view('master.mahasiswa.create', compact('provinces', 'prodi', 'jurusan', 'jenisTinggal', 'alatTransportasi', 'agama', 'negara', 'pekerjaan', 'penghasilan', 'jenjangPendidikan', 'kebutuhanKhususOptions'));
     }
 
     public function edit($id)
@@ -392,6 +425,32 @@ class MahasiswaController extends Controller
             $data['nim'] = Mahasiswa::find($request['id'])->nim;
         }
 
+        // Mengambil dan memformat data kebutuhan khusus dari form
+        $kebutuhanKhusus = collect([
+            'mahasiswa' => $request->input('kebutuhan_khusus_mahasiswa', []),
+            'ayah' => $request->input('kebutuhan_khusus_ayah', []),
+            'ibu' => $request->input('kebutuhan_khusus_ibu', [])
+        ])->map(function ($values) {
+            if (count($values) === 1) {
+                return $values[0];
+            }
+            return implode(',', array_map(fn($value) => explode(' - ', $value)[0], $values));
+        });
+
+        // Mengambil data kebutuhan khusus dari API
+        $data['kebutuhan_khusus_mahasiswa'] = $this->apiController->getKebutuhanKhusus($kebutuhanKhusus['mahasiswa']);
+        $data['kebutuhan_khusus_ayah'] = $this->apiController->getKebutuhanKhusus($kebutuhanKhusus['ayah']);
+        $data['kebutuhan_khusus_ibu'] = $this->apiController->getKebutuhanKhusus($kebutuhanKhusus['ibu']);
+
+        // Mengambil nama kelurahan dari kode kelurahan pada mahasiswa
+        $data['kelurahan'] = Village::where('code', $request->input('alamat_kel_code'))->first()->name;
+        $data['kelurahan'] = ucwords(strtolower($data['kelurahan']));
+
+        // Mengambil nama kecamatan dari kode kecamatan pada mahasiswa
+        $data['kecamatan'] = District::where('code', $request->input('alamat_kec_code'))->first()->name;
+        $data['kecamatan'] = $this->apiController->getWilayah($data['kecamatan']);
+
+        // Create or update data
         try {
             DB::transaction(function () use ($data) {
                 // Handle KTP Mahasiswa
@@ -440,6 +499,9 @@ class MahasiswaController extends Controller
                         'pekerjaan_kontak_darurat' => $data['kd_pekerjaan'],
                         'pendidikan_kontak_darurat' => $data['kd_pendidikan'],
                         'penghasilan_kontak_darurat' => $data['kd_penghasilan'],
+                        'dusun' => $data['dusun'],
+                        'kelurahan' => $data['kelurahan'],
+                        'kecamatan' => $data['kecamatan'],
                         'is_filled' => $data['is_filled'],
                         'ktp_id' => $ktpMahasiswa->id,
                     ]

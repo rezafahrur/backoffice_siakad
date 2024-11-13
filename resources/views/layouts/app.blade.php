@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="Responsive HTML Admin Dashboard Template based on Bootstrap 5">
     <meta name="author" content="NobleUI">
     <meta name="keywords"
@@ -20,12 +21,13 @@
 
     <!-- core:css -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/core/core.css') }}">
-    <link rel="stylesheet" href="../../../assets/vendors/prismjs/themes/prism.css">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/prismjs/themes/prism.css') }}">
     <!-- endinject -->
 
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/select2/select2.min.css') }}">
     <!-- End plugin css for this page -->
 
     <!-- inject:css -->
@@ -66,6 +68,7 @@
     </div>
 
     {{-- Jquery --}}
+    <p id="getToken" data-route="{{ route('getToken') }}" style="display:none;"></p>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
@@ -82,6 +85,7 @@
     <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('assets/vendors/datatables.net-bs5/dataTables.bootstrap5.js') }}"></script>
     <script src="{{ asset('assets/vendors/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/select2/select2.min.js') }}"></script>
     <!-- End plugin js for this page -->
 
     <!-- inject:js -->
@@ -94,11 +98,13 @@
     <script src="{{ asset('assets/js/datepicker.js') }}"></script>
     <script src="{{ asset('assets/js/data-table.js') }}"></script>
     <script src="{{ asset('assets/js/sweet-alert.js') }}"></script>
-    <script src="../../../assets/vendors/prismjs/prism.js"></script>
-    <script src="../../../assets/vendors/clipboard/clipboard.min.js"></script>
+    <script src="{{ asset('assets/vendors/prismjs/prism.js') }}"></script>
+    <script src="{{ asset('assets/vendors/clipboard/clipboard.min.js') }}"></script>
+    <script src="{{ asset('assets/js/select2.js') }}"></script>
     <!-- End custom js for this page -->
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="{{ asset('assets/js/custom/getToken.js') }}"></script>
 
     @stack('scripts')
 </body>
