@@ -8,13 +8,13 @@
             <li class="breadcrumb-item"><a href="#">Data</a></li>
             <li class="breadcrumb-item active" aria-current="page">Kuisioner Akademik</li>
         </ol>
-    </nav>
+    </nav>`     `
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <h6 class="card-title">Kuisioner Akademik</h6>
-                    @if (session('success'))
+                      @if (session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>
                     @endif
                     <div class="d-flex justify-content-end mb-3">
@@ -87,8 +87,7 @@
                                                             <label for="jawaban_kuisioner" class="form-label">Jawaban
                                                                 Kuisioner</label>
                                                             <input type="text" name="jawaban_kuisioner"
-                                                                class="form-control" value="{{ $item->jawaban_kuisioner }}"
-                                                                required>
+                                                                class="form-control" value="{{ $item->jawaban_kuisioner }}">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -116,7 +115,7 @@
     <!-- Modal Add -->
     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content">  
                 <form action="{{ route('kuisioner-akademik.store') }}" method="POST">
                     @csrf
                     <div class="modal-header">
@@ -130,7 +129,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="jawaban_kuisioner" class="form-label">Jawaban Kuisioner</label>
-                            <input type="text" name="jawaban_kuisioner" class="form-control" required>
+                            <input type="text" name="jawaban_kuisioner" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">
