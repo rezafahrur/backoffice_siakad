@@ -45,25 +45,31 @@ class MahasiswaController extends Controller
         $prodi = ProgramStudi::all();
         $jurusan = Jurusan::all();
 
-        return view('master.mahasiswa.index', compact('mahasiswa', 'prodi', 'jurusan'));
+        return view('mahasiswa.mahasiswa.index', compact('mahasiswa', 'prodi', 'jurusan'));
     }
 
     public function export(Request $request)
     {
         $dataLengkap = $request->input('dataLengkap', 0);
         $mahasiswaData = $request->input('mahasiswaData', 0);
+        $krs = $request->input('krs', 0);
 
         if ($dataLengkap) {
-            return Excel::download(new MahasiswaExport($dataLengkap, ''), 'mahasiswa_biodata.xlsx');
+            return Excel::download(new MahasiswaExport($dataLengkap, null, null), 'mahasiswa_biodata.xlsx');
         }
 
         if ($mahasiswaData) {
-            return Excel::download(new MahasiswaExport('', $mahasiswaData), 'mahasiswa.xlsx');
+            return Excel::download(new MahasiswaExport(null, $mahasiswaData, null), 'mahasiswa.xlsx');
+        }
+
+        if ($krs) {
+            return Excel::download(new MahasiswaExport(null, null, $krs), 'krs.xlsx');
         }
 
         // Default export jika tidak ada input
-        return Excel::download(new MahasiswaExport([], 'biodata_cepat'), 'mahasiswa_biodata_cepat.xlsx');
+        return Excel::download(new MahasiswaExport([], [], 'biodata_cepat'), 'mahasiswa_biodata_cepat.xlsx');
     }
+
 
     public function import(Request $request)
     {
@@ -361,7 +367,7 @@ class MahasiswaController extends Controller
         if ($mahasiswa->is_filled == 0) {
             $provinces = Province::all();
             $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $id)->latest()->first();
-            return view('master.mahasiswa.editShort', compact('mahasiswa', 'prodi', 'jurusan', 'mhsDetail', 'provinces'));
+            return view('mahasiswa.mahasiswa.editShort', compact('mahasiswa', 'prodi', 'jurusan', 'mhsDetail', 'provinces'));
         }
 
         // Fetch data wali by mahasiswa ID
@@ -390,7 +396,7 @@ class MahasiswaController extends Controller
         // Fetch data for the dropdowns and populate with existing data
         $provinces = Province::all();
 
-        return view('master.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'wali1', 'wali2', 'jurusan', 'mhsDetail', 'wali1Detail', 'wali2Detail', 'mahasiswaKebutuhanKhusus', 'wali1KebutuhanKhusus', 'wali2KebutuhanKhusus'));
+        return view('mahasiswa.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'wali1', 'wali2', 'jurusan', 'mhsDetail', 'wali1Detail', 'wali2Detail', 'mahasiswaKebutuhanKhusus', 'wali1KebutuhanKhusus', 'wali2KebutuhanKhusus'));
     }
 
     public function storeOrUpdate(MahasiswaRequest $request)
@@ -664,7 +670,7 @@ class MahasiswaController extends Controller
         if ($mahasiswa->is_filled == 0) {
             $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();
 
-            return view('master.mahasiswa.detailShort', [
+            return view('mahasiswa.mahasiswa.detailShort', [
                 'mahasiswa' => $mahasiswa,
                 'mhsDetail' => $mhsDetail,
                 'krs' => $krs,
@@ -720,7 +726,7 @@ class MahasiswaController extends Controller
         }
 
         // Mengirim data ke view
-        return view('master.mahasiswa.detail', [
+        return view('mahasiswa.mahasiswa.detail', [
             'mahasiswa' => $mahasiswa,
             'ktp' => $ktp,
             'province' => $province,

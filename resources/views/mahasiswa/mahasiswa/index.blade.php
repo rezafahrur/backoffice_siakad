@@ -36,6 +36,11 @@
                                 <i class="btn-icon-prepend" data-feather="plus-square"></i>
                                 Tambah Data
                             </a>
+                            <a href="{{ route('mahasiswa.export', ['krs' => 1]) }}"
+                                class="btn btn-success btn-icon-text mb-2 mb-md-0">
+                                <i class="btn-icon-prepend" data-feather="download"></i>
+                                KRS
+                            </a>
                             <a href="{{ route('mahasiswa.export', ['mahasiswaData' => 1]) }}"
                                 class="btn btn-success btn-icon-text mb-2 mb-md-0">
                                 <i class="btn-icon-prepend" data-feather="download"></i>

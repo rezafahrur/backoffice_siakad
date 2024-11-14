@@ -31,7 +31,8 @@ use App\Http\Controllers\AktivitasMahasiswaController;
 use App\Http\Controllers\PeriodePerkuliahanController;
 use App\Http\Controllers\AktivitasMahasiswaBimbingController;
 use App\Http\Controllers\AktivitasMahasiswaPesertaController;
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\KuisionerAkademikController;
+use App\Http\Controllers\MahasiswaRequestSuratController;
 
 Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
@@ -52,17 +53,17 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // route prefix mahasiswa
     Route::prefix('mhs')->group(function () {
         // CRUD Mahasiswa
-        Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
-        Route::get('/mahasiswa/export', [MahasiswaController::class, 'export'])->name('mahasiswa.export');
-        Route::get('/mahasiswa/create', [MahasiswaController::class, 'create'])->name('mahasiswa.create');
-        Route::post('/mahasiswa', [MahasiswaController::class, 'storeOrUpdate'])->name('mahasiswa.store');
-        Route::post('/mahasiswa/import', [MahasiswaController::class, 'import'])->name('mahasiswa.import');
-        Route::get('/mahasiswa/{mahasiswa}/show', [MahasiswaController::class, 'show'])->name('mahasiswa.show');
-        Route::get('/mahasiswa/{mahasiswa}/edit', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
-        Route::put('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'storeOrUpdate'])->name('mahasiswa.update');
-        Route::delete('/mahasiswa/{mahasiswa}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
-        Route::post('/mahasiswa/quickAdd', [MahasiswaController::class, 'quickAdd'])->name('mahasiswa.quickAdd');
-        Route::post('/mahasiswa/bayar', [MahasiswaController::class, 'bayar'])->name('mahasiswa.bayar');
+        Route::get('/data', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
+        Route::get('/data/export', [MahasiswaController::class, 'export'])->name('mahasiswa.export');
+        Route::get('/data/create', [MahasiswaController::class, 'create'])->name('mahasiswa.create');
+        Route::post('/data', [MahasiswaController::class, 'storeOrUpdate'])->name('mahasiswa.store');
+        Route::post('/data/import', [MahasiswaController::class, 'import'])->name('mahasiswa.import');
+        Route::get('/data/{mahasiswa}/show', [MahasiswaController::class, 'show'])->name('mahasiswa.show');
+        Route::get('/data/{mahasiswa}/edit', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
+        Route::put('/data/{mahasiswa}', [MahasiswaController::class, 'storeOrUpdate'])->name('mahasiswa.update');
+        Route::delete('/data/{mahasiswa}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
+        Route::post('/data/quickAdd', [MahasiswaController::class, 'quickAdd'])->name('mahasiswa.quickAdd');
+        Route::post('/data/bayar', [MahasiswaController::class, 'bayar'])->name('mahasiswa.bayar');
 
         // CRUD Mahasiswa KTM
         Route::get('/ktm-validasi', [MahasiswaKtmController::class, 'index'])->name('ktm-validasi.index');
@@ -211,16 +212,16 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::delete('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'destroy'])->name('jadwal-sementara.destroy');
     });
 
-    Route::prefix('akm')->group(function () {
+    Route::prefix('akm')->group(function (){
         // aktivitas mahasiswa
-        Route::get('/aktivitas', [AktivitasMahasiswaController::class, 'index'])->name('aktivitas.index');
-        Route::get('/aktivitas/export', [AktivitasMahasiswaController::class, 'export'])->name('aktivitas.export');
-        Route::get('/aktivitas/create', [AktivitasMahasiswaController::class, 'create'])->name('aktivitas.create');
-        Route::post('/aktivitas/store', [AktivitasMahasiswaController::class, 'store'])->name('aktivitas.store');
-        Route::get('/aktivitas/{id}/edit', [AktivitasMahasiswaController::class, 'edit'])->name('aktivitas.edit');
-        Route::put('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'update'])->name('aktivitas.update');
-        Route::get('/aktivitas/{id}/show', [AktivitasMahasiswaController::class, 'show'])->name('aktivitas.show');
-        Route::delete('/aktivitas/{id}', [AktivitasMahasiswaController::class, 'destroy'])->name('aktivitas.destroy');
+        Route::get('/aktivitas-mahasiswa', [AktivitasMahasiswaController::class, 'index'])->name('aktivitas.index');
+        Route::get('/aktivitas-mahasiswa/export', [AktivitasMahasiswaController::class, 'export'])->name('aktivitas.export');
+        Route::get('/aktivitas-mahasiswa/create', [AktivitasMahasiswaController::class, 'create'])->name('aktivitas.create');
+        Route::post('/aktivitas-mahasiswa/store', [AktivitasMahasiswaController::class, 'store'])->name('aktivitas.store');
+        Route::get('/aktivitas-mahasiswa/{id}/edit', [AktivitasMahasiswaController::class, 'edit'])->name('aktivitas.edit');
+        Route::put('/aktivitas-mahasiswa/{id}', [AktivitasMahasiswaController::class, 'update'])->name('aktivitas.update');
+        Route::get('/aktivitas-mahasiswa/{id}/show', [AktivitasMahasiswaController::class, 'show'])->name('aktivitas.show');
+        Route::delete('/aktivitas-mahasiswa/{id}', [AktivitasMahasiswaController::class, 'destroy'])->name('aktivitas.destroy');
 
         // aktivitas mahasiswa peserta
         Route::get('/aktivitas-peserta', [AktivitasMahasiswaPesertaController::class, 'index'])->name('aktivitas-peserta.index');
@@ -316,8 +317,6 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // get mahaasiswa
     Route::get('/nilai/get-mahasiswa/{kelasId}', [NilaiController::class, 'getMahasiswaByKelas']);
 
-
-
     // prestasi
     Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index')->middleware(['permission:read_prestasi']);
     Route::get('/prestasi/create', [PrestasiController::class, 'create'])->name('prestasi.create')->middleware(['permission:create_prestasi']);
@@ -331,8 +330,6 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/moodle-login', [MoodleAuthController::class, 'showLoginForm'])->name('moodle.login.form');
     Route::post('/moodle-login', [MoodleAuthController::class, 'loginToMoodle'])->name('moodle.login');
 });
-
-
 
 //login
 Route::get('/login', [LoginController::class, 'index'])->name('login');

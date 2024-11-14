@@ -75,18 +75,17 @@
                     </li>
                 @endcan
 
-                {{-- mahasiswa dan ktm validasi --}}
+                {{-- mahasiswa, ktm validasi dan request surat --}}
                 <li class="nav-item {{ Request::is('mhs*') ? 'active' : '' }}">
                     <a href="#" class="nav-link">
                         <i class="link-icon" data-feather="inbox"></i>
                         <span class="menu-title">Mahasiswa</span>
-                        <i class="link-arrow
-                            "></i>
+                        <i class="link-arrow"></i>
                     </a>
                     <div class="submenu">
                         <ul class="submenu-item">
                             @can('read_mahasiswa')
-                                <li class="nav-item {{ Request::is('mhs/mahasiswa*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('mhs/data*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('mahasiswa.index') }}">Mahasiswa</a>
                                 </li>
                             @endcan
@@ -193,44 +192,76 @@
                         <i class="link-arrow"></i>
                     </a>
                     <div class="submenu">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <ul class="submenu-item">
+                                    @can('read_kelas')
+                                        <li class="nav-item {{ Request::is('kuliah/kelas-data*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('kelas.index') }}">Kelas</a>
+                                        </li>
+                                    @endcan
+
+                                    {{-- jadwal --}}
+                                    @can('read_jadwal')
+                                        <li class="nav-item {{ Request::is('kuliah/jadwal*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('jadwal.index') }}">Jadwal</a>
+                                        </li>
+                                    @endcan
+
+                                    {{-- @can('read_absensi') --}}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="">Absensi</a>
+                                    </li>
+                                    {{-- @endcan --}}
+                                </ul>
+                            </div>
+                            <div class="col-md-8">
+                                <ul class="submenu-item">
+                                    {{-- @can('read_nilai') --}}
+                                    <li class="nav-item {{ Request::is('kuliah/nilai*') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('nilai.index') }}">Nilai</a>
+                                    </li>
+                                    {{-- @endcan --}}
+
+                                    @can('read_skala_nilai')
+                                        <li class="nav-item {{ Request::is('kuliah/skala-nilai*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('skala-nilai.index') }}">Skala Nilai</a>
+                                        </li>
+                                    @endcan
+
+                                    @can('read_periode_perkuliahan')
+                                        <li
+                                            class="nav-item {{ Request::is('kuliah/periode-perkuliahan*') ? 'active' : '' }}">
+                                            <a class="nav-link" href="{{ route('periode-perkuliahan.index') }}">Periode
+                                                Perkuliahan</a>
+                                        </li>
+                                    @endcan
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                {{-- Surat & Kuisioner --}}
+                <li class="nav-item {{ Request::is('surat*') ? 'active' : '' }}">
+                    <a href="#" class="nav-link">
+                        <i class="link-icon" data-feather="mail"></i>
+                        <span class="menu-title">Surat & Kuisioner</span>
+                        <i class="link-arrow"></i>
+                    </a>
+                    <div class="submenu">
                         <ul class="submenu-item">
-                            @can('read_kelas')
-                                <li class="nav-item {{ Request::is('kuliah/kelas-data*') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ route('kelas.index') }}">Kelas</a>
-                                </li>
-                            @endcan
-
-                            {{-- jadwal --}}
-                            @can('read_jadwal')
-                                <li class="nav-item {{ Request::is('kuliah/jadwal*') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ route('jadwal.index') }}">Jadwal</a>
-                                </li>
-                            @endcan
-
-                            {{-- @can('read_absensi') --}}
-                            <li class="nav-item">
-                                <a class="nav-link" href="">Absensi</a>
+                            {{-- @can('read_request_surat') --}}
+                            <li class="nav-item {{ Request::is('surat/permintaan-surat*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('permintaan-surat.index') }}">Request Surat</a>
                             </li>
                             {{-- @endcan --}}
 
-                            {{-- @can('read_nilai') --}}
-                            <li class="nav-item {{ Request::is('kuliah/nilai*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('nilai.index') }}">Nilai</a>
+                            {{-- @can('read_kuisioner_akademik') --}}
+                            <li class="nav-item {{ Request::is('kuisioner/kuisioner-akademik*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('kuisioner-akademik.index') }}">Kuisioner Akademik</a>
                             </li>
                             {{-- @endcan --}}
-
-                            @can('read_skala_nilai')
-                                <li class="nav-item {{ Request::is('kuliah/skala-nilai*') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ route('skala-nilai.index') }}">Skala Nilai</a>
-                                </li>
-                            @endcan
-
-                            @can('read_periode_perkuliahan')
-                                <li class="nav-item {{ Request::is('kuliah/periode-perkuliahan*') ? 'active' : '' }}">
-                                    <a class="nav-link" href="{{ route('periode-perkuliahan.index') }}">Periode
-                                        Perkuliahan</a>
-                                </li>
-                            @endcan
                         </ul>
                     </div>
                 </li>
@@ -245,7 +276,7 @@
                     <div class="submenu">
                         <ul class="submenu-item">
                             @can('read_akm')
-                                <li class="nav-item {{ Request::is('akm/aktivitas*') ? 'active' : '' }}">
+                                <li class="nav-item {{ Request::is('akm/aktivitas-mahasiswa*') ? 'active' : '' }}">
                                     <a class="nav-link" href="{{ route('aktivitas.index') }}">Aktivitas Mahasiswa</a>
                                 </li>
                             @endcan
