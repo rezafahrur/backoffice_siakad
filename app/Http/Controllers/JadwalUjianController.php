@@ -138,7 +138,11 @@ class JadwalUjianController extends Controller
 
     public function show($id)
     {
-        $jadwalUjian = JadwalUjian::find($id);
-        return view('perkuliahan.jadwal-ujian.detail', compact('jadwalUjian'));
+        $jadwalUjians = JadwalUjian::with('details.ruangKelas', 'details.matakuliah')->find($id);
+
+        if (!$jadwalUjians) {
+            return redirect()->back()->with('error', 'Jadwal ujian tidak ditemukan');
+        }
+        return view('perkuliahan.jadwal-ujian.detail', compact('jadwalUjians'));
     }
 }
