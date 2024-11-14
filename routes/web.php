@@ -33,6 +33,7 @@ use App\Http\Controllers\AktivitasMahasiswaBimbingController;
 use App\Http\Controllers\AktivitasMahasiswaPesertaController;
 use App\Http\Controllers\KuisionerAkademikController;
 use App\Http\Controllers\MahasiswaRequestSuratController;
+use App\Http\Controllers\ApiController;
 
 Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
@@ -210,6 +211,23 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::get('/file-jadwal/{jadwalSementara}/edit', [JadwalSementaraController::class, 'edit'])->name('jadwal-sementara.edit');
         Route::put('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'update'])->name('jadwal-sementara.update');
         Route::delete('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'destroy'])->name('jadwal-sementara.destroy');
+    });
+
+    Route::prefix('surat')->group(function () {
+
+        // CRUD Mahasiswa Request Surat 
+        Route::get('/permintaan-surat', [MahasiswaRequestSuratController::class, 'index'])->name('permintaan-surat.index');
+        Route::get('/permintaan-surat/{id}', [MahasiswaRequestSuratController::class, 'show'])->name('permintaan-surat.show');
+        Route::post('/permintaan-surat/{id}/proses', [MahasiswaRequestSuratController::class, 'proses'])->name('permintaan-surat.proses');
+        Route::delete('/permintaan-surat/{id}', [MahasiswaRequestSuratController::class, 'destroy'])->name('permintaan-surat.destroy');
+    });
+
+    // buatkan saya route prefix untuk kuisioner
+    Route::prefix('kuisioner')->group(function () {
+        Route::get('/kuisioner-akademik', [KuisionerAkademikController::class, 'index'])->name('kuisioner-akademik.index');
+        Route::post('/kuisioner-akademik', [KuisionerAkademikController::class, 'store'])->name('kuisioner-akademik.store');
+        Route::put('/kuisioner-akademik/{id}', [KuisionerAkademikController::class, 'update'])->name('kuisioner-akademik.update');
+        Route::delete('/kuisioner-akademik/{id}', [KuisionerAkademikController::class, 'destroy'])->name('kuisioner-akademik.destroy');
     });
 
     Route::prefix('akm')->group(function (){
