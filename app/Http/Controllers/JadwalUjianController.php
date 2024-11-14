@@ -95,7 +95,7 @@ class JadwalUjianController extends Controller
     public function getMatakuliah($kelas_id)
     {
         // Periksa apakah kelas_id diterima dengan benar
-        if(!$kelas_id) {
+        if (!$kelas_id) {
             return response()->json(['error' => 'Kelas tidak ditemukan'], 400);
         }
     
@@ -111,11 +111,11 @@ class JadwalUjianController extends Controller
             // Mengembalikan data dalam format JSON
             return response()->json($matakuliah);
         } catch (\Exception $e) {
-            // Tangani error jika ada masalah
-            \Log::error('Error fetching mata kuliah: ' . $e->getMessage());
+            // Mengembalikan pesan error jika terjadi masalah tanpa log
             return response()->json(['error' => 'Terjadi kesalahan dalam mengambil data mata kuliah'], 500);
         }
     }
+    
     
     
 
