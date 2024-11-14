@@ -21,7 +21,12 @@ class JadwalUjian extends Model
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'kelas_id', 'id');
-    }   
+    }
+
+    public function details()
+    {
+        return $this->hasMany(JadwalUjianDetail::class);
+    }
 
     
 }
