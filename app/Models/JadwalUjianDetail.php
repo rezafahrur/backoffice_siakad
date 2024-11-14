@@ -34,7 +34,7 @@ class JadwalUjianDetail extends Model
         return $this->belongsTo(Matakuliah::class, 'matakuliah_id', 'id');
     }
 
-    public function ruang_kelas()
+    public function ruangKelas()
     {
         return $this->belongsTo(RuangKelas::class, 'ruang_kelas_id', 'id');
     }
