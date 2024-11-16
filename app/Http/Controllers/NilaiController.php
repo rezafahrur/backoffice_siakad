@@ -6,11 +6,12 @@ use App\Models\Krs;
 use App\Models\Kelas;
 use App\Models\Nilai;
 use App\Models\MataKuliah;
+use App\Exports\NilaiExport;
+use App\Imports\NilaiImport;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use App\Http\Requests\NilaiRequest;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\NilaiExport;
 use App\Exports\NilaiKomponenEvaluasiExport;
 
 class NilaiController extends Controller
@@ -35,6 +36,25 @@ class NilaiController extends Controller
     public function exportKomponenEvaluasi()
     {
         return Excel::download(new NilaiKomponenEvaluasiExport, 'nilai_komponen_evaluasi.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls,csv',
+                'program_studi_id' => 'required',
+                'kelas_id' => 'required',
+                'matakuliah_id' => 'required',
+            ]);
+
+            // Import Excel menggunakan class NilaiImport
+            Excel::import(new NilaiImport($request->program_studi_id, $request->kelas_id, $request->matakuliah_id), $request->file('file'));
+
+            return response()->json(['success' => true, 'message' => 'Data nilai berhasil diimport.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
     }
 
     /**
