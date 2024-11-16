@@ -47,6 +47,13 @@
                     </select>
                 </div>
 
+                <div class="mb-3">
+                    <label for="import_excel">Import Nilai</label>
+                    <input type="file" id="import_excel" name="import_excel" class="form-control"
+                        accept=".xlsx, .xls, .csv">
+                    <button id="importButton" type="button" class="btn btn-success mt-2">Import Nilai</button>
+                </div>
+
                 <div id="mahasiswa-list">
                     <h4 class="card-title">Input Nilai Mahasiswa</h4>
                     <table class="table table-bordered mb-3" id="nilai-table">
@@ -258,6 +265,70 @@
         // Event listener untuk semua input nilai
         document.getElementById('nilai-table').addEventListener('input', function(e) {
             calculateGradeAndIndex();
+        });
+
+        // import data excel
+        document.getElementById('importButton').addEventListener('click', function() {
+            const fileInput = document.getElementById('import_excel');
+            const formData = new FormData();
+            const programStudiId = document.getElementById('program_studi').value;
+            const kelasId = document.getElementById('kelas').value;
+            const matakuliahId = document.getElementById('matakuliah').value;
+
+            if (!programStudiId || !kelasId || !matakuliahId) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: 'Silakan pilih Program Studi, Kelas, dan Mata Kuliah sebelum mengimpor nilai.',
+                });
+                return;
+            }
+
+            if (!fileInput.files[0]) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: 'Silakan pilih file Excel untuk mengimpor nilai.',
+                });
+                return;
+            }
+
+            formData.append('file', fileInput.files[0]);
+            formData.append('program_studi_id', programStudiId);
+            formData.append('kelas_id', kelasId);
+            formData.append('matakuliah_id', matakuliahId);
+
+            fetch('/kuliah/nilai/import', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: data.message,
+                        }).then(() => location.reload());
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: data.message,
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan saat mengimpor data.',
+                    });
+                });
         });
     </script>
 @endpush
