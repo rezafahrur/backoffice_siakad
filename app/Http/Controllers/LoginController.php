@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Hr;
 use App\Models\HrDetail;
+use App\Models\Ktp;
 use App\Models\ShortenerURL;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class LoginController extends Controller
 {
@@ -59,65 +62,105 @@ class LoginController extends Controller
         }
     }
 
-    function prosesLogin(Request $request, $hp, $otp)
+    function prosesLogin($hp, $otp)
     {
-        //get user
-        $user = Hr::join('t_hr_detail', 't_hr_detail.master_hr_id', '=', 'm_hr.id')->join('m_position', 'm_hr.position_id', '=', 'm_position.id')->where('t_hr_detail.hp', $hp)->select('t_hr_detail.*', 'm_hr.nama', 'm_hr.gelar_belakang', 'm_hr.gelar_depan', 'm_position.posisi', 'm_position.id AS position_id', 'm_hr.photo_profile')->orderBy('t_hr_detail.created_at', 'desc')->first();
+        // Mendapatkan user berdasarkan nomor HP
+        $user = Hr::join('t_hr_detail', 't_hr_detail.master_hr_id', '=', 'm_hr.id')
+            ->join('m_position', 'm_hr.position_id', '=', 'm_position.id')
+            ->join('t_ktp', 't_ktp.id', '=', 'm_hr.ktp_id')
+            ->where('t_hr_detail.hp', $hp)
+            ->select('t_hr_detail.*', 'm_hr.nama', 'm_hr.gelar_belakang', 'm_hr.gelar_depan', 'm_position.posisi', 'm_position.id AS position_id', 'm_hr.photo_profile', 't_ktp.nik')
+            ->orderBy('t_hr_detail.created_at', 'desc')
+            ->first();
 
-        $hr_detail = HrDetail::where('master_hr_id', $user->master_hr_id)->orderBy('created_at', 'desc')->first();
 
-        if ($user->otp == $otp) {
-            //nullkan otp t_hr_detail
-            $hr_detail->otp = null;
-            $hr_detail->save();
-
-            //null kan model has role
-            $user->roles()->detach(); 
-
-            //logout session lama
-            $new_session_id = Session::getId();
-            $last_session = Session::getHandler()->read($user->session_id);
-
-            if ($last_session) {
-                Session::getHandler()->destroy($user->session_id);
-                Auth::guard('hr')->logout();
-            }
-
-            //loginkan
-            $hr_detail->session_id = $new_session_id;
-            $hr_detail->save();
-
-            Session::put('hr_id', $user->master_hr_id);
-            Session::put('nama', explode(" ", $user->nama)[0]);
-            Session::put('nama_lengkap', $user->gelar_depan . ' ' . $user->nama . ' ' . $user->gelar_belakang);
-            Session::put('posisi_id', $user->m_position_id);
-            Session::put('posisi', $user->posisi);
-            Session::put('photo_profile', $user->photo_profile);
-
-            Auth::guard('hr')->loginUsingId($user->master_hr_id);
-
-            $user = Auth::guard('hr')->user();
-            
-            // Pastikan role ada dan assign ke user
-            $roleName = $user->position->posisi; // Ambil nama role dari posisi
-            $role = Role::where('name', $roleName)->first();
-
-            if ($role) {
-                $user->assignRole($role->name);
-            } else {
-                return redirect()->route('login')->with('error', 'Role tidak ditemukan.');
-            }
-
-            return redirect()->route('/');
-
+        if (!$user || $user->otp !== $otp) {
+            // Jika OTP tidak valid, nullkan dan redirect dengan pesan kesalahan
+            HrDetail::where('master_hr_id', $user->master_hr_id)->update(['otp' => null, 'session_id' => null]);
+            return redirect()->route('login')->with('error', 'Ada kesalahan, silahkan coba lagi');
         }
-        else
-        {
-            $hr_detail->otp = null;
-            $hr_detail->session_id = null;
-            $hr_detail->save();
 
-            return redirect()->route('login')->with('error', 'Ada Yang Salah Dalam Link Anda');
+        // Generate dan simpan password LMS baru
+        $passwordLMS = Str::random(8);
+        $user->password_lms = bcrypt($passwordLMS);
+        $user->save();
+
+        // Simpan kredensial LMS dalam session untuk memperbarui password LMS
+        session([
+            'update_lms_password' => true,
+            'lms_credentials' => [
+                'username' => $user->nik, // Menggunakan NIK dari t_ktp sebagai username
+                'password' => $passwordLMS,
+            ]
+        ]);
+        
+        // Kirim password baru ke LMS
+        Http::post('https://lms.poltekbatu.ac.id/user/interpreterUpdatePasswordDARe5.php', [
+            'username' => $user->nik,
+            'password' => $passwordLMS,
+        ]);
+
+        // Nullkan OTP setelah verifikasi berhasil
+        HrDetail::where('master_hr_id', $user->master_hr_id)->update(['otp' => null]);
+
+        // Kelola sesi, logout dari sesi sebelumnya jika ada
+        $new_session_id = Session::getId();
+        $last_session = Session::getHandler()->read($user->session_id);
+        if ($last_session) {
+            Session::getHandler()->destroy($user->session_id);
+            Auth::guard('hr')->logout();
+        }
+
+        // Update sesi saat ini dan simpan informasi user dalam session
+        HrDetail::where('master_hr_id', $user->master_hr_id)->update(['session_id' => $new_session_id]);
+        Session::put([
+            'hr_id' => $user->master_hr_id,
+            'nama' => explode(" ", $user->nama)[0],
+            'nama_lengkap' => $user->gelar_depan . ' ' . $user->nama . ' ' . $user->gelar_belakang,
+            'posisi_id' => $user->position_id,
+            'posisi' => $user->posisi,
+            'photo_profile' => $user->photo_profile,
+        ]);
+
+        // Loginkan user di sistem
+        Auth::guard('hr')->loginUsingId($user->master_hr_id);
+
+        // Assign role berdasarkan posisi
+        $roleName = $user->posisi;
+        $role = Role::where('name', $roleName)->first();
+        if ($role) {
+            $user->assignRole($role->name);
+        } else {
+            return redirect()->route('login')->with('error', 'Role tidak ditemukan.');
+        }
+
+        // Redirect ke halaman utama setelah login berhasil
+        return redirect()->route('/');
+    }
+
+    public function clearLmsPasswordSession()
+    {
+        session()->forget('update_lms_password');
+        return response()->json(['status' => 'session cleared']);
+    }
+    public function proxyUpdatePassword(Request $request)
+    {
+        try {
+            // Send POST request to LMS API
+            $response = Http::post('https://lms.poltekbatu.ac.id/user/interpreterUpdatePasswordDARe5.php', [
+                'username' => $request->username,
+                'password' => $request->password,
+            ]);
+
+            // Check if the response is successful
+            if ($response->successful()) {
+                return response()->json(['message' => 'LMS password updated successfully.'], 200);
+            } else {
+                return response()->json(['error' => 'Failed to update LMS password.'], 500);
+            }
+        } catch (\Exception $e) {
+            // Catch and return any exceptions
+            return response()->json(['error' => 'An error occurred while updating LMS password.'], 500);
         }
     }
 

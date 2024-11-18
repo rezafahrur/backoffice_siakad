@@ -263,7 +263,8 @@
 
                             {{-- @can('read_kuisioner_akademik') --}}
                             <li class="nav-item {{ Request::is('kuisioner/kuisioner-akademik*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('kuisioner-akademik.index') }}">Kuisioner Akademik</a>
+                                <a class="nav-link" href="{{ route('kuisioner-akademik.index') }}">Kuisioner
+                                    Akademik</a>
                             </li>
                             {{-- @endcan --}}
                         </ul>
