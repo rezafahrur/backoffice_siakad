@@ -342,9 +342,6 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::delete('/prestasi/{prestasi}', [PrestasiController::class, 'destroy'])->name('prestasi.destroy')->middleware(['permission:delete_prestasi']);
     Route::get('/prestasi/show/{id}', [PrestasiController::class, 'show'])->name('prestasi.show')->middleware(['permission:read_prestasi']);
     Route::get('/getMahasiswaByProdi', [PrestasiController::class, 'getMahasiswaByProdi'])->name('getMahasiswaByProdi');
-
-    Route::get('/moodle-login', [MoodleAuthController::class, 'showLoginForm'])->name('moodle.login.form');
-    Route::post('/moodle-login', [MoodleAuthController::class, 'loginToMoodle'])->name('moodle.login');
 });
 
 //login
@@ -352,3 +349,8 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/loginFrom', [LoginController::class, 'generateLoginURL'])->name('login.generateURL');
 Route::get('/prosesLogin/{hp}/{otp}', [LoginController::class, 'prosesLogin'])->name('login.processLogin');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/lms', function () {
+    return view('feature.feature.lms');
+})->name('lms');
+Route::post('/proxy-update-lms-password', [LoginController::class, 'proxyUpdatePassword']);
+Route::get('/clear-lms-password-session', [LoginController::class, 'clearLmsPasswordSession']);
