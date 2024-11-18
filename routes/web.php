@@ -20,6 +20,7 @@ use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\MoodleAuthController;
 use App\Http\Controllers\RuangKelasController;
 use App\Http\Controllers\SkalaNilaiController;
+use App\Http\Controllers\JadwalUjianController;
 use App\Http\Controllers\EvaluasiPlanController;
 use App\Http\Controllers\MahasiswaKtmController;
 use App\Http\Controllers\ProgramStudiController;
@@ -27,12 +28,12 @@ use App\Http\Controllers\MasterFeatureController;
 use App\Http\Controllers\JadwalSementaraController;
 use App\Http\Controllers\PaketMataKuliahController;
 use App\Http\Controllers\PembelajaranPlanController;
+use App\Http\Controllers\KuisionerAkademikController;
 use App\Http\Controllers\AktivitasMahasiswaController;
 use App\Http\Controllers\PeriodePerkuliahanController;
+use App\Http\Controllers\MahasiswaRequestSuratController;
 use App\Http\Controllers\AktivitasMahasiswaBimbingController;
 use App\Http\Controllers\AktivitasMahasiswaPesertaController;
-use App\Http\Controllers\KuisionerAkademikController;
-use App\Http\Controllers\MahasiswaRequestSuratController;
 
 Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
@@ -213,7 +214,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     Route::prefix('surat')->group(function () {
 
-        // CRUD Mahasiswa Request Surat 
+        // CRUD Mahasiswa Request Surat
         Route::get('/permintaan-surat', [MahasiswaRequestSuratController::class, 'index'])->name('permintaan-surat.index');
         Route::get('/permintaan-surat/{id}', [MahasiswaRequestSuratController::class, 'show'])->name('permintaan-surat.show');
         Route::post('/permintaan-surat/{id}/proses', [MahasiswaRequestSuratController::class, 'proses'])->name('permintaan-surat.proses');
@@ -318,6 +319,19 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::get('/nilai/export', [NilaiController::class, 'export'])->name('nilai.export');
         //exportKomponenEvaluasi
         Route::get('/nilai/exportKomponenEvaluasi', [NilaiController::class, 'exportKomponenEvaluasi'])->name('nilai.exportKomponenEvaluasi');
+        // nilai import
+        Route::post('/nilai/import', [NilaiController::class, 'import'])->name('nilai.import');
+
+        //jadwal-ujian
+        Route::get('/jadwal-ujian', [JadwalUjianController::class, 'index'])->name('jadwal-ujian.index');
+        Route::get('/jadwal-ujian/create', [JadwalUjianController::class, 'create'])->name('jadwal-ujian.create');
+        Route::post('/jadwal-ujian/store', [JadwalUjianController::class, 'store'])->name('jadwal-ujian.store');
+        Route::get('/jadwal-ujian/{id}/edit', [JadwalUjianController::class, 'edit'])->name('jadwal-ujian.edit');
+        Route::put('/jadwal-ujian/{id}', [JadwalUjianController::class, 'update'])->name('jadwal-ujian.update');
+        Route::delete('/jadwal-ujian/{id}', [JadwalUjianController::class, 'destroy'])->name('jadwal-ujian.destroy');
+        Route::get('/jadwal-ujian/{id}/show', [JadwalUjianController::class, 'show'])->name('jadwal-ujian.show');
+        Route::get('/jadwal-ujian/get-matakuliah/{kelas_id}', [JadwalUjianController::class, 'getMatakuliah']);
+
     });
 
     Route::get('/jadwal/details/{paketMataKuliah}', [JadwalController::class, 'getPaketDetails'])->middleware(['permission:read_jadwal']);
