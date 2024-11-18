@@ -46,14 +46,14 @@
                         <option value="">-- Pilih Mata Kuliah --</option>
                     </select>
                 </div>
-
-                <div class="mb-3">
+                <div class="mb-3" id="import-section" hidden>
                     <label for="import_excel">Import Nilai</label>
-                    <input type="file" id="import_excel" name="import_excel" class="form-control"
-                        accept=".xlsx, .xls, .csv">
-                    <button id="importButton" type="button" class="btn btn-success mt-2">Import Nilai</button>
+                    <div class="d-flex align-items-center">
+                        <input type="file" id="import_excel" name="import_excel" class="form-control me-2"
+                            accept=".xlsx, .xls, .csv">
+                        <button id="importButton" type="button" class="btn btn-success">Import</button>
+                    </div>
                 </div>
-
                 <div id="mahasiswa-list">
                     <h4 class="card-title">Input Nilai Mahasiswa</h4>
                     <table class="table table-bordered mb-3" id="nilai-table">
@@ -330,5 +330,24 @@
                     });
                 });
         });
+
+        function toggleImportSection() {
+            const programStudiId = document.getElementById('program_studi').value;
+            const kelasId = document.getElementById('kelas').value;
+            const matakuliahId = document.getElementById('matakuliah').value;
+
+            const importSection = document.getElementById('import-section');
+
+            if (programStudiId && kelasId && matakuliahId) {
+                importSection.hidden = false; // Tampilkan section jika semua dropdown terisi
+            } else {
+                importSection.hidden = true; // Sembunyikan jika ada yang kosong
+            }
+        }
+
+        // Tambahkan event listener pada dropdown untuk memanggil toggleImportSection
+        document.getElementById('program_studi').addEventListener('change', toggleImportSection);
+        document.getElementById('kelas').addEventListener('change', toggleImportSection);
+        document.getElementById('matakuliah').addEventListener('change', toggleImportSection);
     </script>
 @endpush
