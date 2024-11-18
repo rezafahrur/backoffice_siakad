@@ -10,12 +10,11 @@ class Krs extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    
+
     protected $table = 'm_krs';
     protected $primaryKey = 'id';
     protected $fillable = [
         'mahasiswa_id',
-        'paket_matakuliah_id',
         'status',
         'tgl_transfer',
         'kurikulum_id',
