@@ -15,10 +15,11 @@ class JadwalDetail extends Model
 
     protected $fillable = [
         'jadwal_id',
+        'ruang_kelas_id',
         'ruang_kelas_detail_id',
-        'kelas_id',
-        'kode_hr',
-        'nama_matakuliah'
+        'kelas_detail_id',
+        'jam_mulai',
+        'jam_selesai',
     ];
 
     public function ruangKelasDetail()

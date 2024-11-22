@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\JadwalRequest;
 use App\Models\HR;
+use App\Models\Kelas;
 use App\Models\Jadwal;
-use App\Models\RuangKelas;
-use App\Models\PaketMataKuliah;
 use App\Models\Semester;
+use App\Models\MataKuliah;
+use App\Models\RuangKelas;
+use App\Models\JadwalDetail;
+use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
+use App\Models\PaketMataKuliah;
+use App\Models\RuangKelasDetail;
+use App\Http\Requests\JadwalRequest;
 use Yajra\DataTables\Facades\DataTables;
 
 class JadwalController extends Controller
@@ -20,7 +25,7 @@ class JadwalController extends Controller
     {
         $jadwal = Jadwal::get()->all();
 
-        return view('master.jadwal.index', compact('jadwal'));
+        return view('perkuliahan.jadwal.index', compact('jadwal'));
     }
 
 
@@ -29,30 +34,51 @@ class JadwalController extends Controller
      */
     public function create()
     {
-        $semester = Semester::all();
+        $programStudi = ProgramStudi::all();
         $ruangKelas = RuangKelas::all();
-        return view('master.jadwal.create', compact('semester', 'ruangKelas'));
+        return view('perkuliahan.jadwal.create', compact('programStudi', 'ruangKelas'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(JadwalRequest $request)
+    public function getKelasByProdi($programStudiId)
     {
-        try {
-            $jadwal = Jadwal::create($request->validated());
+        $kelas = Kelas::where('program_studi_id', $programStudiId)->get();
+        return response()->json($kelas);
+    }
 
-            foreach ($request->details as $detail) {
-                $jadwal->details()->create($detail);
-            }
+    public function getMataKuliah($kelasId)
+    {
+        $mataKuliah = MataKuliah::where('kelas_id', $kelasId)->get();
+        return response()->json($mataKuliah);
+    }
 
-            return redirect()->route('jadwal.index')->with('success', 'Data berhasil ditambahkan');
-        } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with([
-                'error' => $e->getMessage(),
-                'toast_message' => 'Data Gagal Ditambahkan',
+    public function getRuangKelasDetails($matkulId)
+    {
+        $ruangKelasDetails = RuangKelasDetail::where('is_available', true)->get();
+        return response()->json($ruangKelasDetails);
+    }
+
+    public function store(Request $request)
+    {
+        $jadwal = Jadwal::create([
+            'program_studi_id' => $request->program_studi,
+            'kelas_id' => $request->kelas,
+        ]);
+
+        foreach ($request->details as $detail) {
+            JadwalDetail::create([
+                'jadwal_id' => $jadwal->id,
+                'ruang_kelas_id' => $detail['ruang_kelas_id'],
+                'ruang_kelas_detail_id' => $detail['ruang_kelas_detail_id'],
+                'matkul_id' => $request->mata_kuliah,
+                'jam_mulai' => $detail['jam_mulai'],
+                'jam_selesai' => $detail['jam_selesai'],
             ]);
         }
+
+        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil disimpan.');
     }
 
     /**
@@ -64,7 +90,7 @@ class JadwalController extends Controller
         $jadwal = Jadwal::with(['details' => function($query) {
             $query->orderBy('jadwal_hari')->orderBy('jadwal_jam_mulai');
         }])->findOrFail($id);
-        return view('master.jadwal.detail', compact('jadwal'));
+        return view('perkuliahan.jadwal.detail', compact('jadwal'));
     }
 
     /**
@@ -78,7 +104,7 @@ class JadwalController extends Controller
         $ruangKelas = RuangKelas::all();
         $hrs = Hr::all();
 
-        return view('master.jadwal.edit', compact('jadwal', 'paketMataKuliahs', 'ruangKelas', 'hrs'));
+        return view('perkuliahan.jadwal.edit', compact('jadwal', 'paketMataKuliahs', 'ruangKelas', 'hrs'));
     }
 
     public function update(JadwalRequest $request, Jadwal $jadwal)
