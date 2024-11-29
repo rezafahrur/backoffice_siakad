@@ -73,69 +73,87 @@ class LoginController extends Controller
             ->orderBy('t_hr_detail.created_at', 'desc')
             ->first();
 
+        $hr_detail = HrDetail::where('master_hr_id', $user->master_hr_id)->orderBy('created_at', 'desc')->first();
 
-        if (!$user || $user->otp !== $otp) {
-            // Jika OTP tidak valid, nullkan dan redirect dengan pesan kesalahan
-            HrDetail::where('master_hr_id', $user->master_hr_id)->update(['otp' => null, 'session_id' => null]);
-            return redirect()->route('login')->with('error', 'Ada kesalahan, silahkan coba lagi');
-        }
 
-        // Generate dan simpan password LMS baru
-        $passwordLMS = Str::random(8);
-        $user->password_lms = bcrypt($passwordLMS);
-        $user->save();
+        // if (!$user || $user->otp !== $otp) {
+        //     // Jika OTP tidak valid, nullkan dan redirect dengan pesan kesalahan
+        //     HrDetail::where('master_hr_id', $user->master_hr_id)->update(['otp' => null, 'session_id' => null]);
+        //     return redirect()->route('login')->with('error', 'Ada kesalahan, silahkan coba lagi');
+        // }
 
-        // Simpan kredensial LMS dalam session untuk memperbarui password LMS
-        session([
-            'update_lms_password' => true,
-            'lms_credentials' => [
-                'username' => $user->nik, // Menggunakan NIK dari t_ktp sebagai username
+        if ($user->otp == $otp) {
+            // Nullkan OTP setelah verifikasi berhasil
+            $hr_detail->otp = null;
+            $hr_detail->save();
+
+            // nuulkan model has role
+            $user->roles()->detach();
+
+            // Generate dan simpan password LMS baru
+            $passwordLMS = Str::random(8);
+            $user->password_lms = bcrypt($passwordLMS);
+            $user->save();
+
+            // Simpan kredensial LMS dalam session untuk memperbarui password LMS
+            session([
+                'update_lms_password' => true,
+                'lms_credentials' => [
+                    'username' => $user->nik, // Menggunakan NIK dari t_ktp sebagai username
+                    'password' => $passwordLMS,
+                ]
+            ]);
+
+            // Kirim password baru ke LMS
+            Http::post('https://lms.poltekbatu.ac.id/user/interpreterUpdatePasswordDARe5.php', [
+                'username' => $user->nik,
                 'password' => $passwordLMS,
-            ]
-        ]);
-        
-        // Kirim password baru ke LMS
-        Http::post('https://lms.poltekbatu.ac.id/user/interpreterUpdatePasswordDARe5.php', [
-            'username' => $user->nik,
-            'password' => $passwordLMS,
-        ]);
+            ]);
 
-        // Nullkan OTP setelah verifikasi berhasil
-        HrDetail::where('master_hr_id', $user->master_hr_id)->update(['otp' => null]);
+            // Kelola sesi, logout dari sesi sebelumnya jika ada
+            $new_session_id = Session::getId();
+            $last_session = Session::getHandler()->read($user->session_id);
+            if ($last_session) {
+                Session::getHandler()->destroy($user->session_id);
+                Auth::guard('hr')->logout();
+            }
 
-        // Kelola sesi, logout dari sesi sebelumnya jika ada
-        $new_session_id = Session::getId();
-        $last_session = Session::getHandler()->read($user->session_id);
-        if ($last_session) {
-            Session::getHandler()->destroy($user->session_id);
-            Auth::guard('hr')->logout();
-        }
+            //loginkan
+            $hr_detail->session_id = $new_session_id;
+            $hr_detail->save();
 
-        // Update sesi saat ini dan simpan informasi user dalam session
-        HrDetail::where('master_hr_id', $user->master_hr_id)->update(['session_id' => $new_session_id]);
-        Session::put([
-            'hr_id' => $user->master_hr_id,
-            'nama' => explode(" ", $user->nama)[0],
-            'nama_lengkap' => $user->gelar_depan . ' ' . $user->nama . ' ' . $user->gelar_belakang,
-            'posisi_id' => $user->position_id,
-            'posisi' => $user->posisi,
-            'photo_profile' => $user->photo_profile,
-        ]);
+            Session::put([
+                'hr_id' => $user->master_hr_id,
+                'nama' => explode(" ", $user->nama)[0],
+                'nama_lengkap' => $user->gelar_depan . ' ' . $user->nama . ' ' . $user->gelar_belakang,
+                'posisi_id' => $user->position_id,
+                'posisi' => $user->posisi,
+                'photo_profile' => $user->photo_profile,
+            ]);
 
-        // Loginkan user di sistem
-        Auth::guard('hr')->loginUsingId($user->master_hr_id);
+            // Loginkan user di sistem
+            Auth::guard('hr')->loginUsingId($user->master_hr_id);
 
-        // Assign role berdasarkan posisi
-        $roleName = $user->posisi;
-        $role = Role::where('name', $roleName)->first();
-        if ($role) {
-            $user->assignRole($role->name);
+            $user = Auth::guard('hr')->user();
+
+            // Assign role berdasarkan posisi
+            $roleName = $user->position->posisi;
+            $role = Role::where('name', $roleName)->first();
+            if ($role) {
+                $user->assignRole($role->name);
+            } else {
+                return redirect()->route('login')->with('error', 'Role tidak ditemukan.');
+            }
+
+            // Redirect ke halaman utama setelah login berhasil
+            return redirect()->route('/');
         } else {
-            return redirect()->route('login')->with('error', 'Role tidak ditemukan.');
-        }
+            $hr_detail->otp = null;
+            $hr_detail->session_id = null;
+            $hr_detail->save();
 
-        // Redirect ke halaman utama setelah login berhasil
-        return redirect()->route('/');
+            return redirect()->route('login')->with('error', 'Ada Yang Salah Dalam Link Anda');
+        }
     }
 
     public function clearLmsPasswordSession()
@@ -143,6 +161,7 @@ class LoginController extends Controller
         session()->forget('update_lms_password');
         return response()->json(['status' => 'session cleared']);
     }
+
     public function proxyUpdatePassword(Request $request)
     {
         try {

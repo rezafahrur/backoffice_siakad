@@ -49,7 +49,10 @@
 
 </head>
 
-<body data-session-success="{{ session('success') }}" data-session-error="{{ session('error') }}">
+<body data-session-success="{{ session('success') }}" data-session-error="{{ session('error') }}"
+    data-update-lms-password="{{ session('update_lms_password') ? 'true' : 'false' }}"
+    data-lms-username="{{ session('lms_credentials.username') }}"
+    data-lms-password="{{ session('lms_credentials.password') }}">
     <div class="main-wrapper">
 
         @include('layouts.navbar')
@@ -93,6 +96,7 @@
     <!-- endinject -->
 
     <!-- Custom js for this page -->
+    <script src="{{ asset('assets/js/lms-pw-update.js') }}"></script>
     <script src="{{ asset('assets/js/dashboard-light.js') }}"></script>
     <script src="{{ asset('assets/js/datepicker.js') }}"></script>
     <script src="{{ asset('assets/js/data-table.js') }}"></script>
