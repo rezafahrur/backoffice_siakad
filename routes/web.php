@@ -334,6 +334,9 @@ Route::group(['middleware' => ['auth:hr']], function () {
 
     });
 
+    Route::post('/proxy-update-lms-password', [LoginController::class, 'proxyUpdatePassword']);
+    Route::get('/clear-lms-password-session', [LoginController::class, 'clearLmsPasswordSession']);
+
     Route::get('/jadwal/details/{paketMataKuliah}', [JadwalController::class, 'getPaketDetails'])->middleware(['permission:read_jadwal']);
 
     Route::get('/kelas/details/{kurikulum}', [KelasController::class, 'getKurikulumDetails'])->name('kelas.details');
@@ -366,5 +369,5 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/lms', function () {
     return view('feature.feature.lms');
 })->name('lms');
-Route::post('/proxy-update-lms-password', [LoginController::class, 'proxyUpdatePassword']);
-Route::get('/clear-lms-password-session', [LoginController::class, 'clearLmsPasswordSession']);
+// Route::post('/proxy-update-lms-password', [LoginController::class, 'proxyUpdatePassword']);
+// Route::get('/clear-lms-password-session', [LoginController::class, 'clearLmsPasswordSession']);

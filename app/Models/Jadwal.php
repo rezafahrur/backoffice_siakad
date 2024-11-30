@@ -14,22 +14,17 @@ class Jadwal extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'semester_id',
-        'ruang_kelas_id',
+        'program_studi_id',
+        'kelas_id',
     ];
 
-    public function semester()
+    public function programStudi()
     {
-        return $this->belongsTo(Semester::class, 'semester_id', 'id');
+        return $this->belongsTo(ProgramStudi::class, 'program_studi_id', 'id');
     }
 
-    public function ruangKelas()
+    public function kelas()
     {
-        return $this->belongsTo(RuangKelas::class, 'ruang_kelas_id', 'id');
-    }
-
-    public function details()
-    {
-        return $this->hasMany(JadwalDetail::class, 'jadwal_id', 'id');
+        return $this->belongsTo(Kelas::class, 'kelas_id', 'id');
     }
 }
