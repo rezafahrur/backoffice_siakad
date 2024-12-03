@@ -73,6 +73,11 @@ class LoginController extends Controller
             ->orderBy('t_hr_detail.created_at', 'desc')
             ->first();
 
+        // Tambahkan pengecekan jika user tidak ditemukan atau master_hr_id null
+        if (!$user || is_null($user->master_hr_id)) {
+            return redirect()->route('login')->with('error', 'Data user tidak ditemukan atau tidak valid.');
+        }
+
         $hr_detail = HrDetail::where('master_hr_id', $user->master_hr_id)->orderBy('created_at', 'desc')->first();
 
 

@@ -13,7 +13,7 @@
                 {{ $semester_aktif->nama_semester ?? 'Semester not set' }}
             </button>
 
-            <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
+            {{-- <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="printer"></i>
                 Cetak
             </button>
@@ -21,7 +21,7 @@
             <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="download-cloud"></i>
                 Unduh Laporan
-            </button>
+            </button> --}}
 
             <a href="https://lms.poltekbatu.ac.id/login/interpreterAuthenticatorDARe5.php?u={{ session('lms_credentials.username') }}&p={{ session('lms_credentials.password') }}"
                 target="_blank" class="btn btn-primary btn-icon-text ms-2 mb-2 mb-md-0">
