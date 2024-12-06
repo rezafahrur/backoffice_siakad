@@ -321,6 +321,8 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::get('/nilai/exportKomponenEvaluasi', [NilaiController::class, 'exportKomponenEvaluasi'])->name('nilai.exportKomponenEvaluasi');
         // nilai import
         Route::post('/nilai/import', [NilaiController::class, 'import'])->name('nilai.import');
+        // nilai download template
+        Route::get('/nilai/template', [NilaiController::class, 'downloadTemplate'])->name('nilai.template');
 
         //jadwal-ujian
         Route::get('/jadwal-ujian', [JadwalUjianController::class, 'index'])->name('jadwal-ujian.index');
@@ -332,12 +334,14 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::get('/jadwal-ujian/{id}/show', [JadwalUjianController::class, 'show'])->name('jadwal-ujian.show');
         Route::get('/jadwal-ujian/get-matakuliah/{kelas_id}', [JadwalUjianController::class, 'getMatakuliah']);
 
+        //jadwal
+
     });
 
     Route::post('/proxy-update-lms-password', [LoginController::class, 'proxyUpdatePassword']);
     Route::get('/clear-lms-password-session', [LoginController::class, 'clearLmsPasswordSession']);
 
-    Route::get('/jadwal/details/{paketMataKuliah}', [JadwalController::class, 'getPaketDetails'])->middleware(['permission:read_jadwal']);
+    // Route::get('/jadwal/details/{paketMataKuliah}', [JadwalController::class, 'getPaketDetails'])->middleware(['permission:read_jadwal']);
 
     Route::get('/kelas/details/{kurikulum}', [KelasController::class, 'getKurikulumDetails'])->name('kelas.details');
 
@@ -349,6 +353,12 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/nilai/getKelasMataKuliah/{programStudiId}', [NilaiController::class, 'getKelasMataKuliah']);
     // get mahaasiswa
     Route::get('/nilai/get-mahasiswa/{kelasId}', [NilaiController::class, 'getMahasiswaByKelas']);
+    // Route untuk mendapatkan data kelas berdasarkan Program Studi
+    Route::get('/nilai/getKelas/{programStudiId}', [NilaiController::class, 'getKelasByProgramStudi']);
+
+    // Route untuk mendapatkan data mata kuliah berdasarkan Program Studi
+    Route::get('/matakuliah/{kelasId}', [NilaiController::class, 'getMatakuliahByKelas']);
+
 
     // prestasi
     Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index')->middleware(['permission:read_prestasi']);
