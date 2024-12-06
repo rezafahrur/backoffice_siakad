@@ -353,6 +353,12 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/nilai/getKelasMataKuliah/{programStudiId}', [NilaiController::class, 'getKelasMataKuliah']);
     // get mahaasiswa
     Route::get('/nilai/get-mahasiswa/{kelasId}', [NilaiController::class, 'getMahasiswaByKelas']);
+    // Route untuk mendapatkan data kelas berdasarkan Program Studi
+    Route::get('/nilai/getKelas/{programStudiId}', [NilaiController::class, 'getKelasByProgramStudi']);
+
+    // Route untuk mendapatkan data mata kuliah berdasarkan Program Studi
+    Route::get('/matakuliah/{kelasId}', [NilaiController::class, 'getMatakuliahByKelas']);
+
 
     // prestasi
     Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index')->middleware(['permission:read_prestasi']);

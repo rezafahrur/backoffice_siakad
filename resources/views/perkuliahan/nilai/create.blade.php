@@ -19,7 +19,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="card-title">Form Tambah Nilai</h4>
                 <a href="{{ route('nilai.template') }}" class="btn btn-success">
-                    <i class="fa fa-download"></i> Tempelet Nilai
+                    <i class="fa fa-download"></i> Templete Nilai
                 </a>
             </div>
             <form action="{{ route('nilai.store') }}" method="post" enctype="multipart/form-data">
@@ -108,7 +108,8 @@
             const programStudiId = this.value;
 
             if (programStudiId) {
-                fetch(`/nilai/getKelasMataKuliah/${programStudiId}`)
+                // Ambil data kelas berdasarkan program studi
+                fetch(`/nilai/getKelas/${programStudiId}`)
                     .then(response => response.json())
                     .then(data => {
                         const kelasSelect = document.getElementById('kelas');
@@ -123,12 +124,6 @@
                             kelasSelect.innerHTML +=
                                 `<option value="${kelas.id}">${kelas.nama_kelas}</option>`;
                         });
-
-                        // Tambah opsi baru untuk Mata Kuliah
-                        data.matakuliah.forEach(matakuliah => {
-                            matakuliahSelect.innerHTML +=
-                                `<option value="${matakuliah.id}">${matakuliah.nama_matakuliah}</option>`;
-                        });
                     });
             } else {
                 // Kosongkan dropdown jika Program Studi tidak dipilih
@@ -137,6 +132,67 @@
                     '<option value="">-- Pilih Mata Kuliah --</option>';
             }
         });
+
+        document.getElementById('kelas').addEventListener('change', function() {
+            const kelasId = this.value;
+
+            if (kelasId) {
+                // Ambil data mata kuliah berdasarkan kelas
+                fetch(`/matakuliah/${kelasId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const matakuliahSelect = document.getElementById('matakuliah');
+
+                        // Hapus opsi sebelumnya
+                        matakuliahSelect.innerHTML = '<option value="">-- Pilih Mata Kuliah --</option>';
+
+                        // Tambah opsi baru untuk Mata Kuliah
+                        data.matakuliah.forEach(matakuliah => {
+                            matakuliahSelect.innerHTML +=
+                                `<option value="${matakuliah.id}">${matakuliah.nama_matakuliah}</option>`;
+                        });
+                    });
+            } else {
+                // Kosongkan dropdown Mata Kuliah jika Kelas tidak dipilih
+                document.getElementById('matakuliah').innerHTML =
+                    '<option value="">-- Pilih Mata Kuliah --</option>';
+            }
+        });
+
+
+        // document.getElementById('program_studi').addEventListener('change', function() {
+        //     const programStudiId = this.value;
+
+        //     if (programStudiId) {
+        //         fetch(`/nilai/getKelasMataKuliah/${programStudiId}`)
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 const kelasSelect = document.getElementById('kelas');
+        //                 const matakuliahSelect = document.getElementById('matakuliah');
+
+        //                 // Hapus opsi sebelumnya
+        //                 kelasSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+        //                 matakuliahSelect.innerHTML = '<option value="">-- Pilih Mata Kuliah --</option>';
+
+        //                 // Tambah opsi baru untuk Kelas
+        //                 data.kelas.forEach(kelas => {
+        //                     kelasSelect.innerHTML +=
+        //                         `<option value="${kelas.id}">${kelas.nama_kelas}</option>`;
+        //                 });
+
+        //                 // Tambah opsi baru untuk Mata Kuliah
+        //                 data.matakuliah.forEach(matakuliah => {
+        //                     matakuliahSelect.innerHTML +=
+        //                         `<option value="${matakuliah.id}">${matakuliah.nama_matakuliah}</option>`;
+        //                 });
+        //             });
+        //     } else {
+        //         // Kosongkan dropdown jika Program Studi tidak dipilih
+        //         document.getElementById('kelas').innerHTML = '<option value="">-- Pilih Kelas --</option>';
+        //         document.getElementById('matakuliah').innerHTML =
+        //             '<option value="">-- Pilih Mata Kuliah --</option>';
+        //     }
+        // });
 
         document.getElementById('kelas').addEventListener('change', function() {
             const kelasId = this.value;
