@@ -16,10 +16,14 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Form Tambah Nilai</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="card-title">Form Tambah Nilai</h4>
+                <a href="{{ route('nilai.template') }}" class="btn btn-success">
+                    <i class="fa fa-download"></i> Tempelet Nilai
+                </a>
+            </div>
             <form action="{{ route('nilai.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
-
                 <!-- Pilih Program Studi -->
                 <div class="mb-3">
                     <label for="program_studi">Program Studi</label>

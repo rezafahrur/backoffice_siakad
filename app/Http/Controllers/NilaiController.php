@@ -38,6 +38,21 @@ class NilaiController extends Controller
         return Excel::download(new NilaiKomponenEvaluasiExport, 'nilai_komponen_evaluasi.xlsx');
     }
 
+    public function downloadTemplate()
+    {
+        // file template di public/template/nilai.xlsx
+        $filePath = public_path('templetes/templete_nilai.xlsx'); // Sesuaikan path sesuai folder Anda
+        $fileName = 'template_nilai.xlsx';
+
+        if (!file_exists($filePath)) {
+            return redirect()->back()->with('error', 'File template tidak ditemukan.');
+        }
+
+        return response()->download($filePath, $fileName, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ]);
+    }
+
     public function import(Request $request)
     {
         try {
