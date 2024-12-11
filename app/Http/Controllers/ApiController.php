@@ -132,4 +132,17 @@ class ApiController extends Controller
         
         return $response['data'];
     }
+
+    public function getNoKebutuhanKhusus($request)
+    {
+        $response = $this->GetWebServices("GetKebutuhanKhusus", "id_kebutuhan_khusus = '$request'");
+        
+        if (isset($response['data'])) {
+            $response['data'] = array_map(function ($item) {
+                return $item['nama_kebutuhan_khusus'];
+            }, $response['data']);
+        }
+        
+        return $response['data'];
+    }
 }

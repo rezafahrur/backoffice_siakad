@@ -18,6 +18,10 @@ class MahasiswaRequest extends FormRequest
 
     public function rules(): array
     {
+        $this->merge([
+            'wali_nama_2' => $this->wali_nama_hidup_2 ?? $this->wali_nama_meninggal_2,
+        ]);
+
         if ($this->isMethod('post')) {
             return $this->createRules();
         }
@@ -47,6 +51,9 @@ class MahasiswaRequest extends FormRequest
             'terima_kps' => 'required|string|max:1',
             'no_kps' => 'nullable|string|max:30|required_if:terima_kps,1',
             'kebutuhan_khusus_mahasiswa' => 'nullable|array',
+            'alamat_dusun' => 'nullable|string|max:50',
+            'kelurahan' => 'nullable|string|max:50',
+            'kecamatan' => 'nullable|string|max:50',
             'is_filled' => 'required|integer|max:1',
             'nik' => 'required|string|max:16|unique:t_ktp,nik',
             'alamat_jalan' => 'required|string|max:128',
@@ -147,6 +154,9 @@ class MahasiswaRequest extends FormRequest
             'no_kps' => 'nullable|string|max:30|required_if:terima_kps,1',
             'is_filled' => 'required|integer|max:1',
             'kebutuhan_khusus_mahasiswa' => 'nullable|array',
+            'alamat_dusun' => 'nullable|string|max:50',
+            'kelurahan' => 'nullable|string|max:50',
+            'kecamatan' => 'nullable|string|max:50',
             'nik' => 'required|string|max:16|unique:t_ktp,nik,' . $mahasiswa->ktp_id,
             'alamat_jalan' => 'required|string|max:128',
             'alamat_rt' => 'required|string|max:3',

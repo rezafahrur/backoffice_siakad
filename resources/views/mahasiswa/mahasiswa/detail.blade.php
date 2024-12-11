@@ -70,11 +70,15 @@
 
                                     {{-- Jenis Tinggal --}}
                                     <dt class="col-sm-4">Jenis Tinggal</dt>
-                                    <dd class="col-sm-8">{{ $mahasiswa->jenis_tinggal }}</dd>
+                                    <dd class="col-sm-8">
+                                        {{ $filteredData['mahasiswa']['jenis_tinggal']['nama_jenis_tinggal'] ?? '-' }}
+                                    </dd>
 
                                     {{-- Alat Transportasi --}}
                                     <dt class="col-sm-4">Alat Transportasi</dt>
-                                    <dd class="col-sm-8">{{ $mahasiswa->alat_transportasi }}</dd>
+                                    <dd class="col-sm-8">
+                                        {{ $filteredData['mahasiswa']['alat_transportasi']['nama_alat_transportasi'] ?? '-' }}
+                                    </dd>
                                 </dl>
                             </div>
                             <div class="col-md-6">
@@ -199,7 +203,9 @@
 
                                     {{-- Agama --}}
                                     <dt class="col-sm-4">Agama</dt>
-                                    <dd class="col-sm-8">{{ $mahasiswa->ktp->agama }}</dd>
+                                    <dd class="col-sm-8">
+                                        {{ $filteredData['ktp']['agama']['nama_agama'] ?? '-' }}
+                                    </dd>
 
                                     {{-- Golongan Darah --}}
                                     <dt class="col-sm-4">Golongan Darah</dt>
@@ -207,7 +213,9 @@
 
                                     {{-- Kewarganegaraan --}}
                                     <dt class="col-sm-4">Kewarganegaraan</dt>
-                                    <dd class="col-sm-8">{{ $mahasiswa->ktp->kewarganegaraan }}</dd>
+                                    <dd class="col-sm-8">
+                                        {{ $filteredData['ktp']['negara']['nama_negara'] ?? '-' }}
+                                    </dd>
                                 </div>
                             </div>
                         </div>
@@ -248,21 +256,40 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if ($wali1Detail)
-                                                @foreach ($wali1Detail as $detail)
-                                                    <tr>
-                                                        <td>{{ $detail->hp ?? '-' }}</td>
-                                                        <td>{{ $detail->alamat_domisili ?? '-' }}</td>
-                                                        <td>{{ $detail->pekerjaan ?? '-' }}</td>
-                                                        <td>{{ $detail->penghasilan ?? '-' }}</td>
-                                                        <td>{{ $detail->pendidikan ?? '-' }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            @else
+                                            @forelse ($wali1Detail as $detail)
+                                                <tr>
+                                                    <td>{{ $detail->hp ?? '-' }}</td>
+                                                    <td>{{ $detail->alamat_domisili ?? '-' }}</td>
+                                                    <td>
+                                                        @if (isset($filteredData['wali1']['pekerjaan']) && is_array($filteredData['wali1']['pekerjaan']))
+                                                            {{-- Jika pekerjaan adalah array, gabungkan nama_pekerjaan dari setiap elemen array --}}
+                                                            {{ implode(', ', array_map(fn($item) => $item['nama_pekerjaan'] ?? '-', $filteredData['wali1']['pekerjaan'])) }}
+                                                        @else
+                                                            {{ $detail->pekerjaan ?? '-' }}
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if (isset($filteredData['wali1']['penghasilan']) && is_array($filteredData['wali1']['penghasilan']))
+                                                            {{-- Jika penghasilan adalah array, gabungkan nama_penghasilan dari setiap elemen array --}}
+                                                            {{ implode(', ', array_map(fn($item) => $item['nama_penghasilan'] ?? '-', $filteredData['wali1']['penghasilan'])) }}
+                                                        @else
+                                                            {{ $detail->penghasilan ?? '-' }}
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if (isset($filteredData['wali1']['jenjang_didik']) && is_array($filteredData['wali1']['jenjang_didik']))
+                                                            {{-- Jika pendidikan adalah array, gabungkan nama_pendidikan dari setiap elemen array --}}
+                                                            {{ implode(', ', array_map(fn($item) => $item['nama_jenjang_didik'] ?? '-', $filteredData['wali1']['jenjang_didik'])) }}
+                                                        @else
+                                                            {{ $detail->pendidikan ?? '-' }}
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @empty
                                                 <tr>
                                                     <td colspan="5">Data tidak tersedia</td>
                                                 </tr>
-                                            @endif
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>
@@ -285,22 +312,23 @@
 
                                     {{-- Provinsi --}}
                                     <dt class="col-sm-4">Provinsi</dt>
-                                    <dd class="col-sm-8">{{ $wali1province ? $wali1province->name : 'Tidak Diketahui' }}
-                                    </dd>
+                                    <dd class="col-sm-8">
+                                        {{ $wali1->ktp->province ? $wali1->ktp->province->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kota/Kabupaten --}}
                                     <dt class="col-sm-4">Kota/Kabupaten</dt>
-                                    <dd class="col-sm-8">{{ $wali1city ? $wali1city->name : 'Tidak Diketahui' }}</dd>
+                                    <dd class="col-sm-8">
+                                        {{ $wali1->ktp->city ? $wali1->ktp->city->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kecamatan --}}
                                     <dt class="col-sm-4">Kecamatan</dt>
-                                    <dd class="col-sm-8">{{ $wali1district ? $wali1district->name : 'Tidak Diketahui' }}
-                                    </dd>
+                                    <dd class="col-sm-8">
+                                        {{ $wali1->ktp->district ? $wali1->ktp->district->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kelurahan/Desa --}}
                                     <dt class="col-sm-4">Kelurahan/Desa</dt>
-                                    <dd class="col-sm-8">{{ $wali1village ? $wali1village->name : 'Tidak Diketahui' }}
-                                    </dd>
+                                    <dd class="col-sm-8">
+                                        {{ $wali1->ktp->village ? $wali1->ktp->village->name : 'Tidak Diketahui' }}</dd>
                                 </dl>
                             </div>
 
@@ -322,7 +350,9 @@
 
                                     {{-- Agama --}}
                                     <dt class="col-sm-4">Agama</dt>
-                                    <dd class="col-sm-8">{{ $wali1->ktp->agama ?? '-' }}</dd>
+                                    <dd class="col-sm-8">
+                                        {{ $filteredData['wali1']['agama']['nama_agama'] ?? '-' }}
+                                    </dd>
 
                                     {{-- Golongan Darah --}}
                                     <dt class="col-sm-4">Golongan Darah</dt>
@@ -330,7 +360,9 @@
 
                                     {{-- Kewarganegaraan --}}
                                     <dt class="col-sm-4">Kewarganegaraan</dt>
-                                    <dd class="col-sm-8">{{ $wali1->ktp->kewarganegaraan ?? '-' }}</dd>
+                                    <dd class="col-sm-8">
+                                        {{ $filteredData['wali1']['negara']['nama_negara'] ?? '-' }}
+                                    </dd>
                                 </div>
                             </div>
                         </div>
@@ -375,9 +407,30 @@
                                                     <tr>
                                                         <td>{{ $detail->hp ?? '-' }}</td>
                                                         <td>{{ $detail->alamat_domisili ?? '-' }}</td>
-                                                        <td>{{ $detail->pekerjaan ?? '-' }}</td>
-                                                        <td>{{ $detail->penghasilan ?? '-' }}</td>
-                                                        <td>{{ $detail->pendidikan ?? '-' }}</td>
+                                                        <td>
+                                                            @if (isset($filteredData['wali2']['pekerjaan']) && is_array($filteredData['wali1']['pekerjaan']))
+                                                                {{-- Jika pekerjaan adalah array, gabungkan nama_pekerjaan dari setiap elemen array --}}
+                                                                {{ implode(', ', array_map(fn($item) => $item['nama_pekerjaan'] ?? '-', $filteredData['wali1']['pekerjaan'])) }}
+                                                            @else
+                                                                {{ $detail->pekerjaan ?? '-' }}
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if (isset($filteredData['wali2']['penghasilan']) && is_array($filteredData['wali1']['penghasilan']))
+                                                                {{-- Jika penghasilan adalah array, gabungkan nama_penghasilan dari setiap elemen array --}}
+                                                                {{ implode(', ', array_map(fn($item) => $item['nama_penghasilan'] ?? '-', $filteredData['wali1']['penghasilan'])) }}
+                                                            @else
+                                                                {{ $detail->penghasilan ?? '-' }}
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            @if (isset($filteredData['wali2']['jenjang_didik']) && is_array($filteredData['wali1']['jenjang_didik']))
+                                                                {{-- Jika pendidikan adalah array, gabungkan nama_pendidikan dari setiap elemen array --}}
+                                                                {{ implode(', ', array_map(fn($item) => $item['nama_jenjang_didik'] ?? '-', $filteredData['wali1']['jenjang_didik'])) }}
+                                                            @else
+                                                                {{ $detail->pendidikan ?? '-' }}
+                                                            @endif
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             @else
@@ -429,22 +482,23 @@
 
                                     {{-- Provinsi --}}
                                     <dt class="col-sm-4">Provinsi</dt>
-                                    <dd class="col-sm-8">{{ $wali2province ? $wali2province->name : 'Tidak Diketahui' }}
-                                    </dd>
+                                    <dd class="col-sm-8">
+                                        {{ $wali1->ktp->province ? $wali1->ktp->province->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kota/Kabupaten --}}
                                     <dt class="col-sm-4">Kota/Kabupaten</dt>
-                                    <dd class="col-sm-8">{{ $wali2city ? $wali2city->name : 'Tidak Diketahui' }}</dd>
+                                    <dd class="col-sm-8">
+                                        {{ $wali1->ktp->city ? $wali1->ktp->city->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kecamatan --}}
                                     <dt class="col-sm-4">Kecamatan</dt>
-                                    <dd class="col-sm-8">{{ $wali2district ? $wali2district->name : 'Tidak Diketahui' }}
-                                    </dd>
+                                    <dd class="col-sm-8">
+                                        {{ $wali1->ktp->district ? $wali1->ktp->district->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kelurahan/Desa --}}
                                     <dt class="col-sm-4">Kelurahan/Desa</dt>
-                                    <dd class="col-sm-8">{{ $wali2village ? $wali2village->name : 'Tidak Diketahui' }}
-                                    </dd>
+                                    <dd class="col-sm-8">
+                                        {{ $wali1->ktp->village ? $wali1->ktp->village->name : 'Tidak Diketahui' }}</dd>
                                 </dl>
                             </div>
 
@@ -466,7 +520,9 @@
 
                                     {{-- Agama --}}
                                     <dt class="col-sm-4">Agama</dt>
-                                    <dd class="col-sm-8">{{ $wali2->ktp->agama ?? '-' }}</dd>
+                                    <dd class="col-sm-8">
+                                        {{ $filteredData['wali2']['agama']['nama_agama'] ?? '-' }}
+                                    </dd>
 
                                     {{-- Golongan Darah --}}
                                     <dt class="col-sm-4">Golongan Darah</dt>
@@ -474,7 +530,9 @@
 
                                     {{-- Kewarganegaraan --}}
                                     <dt class="col-sm-4">Kewarganegaraan</dt>
-                                    <dd class="col-sm-8">{{ $wali2->ktp->kewarganegaraan ?? '-' }}</dd>
+                                    <dd class="col-sm-8">
+                                        {{ $filteredData['wali2']['negara']['nama_negara'] ?? '-' }}
+                                    </dd>
                                 </div>
                             </div>
                         </div>
@@ -511,89 +569,49 @@
 
                                     {{-- Pekerjaan --}}
                                     <dt class="col-sm-4">Pekerjaan</dt>
-                                    <dd class="col-sm-8">{{ $mahasiswa->pekerjaan_kontak_darurat }}</dd>
+                                    <dd class="col-sm-8">{{ $filteredData['kontak_darurat']['pekerjaan']['nama_pekerjaan'] ?? '-' }}</dd>
 
                                     {{-- Penghasilan --}}
                                     <dt class="col-sm-4">Penghasilan</dt>
-                                    <dd class="col-sm-8">{{ $mahasiswa->penghasilan_kontak_darurat }}</dd>
+                                    <dd class="col-sm-8">{{ $filteredData['kontak_darurat']['penghasilan']['nama_penghasilan'] ?? '-' }}</dd>
 
                                     {{-- Pendidikan Terakhir --}}
                                     <dt class="col-sm-4">Pendidikan Terakhir</dt>
-                                    <dd class="col-sm-8">{{ $mahasiswa->pendidikan_kontak_darurat }}</dd>
+                                    <dd class="col-sm-8">{{ $filteredData['kontak_darurat']['jenjang_didik']['nama_jenjang_didik'] ?? '-' }}</dd>
                                 </dl>
                             </div>
                         </div>
                     </div>
 
                     <!-- Kebutuhan Khusus -->
-                    <div class="tab-pane fade" id="pills-kebutuhan" role="tabpanel"
-                        aria-labelledby="pills-kebutuhan-tab">
-                        <div class="col-md-12 mb-3">
-                            <div class="row">
-                                <!-- Kebutuhan Khusus Mahasiswa -->
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <div class="card-header bg-primary text-white">
-                                            <i data-feather="user"></i> MAHASISWA
-                                        </div>
-                                        <div class="card-body">
-                                            @foreach (['1' => 'A - Tuna Netra', '2' => 'B - Tuna Rungu', '3' => 'C - Tuna Grahita Ringan', '4' => 'C1 - Tuna Grahita Sedang', '5' => 'D - Tuna Daksa Ringan', '6' => 'D1 - Tuna Daksa Sedang'] as $key => $value)
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="kebutuhan_khusus_mahasiswa"
-                                                        name="kebutuhan_khusus_mahasiswa[]" value="{{ $key }}"
-                                                        {{ in_array($key, $mahasiswaKebutuhanKhusus) ? 'checked' : '' }}
-                                                        disabled>
-                                                    <label class="form-check"
-                                                        for="kebutuhan_khusus_mahasiswa_{{ $key }}">{{ $value }}</label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Kebutuhan Khusus Ayah -->
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <div class="card-header bg-success text-white">
-                                            <i data-feather="user"></i> AYAH
-                                        </div>
-                                        <div class="card-body">
-                                            @foreach (['1' => 'A - Tuna Netra', '2' => 'B - Tuna Rungu', '3' => 'C - Tuna Grahita Ringan', '4' => 'C1 - Tuna Grahita Sedang', '5' => 'D - Tuna Daksa Ringan', '6' => 'D1 - Tuna Daksa Sedang'] as $key => $value)
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="kebutuhan_khusus_ayah" name="kebutuhan_khusus_ayah[]"
-                                                        value="{{ $key }}"
-                                                        {{ in_array($key, $wali1KebutuhanKhusus) ? 'checked' : '' }}
-                                                        disabled>
-                                                    <label class="form-check"
-                                                        for="kebutuhan_khusus_ayah_{{ $key }}">{{ $value }}</label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Kebutuhan Khusus Ibu -->
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <div class="card-header bg-secondary text-white">
-                                            <i data-feather="user"></i> IBU
-                                        </div>
-                                        <div class="card-body">
-                                            @foreach (['1' => 'A - Tuna Netra', '2' => 'B - Tuna Rungu', '3' => 'C - Tuna Grahita Ringan', '4' => 'C1 - Tuna Grahita Sedang', '5' => 'D - Tuna Daksa Ringan', '6' => 'D1 - Tuna Daksa Sedang'] as $key => $value)
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="kebutuhan_khusus_ibu" name="kebutuhan_khusus_ibu[]"
-                                                        value="{{ $key }}"
-                                                        {{ in_array($key, $wali2KebutuhanKhusus) ? 'checked' : '' }}
-                                                        disabled>
-                                                    <label class="form-check"
-                                                        for="kebutuhan_khusus_ibu_{{ $key }}">{{ $value }}</label>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
+                    <div class="tab-pane fade" id="pills-kebutuhan" role="tabpanel" aria-labelledby="pills-kebutuhan-tab">
+                        <!-- Kolom Kebutuhan Khusus -->
+                        <div class="row">
+                            <h4 class="card-title">Kebutuhan Khusus</h4>
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Kategori</th>
+                                                <th scope="col">Keterangan</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Kebutuhan Khusus Mahasiswa</td>
+                                                <td>{{ $filteredData['mahasiswa']['kebutuhan_khusus'][0] ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kebutuhan Khusus Ayah</td>
+                                                <td>{{ $filteredData['wali1']['kebutuhan_khusus'][0] ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kebutuhan Khusus Ibu</td>
+                                                <td>{{ $filteredData['wali2']['kebutuhan_khusus'][0] ?? '-' }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>

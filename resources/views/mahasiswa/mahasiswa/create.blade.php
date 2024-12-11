@@ -1010,6 +1010,9 @@
 
                 <br id="br_ktp_ayah" style="display: none;">
 
+                {{-- Nama Ibu --}}
+                <input type="hidden" value="" id="wali_nama_2" name="wali_nama_2">
+
                 {{-- Form Wali Mahasiswa Ibu --}}
                 <div class="card" id="form_wali_ibu" style="display: none;">
                     <div class="card-body">
@@ -1017,12 +1020,12 @@
                         <div class="row">
                             {{-- Nama Wali --}}
                             <div class="col-md-6 mb-3">
-                                <label for="wali_nama_2" class="form-label">Nama</label>
-                                <input type="text" class="form-control @error('wali_nama_2') is-invalid @enderror"
-                                    id="wali_nama_2" name="wali_nama_2" placeholder="Nama Wali"
-                                    value="{{ old('wali_nama_2') ? strtoupper(old('wali_nama_2')) : '' }}"
+                                <label for="wali_nama_hidup_2" class="form-label">Nama</label>
+                                <input type="text" class="form-control @error('wali_nama_hidup_2') is-invalid @enderror"
+                                    id="wali_nama_hidup_2" name="wali_nama_hidup_2" placeholder="Nama Wali"
+                                    value="{{ old('wali_nama_hidup_2') ? strtoupper(old('wali_nama_hidup_2')) : '' }}"
                                     oninput="this.value = this.value.toUpperCase()">
-                                @error('wali_nama_2')
+                                @error('wali_nama_hidup_2')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -1138,12 +1141,12 @@
                         <div class="row">
                             {{-- Nama Wali --}}
                             <div class="col-md-6 mb-3">
-                                <label for="wali_nama_2" class="form-label">Nama</label>
-                                <input type="text" class="form-control @error('wali_nama_2') is-invalid @enderror"
-                                    id="wali_nama_2" name="wali_nama_2" placeholder="Nama Wali"
-                                    value="{{ old('wali_nama_2') ? strtoupper(old('wali_nama_2')) : '' }}"
+                                <label for="wali_nama_meninggal_2" class="form-label">Nama</label>
+                                <input type="text" class="form-control @error('wali_nama_meninggal_2') is-invalid @enderror"
+                                    id="wali_nama_meninggal_2" name="wali_nama_meninggal_2" placeholder="Nama Wali"
+                                    value="{{ old('wali_nama_meninggal_2') ? strtoupper(old('wali_nama_meninggal_2')) : '' }}"
                                     oninput="this.value = this.value.toUpperCase()">
-                                @error('wali_nama_2')
+                                @error('wali_nama_meninggal_2')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
