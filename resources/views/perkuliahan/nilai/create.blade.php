@@ -16,10 +16,14 @@
 
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Form Tambah Nilai</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="card-title">Form Tambah Nilai</h4>
+                <a href="{{ route('nilai.template') }}" class="btn btn-success">
+                    <i class="fa fa-download"></i> Templete Nilai
+                </a>
+            </div>
             <form action="{{ route('nilai.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
-
                 <!-- Pilih Program Studi -->
                 <div class="mb-3">
                     <label for="program_studi">Program Studi</label>
@@ -46,7 +50,14 @@
                         <option value="">-- Pilih Mata Kuliah --</option>
                     </select>
                 </div>
-
+                <div class="mb-3" id="import-section" hidden>
+                    <label for="import_excel">Import Nilai</label>
+                    <div class="d-flex align-items-center">
+                        <input type="file" id="import_excel" name="import_excel" class="form-control me-2"
+                            accept=".xlsx, .xls, .csv">
+                        <button id="importButton" type="button" class="btn btn-success">Import</button>
+                    </div>
+                </div>
                 <div id="mahasiswa-list">
                     <h4 class="card-title">Input Nilai Mahasiswa</h4>
                     <table class="table table-bordered mb-3" id="nilai-table">
@@ -97,7 +108,8 @@
             const programStudiId = this.value;
 
             if (programStudiId) {
-                fetch(`/nilai/getKelasMataKuliah/${programStudiId}`)
+                // Ambil data kelas berdasarkan program studi
+                fetch(`/nilai/getKelas/${programStudiId}`)
                     .then(response => response.json())
                     .then(data => {
                         const kelasSelect = document.getElementById('kelas');
@@ -112,12 +124,6 @@
                             kelasSelect.innerHTML +=
                                 `<option value="${kelas.id}">${kelas.nama_kelas}</option>`;
                         });
-
-                        // Tambah opsi baru untuk Mata Kuliah
-                        data.matakuliah.forEach(matakuliah => {
-                            matakuliahSelect.innerHTML +=
-                                `<option value="${matakuliah.id}">${matakuliah.nama_matakuliah}</option>`;
-                        });
                     });
             } else {
                 // Kosongkan dropdown jika Program Studi tidak dipilih
@@ -126,6 +132,67 @@
                     '<option value="">-- Pilih Mata Kuliah --</option>';
             }
         });
+
+        document.getElementById('kelas').addEventListener('change', function() {
+            const kelasId = this.value;
+
+            if (kelasId) {
+                // Ambil data mata kuliah berdasarkan kelas
+                fetch(`/matakuliah/${kelasId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const matakuliahSelect = document.getElementById('matakuliah');
+
+                        // Hapus opsi sebelumnya
+                        matakuliahSelect.innerHTML = '<option value="">-- Pilih Mata Kuliah --</option>';
+
+                        // Tambah opsi baru untuk Mata Kuliah
+                        data.matakuliah.forEach(matakuliah => {
+                            matakuliahSelect.innerHTML +=
+                                `<option value="${matakuliah.id}">${matakuliah.nama_matakuliah}</option>`;
+                        });
+                    });
+            } else {
+                // Kosongkan dropdown Mata Kuliah jika Kelas tidak dipilih
+                document.getElementById('matakuliah').innerHTML =
+                    '<option value="">-- Pilih Mata Kuliah --</option>';
+            }
+        });
+
+
+        // document.getElementById('program_studi').addEventListener('change', function() {
+        //     const programStudiId = this.value;
+
+        //     if (programStudiId) {
+        //         fetch(`/nilai/getKelasMataKuliah/${programStudiId}`)
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 const kelasSelect = document.getElementById('kelas');
+        //                 const matakuliahSelect = document.getElementById('matakuliah');
+
+        //                 // Hapus opsi sebelumnya
+        //                 kelasSelect.innerHTML = '<option value="">-- Pilih Kelas --</option>';
+        //                 matakuliahSelect.innerHTML = '<option value="">-- Pilih Mata Kuliah --</option>';
+
+        //                 // Tambah opsi baru untuk Kelas
+        //                 data.kelas.forEach(kelas => {
+        //                     kelasSelect.innerHTML +=
+        //                         `<option value="${kelas.id}">${kelas.nama_kelas}</option>`;
+        //                 });
+
+        //                 // Tambah opsi baru untuk Mata Kuliah
+        //                 data.matakuliah.forEach(matakuliah => {
+        //                     matakuliahSelect.innerHTML +=
+        //                         `<option value="${matakuliah.id}">${matakuliah.nama_matakuliah}</option>`;
+        //                 });
+        //             });
+        //     } else {
+        //         // Kosongkan dropdown jika Program Studi tidak dipilih
+        //         document.getElementById('kelas').innerHTML = '<option value="">-- Pilih Kelas --</option>';
+        //         document.getElementById('matakuliah').innerHTML =
+        //             '<option value="">-- Pilih Mata Kuliah --</option>';
+        //     }
+        // });
 
         document.getElementById('kelas').addEventListener('change', function() {
             const kelasId = this.value;
@@ -259,5 +326,88 @@
         document.getElementById('nilai-table').addEventListener('input', function(e) {
             calculateGradeAndIndex();
         });
+
+        // import data excel
+        document.getElementById('importButton').addEventListener('click', function() {
+            const fileInput = document.getElementById('import_excel');
+            const formData = new FormData();
+            const programStudiId = document.getElementById('program_studi').value;
+            const kelasId = document.getElementById('kelas').value;
+            const matakuliahId = document.getElementById('matakuliah').value;
+
+            if (!programStudiId || !kelasId || !matakuliahId) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: 'Silakan pilih Program Studi, Kelas, dan Mata Kuliah sebelum mengimpor nilai.',
+                });
+                return;
+            }
+
+            if (!fileInput.files[0]) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: 'Silakan pilih file Excel untuk mengimpor nilai.',
+                });
+                return;
+            }
+
+            formData.append('file', fileInput.files[0]);
+            formData.append('program_studi_id', programStudiId);
+            formData.append('kelas_id', kelasId);
+            formData.append('matakuliah_id', matakuliahId);
+
+            fetch('/kuliah/nilai/import', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: data.message,
+                        }).then(() => location.reload());
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: data.message,
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal',
+                        text: 'Terjadi kesalahan saat mengimpor data.',
+                    });
+                });
+        });
+
+        function toggleImportSection() {
+            const programStudiId = document.getElementById('program_studi').value;
+            const kelasId = document.getElementById('kelas').value;
+            const matakuliahId = document.getElementById('matakuliah').value;
+
+            const importSection = document.getElementById('import-section');
+
+            if (programStudiId && kelasId && matakuliahId) {
+                importSection.hidden = false; // Tampilkan section jika semua dropdown terisi
+            } else {
+                importSection.hidden = true; // Sembunyikan jika ada yang kosong
+            }
+        }
+
+        // Tambahkan event listener pada dropdown untuk memanggil toggleImportSection
+        document.getElementById('program_studi').addEventListener('change', toggleImportSection);
+        document.getElementById('kelas').addEventListener('change', toggleImportSection);
+        document.getElementById('matakuliah').addEventListener('change', toggleImportSection);
     </script>
 @endpush

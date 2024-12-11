@@ -212,7 +212,6 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="">Absensi</a>
                                     </li>
-                                    {{-- @endcan --}}
                                 </ul>
                             </div>
                             <div class="col-md-8">
@@ -236,6 +235,11 @@
                                                 Perkuliahan</a>
                                         </li>
                                     @endcan
+
+                                    <li class="nav-item {{ Request::is('kuliah/jadwal-ujian*') ? 'active' : '' }}">
+                                        <a class="nav-link" href="{{ route('jadwal-ujian.index') }}">Jadwal Ujian</a>
+                                    </li>
+
                                 </ul>
                             </div>
                         </div>
@@ -259,7 +263,8 @@
 
                             {{-- @can('read_kuisioner_akademik') --}}
                             <li class="nav-item {{ Request::is('kuisioner/kuisioner-akademik*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('kuisioner-akademik.index') }}">Kuisioner Akademik</a>
+                                <a class="nav-link" href="{{ route('kuisioner-akademik.index') }}">Kuisioner
+                                    Akademik</a>
                             </li>
                             {{-- @endcan --}}
                         </ul>

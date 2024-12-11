@@ -6,11 +6,13 @@ use App\Models\Krs;
 use App\Models\Kelas;
 use App\Models\Nilai;
 use App\Models\MataKuliah;
+use App\Models\KelasDetail;
+use App\Exports\NilaiExport;
+use App\Imports\NilaiImport;
 use App\Models\ProgramStudi;
 use Illuminate\Http\Request;
 use App\Http\Requests\NilaiRequest;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\NilaiExport;
 use App\Exports\NilaiKomponenEvaluasiExport;
 
 class NilaiController extends Controller
@@ -35,6 +37,40 @@ class NilaiController extends Controller
     public function exportKomponenEvaluasi()
     {
         return Excel::download(new NilaiKomponenEvaluasiExport, 'nilai_komponen_evaluasi.xlsx');
+    }
+
+    public function downloadTemplate()
+    {
+        // file template di public/template/nilai.xlsx
+        $filePath = public_path('templetes/templete_nilai.xlsx'); // Sesuaikan path sesuai folder Anda
+        $fileName = 'template_nilai.xlsx';
+
+        if (!file_exists($filePath)) {
+            return redirect()->back()->with('error', 'File template tidak ditemukan.');
+        }
+
+        return response()->download($filePath, $fileName, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ]);
+    }
+
+    public function import(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls,csv',
+                'program_studi_id' => 'required',
+                'kelas_id' => 'required',
+                'matakuliah_id' => 'required',
+            ]);
+
+            // Import Excel menggunakan class NilaiImport
+            Excel::import(new NilaiImport($request->program_studi_id, $request->kelas_id, $request->matakuliah_id), $request->file('file'));
+
+            return response()->json(['success' => true, 'message' => 'Data nilai berhasil diimport.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -152,31 +188,66 @@ class NilaiController extends Controller
         }
     }
 
-    public function getKelasMataKuliah($programStudiId)
+    public function getKelasByProgramStudi($programStudiId)
     {
+        // Ambil semua kelas berdasarkan program studi
         $kelas = Kelas::where('program_studi_id', $programStudiId)->get();
-
-        // Ambil semua id mata kuliah yang sudah ada di m_nilai
-        $existingMatakuliahIds = Nilai::whereIn('kelas_id', $kelas->pluck('id'))
-            ->pluck('matakuliah_id')
-            ->toArray();
-
-        // Ambil mata kuliah yang belum ada di m_nilai berdasarkan kelas yang dipilih
-        $matakuliah = collect();
-        foreach ($kelas as $k) {
-            $filteredMataKuliah = $k->details->pluck('kurikulumDetail.matakuliah')
-                ->whereNotIn('id', $existingMatakuliahIds);
-            $matakuliah = $matakuliah->merge($filteredMataKuliah);
-        }
-
-        // Hapus duplikasi pada mata kuliah
-        $matakuliah = $matakuliah->unique('id');
 
         return response()->json([
             'kelas' => $kelas,
-            'matakuliah' => $matakuliah
         ]);
     }
+
+    public function getMatakuliahByKelas($kelasId)
+    {
+        // Ambil ID mata kuliah yang sudah ada di tabel nilai
+        $existingMatakuliahIds = Nilai::where('kelas_id', $kelasId)
+            ->pluck('matakuliah_id')
+            ->toArray();
+
+        // Ambil data mata kuliah berdasarkan kelas melalui KelasDetail
+        $matakuliah = KelasDetail::with('kurikulumDetail.matakuliah')
+            ->where('kelas_id', $kelasId)
+            ->whereHas('kurikulumDetail.matakuliah', function ($query) use ($existingMatakuliahIds) {
+                $query->whereNotIn('id', $existingMatakuliahIds); // Hindari mata kuliah yang sudah ada di Nilai
+            })
+            ->get()
+            ->pluck('kurikulumDetail.matakuliah')
+            ->unique('id'); // Hindari duplikasi mata kuliah berdasarkan id
+
+        return response()->json([
+            'matakuliah' => $matakuliah,
+        ]);
+    }
+
+    // public function getKelasMataKuliah($programStudiId)
+    // {
+    //     // Ambil semua kelas berdasarkan program studi
+    //     $kelas = Kelas::where('program_studi_id', $programStudiId)->get();
+
+    //     // Ambil ID mata kuliah yang sudah ada di tabel nilai
+    //     $existingMatakuliahIds = Nilai::whereIn('kelas_id', $kelas->pluck('id'))
+    //         ->pluck('matakuliah_id')
+    //         ->toArray();
+
+    //     // Ambil data mata kuliah berdasarkan kelas melalui KelasDetail
+    //     $matakuliah = KelasDetail::with('kurikulumDetail.matakuliah')
+    //         ->whereIn('kelas_id', $kelas->pluck('id'))
+    //         ->whereHas('kurikulumDetail.matakuliah', function ($query) use ($existingMatakuliahIds) {
+    //             $query->whereNotIn('id', $existingMatakuliahIds); // Hindari mata kuliah yang sudah ada di Nilai
+    //         })
+    //         ->get()
+    //         ->pluck('kurikulumDetail.matakuliah')
+    //         ->flatten()  // Mengubah hasilnya menjadi koleksi datar
+    //         ->unique('id'); // Hindari duplikasi mata kuliah berdasarkan id
+
+    //     return response()->json([
+    //         'kelas' => $kelas,
+    //         'matakuliah' => $matakuliah,
+    //     ]);
+    // }
+
+
 
 
     public function getMahasiswaByKelas($kelasId)

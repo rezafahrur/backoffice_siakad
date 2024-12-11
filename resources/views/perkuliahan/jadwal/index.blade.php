@@ -30,16 +30,17 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Ruang Kelas</th>
-                                    <th>Semester</th>
+                                    <th>Program Studi</th>
+                                    <th>Kelas</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($jadwals as $jd)
+                                @forelse ($jadwal as $jd)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $jd->paketMataKuliah->nama_paket_matakuliah }}</td>
+                                        <td>{{ $jd->programStudi->nama_prodi ?? 'N/A' }}</td>
+                                        <td>{{ $jd->kelas->nama_kelas ?? 'N/A' }}</td>
                                         <td>
                                             <a href="{{ route('jadwal.edit', $jd->id) }}"
                                                 class="btn btn-sm btn-primary btn-icon">
