@@ -34,6 +34,7 @@ use App\Http\Controllers\PeriodePerkuliahanController;
 use App\Http\Controllers\MahasiswaRequestSuratController;
 use App\Http\Controllers\AktivitasMahasiswaBimbingController;
 use App\Http\Controllers\AktivitasMahasiswaPesertaController;
+use App\Http\Controllers\SpmbPendaftarController;
 
 Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
@@ -71,6 +72,14 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::post('/ktm-validasi/validate/{id}', [MahasiswaKtmController::class, 'validateKtm'])->name('ktm-validasi.validate');
         Route::post('/ktm-validasi/reject/{id}', [MahasiswaKtmController::class, 'rejectKtm'])->name('ktm-validasi.reject');
         Route::delete('/ktm-validasi/{id}', [MahasiswaKtmController::class, 'deleteKtm'])->name('ktm-validasi.delete');
+
+        // CRUD Mahasiswa SPBM
+        Route::get('/spmb', [SpmbPendaftarController::class, 'index'])->name('spmb.index');
+        Route::put('/spmb/update-status/{id}', [SpmbPendaftarController::class, 'updateStatus'])->name('spmb.update-status');
+        Route::put('/spmb/validasi/{id}', [SpmbPendaftarController::class, 'validate'])->name('spmb.validate');
+        Route::put('/spmb/reject/{id}', [SpmbPendaftarController::class, 'rejectPendaftar'])->name('spmb.reject');
+        Route::delete('/spmb/{id}', [SpmbPendaftarController::class, 'destroy'])->name('spmb.destroy');
+        Route::get('/spmb/export-pdf', [SpmbPendaftarController::class, 'exportAllPDF'])->name('spmb.exportPDF');
     });
 
     Route::get('/get-kurikulum-details/{id}', [MahasiswaController::class, 'getKurikulumDetails'])->middleware(['permission:update_mahasiswa']);

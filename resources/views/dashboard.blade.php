@@ -16,7 +16,7 @@
             {{-- <button type="button" class="btn btn-outline-primary btn-icon-text me-2 mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="printer"></i>
                 Cetak
-            </button>
+            </button>a
 
             <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0">
                 <i class="btn-icon-prepend" data-feather="download-cloud"></i>
