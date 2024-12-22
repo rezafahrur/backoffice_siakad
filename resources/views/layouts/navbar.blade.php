@@ -98,7 +98,13 @@
 
                             {{-- @can('read_spmb') --}}
                             <li class="nav-item {{ Request::is('mhs/spmb*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('spmb.index') }}">SPMB</a>
+                                <a class="nav-link" href="{{ route('spmb.index') }}">SPMB Pendaftar</a>
+                            </li>
+                            {{-- @endcan --}}
+
+                            {{-- @can('read_spmb') --}}
+                            <li class="nav-item {{ Request::is('mhs/spmb_pengumuman*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('spmb_pengumuman.index') }}">SPMB Pengumuman</a>
                             </li>
                             {{-- @endcan --}}
                         </ul>
