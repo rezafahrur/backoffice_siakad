@@ -98,7 +98,13 @@
 
                             {{-- @can('read_spmb') --}}
                             <li class="nav-item {{ Request::is('mhs/spmb*') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('spmb.index') }}">SPMB</a>
+                                <a class="nav-link" href="{{ route('spmb.index') }}">SPMB Pendaftar</a>
+                            </li>
+                            {{-- @endcan --}}
+
+                            {{-- @can('read_spmb') --}}
+                            <li class="nav-item {{ Request::is('mhs/spmb_pengumuman*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('spmb_pengumuman.index') }}">SPMB Pengumuman</a>
                             </li>
                             {{-- @endcan --}}
                         </ul>
@@ -210,7 +216,7 @@
                                     {{-- jadwal --}}
                                     @can('read_jadwal')
                                         <li class="nav-item {{ Request::is('kuliah/jadwal*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('jadwal.index') }}">Jadwal</a>
+                                            <a class="nav-link" href="{{ route('jadwal-sementara.index') }}">Jadwal</a>
                                         </li>
                                     @endcan
 
@@ -334,9 +340,9 @@
                             @endcan
                             {{-- jadwal --}}
                             {{-- @can('read_jadwal_sementara') --}}
-                            <li class="nav-item {{ Request::is('feature/file-jadwal*') ? 'active' : '' }}">
+                            {{-- <li class="nav-item {{ Request::is('feature/file-jadwal*') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('jadwal-sementara.index') }}">Jadwal Sementara</a>
-                            </li>
+                            </li> --}}
                             {{-- @endcan --}}
                         </ul>
                     </div>
