@@ -34,6 +34,8 @@ use App\Http\Controllers\PeriodePerkuliahanController;
 use App\Http\Controllers\MahasiswaRequestSuratController;
 use App\Http\Controllers\AktivitasMahasiswaBimbingController;
 use App\Http\Controllers\AktivitasMahasiswaPesertaController;
+use App\Http\Controllers\SpmbPendaftarController;
+use App\Http\Controllers\SpmbPengumumanController;
 use App\Http\Controllers\ApiController;
 
 Route::group(['middleware' => ['auth:hr']], function () {
@@ -73,6 +75,24 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::post('/ktm-validasi/validate/{id}', [MahasiswaKtmController::class, 'validateKtm'])->name('ktm-validasi.validate');
         Route::post('/ktm-validasi/reject/{id}', [MahasiswaKtmController::class, 'rejectKtm'])->name('ktm-validasi.reject');
         Route::delete('/ktm-validasi/{id}', [MahasiswaKtmController::class, 'deleteKtm'])->name('ktm-validasi.delete');
+
+        // CRUD Mahasiswa SPBM
+        Route::get('/spmb', [SpmbPendaftarController::class, 'index'])->name('spmb.index');
+        Route::put('/spmb/update-status/{id}', [SpmbPendaftarController::class, 'updateStatus'])->name('spmb.update-status');
+        Route::put('/spmb/validasi/{id}', [SpmbPendaftarController::class, 'validate'])->name('spmb.validate');
+        Route::put('/spmb/reject/{id}', [SpmbPendaftarController::class, 'rejectPendaftar'])->name('spmb.reject');
+        Route::delete('/spmb/{id}', [SpmbPendaftarController::class, 'destroy'])->name('spmb.destroy');
+        Route::get('/spmb/export-pdf', [SpmbPendaftarController::class, 'exportAllPDF'])->name('spmb.exportPDF');
+
+        // CRUD Mahasiswa SPMB Pengumuman
+        Route::prefix('spmb_pengumuman')->group(function () {
+            Route::get('/', [SpmbPengumumanController::class, 'index'])->name('spmb_pengumuman.index');
+            Route::get('/create', [SpmbPengumumanController::class, 'create'])->name('spmb_pengumuman.create');
+            Route::post('/', [SpmbPengumumanController::class, 'store'])->name('spmb_pengumuman.store');
+            Route::delete('/{id}', [SpmbPengumumanController::class, 'destroy'])->name('spmb_pengumuman.destroy');
+            Route::get('/{id}/edit', [SpmbPengumumanController::class, 'edit'])->name('spmb_pengumuman.edit');
+            Route::put('/{id}', [SpmbPengumumanController::class, 'update'])->name('spmb_pengumuman.update');
+        });
     });
 
     Route::get('/get-kurikulum-details/{id}', [MahasiswaController::class, 'getKurikulumDetails'])->middleware(['permission:update_mahasiswa']);
@@ -205,13 +225,13 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::put('/fitur-hak-akses/{id}', [MasterFeatureController::class, 'update'])->name('feature.update');
         Route::delete('/fitur-hak-akses/{id}', [MasterFeatureController::class, 'destroy'])->name('feature.destroy');
 
-        // jadwal sementara
-        Route::get('/file-jadwal', [JadwalSementaraController::class, 'index'])->name('jadwal-sementara.index');
-        Route::get('/file-jadwal/create', [JadwalSementaraController::class, 'create'])->name('jadwal-sementara.create');
-        Route::post('/file-jadwal', [JadwalSementaraController::class, 'store'])->name('jadwal-sementara.store');
-        Route::get('/file-jadwal/{jadwalSementara}/edit', [JadwalSementaraController::class, 'edit'])->name('jadwal-sementara.edit');
-        Route::put('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'update'])->name('jadwal-sementara.update');
-        Route::delete('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'destroy'])->name('jadwal-sementara.destroy');
+        // // jadwal sementara
+        // Route::get('/file-jadwal', [JadwalSementaraController::class, 'index'])->name('jadwal-sementara.index');
+        // Route::get('/file-jadwal/create', [JadwalSementaraController::class, 'create'])->name('jadwal-sementara.create');
+        // Route::post('/file-jadwal', [JadwalSementaraController::class, 'store'])->name('jadwal-sementara.store');
+        // Route::get('/file-jadwal/{jadwalSementara}/edit', [JadwalSementaraController::class, 'edit'])->name('jadwal-sementara.edit');
+        // Route::put('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'update'])->name('jadwal-sementara.update');
+        // Route::delete('/file-jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'destroy'])->name('jadwal-sementara.destroy');
     });
 
     Route::prefix('surat')->group(function () {
@@ -266,13 +286,22 @@ Route::group(['middleware' => ['auth:hr']], function () {
     // prefix Perkuliahan
     Route::prefix('kuliah')->group(function () {
         // paket jadwal
-        Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index')->middleware(['permission:read_jadwal']);
-        Route::get('/jadwal/create', [JadwalController::class, 'create'])->name('jadwal.create')->middleware(['permission:create_jadwal']);
-        Route::post('/jadwal', [JadwalController::class, 'store'])->name('jadwal.store')->middleware(['permission:create_jadwal']);
-        Route::get('/jadwal/{jadwal}/edit', [JadwalController::class, 'edit'])->name('jadwal.edit')->middleware(['permission:update_jadwal']);
-        Route::put('/jadwal/{jadwal}', [JadwalController::class, 'update'])->name('jadwal.update')->middleware(['permission:update_jadwal']);
-        Route::delete('/jadwal/{jadwal}', [JadwalController::class, 'destroy'])->name('jadwal.destroy')->middleware(['permission:delete_jadwal']);
-        Route::get('/jadwal/{id}/show', [JadwalController::class, 'show'])->name('jadwal.show')->middleware(['permission:read_jadwal']);
+
+        // Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index')->middleware(['permission:read_jadwal']);
+        // Route::get('/jadwal/create', [JadwalController::class, 'create'])->name('jadwal.create')->middleware(['permission:create_jadwal']);
+        // Route::post('/jadwal', [JadwalController::class, 'store'])->name('jadwal.store')->middleware(['permission:create_jadwal']);
+        // Route::get('/jadwal/{jadwal}/edit', [JadwalController::class, 'edit'])->name('jadwal.edit')->middleware(['permission:update_jadwal']);
+        // Route::put('/jadwal/{jadwal}', [JadwalController::class, 'update'])->name('jadwal.update')->middleware(['permission:update_jadwal']);
+        // Route::delete('/jadwal/{jadwal}', [JadwalController::class, 'destroy'])->name('jadwal.destroy')->middleware(['permission:delete_jadwal']);
+        // Route::get('/jadwal/{id}/show', [JadwalController::class, 'show'])->name('jadwal.show')->middleware(['permission:read_jadwal']);
+
+        // jadwal sementara
+        Route::get('/jadwal', [JadwalSementaraController::class, 'index'])->name('jadwal-sementara.index');
+        Route::get('/jadwal/create', [JadwalSementaraController::class, 'create'])->name('jadwal-sementara.create');
+        Route::post('/jadwal', [JadwalSementaraController::class, 'store'])->name('jadwal-sementara.store');
+        Route::get('/jadwal/{jadwalSementara}/edit', [JadwalSementaraController::class, 'edit'])->name('jadwal-sementara.edit');
+        Route::put('/jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'update'])->name('jadwal-sementara.update');
+        Route::delete('/jadwal/{jadwalSementara}', [JadwalSementaraController::class, 'destroy'])->name('jadwal-sementara.destroy');
 
         //kelas
         Route::get('/kelas-data', [KelasController::class, 'index'])->name('kelas.index')->middleware(['permission:read_kelas']);

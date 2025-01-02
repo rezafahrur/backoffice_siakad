@@ -12,13 +12,13 @@ class JadwalSementaraController extends Controller
     {
         $jadwals = JadwalSementara::with('kelas')->get();
 
-        return view('feature.jadwal_sementara.index', compact('jadwals'));
+        return view('perkuliahan.jadwal_sementara.index', compact('jadwals'));
     }
 
     public function create()
     {
         $kelas = Kelas::whereDoesntHave('jadwalSementara')->get();
-        return view('feature.jadwal_sementara.create', compact('kelas'));
+        return view('perkuliahan.jadwal_sementara.create', compact('kelas'));
     }
 
     public function store(Request $request)
@@ -44,7 +44,7 @@ class JadwalSementaraController extends Controller
     {
         $jadwal = JadwalSementara::findOrFail($id);
         $kelas = Kelas::all();
-        return view('feature.jadwal_sementara.edit', compact('jadwal', 'kelas'));
+        return view('perkuliahan.jadwal_sementara.edit', compact('jadwal', 'kelas'));
     }
 
     public function update(Request $request, $id)
