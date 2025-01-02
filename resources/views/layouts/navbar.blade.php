@@ -95,6 +95,12 @@
                                     <a class="nav-link" href="{{ route('ktm-validasi.index') }}">Validasi KTM</a>
                                 </li>
                             @endcan
+
+                            {{-- @can('read_spmb') --}}
+                            <li class="nav-item {{ Request::is('mhs/spmb*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('spmb.index') }}">SPMB</a>
+                            </li>
+                            {{-- @endcan --}}
                         </ul>
                     </div>
                 </li>
