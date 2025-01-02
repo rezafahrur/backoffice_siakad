@@ -816,10 +816,6 @@
             } else if ("{{ $wali2 }}" != "" && "{{ $wali2->ktp_id }}" == "") {
                 $("#row_wali_ibu").hide();
                 $("#row_wali_ibu_meninggal").show();
-                $("#row_ktp_ibu").show();
-            } else if ("{{ $wali2 }}" != "" && "{{ $wali2->ktp_id }}" != "") {
-                $("#row_wali_ibu").hide();
-                $("#row_wali_ibu_meninggal").show();
                 $("#row_ktp_ibu").hide();
             }
         };
