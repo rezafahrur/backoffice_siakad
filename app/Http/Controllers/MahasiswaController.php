@@ -360,6 +360,33 @@ class MahasiswaController extends Controller
         $prodi = ProgramStudi::all();
         $jurusan = Jurusan::all();
 
+        // Fetch data API
+        $jenisTinggal = $this->apiController->getJenisTinggal();
+        $alatTransportasi = $this->apiController->getAlatTransportasi();
+        $agama = $this->apiController->getAgama();
+        $negara = $this->apiController->getNegara();
+        $pekerjaan = $this->apiController->getPekerjaan();
+        $penghasilan = $this->apiController->getPenghasilan();
+        $jenjangPendidikan = $this->apiController->getJenjangPendidikan();
+        $kebutuhanKhususOptions = [
+            '1' => 'A - Tuna netra',
+            '2' => 'B - Tuna rungu',
+            '3' => 'C - Tuna grahita ringan',
+            '4' => 'C1 - Tuna grahita ringan',
+            '5' => 'D - Tuna daksa ringan',
+            '6' => 'D1 - Tuna daksa sedang',
+            '7' => 'E - Tuna laras',
+            '8' => 'F - Tuna wicara',
+            '9' => 'H - Hiperaktif',
+            '10' => 'I - Cerdas Istimewa',
+            '11' => 'J - Bakat Istimewa',
+            '12' => 'K - Kesulitan Belajar',
+            '13' => 'N - Narkoba',
+            '14' => 'O - Indigo',
+            '15' => 'P - Down Syndrome',
+            '16' => 'Q - Autis',
+        ];
+
         // Fetch data mahasiswa by ID
         $mahasiswa = Mahasiswa::findOrFail($id);
 
@@ -396,7 +423,11 @@ class MahasiswaController extends Controller
         // Fetch data for the dropdowns and populate with existing data
         $provinces = Province::all();
 
-        return view('mahasiswa.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'wali1', 'wali2', 'jurusan', 'mhsDetail', 'wali1Detail', 'wali2Detail', 'mahasiswaKebutuhanKhusus', 'wali1KebutuhanKhusus', 'wali2KebutuhanKhusus'));
+        // Status Kehidupan Wali
+        $status_kehidupan_ayah = $wali1 ? 'hidup' : 'meninggal';
+        $status_kehidupan_ibu = $wali2 ? 'hidup' : 'meninggal';
+
+        return view('mahasiswa.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'wali1', 'wali2', 'jurusan', 'mhsDetail', 'wali1Detail', 'wali2Detail', 'mahasiswaKebutuhanKhusus', 'wali1KebutuhanKhusus', 'wali2KebutuhanKhusus', 'jenisTinggal', 'alatTransportasi', 'agama', 'negara', 'pekerjaan', 'penghasilan', 'jenjangPendidikan', 'kebutuhanKhususOptions', 'status_kehidupan_ayah', 'status_kehidupan_ibu'));
     }
 
     public function storeOrUpdate(MahasiswaRequest $request)
@@ -498,7 +529,7 @@ class MahasiswaController extends Controller
                         'alat_transportasi' => $data['alat_transportasi'],
                         'terima_kps' => $data['terima_kps'],
                         'no_kps' => $data['no_kps'],
-                        'kebutuhan_khusus' => !empty($data['kebutuhan_khusus_mahasiswa'])? implode(',', $data['kebutuhan_khusus_mahasiswa']) : '0',
+                        'kebutuhan_khusus' => !empty($data['kebutuhan_khusus_mahasiswa']) ? implode(',', $data['kebutuhan_khusus_mahasiswa']) : '0',
                         'nama_kontak_darurat' => $data['kd_nama'],
                         'hubungan_kontak_darurat' => $data['kd_hubungan'],
                         'hp_kontak_darurat' => $data['kd_no_hp'],
@@ -560,7 +591,7 @@ class MahasiswaController extends Controller
                         [
                             'nama' => $data['wali_nama_1'],
                             'status_kewalian' => 'AYAH',
-                            'kebutuhan_khusus' => !empty($data['kebutuhan_khusus_ayah'])? implode(',', $data['kebutuhan_khusus_ayah']) : '0',
+                            'kebutuhan_khusus' => !empty($data['kebutuhan_khusus_ayah']) ? implode(',', $data['kebutuhan_khusus_ayah']) : '0',
                         ]
                     );
 
@@ -614,7 +645,7 @@ class MahasiswaController extends Controller
                         [
                             'nama' => $data['wali_nama_2'],
                             'status_kewalian' => 'IBU',
-                            'kebutuhan_khusus' => !empty($data['kebutuhan_khusus_ibu'])? implode(',', $data['kebutuhan_khusus_ibu']) : '0',
+                            'kebutuhan_khusus' => !empty($data['kebutuhan_khusus_ibu']) ? implode(',', $data['kebutuhan_khusus_ibu']) : '0',
                         ]
                     );
 
@@ -744,7 +775,7 @@ class MahasiswaController extends Controller
                     'jenjang_didik' => $this->apiController->getJenjangPendidikan(),
                     default => null
                 };
-                
+
                 // Menyimpan hasil filter data API pada `filteredData`
                 if (is_array($fieldValue)) {
                     $filteredData[$entityName][$fieldKey] = array_map(function ($value) use ($apiData, $fieldKey) {
@@ -755,7 +786,7 @@ class MahasiswaController extends Controller
                 }
             }
         }
-        
+
         // Mengambil data kebutuhan khusus dari mahasiswa
         $mahasiswaKebutuhanKhusus = $this->apiController->getNoKebutuhanKhusus($mahasiswa->kebutuhan_khusus);
         $wali1KebutuhanKhusus = $wali1 ? $this->apiController->getNoKebutuhanKhusus($wali1->kebutuhan_khusus) : null;

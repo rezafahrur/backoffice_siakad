@@ -123,8 +123,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <input type="hidden" name="jurusan"
-                                    value="{{ old('jurusan', $mahasiswa->jurusan_id) }}">
+                                <input type="hidden" name="jurusan" value="{{ old('jurusan', $mahasiswa->jurusan_id) }}">
                                 @error('jurusan')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -408,33 +407,39 @@
                             </div>
 
                             {{-- RT RW --}}
-                            <div class="col-md-6 mb-3">
-                                <label for="alamat_rt" class="form-label">RT</label>
-                                <input type="text" class="form-control @error('alamat_rt') is-invalid @enderror"
-                                    id="alamat_rt" name="alamat_rt" placeholder="000"
-                                    value="{{ old('alamat_rt') ?? $mahasiswa->ktp->alamat_rt }}" maxlength="3"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
-                                @error('alamat_rt')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+                            <div class="col-md-4 mb-3">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="alamat_rt" class="form-label">RT</label>
+                                        <input type="text"
+                                            class="form-control @error('alamat_rt') is-invalid @enderror" id="alamat_rt"
+                                            name="alamat_rt" placeholder="000"
+                                            value="{{ old('alamat_rt') ?? $mahasiswa->ktp->alamat_rt }}" maxlength="3"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
+                                        @error('alamat_rt')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
-                                @enderror
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="alamat_rw" class="form-label">RW</label>
-                                <input type="text" class="form-control @error('alamat_rw') is-invalid @enderror"
-                                    id="alamat_rw" name="alamat_rw" placeholder="000"
-                                    value="{{ old('alamat_rw') ?? $mahasiswa->ktp->alamat_rw }}" maxlength="3"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
-                                @error('alamat_rw')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
+                                    <div class="col-md-6 mb-3">
+                                        <label for="alamat_rw" class="form-label">RW</label>
+                                        <input type="text"
+                                            class="form-control @error('alamat_rw') is-invalid @enderror" id="alamat_rw"
+                                            name="alamat_rw" placeholder="000"
+                                            value="{{ old('alamat_rw') ?? $mahasiswa->ktp->alamat_rw }}" maxlength="3"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
+                                        @error('alamat_rw')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
-                                @enderror
+                                </div>
                             </div>
 
                             {{-- Alamat Provinsi --}}
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="alamat_prov_code" class="form-label">Provinsi</label>
                                 <select class="form-select @error('alamat_prov_code') is-invalid @enderror"
                                     id="alamat_prov_code" name="alamat_prov_code">
@@ -453,7 +458,7 @@
                             </div>
 
                             {{-- Alamat Kota/Kabupaten --}}
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="alamat_kotakab_code" class="form-label">Kota/Kabupaten</label>
                                 <select class="form-select @error('alamat_kotakab_code') is-invalid @enderror"
                                     id="alamat_kotakab_code" name="alamat_kotakab_code">
@@ -468,7 +473,7 @@
                             </div>
 
                             {{-- Alamat Kecamatan --}}
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="alamat_kec_code" class="form-label">Kecamatan</label>
                                 <select class="form-select @error('alamat_kec_code') is-invalid @enderror"
                                     id="alamat_kec_code" name="alamat_kec_code">
@@ -483,7 +488,7 @@
                             </div>
 
                             {{-- Alamat Kelurahan/Desa --}}
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label for="alamat_kel_code" class="form-label">Kelurahan/Desa</label>
                                 <select class="form-select @error('alamat_kel_code') is-invalid @enderror"
                                     id="alamat_kel_code" name="alamat_kel_code">
@@ -491,6 +496,20 @@
                                     {{-- Populated dynamically --}}
                                 </select>
                                 @error('alamat_kel_code')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            {{-- Dusun --}}
+                            <div class="col-md-4 mb-3">
+                                <label for="alamat_dusun" class="form-label">Dusun</label>
+                                <input type="text" class="form-control @error('alamat_dusun') is-invalid @enderror"
+                                    id="alamat_dusun" name="alamat_dusun" placeholder="Nama Dusun"
+                                    value="{{ old('alamat_dusun') ?? $mahasiswa->dusun }}"
+                                    oninput="this.value = this.value.toUpperCase()">
+                                @error('alamat_dusun')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -551,24 +570,14 @@
                                 <select class="form-select @error('agama') is-invalid @enderror" id="agama"
                                     name="agama">
                                     <option value="" disabled selected>Pilih Agama</option>
-                                    <option value="1"
-                                        {{ old('agama', $mahasiswa->ktp->agama) == '1' ? 'selected' : '' }}>Islam</option>
-                                    <option value="2"
-                                        {{ old('agama', $mahasiswa->ktp->agama) == '2' ? 'selected' : '' }}>Kristen
-                                    </option>
-                                    <option value="3"
-                                        {{ old('agama', $mahasiswa->ktp->agama) == '3' ? 'selected' : '' }}>Katholik
-                                    </option>
-                                    <option value="4"
-                                        {{ old('agama', $mahasiswa->ktp->agama) == '4' ? 'selected' : '' }}>Hindu</option>
-                                    <option value="5"
-                                        {{ old('agama', $mahasiswa->ktp->agama) == '5' ? 'selected' : '' }}>Budha</option>
-                                    <option value="6"
-                                        {{ old('agama', $mahasiswa->ktp->agama) == '6' ? 'selected' : '' }}>Konghuchu
-                                    </option>
-                                    <option value="99"
-                                        {{ old('agama', $mahasiswa->ktp->agama) == '99' ? 'selected' : '' }}>Lainnya
-                                    </option>
+                                    @if (isset($agama['data']) && is_array($agama['data']))
+                                        @foreach ($agama['data'] as $ag)
+                                            <option value="{{ $ag['id_agama'] }}"
+                                                {{ old('agama', $mahasiswa->ktp->agama ?? '') == $ag['id_agama'] ? 'selected' : '' }}>
+                                                {{ $ag['nama_agama'] }}
+                                            </option>
+                                        @endforeach
+                                    @endif
                                 </select>
                                 @error('agama')
                                     <div class="invalid-feedback">
@@ -642,37 +651,16 @@
                             {{-- Kewarganegaraan --}}
                             <div class="col-md-4 mb-3">
                                 <label for="kewarganegaraan" class="form-label">Kewarganegaraan</label>
-                                <select class="form-select @error('kewarganegaraan') is-invalid @enderror"
-                                    id="kewarganegaraan" name="kewarganegaraan">
+                                <select
+                                    class="js-example-basic-single form-select @error('kewarganegaraan') is-invalid @enderror"
+                                    id="kewarganegaraan" name="kewarganegaraan" data-width="100%">
                                     <option value="" disabled selected>Pilih Kewarganegaraan</option>
-                                    <option value="ID"
-                                        {{ old('kewarganegaraan', $mahasiswa->ktp->kewarganegaraan) == 'ID' ? 'selected' : '' }}>
-                                        Indonesia</option>
-                                    <option value="AS"
-                                        {{ old('kewarganegaraan', $mahasiswa->ktp->kewarganegaraan) == 'AS' ? 'selected' : '' }}>
-                                        Amerika
-                                        Serikat</option>
-                                    <option value="AU"
-                                        {{ old('kewarganegaraan', $mahasiswa->ktp->kewarganegaraan) == 'AU' ? 'selected' : '' }}>
-                                        Australia</option>
-                                    <option value="CA"
-                                        {{ old('kewarganegaraan', $mahasiswa->ktp->kewarganegaraan) == 'CA' ? 'selected' : '' }}>
-                                        Canada
-                                    </option>
-                                    <option value="CN"
-                                        {{ old('kewarganegaraan', $mahasiswa->ktp->kewarganegaraan) == 'CN' ? 'selected' : '' }}>
-                                        China
-                                    </option>
-                                    <option value="JP"
-                                        {{ old('kewarganegaraan', $mahasiswa->ktp->kewarganegaraan) == 'JP' ? 'selected' : '' }}>
-                                        Jepang
-                                    </option>
-                                    <option value="MY"
-                                        {{ old('kewarganegaraan', $mahasiswa->ktp->kewarganegaraan) == 'MY' ? 'selected' : '' }}>
-                                        Malaysia</option>
-                                    <option value="SG"
-                                        {{ old('kewarganegaraan', $mahasiswa->ktp->kewarganegaraan) == 'SG' ? 'selected' : '' }}>
-                                        Singapura</option>
+                                    @foreach ($negara['data'] as $ng)
+                                        <option value="{{ $ng['id_negara'] }}"
+                                            {{ old('kewarganegaraan', $mahasiswa->ktp->kewarganegaraan ?? '') == $ng['id_negara'] ? 'selected' : '' }}>
+                                            {{ $ng['nama_negara'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('kewarganegaraan')
                                     <div class="invalid-feedback">
@@ -687,8 +675,55 @@
 
             <!-- Step 2 -->
             <div class="tab">
-                {{-- Form Wali Mahasiswa Ayah --}}
+                {{-- Form Status Kehidupan --}}
                 <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Status Kehidupan</h5>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label class="form-label" for="status_kehidupan_ayah">Status Kehidupan Ayah</label>
+                                <select class="form-select @error('status_kehidupan_ayah') is-invalid @enderror"
+                                    id="status_kehidupan_ayah" name="status_kehidupan_ayah" onchange="toggleFormsAyah()">
+                                    <option value="" selected disabled>Pilih Status</option>
+                                    <option value="hidup"
+                                        {{ old('status_kehidupan_ayah', $status_kehidupan_ayah) == 'hidup' ? 'selected' : '' }}>Masih Hidup
+                                    </option>
+                                    <option value="meninggal"
+                                        {{ old('status_kehidupan_ayah', $status_kehidupan_ayah) == 'meninggal' ? 'selected' : '' }}>Sudah
+                                        Meninggal</option>
+                                </select>
+                                @error('status_kehidupan_ayah')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="form-label" for="status_kehidupan_ibu">Status Kehidupan Ibu</label>
+                                <select class="form-select @error('status_kehidupan_ibu') is-invalid @enderror"
+                                    id="status_kehidupan_ibu" name="status_kehidupan_ibu" onchange="toggleFormsIbu()">
+                                    <option value="" selected disabled>Pilih Status</option>
+                                    <option value="hidup" {{ old('status_kehidupan_ibu', $status_kehidupan_ibu) == 'hidup' ? 'selected' : '' }}>
+                                        Masih Hidup
+                                    </option>
+                                    <option value="meninggal"
+                                        {{ old('status_kehidupan_ibu', $status_kehidupan_ibu) == 'meninggal' ? 'selected' : '' }}>Sudah Meninggal
+                                    </option>
+                                </select>
+                                @error('status_kehidupan_ibu')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br id="br_status" style="display: none;">
+
+                {{-- Form Wali Mahasiswa Ayah --}}
+                <div class="card" id="form_wali_ayah" style="display: none;">
                     <div class="card-body">
                         <h4 class="card-title">Form Wali Mahasiswa Ayah</h4>
                         <div class="row">
@@ -954,10 +989,10 @@
                     </div>
                 </div>
 
-                <br>
+                <br id="br_wali_ayah" style="display: none;">
 
                 {{-- Form KTP Wali Ayah --}}
-                <div class="card">
+                <div class="card" id="form_ktp_ayah" style="display: none;">
                     <div class="card-body">
                         <h4 class="card-title">Form KTP Wali Ayah</h4>
                         <div class="row">
@@ -993,8 +1028,8 @@
                                 <input type="text"
                                     class="form-control @error('wali_alamat_rt_1') is-invalid @enderror"
                                     id="wali_alamat_rt_1" name="wali_alamat_rt_1" placeholder="000"
-                                    value="{{ old('wali_alamat_rt_1') ?? ($wali1->ktp->alamat_rt ?? '') }}" maxlength="3"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
+                                    value="{{ old('wali_alamat_rt_1') ?? ($wali1->ktp->alamat_rt ?? '') }}"
+                                    maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
                                 @error('wali_alamat_rt_1')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -1008,8 +1043,8 @@
                                 <input type="text"
                                     class="form-control @error('wali_alamat_rw_1') is-invalid @enderror"
                                     id="wali_alamat_rw_1" name="wali_alamat_rw_1" placeholder="000"
-                                    value="{{ old('wali_alamat_rw_1') ?? ($wali1->ktp->alamat_rw ?? '') }}" maxlength="3"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
+                                    value="{{ old('wali_alamat_rw_1') ?? ($wali1->ktp->alamat_rw ?? '') }}"
+                                    maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
                                 @error('wali_alamat_rw_1')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -1278,10 +1313,13 @@
                     </div>
                 </div>
 
-                <br>
+                <br id="br_ktp_ayah" style="display: none;">
+
+                {{-- Nama Ibu --}}
+                <input type="hidden" value="" id="wali_nama_2" name="wali_nama_2">
 
                 {{-- Form Wali Mahasiswa Ibu --}}
-                <div class="card">
+                <div class="card" id="form_wali_ibu" style="display: none;">
                     <div class="card-body">
                         <h4 class="card-title">Form Wali Mahasiswa Ibu</h4>
                         <div class="row">
@@ -1547,10 +1585,45 @@
                     </div>
                 </div>
 
-                <br>
+                {{-- Form Wali Mahasiswa Ibu Meninggal --}}
+                <div class="card" id="form_wali_ibu_meninggal" style="display: none;">
+                    <div class="card-body">
+                        <h3 class="card-title">Form Wali Mahasiswa Ibu</h3>
+                        <div class="row">
+                            {{-- Nama Wali --}}
+                            <div class="col-md-6 mb-3">
+                                <label for="wali_nama_meninggal_2" class="form-label">Nama</label>
+                                <input type="text" class="form-control @error('wali_nama_meninggal_2') is-invalid @enderror"
+                                    id="wali_nama_meninggal_2" name="wali_nama_meninggal_2" placeholder="Nama Wali"
+                                    value="{{ old('wali_nama_meninggal_2') ? strtoupper(old('wali_nama_meninggal_2')) : '' }}"
+                                    oninput="this.value = this.value.toUpperCase()">
+                                @error('wali_nama_meninggal_2')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            {{-- Hubungan --}}
+                            <div class="col-md-6 mb-3">
+                                <label for="status_kewalian_2" class="form-label">Hubungan</label>
+                                <input type="text"
+                                    class="form-control @error('status_kewalian_2') is-invalid @enderror"
+                                    id="status_kewalian_2" name="status_kewalian_2" value="IBU" disabled>
+                                @error('status_kewalian_2')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br id="br_wali_ibu" style="display: none;">
 
                 {{-- Form KTP Wali Ibu --}}
-                <div class="card">
+                <div class="card" id="form_ktp_ibu" style="display: none;">
                     <div class="card-body">
                         <h4 class="card-title">Form KTP Wali Ibu</h4>
                         <div class="row">
@@ -1586,8 +1659,8 @@
                                 <input type="text"
                                     class="form-control @error('wali_alamat_rt_2') is-invalid @enderror"
                                     id="wali_alamat_rt_2" name="wali_alamat_rt_2" placeholder="000"
-                                    value="{{ old('wali_alamat_rt_2') ?? ($wali2->ktp->alamat_rt ?? '') }}" maxlength="3"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
+                                    value="{{ old('wali_alamat_rt_2') ?? ($wali2->ktp->alamat_rt ?? '') }}"
+                                    maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
                                 @error('wali_alamat_rt_2')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -1601,8 +1674,8 @@
                                 <input type="text"
                                     class="form-control @error('wali_alamat_rw_2') is-invalid @enderror"
                                     id="wali_alamat_rw_2" name="wali_alamat_rw_2" placeholder="000"
-                                    value="{{ old('wali_alamat_rw_2') ?? ($wali2->ktp->alamat_rw ?? '') }}" maxlength="3"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
+                                    value="{{ old('wali_alamat_rw_2') ?? ($wali2->ktp->alamat_rw ?? '') }}"
+                                    maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 3)">
                                 @error('wali_alamat_rw_2')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -1734,22 +1807,27 @@
                                         {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '1' ? 'selected' : '' }}>Islam
                                     </option>
                                     <option value="2"
-                                        {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '2' ? 'selected' : '' }}>Kristen
+                                        {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '2' ? 'selected' : '' }}>
+                                        Kristen
                                     </option>
                                     <option value="3"
-                                        {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '3' ? 'selected' : '' }}>Katholik
+                                        {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '3' ? 'selected' : '' }}>
+                                        Katholik
                                     </option>
                                     <option value="4"
                                         {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '4' ? 'selected' : '' }}>Hindu
                                     </option>
                                     <option value="5"
-                                        {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '5' ? 'selected' : '' }}>Buddha
+                                        {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '5' ? 'selected' : '' }}>
+                                        Buddha
                                     </option>
                                     <option value="6"
-                                        {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '6' ? 'selected' : '' }}>Konghuchu
+                                        {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '6' ? 'selected' : '' }}>
+                                        Konghuchu
                                     </option>
                                     <option value="99"
-                                        {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '99' ? 'selected' : '' }}>LAINNYA
+                                        {{ old('wali_agama_2', $wali2->ktp->agama ?? '') == '99' ? 'selected' : '' }}>
+                                        LAINNYA
                                     </option>
                                 </select>
                                 @error('wali_agama_2')
@@ -2391,7 +2469,8 @@
             @if ($wali1 && $wali1->ktp != null)
                 @if (old('wali_alamat_prov_code_1') ?? $wali1->ktp->alamat_prov_code)
                     var waliProvCode1 = '{{ old('wali_alamat_prov_code_1') ?? $wali1->ktp->alamat_prov_code }}';
-                    var waliCityCode1 ='{{ old('wali_alamat_kotakab_code_1') ?? $wali1->ktp->alamat_kotakab_code }}';
+                    var waliCityCode1 =
+                        '{{ old('wali_alamat_kotakab_code_1') ?? $wali1->ktp->alamat_kotakab_code }}';
                     var waliDistCode1 = '{{ old('wali_alamat_kec_code_1') ?? $wali1->ktp->alamat_kec_code }}';
                     var waliVillageCode1 = '{{ old('wali_alamat_kel_code_1') ?? $wali1->ktp->alamat_kel_code }}';
                     initSelects(waliProvCode1, waliCityCode1, waliDistCode1, waliVillageCode1, 'wali_alamat', '_1');
@@ -2401,7 +2480,8 @@
             @if ($wali2 && $wali2->ktp != null)
                 @if (old('wali_alamat_prov_code_2') ?? $wali2->ktp->alamat_prov_code)
                     var waliProvCode2 = '{{ old('wali_alamat_prov_code_2') ?? $wali2->ktp->alamat_prov_code }}';
-                    var waliCityCode2 = '{{ old('wali_alamat_kotakab_code_2') ?? $wali2->ktp->alamat_kotakab_code }}';
+                    var waliCityCode2 =
+                        '{{ old('wali_alamat_kotakab_code_2') ?? $wali2->ktp->alamat_kotakab_code }}';
                     var waliDistCode2 = '{{ old('wali_alamat_kec_code_2') ?? $wali2->ktp->alamat_kec_code }}';
                     var waliVillageCode2 = '{{ old('wali_alamat_kel_code_2') ?? $wali2->ktp->alamat_kel_code }}';
                     initSelects(waliProvCode2, waliCityCode2, waliDistCode2, waliVillageCode2, 'wali_alamat', '_2');
@@ -2590,11 +2670,55 @@
         window.onload = function() {
             var kebutuhanKhusus = document.getElementById('kebutuhan_khusus_pertanyaan').value;
             toggleKebutuhanKhusus(kebutuhanKhusus);
+            toggleFormsAyah();
+            toggleFormsIbu();
         }
 
         function toggleKebutuhanKhusus(value) {
             var section = document.getElementById('kebutuhan_khusus_section');
             section.style.display = (value === '1') ? 'block' : 'none';
+        }
+        
+        function toggleFormsAyah() {
+            // Validasi untuk ayah
+            var statusAyah = document.getElementById('status_kehidupan_ayah').value;
+
+            if (statusAyah === 'meninggal') {
+                // Sembunyikan form Wali dan KTP Ayah
+                document.getElementById('br_status').style.display = 'none';
+                document.getElementById('form_wali_ayah').style.display = 'none';
+                document.getElementById('br_wali_ayah').style.display = 'none';
+                document.getElementById('form_ktp_ayah').style.display = 'none';
+                document.getElementById('br_ktp_ayah').style.display = 'none';
+            } else {
+                // Tampilkan form Wali dan KTP Ayah
+                document.getElementById('br_status').style.display = 'block';
+                document.getElementById('form_wali_ayah').style.display = 'block';
+                document.getElementById('br_wali_ayah').style.display = 'block';
+                document.getElementById('form_ktp_ayah').style.display = 'block';
+                document.getElementById('br_ktp_ayah').style.display = 'block';
+            }
+        }
+
+        function toggleFormsIbu() {
+            // Validasi untuk ibu
+            var statusIbu = document.getElementById('status_kehidupan_ibu').value;
+
+            if (statusIbu === 'meninggal') {
+                // Sembunyikan form Wali dan KTP Ibu
+                document.getElementById('br_status').style.display = 'block';
+                document.getElementById('form_wali_ibu').style.display = 'none';
+                document.getElementById('form_wali_ibu_meninggal').style.display = 'block';
+                document.getElementById('br_wali_ibu').style.display = 'none';
+                document.getElementById('form_ktp_ibu').style.display = 'none';
+            } else {
+                // Tampilkan form Wali dan KTP Ibu
+                document.getElementById('br_status').style.display = 'block';
+                document.getElementById('form_wali_ibu').style.display = 'block';
+                document.getElementById('form_wali_ibu_meninggal').style.display = 'none';
+                document.getElementById('br_wali_ibu').style.display = 'block';
+                document.getElementById('form_ktp_ibu').style.display = 'block';
+            }
         }
     </script>
     {{-- Toast --}}
