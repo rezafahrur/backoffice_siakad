@@ -204,7 +204,7 @@
                                     {{-- jadwal --}}
                                     @can('read_jadwal')
                                         <li class="nav-item {{ Request::is('kuliah/jadwal*') ? 'active' : '' }}">
-                                            <a class="nav-link" href="{{ route('jadwal.index') }}">Jadwal</a>
+                                            <a class="nav-link" href="{{ route('jadwal-sementara.index') }}">Jadwal</a>
                                         </li>
                                     @endcan
 
@@ -328,9 +328,9 @@
                             @endcan
                             {{-- jadwal --}}
                             {{-- @can('read_jadwal_sementara') --}}
-                            <li class="nav-item {{ Request::is('feature/file-jadwal*') ? 'active' : '' }}">
+                            {{-- <li class="nav-item {{ Request::is('feature/file-jadwal*') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('jadwal-sementara.index') }}">Jadwal Sementara</a>
-                            </li>
+                            </li> --}}
                             {{-- @endcan --}}
                         </ul>
                     </div>
