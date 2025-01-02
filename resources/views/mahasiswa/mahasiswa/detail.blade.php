@@ -168,6 +168,10 @@
                                     <dt class="col-sm-4">Alamat</dt>
                                     <dd class="col-sm-8">{{ $mahasiswa->ktp->alamat_jalan }}</dd>
 
+                                    {{-- RT / RW --}}
+                                    <dt class="col-sm-4">RT / RW</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->ktp->alamat_rt }} / {{ $mahasiswa->ktp->alamat_rw }}</dd>
+
                                     {{-- Provinsi --}}
                                     <dt class="col-sm-4">Provinsi</dt>
                                     <dd class="col-sm-8">{{ $province ? $province->name : 'Tidak Diketahui' }}</dd>
@@ -181,13 +185,17 @@
                                     <dd class="col-sm-8">{{ $district ? $district->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kelurahan/Desa --}}
-                                    <dt class="col-sm-4">Kelurahan/Desa</dt>
+                                    <dt class="col-sm-4">Kelurahan / Desa</dt>
                                     <dd class="col-sm-8">{{ $village ? $village->name : 'Tidak Diketahui' }}</dd>
                                 </dl>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="row">
+                                    {{-- Dusun --}}
+                                    <dt class="col-sm-4">Dusun</dt>
+                                    <dd class="col-sm-8">{{ $mahasiswa->dusun }}</dd>
+
                                     {{-- Tempat Lahir --}}
                                     <dt class="col-sm-4">Tempat Lahir</dt>
                                     <dd class="col-sm-8">{{ $mahasiswa->ktp->lahir_tempat }}</dd>
@@ -307,28 +315,28 @@
                                     <dd class="col-sm-8">{{ $wali1->ktp->nik ?? '-' }}</dd>
 
                                     {{-- Alamat --}}
-                                    <dt class="col-sm-4">Alamat</dt>
-                                    <dd class="col-sm-8">{{ $wali1->ktp->alamat_jalan ?? '-' }}</dd>
+                                    <dt class="col-sm-4">Alamat (RT / RW)</dt>
+                                    <dd class="col-sm-8">{{ $wali1->ktp->alamat_jalan ?? '-' }} ({{ $wali1->ktp->alamat_rt ?? '-' }} / {{ $wali1->ktp->alamat_rw ?? '-' }})</dd>
 
                                     {{-- Provinsi --}}
                                     <dt class="col-sm-4">Provinsi</dt>
                                     <dd class="col-sm-8">
-                                        {{ $wali1->ktp->province ? $wali1->ktp->province->name : 'Tidak Diketahui' }}</dd>
+                                        {{ $wali1 && $wali1->ktp && $wali1->ktp->province ? $wali1->ktp->province->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kota/Kabupaten --}}
                                     <dt class="col-sm-4">Kota/Kabupaten</dt>
                                     <dd class="col-sm-8">
-                                        {{ $wali1->ktp->city ? $wali1->ktp->city->name : 'Tidak Diketahui' }}</dd>
+                                        {{ $wali1 && $wali1->ktp->city ? $wali1->ktp->city->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kecamatan --}}
                                     <dt class="col-sm-4">Kecamatan</dt>
                                     <dd class="col-sm-8">
-                                        {{ $wali1->ktp->district ? $wali1->ktp->district->name : 'Tidak Diketahui' }}</dd>
+                                        {{ $wali1 && $wali1->ktp->district ? $wali1->ktp->district->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kelurahan/Desa --}}
                                     <dt class="col-sm-4">Kelurahan/Desa</dt>
                                     <dd class="col-sm-8">
-                                        {{ $wali1->ktp->village ? $wali1->ktp->village->name : 'Tidak Diketahui' }}</dd>
+                                        {{ $wali1 && $wali1->ktp->village ? $wali1->ktp->village->name : 'Tidak Diketahui' }}</dd>
                                 </dl>
                             </div>
 
@@ -477,28 +485,28 @@
                                     <dd class="col-sm-8">{{ $wali2->ktp->nik ?? '-' }}</dd>
 
                                     {{-- Alamat --}}
-                                    <dt class="col-sm-4">Alamat</dt>
-                                    <dd class="col-sm-8">{{ $wali2->ktp->alamat_jalan ?? '-' }}</dd>
+                                    <dt class="col-sm-4">Alamat (RT / RW)</dt>
+                                    <dd class="col-sm-8">{{ $wali2->ktp->alamat_jalan ?? '-' }} ({{ $wali2->ktp->alamat_rt ?? '-' }} / {{ $wali2->ktp->alamat_rw ?? '-' }})</dd>
 
                                     {{-- Provinsi --}}
                                     <dt class="col-sm-4">Provinsi</dt>
                                     <dd class="col-sm-8">
-                                        {{ $wali1->ktp->province ? $wali1->ktp->province->name : 'Tidak Diketahui' }}</dd>
+                                        {{ $wali2->ktp->province ? $wali2->ktp->province->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kota/Kabupaten --}}
                                     <dt class="col-sm-4">Kota/Kabupaten</dt>
                                     <dd class="col-sm-8">
-                                        {{ $wali1->ktp->city ? $wali1->ktp->city->name : 'Tidak Diketahui' }}</dd>
+                                        {{ $wali2->ktp->city ? $wali2->ktp->city->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kecamatan --}}
                                     <dt class="col-sm-4">Kecamatan</dt>
                                     <dd class="col-sm-8">
-                                        {{ $wali1->ktp->district ? $wali1->ktp->district->name : 'Tidak Diketahui' }}</dd>
+                                        {{ $wali2->ktp->district ? $wali2->ktp->district->name : 'Tidak Diketahui' }}</dd>
 
                                     {{-- Kelurahan/Desa --}}
                                     <dt class="col-sm-4">Kelurahan/Desa</dt>
                                     <dd class="col-sm-8">
-                                        {{ $wali1->ktp->village ? $wali1->ktp->village->name : 'Tidak Diketahui' }}</dd>
+                                        {{ $wali2->ktp->village ? $wali2->ktp->village->name : 'Tidak Diketahui' }}</dd>
                                 </dl>
                             </div>
 
@@ -791,22 +799,29 @@
 
 @push('scripts')
     <script>
-        // show wali ayah dan ibu when nik wali ayah and ibu is not null
-        if ("{{ $wali1 }}" != "") {
-            $("#row_wali_ayah").show();
-            $("#row_ktp_ayah").show();
-        } else {
-            $("#row_wali_ayah").hide();
-            $("#row_ktp_ayah").hide();
-        }
+        window.onload = function() {
+            // show wali ayah dan ibu when nik wali ayah and ibu is not null
+            if ("{{ $wali1 }}" != "") {
+                $("#row_wali_ayah").show();
+                $("#row_ktp_ayah").show();
+            } else {
+                $("#row_wali_ayah").hide();
+                $("#row_ktp_ayah").hide();
+            }
 
-        if ("{{ $wali2 }}" != "" && "{{ $wali2->ktp_id }}" != "") {
-            $("#row_wali_ibu").show();
-            $("#row_ktp_ibu").show();
-        } else if ("{{ $wali2 }}" != "" && "{{ $wali2->ktp_id }}" == "") {
-            $("#row_wali_ibu").hide();
-            $("#row_wali_ibu_meninggal").show();
-            $("#row_ktp_ibu").hide();
-        }
+            if ("{{ $wali2 }}" != "" && "{{ $wali2->ktp_id }}" != "") {
+                $("#row_wali_ibu").show();
+                $("#row_ktp_ibu_meninggal").hide();
+                $("#row_ktp_ibu").show();
+            } else if ("{{ $wali2 }}" != "" && "{{ $wali2->ktp_id }}" == "") {
+                $("#row_wali_ibu").hide();
+                $("#row_wali_ibu_meninggal").show();
+                $("#row_ktp_ibu").show();
+            } else if ("{{ $wali2 }}" != "" && "{{ $wali2->ktp_id }}" != "") {
+                $("#row_wali_ibu").hide();
+                $("#row_wali_ibu_meninggal").show();
+                $("#row_ktp_ibu").hide();
+            }
+        };
     </script>
 @endpush
