@@ -36,6 +36,7 @@ use App\Http\Controllers\AktivitasMahasiswaBimbingController;
 use App\Http\Controllers\AktivitasMahasiswaPesertaController;
 use App\Http\Controllers\SpmbPendaftarController;
 use App\Http\Controllers\SpmbPengumumanController;
+use App\Http\Controllers\ApiController;
 
 Route::group(['middleware' => ['auth:hr']], function () {
     // get '/' to redirect to '/home'
@@ -47,6 +48,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
     Route::get('/dashboard/mahasiswa/status', [DashboardController::class, 'getMahasiswaStatus']);
     Route::get('/periode-perkuliahan/chart-data', [PeriodePerkuliahanController::class, 'chartData']);
 
+    Route::post('/getToken', [ApiController::class, 'getToken'])->name('getToken');
 
     // route profile
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
@@ -249,7 +251,7 @@ Route::group(['middleware' => ['auth:hr']], function () {
         Route::delete('/kuisioner-akademik/{id}', [KuisionerAkademikController::class, 'destroy'])->name('kuisioner-akademik.destroy');
     });
 
-    Route::prefix('akm')->group(function () {
+    Route::prefix('akm')->group(function (){
         // aktivitas mahasiswa
         Route::get('/aktivitas-mahasiswa', [AktivitasMahasiswaController::class, 'index'])->name('aktivitas.index');
         Route::get('/aktivitas-mahasiswa/export', [AktivitasMahasiswaController::class, 'export'])->name('aktivitas.export');

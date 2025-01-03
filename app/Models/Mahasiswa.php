@@ -37,6 +37,9 @@ class Mahasiswa extends Model
         'pendidikan_kontak_darurat',
         'penghasilan_kontak_darurat',
         'kebutuhan_khusus',
+        'dusun',
+        'kelurahan',
+        'kecamatan',
         'is_filled',
     ];
 

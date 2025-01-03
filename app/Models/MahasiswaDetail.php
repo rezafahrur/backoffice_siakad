@@ -24,4 +24,9 @@ class MahasiswaDetail extends Model
     {
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id', 'id');
     }
+
+    public function ktp()
+    {
+        return $this->hasOne(Ktp::class, 'mahasiswa_detail_id', 'id');
+    }
 }

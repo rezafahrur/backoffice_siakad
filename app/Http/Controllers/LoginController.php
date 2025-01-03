@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Config;
 use App\Models\Hr;
 use App\Models\HrDetail;
 use App\Models\Ktp;
 use App\Models\ShortenerURL;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -92,7 +94,7 @@ class LoginController extends Controller
             $hr_detail->otp = null;
             $hr_detail->save();
 
-            // nuulkan model has role
+            //null kan model has role
             $user->roles()->detach();
 
             // Generate dan simpan password LMS baru

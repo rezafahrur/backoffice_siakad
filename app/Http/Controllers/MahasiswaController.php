@@ -31,6 +31,14 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
 {
+    protected $apiController;
+
+    // Injeksi ApiController melalui konstruktor
+    public function __construct(ApiController $apiController)
+    {
+        $this->apiController = $apiController;
+    }
+
     public function index(Request $request)
     {
         $mahasiswa = Mahasiswa::all();
@@ -317,8 +325,33 @@ class MahasiswaController extends Controller
         $provinces = Province::all();
         $prodi = ProgramStudi::all();
         $jurusan = Jurusan::all();
+        $jenisTinggal = $this->apiController->getJenisTinggal();
+        $alatTransportasi = $this->apiController->getAlatTransportasi();
+        $agama = $this->apiController->getAgama();
+        $negara = $this->apiController->getNegara();
+        $pekerjaan = $this->apiController->getPekerjaan();
+        $penghasilan = $this->apiController->getPenghasilan();
+        $jenjangPendidikan = $this->apiController->getJenjangPendidikan();
+        $kebutuhanKhususOptions = [
+            '1' => 'A - Tuna netra',
+            '2' => 'B - Tuna rungu',
+            '3' => 'C - Tuna grahita ringan',
+            '4' => 'C1 - Tuna grahita ringan',
+            '5' => 'D - Tuna daksa ringan',
+            '6' => 'D1 - Tuna daksa sedang',
+            '7' => 'E - Tuna laras',
+            '8' => 'F - Tuna wicara',
+            '9' => 'H - Hiperaktif',
+            '10' => 'I - Cerdas Istimewa',
+            '11' => 'J - Bakat Istimewa',
+            '12' => 'K - Kesulitan Belajar',
+            '13' => 'N - Narkoba',
+            '14' => 'O - Indigo',
+            '15' => 'P - Down Syndrome',
+            '16' => 'Q - Autis',
+        ];
 
-        return view('mahasiswa.mahasiswa.create', compact('provinces', 'prodi', 'jurusan'));
+        return view('mahasiswa.mahasiswa.create', compact('provinces', 'prodi', 'jurusan', 'jenisTinggal', 'alatTransportasi', 'agama', 'negara', 'pekerjaan', 'penghasilan', 'jenjangPendidikan', 'kebutuhanKhususOptions'));
     }
 
     public function edit($id)
@@ -326,6 +359,33 @@ class MahasiswaController extends Controller
         // Fetch data for the dropdowns
         $prodi = ProgramStudi::all();
         $jurusan = Jurusan::all();
+
+        // Fetch data API
+        $jenisTinggal = $this->apiController->getJenisTinggal();
+        $alatTransportasi = $this->apiController->getAlatTransportasi();
+        $agama = $this->apiController->getAgama();
+        $negara = $this->apiController->getNegara();
+        $pekerjaan = $this->apiController->getPekerjaan();
+        $penghasilan = $this->apiController->getPenghasilan();
+        $jenjangPendidikan = $this->apiController->getJenjangPendidikan();
+        $kebutuhanKhususOptions = [
+            '1' => 'A - Tuna netra',
+            '2' => 'B - Tuna rungu',
+            '3' => 'C - Tuna grahita ringan',
+            '4' => 'C1 - Tuna grahita ringan',
+            '5' => 'D - Tuna daksa ringan',
+            '6' => 'D1 - Tuna daksa sedang',
+            '7' => 'E - Tuna laras',
+            '8' => 'F - Tuna wicara',
+            '9' => 'H - Hiperaktif',
+            '10' => 'I - Cerdas Istimewa',
+            '11' => 'J - Bakat Istimewa',
+            '12' => 'K - Kesulitan Belajar',
+            '13' => 'N - Narkoba',
+            '14' => 'O - Indigo',
+            '15' => 'P - Down Syndrome',
+            '16' => 'Q - Autis',
+        ];
 
         // Fetch data mahasiswa by ID
         $mahasiswa = Mahasiswa::findOrFail($id);
@@ -363,7 +423,11 @@ class MahasiswaController extends Controller
         // Fetch data for the dropdowns and populate with existing data
         $provinces = Province::all();
 
-        return view('mahasiswa.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'wali1', 'wali2', 'jurusan', 'mhsDetail', 'wali1Detail', 'wali2Detail', 'mahasiswaKebutuhanKhusus', 'wali1KebutuhanKhusus', 'wali2KebutuhanKhusus'));
+        // Status Kehidupan Wali
+        $status_kehidupan_ayah = $wali1 ? 'hidup' : 'meninggal';
+        $status_kehidupan_ibu = $wali2 ? 'hidup' : 'meninggal';
+
+        return view('mahasiswa.mahasiswa.edit', compact('mahasiswa', 'prodi', 'provinces', 'wali1', 'wali2', 'jurusan', 'mhsDetail', 'wali1Detail', 'wali2Detail', 'mahasiswaKebutuhanKhusus', 'wali1KebutuhanKhusus', 'wali2KebutuhanKhusus', 'jenisTinggal', 'alatTransportasi', 'agama', 'negara', 'pekerjaan', 'penghasilan', 'jenjangPendidikan', 'kebutuhanKhususOptions', 'status_kehidupan_ayah', 'status_kehidupan_ibu'));
     }
 
     public function storeOrUpdate(MahasiswaRequest $request)
@@ -398,6 +462,33 @@ class MahasiswaController extends Controller
             $data['nim'] = Mahasiswa::find($request['id'])->nim;
         }
 
+        // Mengambil dan memformat data kebutuhan khusus dari form
+        $kebutuhanKhusus = collect([
+            'mahasiswa' => $request->input('kebutuhan_khusus_mahasiswa', []),
+            'ayah' => $request->input('kebutuhan_khusus_ayah', []),
+            'ibu' => $request->input('kebutuhan_khusus_ibu', [])
+        ])->map(function ($values) {
+            if (count($values) === 1) {
+                return $values[0];
+            }
+            return implode(',', array_map(fn($value) => explode(' - ', $value)[0], $values));
+        });
+
+        // Mengambil data kebutuhan khusus dari API
+        $data['kebutuhan_khusus_mahasiswa'] = $this->apiController->getKebutuhanKhusus($kebutuhanKhusus['mahasiswa']);
+        $data['kebutuhan_khusus_ayah'] = $this->apiController->getKebutuhanKhusus($kebutuhanKhusus['ayah']);
+        $data['kebutuhan_khusus_ibu'] = $this->apiController->getKebutuhanKhusus($kebutuhanKhusus['ibu']);
+
+        // Mengambil nama kelurahan dari kode kelurahan pada mahasiswa
+        $data['kelurahan'] = Village::where('code', $request->input('alamat_kel_code'))->first()->name;
+        $data['kelurahan'] = ucwords(strtolower($data['kelurahan']));
+
+        // Mengambil nama kecamatan dari kode kecamatan pada mahasiswa
+        $data['kecamatan'] = District::where('code', $request->input('alamat_kec_code'))->first()->name;
+        $data['kecamatan'] = $this->apiController->getWilayah($data['kecamatan']);
+        $data['kecamatan'] = implode(' ', $data['kecamatan']);
+
+        // Create or update data
         try {
             DB::transaction(function () use ($data) {
                 // Handle KTP Mahasiswa
@@ -438,7 +529,7 @@ class MahasiswaController extends Controller
                         'alat_transportasi' => $data['alat_transportasi'],
                         'terima_kps' => $data['terima_kps'],
                         'no_kps' => $data['no_kps'],
-                        'kebutuhan_khusus' => isset($data['kebutuhan_khusus_mahasiswa']) ? implode(',', $data['kebutuhan_khusus_mahasiswa']) : '0',
+                        'kebutuhan_khusus' => !empty($data['kebutuhan_khusus_mahasiswa']) ? implode(',', $data['kebutuhan_khusus_mahasiswa']) : '0',
                         'nama_kontak_darurat' => $data['kd_nama'],
                         'hubungan_kontak_darurat' => $data['kd_hubungan'],
                         'hp_kontak_darurat' => $data['kd_no_hp'],
@@ -446,6 +537,9 @@ class MahasiswaController extends Controller
                         'pekerjaan_kontak_darurat' => $data['kd_pekerjaan'],
                         'pendidikan_kontak_darurat' => $data['kd_pendidikan'],
                         'penghasilan_kontak_darurat' => $data['kd_penghasilan'],
+                        'dusun' => $data['alamat_dusun'],
+                        'kelurahan' => $data['kelurahan'],
+                        'kecamatan' => $data['kecamatan'],
                         'is_filled' => $data['is_filled'],
                         'ktp_id' => $ktpMahasiswa->id,
                     ]
@@ -497,7 +591,7 @@ class MahasiswaController extends Controller
                         [
                             'nama' => $data['wali_nama_1'],
                             'status_kewalian' => 'AYAH',
-                            'kebutuhan_khusus' => isset($data['kebutuhan_khusus_ayah']) ? implode(',', $data['kebutuhan_khusus_ayah']) : '0',
+                            'kebutuhan_khusus' => !empty($data['kebutuhan_khusus_ayah']) ? implode(',', $data['kebutuhan_khusus_ayah']) : '0',
                         ]
                     );
 
@@ -551,7 +645,7 @@ class MahasiswaController extends Controller
                         [
                             'nama' => $data['wali_nama_2'],
                             'status_kewalian' => 'IBU',
-                            'kebutuhan_khusus' => isset($data['kebutuhan_khusus_ibu']) ? implode(',', $data['kebutuhan_khusus_ibu']) : '0',
+                            'kebutuhan_khusus' => !empty($data['kebutuhan_khusus_ibu']) ? implode(',', $data['kebutuhan_khusus_ibu']) : '0',
                         ]
                     );
 
@@ -600,94 +694,124 @@ class MahasiswaController extends Controller
         }
     }
 
+    protected function filterShowAPI(?array $data, string $key, $value)
+    {
+        // Memastikan data memiliki key 'data' yang berisi array
+        if (is_array($data) && isset($data['data']) && is_array($data['data'])) {
+            // Filter data berdasarkan key dan nilai yang dicari
+            $filtered = array_filter($data['data'], function ($item) use ($key, $value) {
+                return isset($item[$key]) && $item[$key] == $value;
+            });
+
+            // Mengembalikan elemen pertama dari hasil filter atau null jika kosong
+            return !empty($filtered) ? reset($filtered) : null;
+        }
+
+        return null;
+    }
+
     public function show(Mahasiswa $mahasiswa)
     {
         $waliCollection = $mahasiswa->id;
+
+        // Mendapatkan detail mahasiswa dan relasi terkait
+        $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();
         $krs = Krs::where('mahasiswa_id', $waliCollection)->get();
-
-        if ($mahasiswa->is_filled == 0) {
-            $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();
-
-            return view('mahasiswa.mahasiswa.detailShort', [
-                'mahasiswa' => $mahasiswa,
-                'mhsDetail' => $mhsDetail,
-                'krs' => $krs,
-            ]);
-        }
-
-        // Mengambil data KTP dari relasi mahasiswa
         $ktp = $mahasiswa->ktp;
 
-        // Mengambil detail mahasiswa jika ada
-        $mhsDetail = MahasiswaDetail::where('mahasiswa_id', $waliCollection)->latest()->get();
+        // Mengambil wali berdasarkan status
+        $wali1 = MahasiswaWali::where('mahasiswa_id', $waliCollection)->where('status_kewalian', 'AYAH')->first();
+        $wali2 = MahasiswaWali::where('mahasiswa_id', $waliCollection)->where('status_kewalian', 'IBU')->first();
 
-        // Contoh mengambil wali pertama, jika ada
-        $wali1 = MahasiswaWali::where('mahasiswa_id', $waliCollection)
-            ->where('status_kewalian', 'AYAH')
-            ->first();
+        // Ambil semua detail wali 1 dan wali 2
+        $wali1Details = $wali1 ? MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali1->id)->latest()->get() : collect();
+        $wali2Details = $wali2 ? MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali2->id)->latest()->get() : collect();
 
-        $wali2 = MahasiswaWali::where('mahasiswa_id', $waliCollection)
-            ->where('status_kewalian', 'IBU')
-            ->first();
+        // Definisi array untuk memetakan data yang akan diambil dari API berdasarkan entitas dan field
+        $entities = [
+            'mahasiswa' => [
+                'jenis_tinggal' => $mahasiswa->jenis_tinggal,
+                'alat_transportasi' => $mahasiswa->alat_transportasi,
+            ],
+            'ktp' => [
+                'agama' => $ktp->agama,
+                'negara' => $ktp->kewarganegaraan,
+            ],
+            'wali1' => [
+                'pekerjaan' => $wali1Details->pluck('pekerjaan')->toArray(),  // Mengambil semua pekerjaan wali1
+                'penghasilan' => $wali1Details->pluck('penghasilan')->toArray(),
+                'jenjang_didik' => $wali1Details->pluck('pendidikan')->toArray(),
+                'agama' => $wali1->ktp->agama ?? null,
+                'negara' => $wali1->ktp->kewarganegaraan ?? null,
+            ],
+            'wali2' => [
+                'pekerjaan' => $wali2Details->pluck('pekerjaan')->toArray(),
+                'penghasilan' => $wali2Details->pluck('penghasilan')->toArray(),
+                'jenjang_didik' => $wali2Details->pluck('pendidikan')->toArray(),
+                'agama' => $wali2->ktp->agama ?? null,
+                'negara' => $wali2->ktp->kewarganegaraan ?? null,
+            ],
+            'kontak_darurat' => [
+                'pekerjaan' => $mahasiswa->pekerjaan_kontak_darurat,
+                'penghasilan' => $mahasiswa->penghasilan_kontak_darurat,
+                'jenjang_didik' => $mahasiswa->pendidikan_kontak_darurat,
+            ]
+        ];
 
-        // mengambil detail wali jika ada
-        $wali1Detail = $wali1 ? MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali1->id)->latest()->get() : null;
-        $wali2Detail = $wali2 ? MahasiswaWaliDetail::where('mahasiswa_wali_id', $wali2->id)->latest()->get() : null;
+        // Hasil akhir dari data yang telah difilter
+        $filteredData = [];
 
-        // Mendapatkan data provinsi, kota/kabupaten, kecamatan, dan kelurahan/desa dari relasi KTP
-        $province = $ktp->province;
-        $city = $ktp->city;
-        $district = $ktp->district;
-        $village = $ktp->village;
+        // Loop untuk setiap entitas dan field, kemudian memanggil API yang sesuai
+        foreach ($entities as $entityName => $fields) {
+            foreach ($fields as $fieldKey => $fieldValue) {
+                // Pilih API berdasarkan field
+                $apiData = match ($fieldKey) {
+                    'jenis_tinggal' => $this->apiController->getJenisTinggal(),
+                    'alat_transportasi' => $this->apiController->getAlatTransportasi(),
+                    'agama' => $this->apiController->getAgama(),
+                    'negara' => $this->apiController->getNegara(),
+                    'pekerjaan' => $this->apiController->getPekerjaan(),
+                    'penghasilan' => $this->apiController->getPenghasilan(),
+                    'jenjang_didik' => $this->apiController->getJenjangPendidikan(),
+                    default => null
+                };
 
-        // Ambil kebutuhan khusus dari mahasiswa
-        $mahasiswaKebutuhanKhusus = is_array($mahasiswa->kebutuhan_khusus) ? $mahasiswa->kebutuhan_khusus : explode(',', $mahasiswa->kebutuhan_khusus);
-
-        // Ambil kebutuhan khusus dari wali (Ayah)
-        $wali1KebutuhanKhusus = $wali1 && $wali1->kebutuhan_khusus ? (is_array($wali1->kebutuhan_khusus) ? $wali1->kebutuhan_khusus : explode(',', $wali1->kebutuhan_khusus)) : [];
-
-        // Ambil kebutuhan khusus dari wali (Ibu)
-        $wali2KebutuhanKhusus = $wali2 && $wali2->kebutuhan_khusus ? (is_array($wali2->kebutuhan_khusus) ? $wali2->kebutuhan_khusus : explode(',', $wali2->kebutuhan_khusus)) : [];
-
-        if ($wali1 != null) {
-            $wali1province = $wali1->ktp->province;
-            $wali1city = $wali1->ktp->city;
-            $wali1district = $wali1->ktp->district;
-            $wali1village = $wali1->ktp->village;
+                // Menyimpan hasil filter data API pada `filteredData`
+                if (is_array($fieldValue)) {
+                    $filteredData[$entityName][$fieldKey] = array_map(function ($value) use ($apiData, $fieldKey) {
+                        return $this->filterShowAPI($apiData, "id_{$fieldKey}", $value);
+                    }, $fieldValue);
+                } else {
+                    $filteredData[$entityName][$fieldKey] = $this->filterShowAPI($apiData, "id_{$fieldKey}", $fieldValue);
+                }
+            }
         }
 
-        if ($wali2 != null && $wali2->ktp_id != null) {
-            $wali2province = $wali2->ktp->province;
-            $wali2city = $wali2->ktp->city;
-            $wali2district = $wali2->ktp->district;
-            $wali2village = $wali2->ktp->village;
-        }
+        // Mengambil data kebutuhan khusus dari mahasiswa
+        $mahasiswaKebutuhanKhusus = $this->apiController->getNoKebutuhanKhusus($mahasiswa->kebutuhan_khusus);
+        $wali1KebutuhanKhusus = $wali1 ? $this->apiController->getNoKebutuhanKhusus($wali1->kebutuhan_khusus) : null;
+        $wali2KebutuhanKhusus = $wali2 ? $this->apiController->getNoKebutuhanKhusus($wali2->kebutuhan_khusus) : null;
+
+        // Menggabungkan data kebutuhan khusus ke dalam filteredData
+        $filteredData['mahasiswa']['kebutuhan_khusus'] = $mahasiswaKebutuhanKhusus;
+        $filteredData['wali1']['kebutuhan_khusus'] = $wali1KebutuhanKhusus;
+        $filteredData['wali2']['kebutuhan_khusus'] = $wali2KebutuhanKhusus;
 
         // Mengirim data ke view
         return view('mahasiswa.mahasiswa.detail', [
             'mahasiswa' => $mahasiswa,
+            'mhsDetail' => $mhsDetail,
+            'krs' => $krs,
             'ktp' => $ktp,
-            'province' => $province,
-            'city' => $city,
-            'district' => $district,
-            'village' => $village,
-            'wali1' => $wali1 ?? null,
-            'wali1province' => $wali1province ?? null,
-            'wali1city' => $wali1city ?? null,
-            'wali1district' => $wali1district ?? null,
-            'wali1village' => $wali1village ?? null,
-            'wali2' => $wali2 ?? null,
-            'wali2province' => $wali2province ?? null,
-            'wali2city' => $wali2city ?? null,
-            'wali2district' => $wali2district ?? null,
-            'wali2village' => $wali2village ?? null,
-            'wali1Detail' => $wali1Detail ?? null,
-            'wali2Detail' => $wali2Detail ?? null,
-            'mhsDetail' => $mhsDetail ?? null,
-            'krs' => $krs ?? null,
-            'mahasiswaKebutuhanKhusus' => $mahasiswaKebutuhanKhusus,
-            'wali1KebutuhanKhusus' => $wali1KebutuhanKhusus,
-            'wali2KebutuhanKhusus' => $wali2KebutuhanKhusus,
+            'province' => $ktp->province ?? null,
+            'city' => $ktp->city ?? null,
+            'district' => $ktp->district ?? null,
+            'village' => $ktp->village ?? null,
+            'wali1' => $wali1,
+            'wali2' => $wali2,
+            'wali1Detail' => $wali1Details,
+            'wali2Detail' => $wali2Details,
+            'filteredData' => $filteredData, // Data dari API untuk ditampilkan
         ]);
     }
 
